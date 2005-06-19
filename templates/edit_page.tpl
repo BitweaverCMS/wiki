@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.1 2005/06/19 06:12:45 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2 2005/06/19 16:00:13 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -92,9 +92,8 @@
 
 						<div class="row">
 							{forminput}
-								<textarea id="{$textarea_id}" onkeyup="reloadPreviewDiv('{$textarea_id}');" onkeydown="reloadPreviewDiv('{$textarea_id}');" name="edit" rows="{$rows|default:20}" cols="{$cols|default:80}">{$pageInfo.data|escape:html}</textarea>
+								<textarea id="{$textarea_id}" name="edit" rows="{$rows|default:20}" cols="{$cols|default:80}">{$pageInfo.data|escape:html}</textarea>
 							{/forminput}
-							<div id="previewcomment"></div>
 						</div>
 
 						{if $footnote}
