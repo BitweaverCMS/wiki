@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.1 2005/06/19 06:12:45 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.2 2005/06/19 10:01:33 jht001 Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
@@ -52,7 +52,8 @@
 
 				<tr class="odd">
 					<td>{$pageInfo.last_modified|bit_short_datetime}<br />{$pageInfo.comment}</td>
-					<td>{displayname hash=$pageInfo}</td>
+
+					<td>{displayname user=$pageInfo.modifier_user user_id=$pageInfo.modifier_user_id real_name=$pageInfo.modifier_real_name} </td>
 					<td style="text-align:right;">{$pageInfo.ip}</td>
 					<td style="text-align:right;">{$pageInfo.version}</td>
 				</tr>
