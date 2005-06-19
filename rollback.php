@@ -1,12 +1,11 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/Attic/rollback.php,v 1.1 2005/06/19 06:12:44 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/Attic/rollback.php,v 1.2 2005/06/19 09:35:44 jht001 Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 // Initialization
 require_once( '../bit_setup_inc.php' );
 include_once( WIKI_PKG_PATH.'BitPage.php');
-include_once( WIKI_PKG_PATH.'hist_lib.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
 // Get the page from the request var or default it to HomePage
