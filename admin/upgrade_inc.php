@@ -12,6 +12,10 @@ array( 'QUERY' =>
 	array( 'MYSQL' => array(
 	"ALTER TABLE `".BIT_DB_PREFIX."tiki_history` DROP PRIMARY KEY",
 	"ALTER TABLE `".BIT_DB_PREFIX."tiki_links` DROP PRIMARY KEY",
+// jht 2005-06-19_00:05:40 adding the following two indexes significantly speeds up large TikiWiki 1.8 upgrades
+	"ALTER TABLE ".BIT_DB_PREFIX."tiki_pages ADD INDEX version (version)",
+	"ALTER TABLE ".BIT_DB_PREFIX."tiki_history ADD INDEX version (version)",
+
 	)),
 ),
 
