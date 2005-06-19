@@ -18,7 +18,7 @@
 			{assign var=format_guid value=$pageInfo.format_guid}
 			{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y'}
 				{if $gBitUser->hasPermission( 'bit_p_edit' ) or $page eq 'SandBox'}
-					<a href="{$gBitLoc.WIKI_PKG_URL}edit.php?page_id={$pageInfo.page_id}" {if $beingEdited eq 'y'}{*popup_init src="`$gBitLoc.THEMES_PKG_URL`overlib.js"*}{popup text="$semUser" width="-1"}{/if}>{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
+					<a href="{$gBitLoc.WIKI_PKG_URL}edit.php?page_id={$pageInfo.page_id}" {if $beingEdited eq 'y'}{*popup_init src="`$gBitLoc.THEMES_PKG_URL`js/overlib.js"*}{popup text="$semUser" width="-1"}{/if}>{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
 				{/if}
 			{/if}
 		{/if}

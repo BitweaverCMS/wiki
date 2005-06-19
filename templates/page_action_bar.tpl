@@ -6,7 +6,7 @@
 		{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y'}
 			{if $gBitUser->hasPermission( 'bit_p_edit' ) or $page eq 'SandBox'}
 				{if $beingEdited eq 'y'}
-					{*popup_init src="`$gBitLoc.THEMES_PKG_URL`overlib.js"*}
+					{*popup_init src="`$gBitLoc.THEMES_PKG_URL`js/overlib.js"*}
 					<strong><a href="{$gBitLoc.WIKI_PKG_URL}edit.php?page_id={$pageInfo.page_id}" {popup text="$semUser"}>{tr}edit{/tr}</a></strong>
 				{else}
 					<a href="{$gBitLoc.WIKI_PKG_URL}edit.php?page_id={$pageInfo.page_id}">{tr}edit{/tr}</a>
