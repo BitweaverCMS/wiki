@@ -1,6 +1,6 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.1 2005/06/19 06:12:44 bitweaver Exp $
+* $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2 2005/06/20 02:34:58 jht001 Exp $
 *
 * Copyright (c) 2004 bitweaver.org
 * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitPage.php,v 1.1 2005/06/19 06:12:44 bitweaver Exp $
+* $Id: BitPage.php,v 1.2 2005/06/20 02:34:58 jht001 Exp $
 */
 /**
 * Sample class to illustrate best practices when creating a new bitweaver package that
@@ -18,7 +18,7 @@
 *
 * @author spider <spider@steelsun.com>
 *
-* @version $Revision: 1.1 $ $Date: 2005/06/19 06:12:44 $ $Author: bitweaver $
+* @version $Revision: 1.2 $ $Date: 2005/06/20 02:34:58 $ $Author: jht001 $
 *
 * @class BitPage
 */
@@ -115,8 +115,7 @@ class BitPage extends LibertyAttachable {
 				$this->invalidateCache();
 //print "if( empty( ".$pParamHash['minor']." ) && !empty( ".$this->mInfo['version']." ) && ".$pParamHash['field_changed'];
 //die;
-
-				if( empty( $pParamHash['minor'] ) && !empty( $this->mInfo['version'] ) && $pParamHash['field_changed'] ) {
+				if( !empty( $pParamHash['force_history'] ) || ( empty( $pParamHash['minor'] ) && !empty( $this->mInfo['version'] ) && $pParamHash['field_changed'] )) {
 					if( $this->mPageName != 'SandBox' && empty( $pParamHash['has_no_history'] ) ) {
 						$query = "insert into `".BIT_DB_PREFIX."tiki_history`( `page_id`, `version`, `last_modified`, `user_id`, `ip`, `comment`, `data`, `description`, `format_guid`) values(?,?,?,?,?,?,?,?,?)";
  						$result = $this->query( $query, array( $this->mPageId, (int)$this->mInfo['version'], (int)$this->mInfo['last_modified'] , $this->mInfo['modifier_user_id'], $this->mInfo['ip'], $this->mInfo['comment'], $this->mInfo['data'], $this->mInfo['description'], $this->mInfo['format_guid'] ) );
@@ -587,12 +586,18 @@ this watch code is only half fixed - spiderr
 		if( $this->isValid() ) {
 			global $gBitUser;
 			$this->mDb->StartTrans();
-			// $this->invalidate_cache($page_id); -- I can find no reference to this function - drewslater
+			// JHT - cache invalidation appears to be handled by store function - so don't need to do it here
 			$query = "select *, `user_id` AS modifier_user_id, `data` AS `edit` from `".BIT_DB_PREFIX."tiki_history` where `page_id`=? and `version`=?";
 			$result = $this->query($query,array( $this->mPageId, $pVersion ) );
 			if( $result->numRows() ) {
 				$res = $result->fetchRow();
 				$res['comment'] = 'Rollback to version '.$pVersion.' by '.$gBitUser->getDisplayName();
+				// JHT 2005-06-19_15:22:18
+				// set ['force_history'] to 
+				// make sure we don't destory current content without leaving a copy in history
+				// if rollback can destroy the current page version, it can be used
+				// maliciously
+				$res['force_history'] = 1;
 				if( $this->store( $res ) ) {
 					$action = "Changed actual version to $pVersion";
 					$t = date("U");
