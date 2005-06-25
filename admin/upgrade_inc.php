@@ -132,6 +132,25 @@ array( 'QUERY' =>
 	"UPDATE users_permissions SET perm_name='bit_p_edit_books', perm_desc='Can create and edit books' WHERE perm_name='bit_p_edit_structures'",
 
 	"INSERT INTO `".BIT_DB_PREFIX."users_grouppermissions` (`group_id`, `perm_name`) VALUES (2,'bit_p_edit_books')",
+
+// add in permissions not in TW 1.8 - may get failures on some duplicates
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `level`, `package`) VALUES ('bit_p_userfiles', 'Can upload personal files', 'registered', 'users')",
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `level`, `package`) VALUES ('bit_p_user_group_perms', 'Can assign permissions to personal groups', 'editors', 'users')",
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `level`, `package`) VALUES ('bit_p_user_group_members', 'Can assign users to personal groups', 'registered', 'users')",
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `level`, `package`) VALUES ('bit_p_user_group_subgroups', 'Can include other groups in groups', 'editors', 'users')",
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `level`, `package`) VALUES ('bit_p_create_bookmarks', 'Can create user bookmarksche user bookmarks', 'registered', 'users')",
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `level`, `package`) VALUES ('bit_p_configure_modules', 'Can configure modules', 'registered', 'users')",
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `level`, `package`) VALUES ('bit_p_cache_bookmarks', 'Can cache user bookmarks', 'admin', 'users')",
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `level`, `package`) VALUES ('bit_p_usermenu', 'Can create items in personal menu', 'registered', 'users')",
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `level`, `package`) VALUES ('bit_p_tasks', 'Can use tasks', 'registered', 'users')",
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `level`, `package`) VALUES ('bit_p_assume_users', 'Can assume the identity of other users', 'admin', 'users')",
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `level`, `package`) VALUES ('bit_p_admin_users', 'Can edit the information for other users', 'admin', 'users')",
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `level`, `package`) VALUES ('bit_p_view_tabs_and_tools', 'Can view tab and tool links', 'basic', 'users')",
+//users don't have any buttons for page functions without this
+	"INSERT INTO `".BIT_DB_PREFIX."users_grouppermissions` (`group_id`, `perm_name`) VALUES (-1,'bit_p_view_tabs_and_tools')",
+	"INSERT INTO `".BIT_DB_PREFIX."users_grouppermissions` (`group_id`, `perm_name`) VALUES (1,'bit_p_view_tabs_and_tools')",
+
+
 	"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name`='feature_wiki_generate_pdf' WHERE name='feature_wiki_pdf'",
 	"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` (`name`, `value`, `package`) VALUES( 'feature_page_title', 'y', 'wiki' )",
 	"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` (`name`, `value`, `package`) VALUES( 'package_wiki', 'y', 'wiki' )",
