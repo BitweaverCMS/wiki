@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.2 2005/06/19 09:35:44 jht001 Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.2.2.1 2005/06/25 22:21:09 jht001 Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -32,7 +32,7 @@ if (!$gBitUser->hasPermission( 'bit_p_view' )) {
 $smarty->assign('source', 0);
 // If we have to include a preview please show it
 $smarty->assign('preview', false);
-$smarty->assign('diff', false);
+$smarty->assign('compare', 'n');
 $smarty->assign('diff2', 'n');
 if (isset($_REQUEST["delete"]) && isset($_REQUEST["hist"])) {
 	foreach (array_keys($_REQUEST["hist"])as $version) {
@@ -52,18 +52,28 @@ if (isset($_REQUEST["delete"]) && isset($_REQUEST["hist"])) {
 		$smarty->assign_by_ref('version', $_REQUEST["preview"]);
 	}
 } elseif( isset( $_REQUEST["diff2"] ) ) {
-	$diff = $gContent->getHistory( $_REQUEST["diff2"] );
-	$html = $gBitSystem->diff2($diff[0]["data"], $gContent->mInfo["data"]);
+        $from_version = $_REQUEST["diff2"];
+	$from_page = $gContent->getHistory( $from_version );
+	$from_lines = explode("\n",$from_page[0]["data"]);
+	$to_version = $gContent->mInfo["version"];
+	$to_lines = explode("\n",$gContent->mInfo["data"]);
+        
+        include_once( WIKI_PKG_PATH.'diff.php');        
+        $diffx = new WikiDiff($from_lines,$to_lines);
+        $fmt = new WikiUnifiedDiffFormatter;
+        $html = $fmt->format($diffx, $from_lines);
 	$smarty->assign('diffdata', $html);
 	$smarty->assign('diff2', 'y');
-	$smarty->assign_by_ref('version', $_REQUEST["diff2"]);
-	$smarty->assign_by_ref('parsed', $gContent->parseData( $diff[0]["data"], $diff[0]["format_guid"] ) );
-} elseif( isset( $_REQUEST["diff"] ) ) {
-	// We are going to change this to "compare" instead of diff
-	$diff = $gContent->getHistory( $_REQUEST["diff"]);
-	$smarty->assign_by_ref('diff', $gContent->parseData( $diff[0]["data"], $diff[0]["format_guid"] ) );
-	$smarty->assign_by_ref('parsed', $gContent->parseData() );
-	$smarty->assign_by_ref('version', $_REQUEST["diff"]);
+	$smarty->assign('version_from', $from_version);
+	$smarty->assign('version_to', $to_version);
+
+} elseif( isset( $_REQUEST["compare"] ) ) {
+        $from_version = $_REQUEST["compare"];
+	$from_page = $gContent->getHistory($from_version);
+	$smarty->assign('compare', 'y');
+	$smarty->assign_by_ref('diff_from', $gContent->parseData( $from_page[0]["data"], $from_page[0]["format_guid"] ) );
+	$smarty->assign_by_ref('diff_to', $gContent->parseData() );
+	$smarty->assign_by_ref('version_from', $from_version);
 } elseif (isset($_REQUEST["rollback"])) {
 	if( $version = $gContent->getHistory( $_REQUEST["preview"] ) ) {
 		$smarty->assign_by_ref('parsed', $gContent->parseData( $version[0]["data"], $version[0]["format_guid"] ) );
