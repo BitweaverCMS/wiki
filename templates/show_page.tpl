@@ -1,4 +1,4 @@
-<div class="display wiki">
+<div class="display wiki {$pageInfo.title|lower|regex_replace:"[\s|_]":""}">
 	{include file="bitpackage:wiki/page_icons.tpl"}
 	{include file="bitpackage:wiki/page_header.tpl"}
 	{if $gBitSystem->isPackageActive( 'stickies' )}
