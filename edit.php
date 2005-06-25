@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1 2005/06/19 06:12:44 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.1 2005/06/25 11:11:11 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -7,10 +7,14 @@
 require_once( '../bit_setup_inc.php' );
 
 include_once( WIKI_PKG_PATH.'BitBook.php');
+include_once( LIBERTY_PKG_PATH.'edit_help_inc.php' );
 
 $gBitSystem->verifyPackage( 'wiki' );
 
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
+
+// Get plugins with descriptions
+global $wikilib, $gLibertySystem;
 
 $sandbox = FALSE;
 if ( (!empty($_REQUEST['page']) && $_REQUEST['page'] == 'SandBox') ||
@@ -50,105 +54,105 @@ function compare_import_versions($a1, $a2) {
  * \param &$c array -- parsed HTML
  * \param &$src string -- output string
  * \param &$p array -- ['stack'] = closing strings stack,
-                       ['listack'] = stack of list types currently opened
-                       ['first_td'] = flag: 'is <tr> was just before this <td>'
+					   ['listack'] = stack of list types currently opened
+					   ['first_td'] = flag: 'is <tr> was just before this <td>'
  */
 function walk_and_parse(&$c, &$src, &$p)
 {
-    for ($i=0; $i <= $c["contentpos"]; $i++)
-    {
-        // If content type 'text' output it to destination...
-        if ($c[$i]["type"] == "text") $src .= $c[$i]["data"];
-        elseif ($c[$i]["type"] == "tag")
-        {
-            if ($c[$i]["data"]["type"] == "open")
-            {
-                // Open tag type
-                switch ($c[$i]["data"]["name"])
-                {
-                case "br": $src .= "\n"; break;
-                case "title"; $src .= "\n!"; $p['stack'][] = array('tag' => 'title', 'string' => "\n"); break;
-                case "p": $src .= "\n"; $p['stack'][] = array('tag' => 'p', 'string' => "\n"); break;
-                case "b": $src .= '__'; $p['stack'][] = array('tag' => 'b', 'string' => '__'); break;
-                case "i": $src .= "''"; $p['stack'][] = array('tag' => 'i', 'string' => "''"); break;
-                case "u": $src .= "=="; $p['stack'][] = array('tag' => 'u', 'string' => "=="); break;
-                case "center": $src .= '::'; $p['stack'][] = array('tag' => 'center', 'string' => '::'); break;
-                case "code": $src .= '-+';  $p['stack'][] = array('tag' => 'code', 'string' => '+-'); break;
-                // headers detection looks like real suxx code...
-                // but possible it run faster :) I don't know where is profiler in PHP...
-                case "h1": $src .= "\n!"; $p['stack'][] = array('tag' => 'h1', 'string' => "\n"); break;
-                case "h2": $src .= "\n!!"; $p['stack'][] = array('tag' => 'h2', 'string' => "\n"); break;
-                case "h3": $src .= "\n!!!"; $p['stack'][] = array('tag' => 'h3', 'string' => "\n"); break;
-                case "h3": $src .= "\n!!!!"; $p['stack'][] = array('tag' => 'h4', 'string' => "\n"); break;
-                case "h5": $src .= "\n!!!!!"; $p['stack'][] = array('tag' => 'h5', 'string' => "\n"); break;
-                case "h6": $src .= "\n!!!!!!"; $p['stack'][] = array('tag' => 'h6', 'string' => "\n"); break;
-                case "pre": $src .= '~pp~'; $p['stack'][] = array('tag' => 'pre', 'string' => '~/pp~'); break;
-                // Table parser
-                case "table": $src .= '||'; $p['stack'][] = array('tag' => 'table', 'string' => '||'); break;
-                case "tr": $p['first_td'] = true; break;
-                case "td": $src .= $p['first_td'] ? '' : '|'; $p['first_td'] = false; break;
-                // Lists parser
-                case "ul": $p['listack'][] = '*'; break;
-                case "ol": $p['listack'][] = '#'; break;
-                case "li":
-                    // Generate wiki list item according to current list depth.
-                    // (ensure '*/#' starts from begining of line)
-                    for ($l = ''; strlen($l) < count($p['listack']); $l .= end($p['listack']));
-                    $src .= "\n$l ";
-                    break;
-                case "font":
-                    // If color attribute present in <font> tag
-                    if (isset($c[$i]["pars"]["color"]["value"]))
-                    {
-                        $src .= '~~'.$c[$i]["pars"]["color"]["value"].':';
-                        $p['stack'][] = array('tag' => 'font', 'string' => '~~');
-                    }
-                    break;
-                case "img":
-                    // If src attribute present in <img> tag
-                    if (isset($c[$i]["pars"]["src"]["value"]))
-                        // Note what it produce (img) not {img}! Will fix this below...
-                        $src .= '(img src='.$c[$i]["pars"]["src"]["value"].')';
-                    break;
-                case "a":
-                    // If href attribute present in <a> tag
-                    if (isset($c[$i]["pars"]["href"]["value"]))
-                    {
-                        $src .= '['.$c[$i]["pars"]["href"]["value"].'|';
-                        $p['stack'][] = array('tag' => 'a', 'string' => ']');
-                    }
-                    break;
-                }
-            }
-            else
-            {
-                // This is close tag type. Is that smth we r waiting for?
-                switch ($c[$i]["data"]["name"])
-                {
-                case "ul":
-                    if (end($p['listack']) == '*') array_pop($p['listack']);
-                    break;
-                case "ol":
-                    if (end($p['listack']) == '#') array_pop($p['listack']);
-                    break;
-                default:
-                    $e = end($p['stack']);
-                    if ($c[$i]["data"]["name"] == $e['tag'])
-                    {
-                        $src .= $e['string'];
-                        array_pop($p['stack']);
-                    }
-                    break;
-                }
-            }
-        }
-        // Recursive call on tags with content...
-        if (isset($c[$i]["content"]))
-        {
-//            if (substr($src, -1) != " ") $src .= " ";
-            walk_and_parse($c[$i]["content"], $src, $p);
-        }
-    }
+	for ($i=0; $i <= $c["contentpos"]; $i++)
+	{
+		// If content type 'text' output it to destination...
+		if ($c[$i]["type"] == "text") $src .= $c[$i]["data"];
+		elseif ($c[$i]["type"] == "tag")
+		{
+			if ($c[$i]["data"]["type"] == "open")
+			{
+				// Open tag type
+				switch ($c[$i]["data"]["name"])
+				{
+				case "br": $src .= "\n"; break;
+				case "title"; $src .= "\n!"; $p['stack'][] = array('tag' => 'title', 'string' => "\n"); break;
+				case "p": $src .= "\n"; $p['stack'][] = array('tag' => 'p', 'string' => "\n"); break;
+				case "b": $src .= '__'; $p['stack'][] = array('tag' => 'b', 'string' => '__'); break;
+				case "i": $src .= "''"; $p['stack'][] = array('tag' => 'i', 'string' => "''"); break;
+				case "u": $src .= "=="; $p['stack'][] = array('tag' => 'u', 'string' => "=="); break;
+				case "center": $src .= '::'; $p['stack'][] = array('tag' => 'center', 'string' => '::'); break;
+				case "code": $src .= '-+';  $p['stack'][] = array('tag' => 'code', 'string' => '+-'); break;
+				// headers detection looks like real suxx code...
+				// but possible it run faster :) I don't know where is profiler in PHP...
+				case "h1": $src .= "\n!"; $p['stack'][] = array('tag' => 'h1', 'string' => "\n"); break;
+				case "h2": $src .= "\n!!"; $p['stack'][] = array('tag' => 'h2', 'string' => "\n"); break;
+				case "h3": $src .= "\n!!!"; $p['stack'][] = array('tag' => 'h3', 'string' => "\n"); break;
+				case "h3": $src .= "\n!!!!"; $p['stack'][] = array('tag' => 'h4', 'string' => "\n"); break;
+				case "h5": $src .= "\n!!!!!"; $p['stack'][] = array('tag' => 'h5', 'string' => "\n"); break;
+				case "h6": $src .= "\n!!!!!!"; $p['stack'][] = array('tag' => 'h6', 'string' => "\n"); break;
+				case "pre": $src .= '~pp~'; $p['stack'][] = array('tag' => 'pre', 'string' => '~/pp~'); break;
+				// Table parser
+				case "table": $src .= '||'; $p['stack'][] = array('tag' => 'table', 'string' => '||'); break;
+				case "tr": $p['first_td'] = true; break;
+				case "td": $src .= $p['first_td'] ? '' : '|'; $p['first_td'] = false; break;
+				// Lists parser
+				case "ul": $p['listack'][] = '*'; break;
+				case "ol": $p['listack'][] = '#'; break;
+				case "li":
+					// Generate wiki list item according to current list depth.
+					// (ensure '*/#' starts from begining of line)
+					for ($l = ''; strlen($l) < count($p['listack']); $l .= end($p['listack']));
+					$src .= "\n$l ";
+					break;
+				case "font":
+					// If color attribute present in <font> tag
+					if (isset($c[$i]["pars"]["color"]["value"]))
+					{
+						$src .= '~~'.$c[$i]["pars"]["color"]["value"].':';
+						$p['stack'][] = array('tag' => 'font', 'string' => '~~');
+					}
+					break;
+				case "img":
+					// If src attribute present in <img> tag
+					if (isset($c[$i]["pars"]["src"]["value"]))
+						// Note what it produce (img) not {img}! Will fix this below...
+						$src .= '(img src='.$c[$i]["pars"]["src"]["value"].')';
+					break;
+				case "a":
+					// If href attribute present in <a> tag
+					if (isset($c[$i]["pars"]["href"]["value"]))
+					{
+						$src .= '['.$c[$i]["pars"]["href"]["value"].'|';
+						$p['stack'][] = array('tag' => 'a', 'string' => ']');
+					}
+					break;
+				}
+			}
+			else
+			{
+				// This is close tag type. Is that smth we r waiting for?
+				switch ($c[$i]["data"]["name"])
+				{
+				case "ul":
+					if (end($p['listack']) == '*') array_pop($p['listack']);
+					break;
+				case "ol":
+					if (end($p['listack']) == '#') array_pop($p['listack']);
+					break;
+				default:
+					$e = end($p['stack']);
+					if ($c[$i]["data"]["name"] == $e['tag'])
+					{
+						$src .= $e['string'];
+						array_pop($p['stack']);
+					}
+					break;
+				}
+			}
+		}
+		// Recursive call on tags with content...
+		if (isset($c[$i]["content"]))
+		{
+//			if (substr($src, -1) != " ") $src .= " ";
+			walk_and_parse($c[$i]["content"], $src, $p);
+		}
+	}
 }
 if( isset( $_REQUEST["suck_url"] ) ) {
 	// Suck another page and append to the end of current
@@ -157,59 +161,59 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 	$parsehtml = isset ($_REQUEST["parsehtml"]) ? ($_REQUEST["parsehtml"] == 'on' ? 'y' : 'n')  : 'n';
 	if (isset($_REQUEST['do_suck']) && strlen($suck_url) > 0)
 	{
-	    // \note by zaufi
-	    //   This is ugly implementation of wiki HTML import.
-	    //   I think it should be plugable import/export converters with ability
-	    //   to choose from edit form what converter to use for operation.
-	    //   In case of import converter, it can try to guess what source
-	    //   file is (using mime type from remote server response).
-	    //   Of couse converters may have itsown configuration panel what should be
-	    //   pluged into wiki page edit form too... (like HTML importer may have
-	    //   flags 'strip HTML tags' and 'try to convert HTML to wiki' :)
-	    //   At least one export filter for wiki already coded :) -- PDF exporter...
-	    $sdta = @file_get_contents($suck_url);
-	    if (isset($php_errormsg) && strlen($php_errormsg))
-	    {
-	        $gBitSystem->fatalError( 'Can\'t import remote HTML page' );
-	    }
-	    // Need to parse HTML?
-	    if ($parsehtml == 'y')
-	    {
-	        // Read compiled (serialized) grammar
-	        $grammarfile = HTML_PKG_PATH.'htmlgrammar.cmp';
-	        if (!$fp = @fopen($grammarfile,'r'))
-	        {
-	            $gBitSystem->fatalError( 'Can\'t parse remote HTML page' );
-	        }
-	        $grammar = unserialize(fread($fp, filesize($grammarfile)));
-	        fclose($fp);
-	        // create parser object, insert html code and parse it
-	        $htmlparser = new HtmlParser($sdta, $grammar, '', 0);
-	        $htmlparser->Parse();
-	        // Should I try to convert HTML to wiki?
-	        $parseddata = '';
-	        $p =  array('stack' => array(), 'listack' => array(), 'first_td' => false);
-	        walk_and_parse($htmlparser->content, $parseddata, $p);
-	        // Is some tags still opened? (It can be if HTML not valid, but this is not reason
-	        // to produce invalid wiki :)
-	        while (count($p['stack']))
-	        {
-	            $e = end($p['stack']);
-	            $sdta .= $e['string'];
-	            array_pop($p['stack']);
-	        }
-	        // Unclosed lists r ignored... wiki have no special start/end lists syntax....
-	        // OK. Things remains to do:
-	        // 1) fix linked images
-	        $parseddata = preg_replace(',\[(.*)\|\(img src=(.*)\)\],mU','{img src=$2 link=$1}', $parseddata);
-	        // 2) fix remains images (not in links)
-	        $parseddata = preg_replace(',\(img src=(.*)\),mU','{img src=$1}', $parseddata);
-	        // 3) remove empty lines
-	        $parseddata = preg_replace(",[\n]+,mU","\n", $parseddata);
-	        // Reassign previous data
-	        $sdta = $parseddata;
-	    }
-	    $_REQUEST['edit'] .= $sdta;
+		// \note by zaufi
+		//   This is ugly implementation of wiki HTML import.
+		//   I think it should be plugable import/export converters with ability
+		//   to choose from edit form what converter to use for operation.
+		//   In case of import converter, it can try to guess what source
+		//   file is (using mime type from remote server response).
+		//   Of couse converters may have itsown configuration panel what should be
+		//   pluged into wiki page edit form too... (like HTML importer may have
+		//   flags 'strip HTML tags' and 'try to convert HTML to wiki' :)
+		//   At least one export filter for wiki already coded :) -- PDF exporter...
+		$sdta = @file_get_contents($suck_url);
+		if (isset($php_errormsg) && strlen($php_errormsg))
+		{
+			$gBitSystem->fatalError( 'Can\'t import remote HTML page' );
+		}
+		// Need to parse HTML?
+		if ($parsehtml == 'y')
+		{
+			// Read compiled (serialized) grammar
+			$grammarfile = HTML_PKG_PATH.'htmlgrammar.cmp';
+			if (!$fp = @fopen($grammarfile,'r'))
+			{
+				$gBitSystem->fatalError( 'Can\'t parse remote HTML page' );
+			}
+			$grammar = unserialize(fread($fp, filesize($grammarfile)));
+			fclose($fp);
+			// create parser object, insert html code and parse it
+			$htmlparser = new HtmlParser($sdta, $grammar, '', 0);
+			$htmlparser->Parse();
+			// Should I try to convert HTML to wiki?
+			$parseddata = '';
+			$p =  array('stack' => array(), 'listack' => array(), 'first_td' => false);
+			walk_and_parse($htmlparser->content, $parseddata, $p);
+			// Is some tags still opened? (It can be if HTML not valid, but this is not reason
+			// to produce invalid wiki :)
+			while (count($p['stack']))
+			{
+				$e = end($p['stack']);
+				$sdta .= $e['string'];
+				array_pop($p['stack']);
+			}
+			// Unclosed lists r ignored... wiki have no special start/end lists syntax....
+			// OK. Things remains to do:
+			// 1) fix linked images
+			$parseddata = preg_replace(',\[(.*)\|\(img src=(.*)\)\],mU','{img src=$2 link=$1}', $parseddata);
+			// 2) fix remains images (not in links)
+			$parseddata = preg_replace(',\(img src=(.*)\),mU','{img src=$1}', $parseddata);
+			// 3) remove empty lines
+			$parseddata = preg_replace(",[\n]+,mU","\n", $parseddata);
+			// Reassign previous data
+			$sdta = $parseddata;
+		}
+		$_REQUEST['edit'] .= $sdta;
 	}
 }
 //
@@ -256,7 +260,7 @@ if (isset($_REQUEST["template_id"]) && $_REQUEST["template_id"] > 0) {
 }
 
 if(isset($_REQUEST["edit"])) {
-    $formInfo['edit'] = $_REQUEST["edit"];
+	$formInfo['edit'] = $_REQUEST["edit"];
 }
 if(isset($_REQUEST['title'])) {
 	$formInfo['title'] = $_REQUEST['title'];
@@ -429,27 +433,6 @@ if ($gBitSystem->getPreference('package_quicktags','n') == 'y') {
   include_once( QUICKTAGS_PKG_PATH.'quicktags_inc.php' );
 }
 
-// 27-Jun-2003, by zaufi
-// Get plugins with descriptions
-global $wikilib, $gLibertySystem;
-
-$plugins = array();
-// Request help string from each plugin module
-foreach( array_keys( $gLibertySystem->mPlugins ) as $pluginGuid ) {
-	if( $gLibertySystem->mPlugins[$pluginGuid]['plugin_type'] == DATA_PLUGIN ) {
-	    if (isset ($gLibertySystem->mPlugins[$pluginGuid]['description'])) {
-    		$pinfo["help"] = $gLibertySystem->mPlugins[$pluginGuid]['description'];
-	    	$pinfo["syntax"] = $gLibertySystem->mPlugins[$pluginGuid]['syntax'];
-	    	$pinfo["tpopg"] = $gLibertySystem->mPlugins[$pluginGuid]['tp_helppage'];
-    		if( !empty( $gLibertySystem->mPlugins[$pluginGuid]['help_function'] ) && function_exists( $gLibertySystem->mPlugins[$pluginGuid]['help_function'] ) ) {
-	    		$pinfo["exthelp"] = $gLibertySystem->mPlugins[$pluginGuid]['help_function']();
-			}
-		$pinfo["name"] = !empty( $gLibertySystem->mPlugins[$pluginGuid]['title'] ) ?$gLibertySystem->mPlugins[$pluginGuid]['title'] : $pluginGuid;
-		$plugins[] = $pinfo;
-		}
-	}
-}
-$smarty->assign_by_ref('plugins', $plugins);
 if( $gContent->isInStructure() ) {
 	$smarty->assign('showstructs', $gContent->getStructures() );
 }
