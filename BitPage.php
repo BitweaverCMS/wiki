@@ -1,6 +1,6 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2 2005/06/20 02:34:58 jht001 Exp $
+* $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.1 2005/06/27 00:39:25 lsces Exp $
 *
 * Copyright (c) 2004 bitweaver.org
 * Copyright (c) 2003 tikwiki.org
@@ -8,19 +8,20 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitPage.php,v 1.2 2005/06/20 02:34:58 jht001 Exp $
+* $Id: BitPage.php,v 1.2.2.1 2005/06/27 00:39:25 lsces Exp $
 */
 /**
 * Sample class to illustrate best practices when creating a new bitweaver package that
 * builds on core bitweaver functionality, such as the Liberty CMS engine
 *
-* @date created 2004/8/15
+* @package BitPage
+*
+* created 2004/8/15
 *
 * @author spider <spider@steelsun.com>
 *
-* @version $Revision: 1.2 $ $Date: 2005/06/20 02:34:58 $ $Author: jht001 $
+* @version $Revision: 1.2.2.1 $ $Date: 2005/06/27 00:39:25 $ $Author: lsces $
 *
-* @class BitPage
 */
 
 
