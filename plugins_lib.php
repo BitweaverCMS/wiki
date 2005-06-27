@@ -19,9 +19,13 @@
     *    return $plugin->getDescription();
     * }    * </code>
     * @package wiki
-    * @subpackage Plugins
+	*/
+
+	/**	
+    * @package wiki
+    * @subpackage PluginsLib
     * @author Claudio Bustos
-    * @version $Revision: 1.1.1.1.2.1 $
+    * @version $Revision: 1.1.1.1.2.2 $
     */
     class PluginsLib extends BitBase {
         var $_errors;
@@ -115,7 +119,7 @@
         function getVersion() {
             return tra("No version indicated");
             //return preg_replace("/[Revision: $]/", '',
-            //                    "\$Revision: 1.1.1.1.2.1 $");
+            //                    "\$Revision: 1.1.1.1.2.2 $");
         }
         /**
         * Returns the default arguments for the plugin
@@ -150,6 +154,11 @@
     }
     /**
     * Class with utilities for Plugins
+	*
+    * @package wiki
+    * @subpackage PluginsLib
+    * @author Claudio Bustos
+    * @version $Revision: 1.1.1.1.2.2 $
     */
     class PluginsLibUtil {
         /**

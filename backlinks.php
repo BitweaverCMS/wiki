@@ -3,13 +3,13 @@
  * assigned_modules
  *
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.1.1.1.2.1 $
- * @package  users
+ * @version  $Revision: 1.1.1.1.2.2 $
+ * @package  wiki
  * @subpackage  functions
  * @copyright Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * @license Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
  */
-// $Header: /cvsroot/bitweaver/_bit_wiki/backlinks.php,v 1.1.1.1.2.1 2005/06/27 10:08:43 lsces Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/backlinks.php,v 1.1.1.1.2.2 2005/06/27 17:47:43 lsces Exp $
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 
 /**
