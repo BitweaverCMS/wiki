@@ -18,10 +18,10 @@
     *    $plugin = new BackLinks();
     *    return $plugin->getDescription();
     * }    * </code>
-    * @package TikiWiki
+    * @package wiki
     * @subpackage Plugins
     * @author Claudio Bustos
-    * @version $Revision: 1.1 $
+    * @version $Revision: 1.1.1.1.2.1 $
     */
     class PluginsLib extends BitBase {
         var $_errors;
@@ -115,7 +115,7 @@
         function getVersion() {
             return tra("No version indicated");
             //return preg_replace("/[Revision: $]/", '',
-            //                    "\$Revision: 1.1 $");
+            //                    "\$Revision: 1.1.1.1.2.1 $");
         }
         /**
         * Returns the default arguments for the plugin
