@@ -1,32 +1,37 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.1 2005/06/27 00:39:25 lsces Exp $
-*
-* Copyright (c) 2004 bitweaver.org
-* Copyright (c) 2003 tikwiki.org
-* Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
-*
-* $Id: BitPage.php,v 1.2.2.1 2005/06/27 00:39:25 lsces Exp $
-*/
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.2 2005/06/27 10:08:43 lsces Exp $
+ * @package wiki
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * Copyright (c) 2003 tikwiki.org
+ * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * $Id: BitPage.php,v 1.2.2.2 2005/06/27 10:08:43 lsces Exp $
+ */
+
+/**
+ * required setup
+ */
+
+require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
+
 /**
 * Sample class to illustrate best practices when creating a new bitweaver package that
 * builds on core bitweaver functionality, such as the Liberty CMS engine
 *
-* @package BitPage
+* @package wiki
+* @subpackage BitPage
 *
 * created 2004/8/15
 *
 * @author spider <spider@steelsun.com>
 *
-* @version $Revision: 1.2.2.1 $ $Date: 2005/06/27 00:39:25 $ $Author: lsces $
+* @version $Revision: 1.2.2.2 $ $Date: 2005/06/27 10:08:43 $ $Author: lsces $
 *
 */
-
-
-require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
-
 class BitPage extends LibertyAttachable {
 	var $mPageId;
 	var $mPageName;
