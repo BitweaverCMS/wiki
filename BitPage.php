@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.2 2005/06/27 10:08:43 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.3 2005/06/27 10:55:46 lsces Exp $
  * @package wiki
  *
  * Copyright (c) 2004 bitweaver.org
@@ -9,7 +9,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.2 2005/06/27 10:08:43 lsces Exp $
+ * $Id: BitPage.php,v 1.2.2.3 2005/06/27 10:55:46 lsces Exp $
  */
 
 /**
@@ -29,7 +29,7 @@ require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
 *
 * @author spider <spider@steelsun.com>
 *
-* @version $Revision: 1.2.2.2 $ $Date: 2005/06/27 10:08:43 $ $Author: lsces $
+* @version $Revision: 1.2.2.3 $ $Date: 2005/06/27 10:55:46 $ $Author: lsces $
 *
 */
 class BitPage extends LibertyAttachable {
@@ -1537,6 +1537,11 @@ class WikiLib extends BitPage {
 	}
 */
 }
+
+/**
+ * the wikilib class
+ * @global WikiLib $wikilib 
+ */
 global $wikilib;
 // Perhaps someone overrode the wikilib class to do there own magic, and have alread instantiated...
 if( empty( $wikilib ) ) {
