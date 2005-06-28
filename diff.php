@@ -1,13 +1,22 @@
 <?php
-// diff.php
-//
-// A PHP diff engine for phpwiki.
-//
-// Copyright (C) 2000 Geoffrey T. Dairiki <dairiki@dairiki.org>
-// You may copy this code freely under the conditions of the GPL.
-//
-// FIXME: possibly remove assert()'s for production version?
-// PHP3 does not have assert()
+/**
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/diff.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+ *
+ * A PHP diff engine for phpwiki.
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * Copyright (c) 2003 tikwiki.org
+ * Copyright (c) 2000 Geoffrey T. Dairiki <dairiki@dairiki.org>
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * $Id: diff.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+ * @package wiki
+ */
+
+/**
+ * required setup
+ */
 define('USE_ASSERTS', function_exists('assert'));
 /**
  * Class used internally by WikiDiff to actually compute the diffs.
@@ -25,6 +34,8 @@ define('USE_ASSERTS', function_exists('assert'));
  *
  * Finally, some ideas (subdivision by NCHUNKS > 2, and some optimizations)
  * are my own.
+ * @package wiki
+ * @subpackage WikiDiffEngine
  */
 class _WikiDiffEngine
 {
@@ -414,6 +425,9 @@ class _WikiDiffEngine
 }
 /**
  * Class representing a diff between two files.
+ *
+ * @package wiki
+ * @subpackage WikiDiff
  */
 class WikiDiff
 {
@@ -733,6 +747,9 @@ class WikiDiff
  *
  *   $fmt = new WikiDiffFormatter('reversed');
  *   echo $fmt->format($diff, $lines1);
+ *
+ * @package wiki
+ * @subpackage WikiDiffFormatter
  */
 class WikiDiffFormatter
 {
@@ -897,7 +914,11 @@ class WikiDiffFormatter
  *
  *   $fmt = new WikiUnifiedDiffFormatter;
  *   echo $fmt->format($diff, $lines1); // Output HTMLified unified diff.
+ *
+ * @package wiki
+ * @subpackage WikiUnifiedDiffFormatter
  */
+
 class WikiUnifiedDiffFormatter extends WikiDiffFormatter
 {
   function WikiUnifiedDiffFormatter ($reverse = false, $context_lines = 3)

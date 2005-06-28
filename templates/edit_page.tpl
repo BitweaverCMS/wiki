@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2 2005/06/19 16:00:13 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.3 2005/06/28 07:46:29 spiderr Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -284,7 +284,7 @@
 		{/form}
 
 		<br /><br />
-		{include file="bitpackage:liberty/edit_help.tpl"}
+		{include file="bitpackage:liberty/edit_help_inc.tpl"}
 
 	</div><!-- end .body -->
 </div><!-- end .admin -->

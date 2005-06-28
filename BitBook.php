@@ -1,4 +1,11 @@
 <?
+/**
+ * BitBook class
+ *
+ * @author   spider <spider@steelsun.com>
+ * @version  $Revision: 1.2 $
+ * @package  wiki
+ */
 // +----------------------------------------------------------------------+
 // | Copyright (c) 2004, bitweaver.org
 // +----------------------------------------------------------------------+
@@ -11,22 +18,26 @@
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
 //
-// $Id: BitBook.php,v 1.1 2005/06/19 06:12:44 bitweaver Exp $
+// $Id: BitBook.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+
 
 /**
-* BitBook class
-*
-* @abstract
-* @author   spider <spider@steelsun.com>
-* @version  $Revision: 1.1 $
-* @package  wiki
-*/
-
+ * required setup
+ */
 require_once( WIKI_PKG_PATH.'BitPage.php' );
 require_once( LIBERTY_PKG_PATH.'LibertyStructure.php' );
 
 define('BITBOOK_CONTENT_TYPE_GUID', 'bitbook' );
 
+/**
+ * BitBook class
+ *
+ * @abstract
+ * @author   spider <spider@steelsun.com>
+ * @version  $Revision: 1.2 $
+ * @package  wiki
+ * @subpackage BitBook
+ */
 class BitBook extends BitPage {
 
 

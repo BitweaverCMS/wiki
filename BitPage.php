@@ -1,31 +1,35 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2 2005/06/20 02:34:58 jht001 Exp $
-*
-* Copyright (c) 2004 bitweaver.org
-* Copyright (c) 2003 tikwiki.org
-* Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
-*
-* $Id: BitPage.php,v 1.2 2005/06/20 02:34:58 jht001 Exp $
-*/
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.3 2005/06/28 07:46:27 spiderr Exp $
+ * @package wiki
+ *
+ * @author spider <spider@steelsun.com>
+ *
+ * @version $Revision: 1.3 $ $Date: 2005/06/28 07:46:27 $ $Author: spiderr $
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * Copyright (c) 2003 tikwiki.org
+ * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * $Id: BitPage.php,v 1.3 2005/06/28 07:46:27 spiderr Exp $
+ */
+
 /**
-* Sample class to illustrate best practices when creating a new bitweaver package that
-* builds on core bitweaver functionality, such as the Liberty CMS engine
-*
-* @date created 2004/8/15
-*
-* @author spider <spider@steelsun.com>
-*
-* @version $Revision: 1.2 $ $Date: 2005/06/20 02:34:58 $ $Author: jht001 $
-*
-* @class BitPage
-*/
-
-
+ * required setup
+ */
 require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
 
+/**
+ * Sample class to illustrate best practices when creating a new bitweaver package that
+ * builds on core bitweaver functionality, such as the Liberty CMS engine
+ *
+ * @package wiki
+ * @subpackage BitPage
+ *
+ * created 2004/8/15
+ */
 class BitPage extends LibertyAttachable {
 	var $mPageId;
 	var $mPageName;
@@ -834,7 +838,10 @@ vd( $this->mErrors );
 }
 
 define('PLUGINS_DIR', WIKI_PKG_PATH.'plugins');
-
+/**
+ * @package wiki
+ * @subpackage WikiLib
+ */
 class WikiLib extends BitPage {
     function WikiLib() {
 		BitPage::BitPage();
@@ -1531,6 +1538,11 @@ class WikiLib extends BitPage {
 	}
 */
 }
+
+/**
+ * the wikilib class
+ * @global WikiLib $wikilib 
+ */
 global $wikilib;
 // Perhaps someone overrode the wikilib class to do there own magic, and have alread instantiated...
 if( empty( $wikilib ) ) {

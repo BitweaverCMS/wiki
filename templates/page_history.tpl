@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.2 2005/06/19 10:01:33 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.3 2005/06/28 07:46:29 spiderr Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
@@ -18,22 +18,24 @@
 			<div class="content">{$sourcev}</div>
 		{/if}
 
-		{if $diff}
+		{if $compare eq 'y'}
 			<table class="data">
 				<caption>{tr}Comparing versions{/tr}</caption>
 				<tr>
+					<th width="50%">{tr}Version {$version_from}{/tr}</td>
+					<th></th>
 					<th width="50%">{tr}Current version{/tr}</td>
-					<th width="50%">{tr}Version {$version}{/tr}</td>
 				</tr>
 				<tr valign="top">
-					<td><div class="content">{$parsed}</div></td>
-					<td><div class="content">{$diff}</div></td>
+					<td><div class="content">{$diff_from}</div></td>
+					<td>&nbsp;</td>
+					<td><div class="content">{$diff_to}</div></td>
 				</tr>
 			</table>
 		{/if}
 
 		{if $diff2 eq 'y'}
-			<h2>{tr}Differences from version{/tr} {$version}</h2>
+			<h2>{tr}Differences from version{/tr} {$version_from} to {$version_to}</h2>
 			{$diffdata}
 		{/if}
 
@@ -75,7 +77,7 @@
 					<tr class="{cycle values='even,odd'}">
 						<td colspan="3">
 							{smartlink ititle="View" page_id=`$gContent->mPageId` preview=`$item.version`}
-							&nbsp;&bull;&nbsp;{smartlink ititle="Compare" page_id=`$gContent->mPageId` diff=`$item.version`}
+							&nbsp;&bull;&nbsp;{smartlink ititle="Compare" page_id=`$gContent->mPageId` compare=`$item.version`}
 							&nbsp;&bull;&nbsp;{smartlink ititle="Difference" page_id=`$gContent->mPageId` diff2=`$item.version`}
 							&nbsp;&bull;&nbsp;{smartlink ititle="Source" page_id=`$gContent->mPageId` source=`$item.version`}
 							{if $gBitUser->hasPermission( 'bit_p_rollback' )}
