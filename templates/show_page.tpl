@@ -12,14 +12,11 @@
 
 	{/if}
 
-
-	<div class=navbarx>
 	{if $print_page ne 'y'}
 		{include file="bitpackage:wiki/page_action_bar.tpl"}
 	{/if}
 
 	{include file="bitpackage:wiki/page_icons.tpl"}
-	</div>
 	{include file="bitpackage:wiki/page_display.tpl"}
 
 	{if $pages > 1}
