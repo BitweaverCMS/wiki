@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.4 2005/06/27 17:47:45 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.5 2005/06/29 05:46:02 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.4 $ $Date: 2005/06/27 17:47:45 $ $Author: lsces $
+ * @version $Revision: 1.2.2.5 $ $Date: 2005/06/29 05:46:02 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.4 2005/06/27 17:47:45 lsces Exp $
+ * $Id: BitPage.php,v 1.2.2.5 2005/06/29 05:46:02 spiderr Exp $
  */
 
 /**
@@ -1079,7 +1079,8 @@ class WikiLib extends BitPage {
 		$query = "select `content_id`, `title`  from `".BIT_DB_PREFIX."tiki_content` WHERE `content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' ORDER BY ".$this->convert_sortmode( 'random' );
 		$rs = $this->query( $query, array(), $pNumPages );
 		while( $rs && !$rs->EOF ) {
-			$ret[$rs->fields['content_id']] = $rs->fields['title'];
+			$ret[$rs->fields['content_id']]['title'] = $rs->fields['title'];
+			$ret[$rs->fields['content_id']]['display_url'] = $this->getDisplayUrl( $rs->fields['title'] );
 			$rs->MoveNext();
 		}
 
