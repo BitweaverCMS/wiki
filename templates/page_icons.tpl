@@ -1,6 +1,5 @@
 {strip}
 {if $gBitUser->hasPermission( 'bit_p_view_tabs_and_tools' )}
-<div class="floaticon">
 	{if $print_page ne 'y' && count($showstructs) ne 0}
 		<select name="page" onchange="go(this)">
 			<option value="">{tr}Wiki Books{/tr}...</option>
@@ -74,6 +73,5 @@
 			</select>
 		{/if}
 	{/if}<!-- end print_page -->
-</div><!-- end .floaticon -->
 {/if}
 {/strip}

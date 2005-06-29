@@ -1,10 +1,27 @@
 <div class="display wiki {$pageInfo.title|lower|regex_replace:"[\s|_]":""}">
-	{include file="bitpackage:wiki/page_icons.tpl"}
 	{include file="bitpackage:wiki/page_header.tpl"}
 	{if $gBitSystem->isPackageActive( 'stickies' )}
 		{include file="bitpackage:stickies/display_bitsticky.tpl"}
 	{/if}
+
+	{if $comments_at_top_of_page eq 'y'}
+
+	{if $print_page ne 'y' and $feature_wiki_comments eq 'y' }
+		{include file="bitpackage:liberty/comments.tpl"}
+	{/if}
+
+	{/if}
+
+
+	<div class=navbarx>
+	{if $print_page ne 'y'}
+		{include file="bitpackage:wiki/page_action_bar.tpl"}
+	{/if}
+
+	{include file="bitpackage:wiki/page_icons.tpl"}
+	</div>
 	{include file="bitpackage:wiki/page_display.tpl"}
+
 	{if $pages > 1}
 		<div class="pagination">
 			{*<a title="{tr}First page{/tr}" href="index.php?page_id={$pageInfo.page_id}&amp;pagenum={$first_page}">&laquo; &laquo;</a>*}
@@ -15,13 +32,12 @@
 		</div>
 	{/if} {* end .pagination *}
 
+	{include file="bitpackage:wiki/page_date_bar.tpl"}
+
 	{if $footnote}
 		{$footnote}
 	{/if}
 
-	{if $print_page ne 'y'}
-		{include file="bitpackage:wiki/page_action_bar.tpl"}
-	{/if}
 
 	{if $gBitSystemPrefs.wiki_feature_copyrights eq 'y'}
 		<p class="copyright">
@@ -38,8 +54,11 @@
 		</p>
 	{/if}
 
+	{if $comments_at_top_of_page ne 'y'}
+
 	{if $print_page ne 'y' and $feature_wiki_comments eq 'y' }
 		{include file="bitpackage:liberty/comments.tpl"}
+	{/if}
 	{/if}
 
 	{if $gBitSystem->isPackageActive( 'categories' )}

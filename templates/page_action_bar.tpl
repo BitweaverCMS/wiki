@@ -1,6 +1,7 @@
+
 {if $print_page ne 'y'}
+
 {if $gBitUser->hasPermission( 'bit_p_view_tabs_and_tools' )}
-{navbar}
 	{if !$lock}
 		{assign var=format_guid value=$pageInfo.format_guid}
 		{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y'}
@@ -48,7 +49,6 @@
 	{if $gBitSystemPrefs.feature_wiki_discuss eq 'y'}
 		<a href="{$gBitLoc.BITFORUMS_PKG_URL}view_forum.php?forum_id={$wiki_forum_id}&amp;comments_postComment=post&amp;comments_title={$page|escape:"url"}&amp;comments_data={ "Use this thread to discuss the [index.php\?page=$page|$page page."|escape:"url"}&amp;comment_topictype=n">{tr}discuss{/tr}</a>
 	{/if}
-{/navbar}
 {/if}
 
 {*if $show_page eq 'y'}
