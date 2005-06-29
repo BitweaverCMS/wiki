@@ -1,22 +1,17 @@
-<div class="display wiki {$pageInfo.title|lower|regex_replace:"[\s|_]":""}">
+{if $comments_at_top_of_page eq 'y' and $print_page ne 'y' and $feature_wiki_comments eq 'y' }
 	{include file="bitpackage:wiki/page_header.tpl"}
+	{include file="bitpackage:liberty/comments.tpl"}
+{/if}
+
+<div class="display wiki {$pageInfo.title|lower|regex_replace:"[\s|_]":""}">
+	{include file="bitpackage:wiki/page_icons.tpl"}
+	{include file="bitpackage:wiki/page_header.tpl"}
+	{include file="bitpackage:wiki/page_date_bar.tpl"}
+
 	{if $gBitSystem->isPackageActive( 'stickies' )}
 		{include file="bitpackage:stickies/display_bitsticky.tpl"}
 	{/if}
 
-	{if $comments_at_top_of_page eq 'y'}
-
-	{if $print_page ne 'y' and $feature_wiki_comments eq 'y' }
-		{include file="bitpackage:liberty/comments.tpl"}
-	{/if}
-
-	{/if}
-
-	{if $print_page ne 'y'}
-		{include file="bitpackage:wiki/page_action_bar.tpl"}
-	{/if}
-
-	{include file="bitpackage:wiki/page_icons.tpl"}
 	{include file="bitpackage:wiki/page_display.tpl"}
 
 	{if $pages > 1}
@@ -28,8 +23,6 @@
 			{*<a title="{tr}Last page{/tr}" href="index.php?page_id={$pageInfo.page_id}&amp;pagenum={$last_page}">&raquo; &raquo;</a>*}
 		</div>
 	{/if} {* end .pagination *}
-
-	{include file="bitpackage:wiki/page_date_bar.tpl"}
 
 	{if $footnote}
 		{$footnote}
@@ -51,14 +44,16 @@
 		</p>
 	{/if}
 
-	{if $comments_at_top_of_page ne 'y'}
-
-	{if $print_page ne 'y' and $feature_wiki_comments eq 'y' }
-		{include file="bitpackage:liberty/comments.tpl"}
-	{/if}
+	{if $print_page ne 'y'}
+		{include file="bitpackage:wiki/page_action_bar.tpl"}
 	{/if}
 
 	{if $gBitSystem->isPackageActive( 'categories' )}
 		{include file="bitpackage:categories/categories_objects.tpl"}
 	{/if}
 </div><!-- end .wiki -->
+
+{if $comments_at_top_of_page ne 'y' and $print_page ne 'y' and $feature_wiki_comments eq 'y' }
+	{include file="bitpackage:liberty/comments.tpl"}
+{/if}
+

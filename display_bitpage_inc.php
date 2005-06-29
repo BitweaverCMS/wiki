@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.2 2005/06/29 07:09:12 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.3 2005/06/29 19:29:51 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.1.1.1.2.2 2005/06/29 07:09:12 jht001 Exp $
+ * $Id: display_bitpage_inc.php,v 1.1.1.1.2.3 2005/06/29 19:29:51 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -210,36 +210,15 @@ $smarty->assign_by_ref('description',$gContent->mInfo["description"]);
 
 // Comments engine!
 if( $gBitSystem->isFeatureActive( 'feature_wiki_comments' ) ) {
-
-  // if user requested a comment display option, then assume they want to see the comments,
-  // so display those first.
-  
-  $comments_at_top_of_page = 'n';
-  
-  $maxComments = $gBitSystem->getPreference( 'wiki_comments_per_page', 10 );
-  if (!empty($_REQUEST["comments_maxComments"])) {
-    $maxComments = $_REQUEST["comments_maxComments"];
-    $comments_at_top_of_page = 'y';
-  }
-  $comments_sort_mode = $gBitSystem->getPreference( 'wiki_comments_default_ordering' );
-  if (!empty($_REQUEST["comments_sort_mode"])) {
-    $comments_sort_mode = $_REQUEST["comments_sort_mode"];
-    $comments_at_top_of_page = 'y';
-  }
-
-  $comments_display_style = 'flat';
-  if (!empty($_REQUEST["comments_style"])) {
-    $comments_display_style = $_REQUEST["comments_style"];
-    $comments_at_top_of_page = 'y';
-  }
-
-  $comments_vars=Array('page');
-  $comments_prefix_var='wiki page:';
-  $comments_object_var='page';
-  $commentsParentId = $gContent->mContentId;
-  $comments_return_url = WIKI_PKG_URL.'index.php?page_id='.$gContent->mPageId;
-  include_once( LIBERTY_PKG_PATH.'comments_inc.php' );
+	$maxComments = $gBitSystem->getPreference( 'wiki_comments_per_page', 10 );
+	$comments_vars = Array('page');
+	$comments_prefix_var='wiki page:';
+	$comments_object_var='page';
+	$commentsParentId = $gContent->mContentId;
+	$comments_return_url = WIKI_PKG_URL.'index.php?page_id='.$gContent->mPageId;
+	include_once( LIBERTY_PKG_PATH.'comments_inc.php' );
 }
+
 $section='wiki';
 if( $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) ) {
   if(isset($_REQUEST["removeattach"])) {
