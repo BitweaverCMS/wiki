@@ -69,7 +69,7 @@
 				<select name="page" onchange="go(this)">
 					<option value="{$gBitLoc.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}">{tr}backlinks{/tr}...</option>
 					{foreach key=contentId item=backPage from=$backlinks}
-						<option value="{$gBitLoc.BIT_ROOT_URL}index.php?content_id={$contentId}">{$backPage}</option>
+						<option value="{$gBitLoc.BIT_ROOT_URL}index.php?content_id={$contentId}">{$backPage|truncate:30:"...":true}</option>
 					{/foreach}
 				</select>
 			{/if}
