@@ -205,9 +205,19 @@
 					{formlabel label="Comments default ordering" for="wiki_comments_default_ordering"}
 					{forminput}
 						<select name="wiki_comments_default_ordering" id="wiki_comments_default_ordering">
-							<option value="comment_date_desc" {if $wiki_comments_default_ordering eq 'comment_date_desc'}selected="selected"{/if}>{tr}Newest first{/tr}</option>
-							<option value="comment_date_asc" {if $wiki_comments_default_ordering eq 'comment_date_asc'}selected="selected"{/if}>{tr}Oldest first{/tr}</option>
+							<option value="commentDate_desc" {if $wiki_comments_default_ordering eq 'commentDate_desc'}selected="selected"{/if}>{tr}Newest first{/tr}</option>
+							<option value="commentDate_asc" {if $wiki_comments_default_ordering eq 'commentDate_asc'}selected="selected"{/if}>{tr}Oldest first{/tr}</option>
 							<option value="points_desc" {if $wiki_comments_default_ordering eq 'points_desc'}selected="selected"{/if}>{tr}Points{/tr}</option>
+						</select>
+					{/forminput}
+				</div>
+
+				<div class="row">
+					{formlabel label="Comments default display mode" for="wiki_comments_default_display_mode"}
+					{forminput}
+						<select name="wiki_comments_default_display_mode" id="wiki_comments_default_display_mode">
+							<option value="threaded" {if $wiki_comments_default_display_mode eq 'threaded'}selected="selected"{/if}>{tr}Threaded{/tr}</option>
+							<option value="flat" {if $wiki_comments_default_display_mode eq 'flat'}selected="selected"{/if}>{tr}Flat{/tr}</option>
 						</select>
 					{/forminput}
 				</div>
