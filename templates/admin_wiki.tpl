@@ -193,40 +193,6 @@
 				</div>
 			{/legend}
 
-			{legend legend="Wiki comments settings"}
-				<div class="row">
-					{formlabel label="Default number of comments per page" for="wiki_comments_per_page"}
-					{forminput}
-						<input size="5" type="text" name="wiki_comments_per_page" id="wiki_comments_per_page" value="{$wiki_comments_per_page|escape}" />
-					{/forminput}
-				</div>
-
-				<div class="row">
-					{formlabel label="Comments default ordering" for="wiki_comments_default_ordering"}
-					{forminput}
-						<select name="wiki_comments_default_ordering" id="wiki_comments_default_ordering">
-							<option value="commentDate_desc" {if $wiki_comments_default_ordering eq 'commentDate_desc'}selected="selected"{/if}>{tr}Newest first{/tr}</option>
-							<option value="commentDate_asc" {if $wiki_comments_default_ordering eq 'commentDate_asc'}selected="selected"{/if}>{tr}Oldest first{/tr}</option>
-							<option value="points_desc" {if $wiki_comments_default_ordering eq 'points_desc'}selected="selected"{/if}>{tr}Points{/tr}</option>
-						</select>
-					{/forminput}
-				</div>
-
-				<div class="row">
-					{formlabel label="Comments default display mode" for="wiki_comments_default_display_mode"}
-					{forminput}
-						<select name="wiki_comments_default_display_mode" id="wiki_comments_default_display_mode">
-							<option value="threaded" {if $wiki_comments_default_display_mode eq 'threaded'}selected="selected"{/if}>{tr}Threaded{/tr}</option>
-							<option value="flat" {if $wiki_comments_default_display_mode eq 'flat'}selected="selected"{/if}>{tr}Flat{/tr}</option>
-						</select>
-					{/forminput}
-				</div>
-
-				<div class="row submit">
-					<input type="submit" name="wikiprefs" value="{tr}Change preferences{/tr}" />
-				</div>
-			{/legend}
-
 			{legend legend="Wiki Link Format"}
 				<div class="row">
 					{formlabel label="Wiki Link Format" for="wiki_page_regex"}

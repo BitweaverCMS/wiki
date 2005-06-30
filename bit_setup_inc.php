@@ -36,8 +36,6 @@
 		$smarty->assign('wiki_list_links', 'y');
 		$smarty->assign('wiki_list_backlinks', 'y');
 		$smarty->assign('wiki_list_size', 'y');
-		$smarty->assign('wiki_comments_default_ordering', 'points_desc');
-		$smarty->assign('wiki_comments_per_page', 10);
 		$smarty->assign('wiki_feature_copyrights', 'n');
 		$smarty->assign('wiki_cache', 0);
 		$smarty->assign('w_use_db', 'y');

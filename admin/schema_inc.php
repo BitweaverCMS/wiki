@@ -194,8 +194,6 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	array(WIKI_PKG_NAME, 'warn_on_edit_time','2'),
 	array(WIKI_PKG_NAME, 'wiki_bot_bar','n'),
 	array(WIKI_PKG_NAME, 'wiki_cache','0'),
-	array(WIKI_PKG_NAME, 'wiki_comments_default_ordering','points_desc'),
-	array(WIKI_PKG_NAME, 'wiki_comments_per_page','10'),
 	array(WIKI_PKG_NAME, 'wiki_creator_admin','n'),
 	array(WIKI_PKG_NAME, 'wiki_feature_copyrights','n'),
 	array(WIKI_PKG_NAME, 'wiki_forum',''),
