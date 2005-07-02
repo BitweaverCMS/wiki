@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.5 2005/06/29 05:46:02 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.6 2005/07/02 22:23:43 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.5 $ $Date: 2005/06/29 05:46:02 $ $Author: spiderr $
+ * @version $Revision: 1.2.2.6 $ $Date: 2005/07/02 22:23:43 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.5 2005/06/29 05:46:02 spiderr Exp $
+ * $Id: BitPage.php,v 1.2.2.6 2005/07/02 22:23:43 jht001 Exp $
  */
 
 /**
@@ -727,8 +727,7 @@ vd( $this->mErrors );
 		}
 
 		$old_sort_mode = '';
-
-		if ($pOrphansOnly || in_array($sort_mode, array(
+		if (in_array($sort_mode, array(
 				'versions_desc',
 				'versions_asc',
 				'links_asc',
@@ -759,15 +758,60 @@ vd( $this->mErrors );
 			$bindVars = array_merge($bindVars, array( $pUserId ));
 		}
 
-		// If sort mode is versions then offset is 0, maxRecords is -1 (again) and sort_mode is nil
-		// If sort mode is links then offset is 0, maxRecords is -1 (again) and sort_mode is nil
-		// If sort mode is backlinks then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name ,`page_id`, `hits`, `page_size` as `len`, tc.`title`, tc.`format_guid`, tp.`description`, tc.`last_modified`, tc.`created`, `ip`, `comment`, `version`, `flag`, tp.`content_id`
 				  FROM `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`), `".BIT_DB_PREFIX."users_users` uue, `".BIT_DB_PREFIX."users_users` uuc
 				  WHERE tc.`content_type_guid`=? AND tc.`modifier_user_id`=uue.`user_id` AND tc.`user_id`=uuc.`user_id` $mid
 				  ORDER BY ".$this->convert_sortmode($sort_mode);
+		$query_cant = "select count(*) from 
+			`".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc 
+			ON (tc.`content_id` = tp.`content_id`) 
+			WHERE tc.`content_type_guid`=? $mid";
 
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) WHERE tc.`content_type_guid`=? $mid";
+		if ($pOrphansOnly) {
+			$query = "SELECT 
+			uue.`login` AS modifier_user, 
+			uue.`real_name` AS modifier_real_name, 
+			uuc.`login` AS creator_user, 
+			uuc.`real_name` AS creator_real_name ,
+			`page_id`, 
+			`hits`, 
+			`page_size` as `len`, 
+			tc.`title`, 
+			tc.`format_guid`, 
+			tp.`description`, 
+			tc.`last_modified`, 
+			tc.`created`, 
+			`ip`, 
+			`comment`, 
+			`version`, 
+			`flag`, 
+			tp.`content_id`
+			FROM `".BIT_DB_PREFIX."tiki_pages` tp 
+				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` as tl on tp.content_id =  tl.to_content_id 
+				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc 
+				ON (tc.`content_id` = tp.`content_id`),
+				`".BIT_DB_PREFIX."users_users` uue, 
+				`".BIT_DB_PREFIX."users_users` uuc
+				  WHERE tc.`content_type_guid`=? 
+				  AND tc.`modifier_user_id`=uue.`user_id` 
+				  AND tc.`user_id`=uuc.`user_id` $mid
+				  AND tl.`to_content_id` is NULL
+				  ORDER BY "
+			. $this->convert_sortmode($sort_mode);
+			$query_cant = "select count(*) 
+			FROM `".BIT_DB_PREFIX."tiki_pages` tp 
+				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` as tl on tp.content_id =  tl.to_content_id 
+				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc 
+				ON (tc.`content_id` = tp.`content_id`)
+				  WHERE tc.`content_type_guid`=? 
+				  AND tl.`to_content_id` is NULL";
+		}	
+
+
+		// If sort mode is versions then offset is 0, maxRecords is -1 (again) and sort_mode is nil
+		// If sort mode is links then offset is 0, maxRecords is -1 (again) and sort_mode is nil
+		// If sort mode is backlinks then offset is 0, maxRecords is -1 (again) and sort_mode is nil
+
 		$result = $this->query($query,$bindVars,$maxRecords,$offset);
 		$cant = $this->getOne($query_cant,$bindVars);
 		$ret = array();
@@ -779,16 +823,15 @@ vd( $this->mErrors );
 			$aux['flag'] = $res["flag"] == 'L' ? tra('locked') : tra('unlocked');
 			$aux['display_link'] = $this->getListLink( $aux ); //WIKI_PKG_URL."index.php?page_id=".$res['page_id'];
 			$aux['display_url'] = $this->getDisplayUrl( $aux['title'], $aux );
-			if( $pExtras || $pOrphansOnly) {
+			if( $pExtras ) {
 				// USE SPARINGLY!!! This gets expensive fast
 //				$aux['versions"] = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_history` where `page_id`=?", array( $res["page_id"] ) );
 				$aux['links'] = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_links` where `from_content_id`=?", array( $res["content_id"] ) );
 				$aux['backlinks'] = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_links` where `to_content_id`=?", array( $res["content_id"] ) );
 			}
-			if( !$pOrphansOnly || $aux['backlinks'] == 0 ) {
-				$ret[] = $aux;
-			}
+			$ret[] = $aux;
 		}
+
 
 		// If sortmode is versions, links or backlinks sort using the ad-hoc function and reduce using old_offse and old_maxRecords
 		if ($old_sort_mode == 'versions_asc' && !empty( $ret['versions'] ) ) {
@@ -826,9 +869,6 @@ vd( $this->mErrors );
 			$ret = array_slice($ret, $old_offset, $old_maxRecords);
 		}
 
-		if( $pOrphansOnly ) {
-			$ret = array_slice($ret, $old_offset, $old_maxRecords);
-		}
 
 		$retval = array();
 		$retval["data"] = $ret;
