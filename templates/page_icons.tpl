@@ -53,7 +53,8 @@
 			{if $user and $gBitSystem->isPackageActive( 'notepad' ) and $gBitUser->hasPermission( 'bit_p_notepad' )}
 				<a title="{tr}Save{/tr}" href="{$gBitLoc.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;savenotepad=1">{biticon ipackage="wiki" iname="save" iexplain="save"}</a>
 			{/if}
-			{if $gBitUser->mUserId && $gBitSystem->isFeatureActive( 'feature_user_watches' ) }
+
+			{if $gBitUser->isRegistered() and $gBitUser->mUserId && $gBitSystem->isFeatureActive( 'feature_user_watches' ) }
 				{if $user_watching_page eq 'y'}
 					<a title="{tr}stop monitoring this page{/tr}" href="{$gBitLoc.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;watch_event=wiki_page_changed&amp;watch_object={$pageInfo.page_id}&amp;watch_action=remove">{biticon ipackage="users" iname="unwatch" iexplain="stop monitoring"}</a>
 				{else}
