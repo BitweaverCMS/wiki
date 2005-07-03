@@ -6,7 +6,6 @@
 <div class="display wiki {$pageInfo.title|lower|regex_replace:"[\s|_]":""}">
 	{include file="bitpackage:wiki/page_icons.tpl"}
 	{include file="bitpackage:wiki/page_header.tpl"}
-	{include file="bitpackage:wiki/page_date_bar.tpl"}
 
 	{if $gBitSystem->isPackageActive( 'stickies' )}
 		{include file="bitpackage:stickies/display_bitsticky.tpl"}
