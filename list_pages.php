@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.1.1.1.2.1 2005/06/27 17:47:43 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.1.1.1.2.2 2005/07/03 00:46:06 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: list_pages.php,v 1.1.1.1.2.1 2005/06/27 17:47:43 lsces Exp $
+ * $Id: list_pages.php,v 1.1.1.1.2.2 2005/07/03 00:46:06 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -87,6 +87,9 @@ if (isset($_REQUEST['page'])) {
 $smarty->assign_by_ref('offset', $offset);
 if (isset($_REQUEST["find"])) {
 	$find = $_REQUEST["find"];
+// If we leave $_REQUEST["find"] set, it also seems to affect other places
+// like the shoutbox.
+	$_REQUEST["find"] = "";
 } else {
 	$find = '';
 }
