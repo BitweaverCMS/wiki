@@ -5,6 +5,7 @@
 			{include file="bitpackage:liberty/storage_thumbs.tpl"}
 		{/if}
 		{$parsed}
+		<div class="clear"></div>
 	</div> <!-- end .content -->
 </div> <!-- end .body -->
 {/strip}
