@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.1.1.1.2.1 2005/07/02 09:23:51 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.1.1.1.2.2 2005/07/05 21:17:07 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -198,6 +198,10 @@
 					</noscript>
 				</div>
 			{/if}
+
+			<p class="total small">
+				{tr}Total number of entries{/tr}: {$pagecount}
+			</p>
 		{/form}
 
 		{pagination}

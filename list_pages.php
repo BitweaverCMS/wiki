@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.1.1.1.2.2 2005/07/03 00:46:06 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.1.1.1.2.3 2005/07/05 21:17:07 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: list_pages.php,v 1.1.1.1.2.2 2005/07/03 00:46:06 jht001 Exp $
+ * $Id: list_pages.php,v 1.1.1.1.2.3 2005/07/05 21:17:07 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -101,6 +101,7 @@ $listpages = $Content->getList( $offset, $maxRecords, $sort_mode, $find, NULL, T
 // If there're more records then assign next_offset
 $cant_pages = ceil($listpages["cant"] / $maxRecords);
 $smarty->assign_by_ref('cant_pages', $cant_pages);
+$smarty->assign_by_ref('pagecount', $listpages['cant']);
 $smarty->assign('actual_page', 1 + ($offset / $maxRecords));
 if ($listpages["cant"] > ($offset + $maxRecords)) {
 	$smarty->assign('next_offset', $offset + $maxRecords);
