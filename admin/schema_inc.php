@@ -107,7 +107,7 @@ global $gBitInstaller;
 $gBitInstaller->makePackageHomeable(WIKI_PKG_NAME);
 
 foreach( array_keys( $tables ) AS $tableName ) {
-	$gBitInstaller->registerSchemaTable( WIKI_PKG_DIR, $tableName, $tables[$tableName] );
+	$gBitInstaller->registerSchemaTable( WIKI_PKG_NAME, $tableName, $tables[$tableName] );
 }
 
 $gBitInstaller->registerPackageInfo( WIKI_PKG_NAME, array(
@@ -124,13 +124,13 @@ $indices = array (
 	'tiki_pages_page_rank_idx' => array( 'table' => 'tiki_pages', 'cols' => 'page_rank', 'opts' => NULL ),
 	'tiki_page_footnotes_page_idx' => array( 'table' => 'tiki_page_footnotes', 'cols' => 'page_id', 'opts' => NULL )
 );
-$gBitInstaller->registerSchemaIndexes( WIKI_PKG_DIR, $indices );
+$gBitInstaller->registerSchemaIndexes( WIKI_PKG_NAME, $indices );
 
 // ### Sequences
 $sequences = array (
 	'tiki_pages_page_id_seq' => array( 'start' => 1 )
 );
-$gBitInstaller->registerSchemaSequences( WIKI_PKG_DIR, $sequences );
+$gBitInstaller->registerSchemaSequences( WIKI_PKG_NAME, $sequences );
 
 
 // ### Default UserPermissions
