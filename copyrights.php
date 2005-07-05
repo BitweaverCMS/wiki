@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights.php,v 1.1.1.1.2.1 2005/06/27 17:47:41 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights.php,v 1.1.1.1.2.2 2005/07/05 11:36:16 wolff_borg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: copyrights.php,v 1.1.1.1.2.1 2005/06/27 17:47:41 lsces Exp $
+ * $Id: copyrights.php,v 1.1.1.1.2.2 2005/07/05 11:36:16 wolff_borg Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -17,16 +17,9 @@
  * required setup
  */
 require_once( '../bit_setup_inc.php' );
-if ($wiki_feature_copyrights != 'y') {
-	$smarty->assign('msg', tra("The copyright management feature is not enabled."));
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
-if (!((isset($bit_p_edit_copyrights)) && ($gBitUser->hasPermission( 'bit_p_edit_copyrights' )))) {
-	$smarty->assign('msg', tra("You do not have permission to use this feature."));
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
+$gBitSystem->isFeatureActive( 'wiki_feature_copyrights', tra("The copyright management feature is not enabled.") );
+
+$gBitUser->hasPermission( 'bit_p_edit_copyrights' );
 require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
 require_once( WIKI_PKG_PATH.'lookup_page_inc.php' );
 
