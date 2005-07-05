@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.6 2005/07/02 22:23:43 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.7 2005/07/05 11:33:37 wolff_borg Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.6 $ $Date: 2005/07/02 22:23:43 $ $Author: jht001 $
+ * @version $Revision: 1.2.2.7 $ $Date: 2005/07/05 11:33:37 $ $Author: wolff_borg $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.6 2005/07/02 22:23:43 jht001 Exp $
+ * $Id: BitPage.php,v 1.2.2.7 2005/07/05 11:33:37 wolff_borg Exp $
  */
 
 /**
@@ -1333,7 +1333,7 @@ class WikiLib extends BitPage {
 			$tar->addData($title, $data, $res["last_modified"]);
 		}
 
-		$tar->toTar( $gBitSystem->getStoragePath( "dump/".$bitdomain )."new.tar", FALSE);
+		$tar->toTar( $this->getStoragePath( "dump/".$bitdomain )."new.tar", FALSE);
 		unset ($tar);
 		$action = "dump created";
 		$t = date("U");
