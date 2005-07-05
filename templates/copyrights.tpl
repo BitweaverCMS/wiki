@@ -44,7 +44,7 @@
 		{/section}
 		{/legend}
 
-		{form legend="Add a new copyright setting gor `$pageInfo.title`"}
+		{form legend="Add a new copyright setting for `$pageInfo.title`"}
 			<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
 			<div class="row">
 				{formlabel label="Title" for="copyleft-tit"}
