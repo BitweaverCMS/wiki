@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.3 2005/07/04 21:30:27 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.4 2005/07/06 07:45:22 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.3 2005/07/04 21:30:27 squareing Exp $
+ * $Id: edit.php,v 1.1.1.1.2.4 2005/07/06 07:45:22 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -405,6 +405,7 @@ if (isset($_REQUEST["fCancel"])) {
 	if( $gContent->store( $_REQUEST ) ) {
 		if( $gBitSystem->isPackageActive( 'categories' ) ) {
 			$cat_objid = $gContent->mContentId;
+			$cat_obj_type = 'bitpage';
 			$cat_desc = ($gBitSystem->isFeatureActive( 'feature_wiki_description' ) && !empty( $_REQUEST["description"] )) ? substr($_REQUEST["description"],0,200) : '';
 			$cat_name = $gContent->mPageName;
 			$cat_href = WIKI_PKG_URL."index.php?content_id=".$cat_objid;
