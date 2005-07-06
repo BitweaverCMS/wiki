@@ -129,7 +129,7 @@ array( 'QUERY' =>
 	"UPDATE `".BIT_DB_PREFIX."tiki_actionlog` SET `user_id`=".ROOT_USER_ID." WHERE `user_id` IS NULL",
 	"UPDATE `".BIT_DB_PREFIX."tiki_links` SET `from_content_id`= (SELECT `content_id` FROM `".BIT_DB_PREFIX."tiki_pages` tp WHERE tp.`pageName`=`".BIT_DB_PREFIX."tiki_links`.`fromPage`)",
 	"UPDATE `".BIT_DB_PREFIX."tiki_links` SET `to_content_id`= (SELECT `content_id` FROM `".BIT_DB_PREFIX."tiki_pages` tp WHERE tp.`pageName`=`".BIT_DB_PREFIX."tiki_links`.`toPage`)",
-	"UPDATE users_permissions SET perm_name='bit_p_edit_books', perm_desc='Can create and edit books' WHERE perm_name='bit_p_edit_structures'",
+	"UPDATE `".BIT_DB_PREFIX."users_permissions` SET perm_name='bit_p_edit_books', perm_desc='Can create and edit books' WHERE perm_name='bit_p_edit_structures'",
 
 	"INSERT INTO `".BIT_DB_PREFIX."users_grouppermissions` (`group_id`, `perm_name`) VALUES (2,'bit_p_edit_books')",
 
@@ -159,7 +159,7 @@ array( 'QUERY' =>
 	"UPDATE `".BIT_DB_PREFIX."tiki_pages` SET `version`=(SELECT th.`version`+1 FROM `".BIT_DB_PREFIX."tiki_history` th WHERE th.`page_id`=`".BIT_DB_PREFIX."tiki_pages`.`page_id` AND `".BIT_DB_PREFIX."tiki_pages`.`version`=th.`version`) WHERE `page_id` IN (SELECT `page_id` FROM `".BIT_DB_PREFIX."tiki_history` th WHERE th.`version`=`".BIT_DB_PREFIX."tiki_pages`.`version` AND th.`page_id`=`".BIT_DB_PREFIX."tiki_pages`.`page_id`)",
 
 	// should go into users, but has to go here do to wiki needing user changes first
-	"UPDATE tiki_content SET content_type_guid='bituser' WHERE title like 'UserPage%'",
+	"UPDATE `".BIT_DB_PREFIX."tiki_content` SET content_type_guid='bituser' WHERE title like 'UserPage%'",
 	"UPDATE `".BIT_DB_PREFIX."users_users` SET `content_id`=(SELECT `content_id` FROM `".BIT_DB_PREFIX."tiki_content` WHERE `content_type_guid`='bituser' AND `user_id`=`".BIT_DB_PREFIX."users_users`.`user_id`)",
 
 	// update comments on user pages
@@ -172,7 +172,7 @@ array( 'QUERY' =>
 	// set parent ID = content ID of parent comment
 	// this will only work correctly for TW DB upgrades, and will corrupt the DB if run more then once
 	"create temporary table `".BIT_DB_PREFIX."tiki_comments_temp` as (select * from `".BIT_DB_PREFIX."tiki_comments`) ",
-	"UPDATE `".BIT_DB_PREFIX."tiki_comments` as tc SET `parent_id`=(SELECT i_tcm.`content_id` FROM `".BIT_DB_PREFIX."tiki_content` as i_tcn, `".BIT_DB_PREFIX."tiki_comments_temp` as i_tcm WHERE  i_tcm.`content_id` = i_tcn.`content_id` and tc.`parent_id` = i_tcm.`comment_id` ) where  parent_id != 0 and  `objectType`='".BITPAGE_CONTENT_TYPE_GUID."' ",
+	"UPDATE `".BIT_DB_PREFIX."tiki_comments` SET `parent_id`=(SELECT i_tcm.`content_id` FROM `".BIT_DB_PREFIX."tiki_content` as i_tcn, `".BIT_DB_PREFIX."tiki_comments_temp` as i_tcm WHERE  i_tcm.`content_id` = i_tcn.`content_id` and tc.`parent_id` = i_tcm.`comment_id` ) where  parent_id != 0 and  `objectType`='".BITPAGE_CONTENT_TYPE_GUID."' ",
 	// parent ID = 0 indicates a root comment in TW, but now needs to = content ID of wiki page it is the root comment for
 	"UPDATE `".BIT_DB_PREFIX."tiki_comments` SET `parent_id`=(SELECT `content_id` FROM `".BIT_DB_PREFIX."tiki_content` WHERE `content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' AND `title`=`".BIT_DB_PREFIX."tiki_comments`.`object` ) WHERE `parent_id`=0 AND `objectType`='".BITPAGE_CONTENT_TYPE_GUID."'",
 
