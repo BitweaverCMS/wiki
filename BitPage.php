@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.7 2005/07/05 11:33:37 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.8 2005/07/09 02:51:40 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.7 $ $Date: 2005/07/05 11:33:37 $ $Author: wolff_borg $
+ * @version $Revision: 1.2.2.8 $ $Date: 2005/07/09 02:51:40 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.7 2005/07/05 11:33:37 wolff_borg Exp $
+ * $Id: BitPage.php,v 1.2.2.8 2005/07/09 02:51:40 jht001 Exp $
  */
 
 /**
@@ -401,7 +401,7 @@ this watch code is only half fixed - spiderr
 
 
 	// *********  Footnote functions for the wiki ********** //
-    function storeFootnote($pUserId, $data) {
+	function storeFootnote($pUserId, $data) {
 		if( $this->mPageId ) {
 			$querydel = "delete from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?";
 			$this->query( $querydel, array( $pUserId, $this->mPageId ) );
@@ -434,9 +434,7 @@ this watch code is only half fixed - spiderr
     * @return the link to display the page.
     */
 	function getListLink( $pPageHash ) {
-		global $gBitSystem;
-		$baseUrl = WIKI_PKG_URL.(!$gBitSystem->isFeatureActive( 'pretty_urls' ) ? 'index.php?page=' : NULL);
-		return $baseUrl.urlencode( $pPageHash['title'] );
+		return BitPage::getDisplayUrl($pPageHash['title']);
 	}
 
 
@@ -454,16 +452,21 @@ this watch code is only half fixed - spiderr
     * @return the link to display the page.
     */
 	function getDisplayUrl( $pPageName=NULL ) {
+		global $gBitSystem;
 		if( empty( $pPageName ) ) {
 			$pPageName = $this->mPageName;
 		}
-		global $gBitSystem;
-		if( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
-			$ret = WIKI_PKG_URL.urlencode( $pPageName );
-		} else {
-			$ret = WIKI_PKG_URL.'index.php?page='.urlencode( $pPageName );
+		$rewrite_tag = $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ? 'view/':'';
+		if ($gBitSystem->isFeatureActive( 'pretty_urls' ) 
+		|| $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ) {
+			$baseUrl = WIKI_PKG_URL . $rewrite_tag;
+			$baseUrl .= urlencode( $pPageName );
 		}
-		return $ret;
+		else {
+			$baseUrl = WIKI_PKG_URL . 'index.php?page=';
+			$baseUrl .= urlencode( $pPageName );
+		}	
+		return $baseUrl;
 	}
 
     /**
@@ -475,7 +478,6 @@ this watch code is only half fixed - spiderr
 		global $gBitSystem, $gBitUser;
 		$ret = $pPageName;
 		if( $gBitSystem->isPackageActive( 'wiki' ) ) {
-			$baseUrl = WIKI_PKG_URL.(!$gBitSystem->isFeatureActive( 'pretty_urls' ) ? 'index.php?page=' : NULL);
 			if( is_array( $pExistsHash ) ) {
 				if( is_array( current( $pExistsHash ) ) ) {
 					$exists = $pExistsHash[0];
@@ -487,10 +489,10 @@ this watch code is only half fixed - spiderr
 				// we have a multi-demensional array (likely returned from LibertyContent::pageExists() ) - meaning we potentially have multiple pages with the same name
 				if( $multi ) {
 					$desc = tra( 'multiple pages with this name' );
-					$ret = "<a title=\"$desc\" href=\"$baseUrl" . urlencode( $exists['title'] ) . "\">$pPageName</a>";
+					$ret = "<a title=\"$desc\" href=\"" .  BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
 				} elseif( count( $pExistsHash ) == 1 ) {
 					$desc = $exists['description'];
-					$ret = "<a title=\"$desc\" href=\"$baseUrl" . urlencode( $exists['title'] ) . "\">$pPageName</a>";
+					$ret = "<a title=\"$desc\" href=\"" . BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
 				} else {
 					if( $gBitUser->hasPermission( 'bit_p_edit' ) ) {
 						$ret = "<a href=\"".WIKI_PKG_URL."edit.php?page_id=" . urlencode( $exists['title'] ). "\" class=\"create\">$pPageName</a>";
