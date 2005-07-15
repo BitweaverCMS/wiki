@@ -280,7 +280,7 @@
 {/jstabs}
 {/strip}
 
-{if $gBitSystem->mPrefs.package_tiki_forums eq 'y'}
+{if $gBitSystem->mPrefs->isPackageActive( 'tiki_forums' )}
 			<div class="boxcontent">
 				<form method="post" action="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=wiki">
 				<table class="panel"><tr>

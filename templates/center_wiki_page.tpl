@@ -38,7 +38,7 @@
 		<div class="header"><h1>{$gContent->mInfo.title}</h1></div>
 	{/if}
 	<div class="content">
-		{if $gBitSystemPrefs.liberty_auto_display_attachment_thumbs eq 'y'}
+		{if $gBitSystem->isFeatureActive( 'liberty_auto_display_attachment_thumbs' )}
 			{include file="bitpackage:liberty/storage_thumbs.tpl"}
 		{/if}
 		{$gContent->mInfo.parsed_data}

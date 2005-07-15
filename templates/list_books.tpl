@@ -31,7 +31,7 @@
 				<a href="{$gBitLoc.WIKI_PKG_URL}edit_book.php?action=export_tree&structure_id={$channels[ix].structure_id}">{biticon ipackage="wiki" iname="tree" iexplain="dump tree"}</a>
 *}
 				{if $gBitUser->isAdmin()}
-					{if $gBitSystemPrefs.package_nexus eq 'y'}
+					{if $gBitSystem->isPackageActive( 'nexus' )}
 						<a href="{$gBitLoc.NEXUS_PKG_URL}menus.php?structure_id={$channels[ix].structure_id}&amp;action=convert_structure">{biticon ipackage="liberty" iname="tree" iexplain="create menu from structure"}</a>
 					{/if}
 					<a href="{$gBitLoc.WIKI_PKG_URL}create_webhelp.php?structure_id={$channels[ix].structure_id}">{biticon ipackage="wiki" iname="webhelp" iexplain="create webhelp"}</a>

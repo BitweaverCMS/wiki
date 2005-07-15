@@ -1,6 +1,6 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_random_pages.tpl,v 1.1.1.1.2.1 2005/06/29 05:46:03 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_random_pages.tpl,v 1.1.1.1.2.2 2005/07/15 12:01:29 squareing Exp $ *}
 {strip}
-{if $gBitSystemPrefs.package_wiki eq 'y'}
+{if $gBitSystem->isPackageActive( 'wiki' )}
 	{bitmodule title="$moduleTitle" name="random_pages"}
 		<ol class="wiki">
 			{foreach from=$modRandomPages key=contentId item=pageHash}

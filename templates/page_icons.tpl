@@ -33,7 +33,7 @@
 				<a href="{$gBitLoc.WIKI_PKG_URL}edit_book.php?structure_id={$structureInfo.structure_id}">{biticon ipackage=liberty iname="settings" iexplain="edit book"}</a>
 			{/if}
 
-			{if $gBitSystemPrefs.wiki_uses_s5 eq 'y'}
+			{if $gBitSystem->isFeatureActive( 'wiki_uses_s5' )}
 				<a href="{$gBitLoc.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;s5=1" onclick="return confirm('this works best in gecko based browsers (mozilla, firefox) or opera (press F11)')">{biticon ipackage=wiki iname="s5" iexplain="s5 slideshow"}</a>
 			{/if}
 
@@ -66,7 +66,7 @@
 					<a title="{tr}remove this page{/tr}" href="{$gBitLoc.WIKI_PKG_URL}remove_page.php?page_id={$pageInfo.page_id}&amp;version=last">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
 				{/if}
 			{/if}
-			{if $gBitSystemPrefs.feature_backlinks eq 'y' and $backlinks}
+			{if $gBitSystem->isFeatureActive( 'feature_backlinks' ) and $backlinks}
 				<select name="page" onchange="go(this)">
 					<option value="{$gBitLoc.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}">{tr}backlinks{/tr}...</option>
 					{foreach key=contentId item=backPage from=$backlinks}

@@ -1,6 +1,6 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/Attic/mod_breadcrumb.tpl,v 1.1 2005/06/19 06:12:45 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/Attic/mod_breadcrumb.tpl,v 1.1.1.1.2.1 2005/07/15 12:01:29 squareing Exp $ *}
 {strip}
-{if $gBitSystemPrefs.feature_featuredLinks eq 'y'}
+{if $gBitSystem->isFeatureActive( 'feature_featuredLinks' )}
 	{bitmodule title="$moduleTitle" name="breadcrumb"}
 		<ol class="wiki">
 			{section name=ix loop=$breadCrumb}

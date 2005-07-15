@@ -28,7 +28,7 @@
 	{/if}
 
 
-	{if $gBitSystemPrefs.wiki_feature_copyrights eq 'y'}
+	{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )}
 		<p class="copyright">
 			{if $pageCopyrights}
 				{section name=i loop=$pageCopyrights}

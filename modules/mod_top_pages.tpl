@@ -1,6 +1,6 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.tpl,v 1.1 2005/06/19 06:12:45 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.tpl,v 1.1.1.1.2.1 2005/07/15 12:01:29 squareing Exp $ *}
 {strip}
-{if $gBitSystemPrefs.package_wiki eq 'y'}
+{if $gBitSystem->isPackageActive( 'wiki' )}
 	{if $nonums eq 'y'}
 		{eval var="{tr}Top `$module_rows` Pages{/tr}" assign="tpl_module_title"}
 	{else}
