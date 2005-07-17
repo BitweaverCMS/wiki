@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.3 2005/06/28 07:46:27 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.4 2005/07/17 17:36:45 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.3 $ $Date: 2005/06/28 07:46:27 $ $Author: spiderr $
+ * @version $Revision: 1.4 $ $Date: 2005/07/17 17:36:45 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.3 2005/06/28 07:46:27 spiderr Exp $
+ * $Id: BitPage.php,v 1.4 2005/07/17 17:36:45 squareing Exp $
  */
 
 /**
@@ -401,7 +401,7 @@ this watch code is only half fixed - spiderr
 
 
 	// *********  Footnote functions for the wiki ********** //
-    function storeFootnote($pUserId, $data) {
+	function storeFootnote($pUserId, $data) {
 		if( $this->mPageId ) {
 			$querydel = "delete from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?";
 			$this->query( $querydel, array( $pUserId, $this->mPageId ) );
@@ -434,9 +434,7 @@ this watch code is only half fixed - spiderr
     * @return the link to display the page.
     */
 	function getListLink( $pPageHash ) {
-		global $gBitSystem;
-		$baseUrl = WIKI_PKG_URL.(!$gBitSystem->isFeatureActive( 'pretty_urls' ) ? 'index.php?page=' : NULL);
-		return $baseUrl.urlencode( $pPageHash['title'] );
+		return BitPage::getDisplayUrl($pPageHash['title']);
 	}
 
 
@@ -454,16 +452,21 @@ this watch code is only half fixed - spiderr
     * @return the link to display the page.
     */
 	function getDisplayUrl( $pPageName=NULL ) {
+		global $gBitSystem;
 		if( empty( $pPageName ) ) {
 			$pPageName = $this->mPageName;
 		}
-		global $gBitSystem;
-		if( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
-			$ret = WIKI_PKG_URL.urlencode( $pPageName );
-		} else {
-			$ret = WIKI_PKG_URL.'index.php?page='.urlencode( $pPageName );
+		$rewrite_tag = $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ? 'view/':'';
+		if ($gBitSystem->isFeatureActive( 'pretty_urls' ) 
+		|| $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ) {
+			$baseUrl = WIKI_PKG_URL . $rewrite_tag;
+			$baseUrl .= urlencode( $pPageName );
 		}
-		return $ret;
+		else {
+			$baseUrl = WIKI_PKG_URL . 'index.php?page=';
+			$baseUrl .= urlencode( $pPageName );
+		}	
+		return $baseUrl;
 	}
 
     /**
@@ -475,7 +478,6 @@ this watch code is only half fixed - spiderr
 		global $gBitSystem, $gBitUser;
 		$ret = $pPageName;
 		if( $gBitSystem->isPackageActive( 'wiki' ) ) {
-			$baseUrl = WIKI_PKG_URL.(!$gBitSystem->isFeatureActive( 'pretty_urls' ) ? 'index.php?page=' : NULL);
 			if( is_array( $pExistsHash ) ) {
 				if( is_array( current( $pExistsHash ) ) ) {
 					$exists = $pExistsHash[0];
@@ -487,10 +489,10 @@ this watch code is only half fixed - spiderr
 				// we have a multi-demensional array (likely returned from LibertyContent::pageExists() ) - meaning we potentially have multiple pages with the same name
 				if( $multi ) {
 					$desc = tra( 'multiple pages with this name' );
-					$ret = "<a title=\"$desc\" href=\"$baseUrl" . urlencode( $exists['title'] ) . "\">$pPageName</a>";
+					$ret = "<a title=\"$desc\" href=\"" .  BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
 				} elseif( count( $pExistsHash ) == 1 ) {
 					$desc = $exists['description'];
-					$ret = "<a title=\"$desc\" href=\"$baseUrl" . urlencode( $exists['title'] ) . "\">$pPageName</a>";
+					$ret = "<a title=\"$desc\" href=\"" . BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
 				} else {
 					if( $gBitUser->hasPermission( 'bit_p_edit' ) ) {
 						$ret = "<a href=\"".WIKI_PKG_URL."edit.php?page_id=" . urlencode( $exists['title'] ). "\" class=\"create\">$pPageName</a>";
@@ -727,8 +729,7 @@ vd( $this->mErrors );
 		}
 
 		$old_sort_mode = '';
-
-		if ($pOrphansOnly || in_array($sort_mode, array(
+		if (in_array($sort_mode, array(
 				'versions_desc',
 				'versions_asc',
 				'links_asc',
@@ -759,15 +760,60 @@ vd( $this->mErrors );
 			$bindVars = array_merge($bindVars, array( $pUserId ));
 		}
 
-		// If sort mode is versions then offset is 0, maxRecords is -1 (again) and sort_mode is nil
-		// If sort mode is links then offset is 0, maxRecords is -1 (again) and sort_mode is nil
-		// If sort mode is backlinks then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name ,`page_id`, `hits`, `page_size` as `len`, tc.`title`, tc.`format_guid`, tp.`description`, tc.`last_modified`, tc.`created`, `ip`, `comment`, `version`, `flag`, tp.`content_id`
 				  FROM `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`), `".BIT_DB_PREFIX."users_users` uue, `".BIT_DB_PREFIX."users_users` uuc
 				  WHERE tc.`content_type_guid`=? AND tc.`modifier_user_id`=uue.`user_id` AND tc.`user_id`=uuc.`user_id` $mid
 				  ORDER BY ".$this->convert_sortmode($sort_mode);
+		$query_cant = "select count(*) from 
+			`".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc 
+			ON (tc.`content_id` = tp.`content_id`) 
+			WHERE tc.`content_type_guid`=? $mid";
 
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) WHERE tc.`content_type_guid`=? $mid";
+		if ($pOrphansOnly) {
+			$query = "SELECT 
+			uue.`login` AS modifier_user, 
+			uue.`real_name` AS modifier_real_name, 
+			uuc.`login` AS creator_user, 
+			uuc.`real_name` AS creator_real_name ,
+			`page_id`, 
+			`hits`, 
+			`page_size` as `len`, 
+			tc.`title`, 
+			tc.`format_guid`, 
+			tp.`description`, 
+			tc.`last_modified`, 
+			tc.`created`, 
+			`ip`, 
+			`comment`, 
+			`version`, 
+			`flag`, 
+			tp.`content_id`
+			FROM `".BIT_DB_PREFIX."tiki_pages` tp 
+				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` as tl on tp.content_id =  tl.to_content_id 
+				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc 
+				ON (tc.`content_id` = tp.`content_id`),
+				`".BIT_DB_PREFIX."users_users` uue, 
+				`".BIT_DB_PREFIX."users_users` uuc
+				  WHERE tc.`content_type_guid`=? 
+				  AND tc.`modifier_user_id`=uue.`user_id` 
+				  AND tc.`user_id`=uuc.`user_id` $mid
+				  AND tl.`to_content_id` is NULL
+				  ORDER BY "
+			. $this->convert_sortmode($sort_mode);
+			$query_cant = "select count(*) 
+			FROM `".BIT_DB_PREFIX."tiki_pages` tp 
+				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` as tl on tp.content_id =  tl.to_content_id 
+				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc 
+				ON (tc.`content_id` = tp.`content_id`)
+				  WHERE tc.`content_type_guid`=? 
+				  AND tl.`to_content_id` is NULL";
+		}	
+
+
+		// If sort mode is versions then offset is 0, maxRecords is -1 (again) and sort_mode is nil
+		// If sort mode is links then offset is 0, maxRecords is -1 (again) and sort_mode is nil
+		// If sort mode is backlinks then offset is 0, maxRecords is -1 (again) and sort_mode is nil
+
 		$result = $this->query($query,$bindVars,$maxRecords,$offset);
 		$cant = $this->getOne($query_cant,$bindVars);
 		$ret = array();
@@ -779,16 +825,15 @@ vd( $this->mErrors );
 			$aux['flag'] = $res["flag"] == 'L' ? tra('locked') : tra('unlocked');
 			$aux['display_link'] = $this->getListLink( $aux ); //WIKI_PKG_URL."index.php?page_id=".$res['page_id'];
 			$aux['display_url'] = $this->getDisplayUrl( $aux['title'], $aux );
-			if( $pExtras || $pOrphansOnly) {
+			if( $pExtras ) {
 				// USE SPARINGLY!!! This gets expensive fast
 //				$aux['versions"] = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_history` where `page_id`=?", array( $res["page_id"] ) );
 				$aux['links'] = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_links` where `from_content_id`=?", array( $res["content_id"] ) );
 				$aux['backlinks'] = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_links` where `to_content_id`=?", array( $res["content_id"] ) );
 			}
-			if( !$pOrphansOnly || $aux['backlinks'] == 0 ) {
-				$ret[] = $aux;
-			}
+			$ret[] = $aux;
 		}
+
 
 		// If sortmode is versions, links or backlinks sort using the ad-hoc function and reduce using old_offse and old_maxRecords
 		if ($old_sort_mode == 'versions_asc' && !empty( $ret['versions'] ) ) {
@@ -826,9 +871,6 @@ vd( $this->mErrors );
 			$ret = array_slice($ret, $old_offset, $old_maxRecords);
 		}
 
-		if( $pOrphansOnly ) {
-			$ret = array_slice($ret, $old_offset, $old_maxRecords);
-		}
 
 		$retval = array();
 		$retval["data"] = $ret;
@@ -1079,7 +1121,8 @@ class WikiLib extends BitPage {
 		$query = "select `content_id`, `title`  from `".BIT_DB_PREFIX."tiki_content` WHERE `content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' ORDER BY ".$this->convert_sortmode( 'random' );
 		$rs = $this->query( $query, array(), $pNumPages );
 		while( $rs && !$rs->EOF ) {
-			$ret[$rs->fields['content_id']] = $rs->fields['title'];
+			$ret[$rs->fields['content_id']]['title'] = $rs->fields['title'];
+			$ret[$rs->fields['content_id']]['display_url'] = $this->getDisplayUrl( $rs->fields['title'] );
 			$rs->MoveNext();
 		}
 
@@ -1292,7 +1335,7 @@ class WikiLib extends BitPage {
 			$tar->addData($title, $data, $res["last_modified"]);
 		}
 
-		$tar->toTar( $gBitSystem->getStoragePath( "dump/".$bitdomain )."new.tar", FALSE);
+		$tar->toTar( $this->getStoragePath( "dump/".$bitdomain )."new.tar", FALSE);
 		unset ($tar);
 		$action = "dump created";
 		$t = date("U");

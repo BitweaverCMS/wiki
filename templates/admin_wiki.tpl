@@ -193,30 +193,6 @@
 				</div>
 			{/legend}
 
-			{legend legend="Wiki comments settings"}
-				<div class="row">
-					{formlabel label="Default number of comments per page" for="wiki_comments_per_page"}
-					{forminput}
-						<input size="5" type="text" name="wiki_comments_per_page" id="wiki_comments_per_page" value="{$wiki_comments_per_page|escape}" />
-					{/forminput}
-				</div>
-
-				<div class="row">
-					{formlabel label="Comments default ordering" for="wiki_comments_default_ordering"}
-					{forminput}
-						<select name="wiki_comments_default_ordering" id="wiki_comments_default_ordering">
-							<option value="comment_date_desc" {if $wiki_comments_default_ordering eq 'comment_date_desc'}selected="selected"{/if}>{tr}Newest first{/tr}</option>
-							<option value="comment_date_asc" {if $wiki_comments_default_ordering eq 'comment_date_asc'}selected="selected"{/if}>{tr}Oldest first{/tr}</option>
-							<option value="points_desc" {if $wiki_comments_default_ordering eq 'points_desc'}selected="selected"{/if}>{tr}Points{/tr}</option>
-						</select>
-					{/forminput}
-				</div>
-
-				<div class="row submit">
-					<input type="submit" name="wikiprefs" value="{tr}Change preferences{/tr}" />
-				</div>
-			{/legend}
-
 			{legend legend="Wiki Link Format"}
 				<div class="row">
 					{formlabel label="Wiki Link Format" for="wiki_page_regex"}
@@ -304,7 +280,7 @@
 {/jstabs}
 {/strip}
 
-{if $gBitSystem->mPrefs.package_tiki_forums eq 'y'}
+{if $gBitSystem->mPrefs->isPackageActive( 'tiki_forums' )}
 			<div class="boxcontent">
 				<form method="post" action="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=wiki">
 				<table class="panel"><tr>

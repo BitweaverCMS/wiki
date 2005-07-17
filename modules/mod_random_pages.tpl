@@ -1,13 +1,13 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_random_pages.tpl,v 1.1 2005/06/19 06:12:45 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_random_pages.tpl,v 1.2 2005/07/17 17:36:46 squareing Exp $ *}
 {strip}
-{if $gBitSystemPrefs.package_wiki eq 'y'}
+{if $gBitSystem->isPackageActive( 'wiki' )}
 	{bitmodule title="$moduleTitle" name="random_pages"}
 		<ol class="wiki">
-			{section name=ix loop=$modRandomPages}
-				<li><a href="{$gBitLoc.WIKI_PKG_URL}index.php?page={$modRandomPages[ix]}">{$modRandomPages[ix]}</a></li>
-			{sectionelse}
+			{foreach from=$modRandomPages key=contentId item=pageHash}
+				<li><a href="{$modRandomPages.$contentId.display_url}">{$modRandomPages.$contentId.title}</a></li>
+			{foreachelse}
 				<li></li>
-			{/section}
+			{/foreach}
 		</ol>
 	{/bitmodule}
 {/if}

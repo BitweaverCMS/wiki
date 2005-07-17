@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.3 2005/07/17 17:36:45 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+ * $Id: edit.php,v 1.3 2005/07/17 17:36:45 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -284,8 +284,20 @@ if (isset($_REQUEST["comment"])) {
 	$formInfo['comment'] = $_REQUEST["comment"];
 }
 
-if(isset($_REQUEST["preview"])) {
+$cat_type = BITPAGE_CONTENT_TYPE_GUID;
 
+if(isset($_REQUEST["preview"])) {
+	if ($gBitSystem->isPackageActive( 'categories' ) &&  isset( $_REQUEST['cat_categories'] ) ) {
+		$cat_objid = $gContent->mContentId;
+		include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
+		foreach( $categories['data'] as $key => $cat ) {
+			foreach( $_REQUEST['cat_categories'] as $rCat ) {
+				if( $cat['category_id'] == $rCat ) {
+					$categories['data'][$key]['incat'] = 'y';
+				}
+			}
+		}
+	}
 	$smarty->assign('preview',1);
 	$smarty->assign('title',$_REQUEST["title"]);
 
@@ -345,8 +357,6 @@ function parse_output(&$obj, &$parts,$i) {
 	}
 }
 
-$cat_type = BITPAGE_CONTENT_TYPE_GUID;
-
 // Pro
 // Check if the page has changed
 if (isset($_REQUEST["fCancel"])) {
@@ -395,6 +405,7 @@ if (isset($_REQUEST["fCancel"])) {
 	if( $gContent->store( $_REQUEST ) ) {
 		if( $gBitSystem->isPackageActive( 'categories' ) ) {
 			$cat_objid = $gContent->mContentId;
+			$cat_obj_type = 'bitpage';
 			$cat_desc = ($gBitSystem->isFeatureActive( 'feature_wiki_description' ) && !empty( $_REQUEST["description"] )) ? substr($_REQUEST["description"],0,200) : '';
 			$cat_name = $gContent->mPageName;
 			$cat_href = WIKI_PKG_URL."index.php?content_id=".$cat_objid;

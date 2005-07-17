@@ -1,10 +1,18 @@
+{if $comments_at_top_of_page eq 'y' and $print_page ne 'y' and $feature_wiki_comments eq 'y' }
+	{include file="bitpackage:wiki/page_header.tpl"}
+	{include file="bitpackage:liberty/comments.tpl"}
+{/if}
+
 <div class="display wiki {$pageInfo.title|lower|regex_replace:"[\s|_]":""}">
 	{include file="bitpackage:wiki/page_icons.tpl"}
 	{include file="bitpackage:wiki/page_header.tpl"}
+
 	{if $gBitSystem->isPackageActive( 'stickies' )}
 		{include file="bitpackage:stickies/display_bitsticky.tpl"}
 	{/if}
+
 	{include file="bitpackage:wiki/page_display.tpl"}
+
 	{if $pages > 1}
 		<div class="pagination">
 			{*<a title="{tr}First page{/tr}" href="index.php?page_id={$pageInfo.page_id}&amp;pagenum={$first_page}">&laquo; &laquo;</a>*}
@@ -19,11 +27,8 @@
 		{$footnote}
 	{/if}
 
-	{if $print_page ne 'y'}
-		{include file="bitpackage:wiki/page_action_bar.tpl"}
-	{/if}
 
-	{if $gBitSystemPrefs.wiki_feature_copyrights eq 'y'}
+	{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )}
 		<p class="copyright">
 			{if $pageCopyrights}
 				{section name=i loop=$pageCopyrights}
@@ -38,11 +43,16 @@
 		</p>
 	{/if}
 
-	{if $print_page ne 'y' and $feature_wiki_comments eq 'y' }
-		{include file="bitpackage:liberty/comments.tpl"}
+	{if $print_page ne 'y'}
+		{include file="bitpackage:wiki/page_action_bar.tpl"}
 	{/if}
 
 	{if $gBitSystem->isPackageActive( 'categories' )}
 		{include file="bitpackage:categories/categories_objects.tpl"}
 	{/if}
 </div><!-- end .wiki -->
+
+{if $comments_at_top_of_page ne 'y' and $print_page ne 'y' and $feature_wiki_comments eq 'y' }
+	{include file="bitpackage:liberty/comments.tpl"}
+{/if}
+

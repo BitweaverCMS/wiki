@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.3 2005/06/28 07:46:29 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.4 2005/07/17 17:36:47 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -51,14 +51,14 @@
 							{formlabel label="$conDescr Title" for="title"}
 							{forminput}
 								{if $gBitUser->hasPermission( 'bit_p_rename' ) || !$pageInfo.page_id}
-									<input type="text" size="60" maxlength="200" name="title" id="title" value="{$pageInfo.title}" />
+									<input type="text" size="50" maxlength="200" name="title" id="title" value="{$pageInfo.title}" />
 								{else}
 									{$page} {$pageInfo.title}
 								{/if}
 							{/forminput}
 						</div>
 
-						{if $gBitSystemPrefs.feature_wiki_templates eq 'y' and $gBitUser->hasPermission( 'bit_p_use_content_templates' )}
+						{if $gBitSystem->isFeatureActive( 'feature_wiki_templates' ) and $gBitUser->hasPermission( 'bit_p_use_content_templates' )}
 							<div class="row">
 								{formlabel label="Apply template" for="template_id"}
 								{forminput}
@@ -72,11 +72,11 @@
 							</div>
 						{/if}
 
-						{if $gBitSystemPrefs.feature_wiki_description eq 'y'}
+						{if $gBitSystem->isFeatureActive( 'feature_wiki_description' )}
 							<div class="row">
 								{formlabel label="Description" for="description"}
 								{forminput}
-									<input size="60" type="text" name="description" id="description" value="{$pageInfo.description}" />
+									<input size="50" type="text" name="description" id="description" value="{$pageInfo.description}" />
 									{formhelp note="Brief description of the page. This is visible when you hover over a link to this page and just below the title of the wiki page."}
 								{/forminput}
 							</div>
@@ -110,7 +110,7 @@
 							<div class="row">
 								{formlabel label="Comment" for="comment"}
 								{forminput}
-									<input size="60" type="text" name="comment" id="comment" value="{$pageInfo.comment}" />
+									<input size="50" type="text" name="comment" id="comment" value="{$pageInfo.comment}" />
 									{formhelp note="Add a comment to illustrate your most recent changes."}
 								{/forminput}
 							</div>
@@ -139,7 +139,7 @@
 					{/legend}
 				{/jstab}
 
-				{if $gBitSystemPrefs.package_categories eq 'y'}
+				{if $gBitSystem->isPackageActive( 'categories' )}
 					{jstab title="Categorize"}
 						{legend legend="Categorize"}
 							{include file="bitpackage:categories/categorize.tpl"}
@@ -160,7 +160,7 @@
 
 						{include file="bitpackage:liberty/edit_format.tpl"}
 
-						{if $gBitSystemPrefs.wiki_feature_copyrights eq 'y'}
+						{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )}
 							<div class="row">
 								{formlabel label="Copyright" for="copyrightTitle"}
 								{forminput}
@@ -198,7 +198,7 @@
 							</div>
 						{/if}
 
-						{if $gBitSystemPrefs.feature_wiki_icache eq 'y'}
+						{if $gBitSystem->isFeatureActive( 'feature_wiki_icache' )}
 							<div class="row">
 								{formlabel label="Cache" for="wiki_cache"}
 								{forminput}
@@ -238,20 +238,20 @@
 						{/if}
 					{/legend}
 
-					{if $gBitSystemPrefs.package_nexus eq 'y'}
+					{if $gBitSystem->isPackageActive( 'nexus' )}
 						{legend legend="Insert Link in Menu"}
 							{include file="bitpackage:nexus/insert_menu_item_inc.tpl"}
 						{/legend}
 					{/if}
 				{/jstab}
 
-				{if $gBitSystemPrefs.feature_wiki_url_import eq 'y'}
+				{if $gBitSystem->isFeatureActive( 'feature_wiki_url_import' )}
 				{jstab title="Import HMTL"}
 					{legend legend="Import HMTL"}
 						<div class="row">
 							{formlabel label="Import HTML from URL" for="suck_url"}
 							{forminput}
-								<input type="text" size="60" name="suck_url" id="suck_url" value="{$suck_url|escape}" />
+								<input type="text" size="50" name="suck_url" id="suck_url" value="{$suck_url|escape}" />
 								{formhelp note=""}
 							{/forminput}
 						</div>
