@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.1.1.1.2.2 2005/07/19 06:53:45 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.1.1.1.2.3 2005/07/20 08:31:59 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit_book.php,v 1.1.1.1.2.2 2005/07/19 06:53:45 squareing Exp $
+ * $Id: edit_book.php,v 1.1.1.1.2.3 2005/07/20 08:31:59 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -32,10 +32,6 @@ include_once( LIBERTY_PKG_PATH.'LibertyStructure.php');
 include_once( WIKI_PKG_PATH.'BitBook.php');
 
 global $gStructure;
-
-if( empty( $gContent ) ) {
-	require_once( WIKI_PKG_PATH.'lookup_page_inc.php' );
-}
 
 // check what tab is active
 if( isset( $_REQUEST['tab'] ) ) {
@@ -102,6 +98,10 @@ if( isset($_REQUEST["createstructure"]) ) {
 		header( "location: ".WIKI_PKG_URL."edit_book.php?structure_id=".$structure_id );
 	}
 } elseif( !empty( $_REQUEST["structure_id"] ) ) {
+	// Get all wiki pages for the select box
+	$_REQUEST['content_type'] = !isset( $_REQUEST['content_type'] ) ? 'bitpage' : $_REQUEST['content_type'];
+	// verify the book permission on structure load
+	$verifyStructurePermission = 'bit_p_admin_books';
 	$mid = 'bitpackage:wiki/edit_book.tpl';
 	include_once( LIBERTY_PKG_PATH.'edit_structure_inc.php');
 } else {
