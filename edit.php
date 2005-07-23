@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.4 2005/07/06 07:45:22 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.5 2005/07/23 11:12:14 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.4 2005/07/06 07:45:22 squareing Exp $
+ * $Id: edit.php,v 1.1.1.1.2.5 2005/07/23 11:12:14 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -410,13 +410,18 @@ if (isset($_REQUEST["fCancel"])) {
 			$cat_name = $gContent->mPageName;
 			$cat_href = WIKI_PKG_URL."index.php?content_id=".$cat_objid;
 			include_once( CATEGORIES_PKG_PATH.'categorize_inc.php' );
-			// store link to page in nexus menus
 		}
 		// nexus menu item storage
 		if( $gBitSystem->isPackageActive( 'nexus' ) && $gBitUser->hasPermission( 'bit_p_insert_nexus_item' ) ) {
 			$nexusHash['title'] = ( isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : NULL );
 			$nexusHash['hint'] = ( isset( $_REQUEST['description'] ) ? $_REQUEST['description'] : NULL );
 			include_once( NEXUS_PKG_PATH.'insert_menu_item_inc.php' );
+		}
+
+		// add member to pigeonholes
+		if( $gBitSystem->isPackageActive( 'pigeonholes' ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
+			$pigeonHash['member_id'] = $gContent->mContentId;
+			include_once( PIGEONHOLES_PKG_PATH.'insert_in_pigeonholes_inc.php' );
 		}
 
 		if ( $gBitSystem->isFeatureActive( 'wiki_watch_author' ) ) {
@@ -440,6 +445,11 @@ $smarty->assign_by_ref('templates', $templates["data"]);
 if ($gBitSystem->isPackageActive( 'categories' ) ) {
 	$cat_objid = $gContent->mContentId;
 	include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
+}
+
+if( $gBitSystem->isPackageActive( 'pigeonholes' ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
+	$pigeonholeMemberId = $gContent->mContentId;
+	include_once( PIGEONHOLES_PKG_PATH.'pigeonholes_path_list_inc.php' );
 }
 
 // Nexus menus
