@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.5 2005/07/23 11:12:14 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.6 2005/07/24 17:13:43 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.5 2005/07/23 11:12:14 squareing Exp $
+ * $Id: edit.php,v 1.1.1.1.2.6 2005/07/24 17:13:43 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -360,7 +360,11 @@ function parse_output(&$obj, &$parts,$i) {
 // Pro
 // Check if the page has changed
 if (isset($_REQUEST["fCancel"])) {
-	header("Location: ".$gContent->getDisplayUrl() );
+	if( !empty( $gContent->mContentId ) ) {
+		header("Location: ".$gContent->getDisplayUrl() );
+	} else {
+		header("Location: ".WIKI_PKG_URL );
+	}
 	die;
 } elseif (isset($_REQUEST["fSavePage"])) {
 	
