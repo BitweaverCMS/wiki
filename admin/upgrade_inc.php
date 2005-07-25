@@ -222,7 +222,7 @@ array( 'PHP' => '
 // STEP 6
 array( 'DATADICT' => array(
 	array( 'DROPCOLUMN' => array(
-		'tiki_pages' => array( '`lastModif`', '`data`', '`pageName`', '`ip`', '`hits`', '`user`' ),
+		'tiki_pages' => array( '`lastModif`', '`data`', '`pageName`', '`ip`', '`hits`', '`user`', '`creator`' ),
 		'tiki_semaphores' => array( '`user`' ),
 		'tiki_page_footnotes' => array( '`user`', '`pageName`' ),
 		'tiki_actionlog' => array( '`user`', '`pageName`' ),

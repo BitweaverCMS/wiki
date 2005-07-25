@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.3 2005/07/17 17:36:45 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.4 2005/07/25 20:02:57 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.3 2005/07/17 17:36:45 squareing Exp $
+ * $Id: edit.php,v 1.4 2005/07/25 20:02:57 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -245,7 +245,7 @@ if( !empty( $gContent->mInfo ) ) {
 
 $smarty->assign('footnote', '');
 $smarty->assign('has_footnote', 'n');
-if ($gBitSystem->isPackageActive( 'feature_wiki_footnotes' ) ) {
+if ($gBitSystem->isFeatureActive( 'feature_wiki_footnotes' ) ) {
 	if( $gBitUser->mUserId ) {
 		$footnote = $gContent->getFootnote( $gBitUser->mUserId );
 		$smarty->assign('footnote', $footnote);
@@ -298,6 +298,11 @@ if(isset($_REQUEST["preview"])) {
 			}
 		}
 	}
+
+	if( $gBitSystem->isPackageActive( 'pigeonholes' ) && isset( $_REQUEST['pigeonholes'] ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
+		include_once( PIGEONHOLES_PKG_PATH.'pigeonholes_processor_inc.php' );
+	}
+
 	$smarty->assign('preview',1);
 	$smarty->assign('title',$_REQUEST["title"]);
 
@@ -360,7 +365,11 @@ function parse_output(&$obj, &$parts,$i) {
 // Pro
 // Check if the page has changed
 if (isset($_REQUEST["fCancel"])) {
-	header("Location: ".$gContent->getDisplayUrl() );
+	if( !empty( $gContent->mContentId ) ) {
+		header("Location: ".$gContent->getDisplayUrl() );
+	} else {
+		header("Location: ".WIKI_PKG_URL );
+	}
 	die;
 } elseif (isset($_REQUEST["fSavePage"])) {
 	
@@ -410,13 +419,17 @@ if (isset($_REQUEST["fCancel"])) {
 			$cat_name = $gContent->mPageName;
 			$cat_href = WIKI_PKG_URL."index.php?content_id=".$cat_objid;
 			include_once( CATEGORIES_PKG_PATH.'categorize_inc.php' );
-			// store link to page in nexus menus
 		}
 		// nexus menu item storage
 		if( $gBitSystem->isPackageActive( 'nexus' ) && $gBitUser->hasPermission( 'bit_p_insert_nexus_item' ) ) {
 			$nexusHash['title'] = ( isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : NULL );
 			$nexusHash['hint'] = ( isset( $_REQUEST['description'] ) ? $_REQUEST['description'] : NULL );
 			include_once( NEXUS_PKG_PATH.'insert_menu_item_inc.php' );
+		}
+
+		// add member to pigeonholes
+		if( $gBitSystem->isPackageActive( 'pigeonholes' ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
+			include_once( PIGEONHOLES_PKG_PATH.'pigeonholes_processor_inc.php' );
 		}
 
 		if ( $gBitSystem->isFeatureActive( 'wiki_watch_author' ) ) {
@@ -433,13 +446,21 @@ if (isset($_REQUEST["fCancel"])) {
 	$formInfo = $_REQUEST;
 	$formInfo['data'] = &$_REQUEST['edit'];
 }
-if ($gBitSystem->isPackageActive( 'feature_wiki_templates' ) && $gBitUser->hasPermission( 'bit_p_use_content_templates' )) {
+if ($gBitSystem->isFeatureActive( 'feature_wiki_templates' ) && $gBitUser->hasPermission( 'bit_p_use_content_templates' )) {
 	$templates = $wikilib->list_templates('wiki', 0, -1, 'name_asc', '');
 }
 $smarty->assign_by_ref('templates', $templates["data"]);
+
+// External Packages
+// Categories
 if ($gBitSystem->isPackageActive( 'categories' ) ) {
 	$cat_objid = $gContent->mContentId;
 	include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
+}
+
+// Pigeonholes
+if( $gBitSystem->isPackageActive( 'pigeonholes' ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
+	include_once( PIGEONHOLES_PKG_PATH.'pigeonholes_processor_inc.php' );
 }
 
 // Nexus menus
@@ -447,13 +468,13 @@ if( $gBitSystem->isPackageActive( 'nexus' ) && $gBitUser->hasPermission( 'bit_p_
 	include_once( NEXUS_PKG_PATH.'insert_menu_item_inc.php' );
 }
 
-if ($gBitSystem->isPackageActive( 'feature_theme_control' ) ) {
-	include( THEMES_PKG_PATH.'tc_inc.php' );
+// Configure quicktags list
+if ($gBitSystem->isPackageActive( 'quicktags' ) ) {
+	include_once( QUICKTAGS_PKG_PATH.'quicktags_inc.php' );
 }
 
-// Configure quicktags list
-if ($gBitSystem->getPreference('package_quicktags','n') == 'y') {
-  include_once( QUICKTAGS_PKG_PATH.'quicktags_inc.php' );
+if ($gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
+	include( THEMES_PKG_PATH.'tc_inc.php' );
 }
 
 if( $gContent->isInStructure() ) {

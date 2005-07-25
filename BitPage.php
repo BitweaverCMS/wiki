@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.4 2005/07/17 17:36:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.5 2005/07/25 20:02:57 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.4 $ $Date: 2005/07/17 17:36:45 $ $Author: squareing $
+ * @version $Revision: 1.5 $ $Date: 2005/07/25 20:02:57 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.4 2005/07/17 17:36:45 squareing Exp $
+ * $Id: BitPage.php,v 1.5 2005/07/25 20:02:57 squareing Exp $
  */
 
 /**
@@ -789,7 +789,7 @@ vd( $this->mErrors );
 			`flag`, 
 			tp.`content_id`
 			FROM `".BIT_DB_PREFIX."tiki_pages` tp 
-				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` as tl on tp.content_id =  tl.to_content_id 
+				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` tl ON tp.`content_id` =  tl.`to_content_id` 
 				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc 
 				ON (tc.`content_id` = tp.`content_id`),
 				`".BIT_DB_PREFIX."users_users` uue, 
@@ -802,7 +802,7 @@ vd( $this->mErrors );
 			. $this->convert_sortmode($sort_mode);
 			$query_cant = "select count(*) 
 			FROM `".BIT_DB_PREFIX."tiki_pages` tp 
-				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` as tl on tp.content_id =  tl.to_content_id 
+				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` tl on tp.`content_id` =  tl.`to_content_id` 
 				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc 
 				ON (tc.`content_id` = tp.`content_id`)
 				  WHERE tc.`content_type_guid`=? 

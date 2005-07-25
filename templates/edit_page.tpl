@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.4 2005/07/17 17:36:47 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.5 2005/07/25 20:02:58 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -147,6 +147,14 @@
 					{/jstab}
 				{/if}
 
+				{if $gBitSystem->isPackageActive( 'pigeonholes' ) and $pigeonPathList}
+					{jstab title="Pigeonholes"}
+						{legend legend="Insert in Pigeonholes"}
+							{include file="bitpackage:pigeonholes/insert_in_pigeonholes_inc.tpl"}
+						{/legend}
+					{/jstab}
+				{/if}
+
 				{if $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) && $show_attachments eq 'y' && $gBitUser->hasPermission('bit_p_content_attachments')}
 					{jstab title="Attachments"}
 						{legend legend="Attachments"}
@@ -157,7 +165,6 @@
 
 				{jstab title="Advanced Options"}
 					{legend legend="Advanced Options"}
-
 						{include file="bitpackage:liberty/edit_format.tpl"}
 
 						{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )}

@@ -3,6 +3,10 @@
 	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
 
+{if $gBitSystem->isPackageActive( 'pigeonholes' )}
+	{include file="bitpackage:pigeonholes/display_paths.tpl"}
+{/if}
+
 <div class="display wiki {$pageInfo.title|lower|regex_replace:"[\s|_]":""}">
 	{include file="bitpackage:wiki/page_icons.tpl"}
 	{include file="bitpackage:wiki/page_header.tpl"}
@@ -45,6 +49,10 @@
 
 	{if $print_page ne 'y'}
 		{include file="bitpackage:wiki/page_action_bar.tpl"}
+	{/if}
+
+	{if $gBitSystem->isPackageActive( 'pigeonholes' )}
+		{include file="bitpackage:pigeonholes/display_members.tpl"}
 	{/if}
 
 	{if $gBitSystem->isPackageActive( 'categories' )}
