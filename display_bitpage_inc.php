@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.5 2005/07/23 11:12:14 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.6 2005/07/26 15:50:32 drewslater Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.1.1.1.2.5 2005/07/23 11:12:14 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.1.1.1.2.6 2005/07/26 15:50:32 drewslater Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -32,7 +32,7 @@ if( !$gContent->isValid() ) {
 }
 
 /*
-$smarty->assign('structure','n');
+$gBitSmarty->assign('structure','n');
 //Has a structure page been requested
 if (isset($_REQUEST["structure_id"])) {
 	$structure_id = $_REQUEST["structure_id"];
@@ -40,7 +40,7 @@ if (isset($_REQUEST["structure_id"])) {
 	//if not then check if page is the head of a structure
 	$structure_id = $structlib->get_struct_ref_if_head( $gContent->mPageName );
 }
-$smarty->assign_by_ref('page',$gContent->mInfo['title']);
+$gBitSmarty->assign_by_ref('page',$gContent->mInfo['title']);
 */
 
 require_once( WIKI_PKG_PATH.'page_setup_inc.php' );
@@ -48,16 +48,16 @@ require_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 if($wiki_creator_admin == 'y') {
   if( $gContent->isOwner() ) {
     $bit_p_admin_wiki = 'y';
-    $smarty->assign( 'bit_p_admin_wiki', 'y' );
+    $gBitSmarty->assign( 'bit_p_admin_wiki', 'y' );
   }
 }
 if(isset($_REQUEST["copyrightpage"])) {
-  $smarty->assign_by_ref('copyrightpage',$_REQUEST["copyrightpage"]);
+  $gBitSmarty->assign_by_ref('copyrightpage',$_REQUEST["copyrightpage"]);
 }
 if( $gBitSystem->isFeatureActive( 'feature_backlinks' ) ) {
 	// Get the backlinks for the page "page"
 	$backlinks = $gContent->getBacklinks();
-	$smarty->assign_by_ref('backlinks', $backlinks);
+	$gBitSmarty->assign_by_ref('backlinks', $backlinks);
 }
 
 // Update the pagename with the canonical name.  This makes it
@@ -100,7 +100,7 @@ if($count_admin_pvs == 'y' || !$gBitUser->isAdmin()) {
 if( isset( $_REQUEST["action"] ) && (($_REQUEST["action"] == 'lock' || $_REQUEST["action"]=='unlock' ) &&
 	($gBitUser->hasPermission( 'bit_p_admin_wiki' )) || ($user and ($gBitUser->hasPermission( 'bit_p_lock' )) and ($feature_wiki_usrlock == 'y'))) ) {
 	$gContent->setLock( ($_REQUEST["action"] == 'lock' ? 'L' : NULL ) );
-	$smarty->assign('lock', ($_REQUEST["action"] == 'lock') );
+	$gBitSmarty->assign('lock', ($_REQUEST["action"] == 'lock') );
 }
 
 
@@ -111,14 +111,14 @@ if( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->isValid() && $gBitUs
 	$notepadlib->replace_note( $user, 0, $gContent->mPageName, $gContent->mInfo['data'] );
 }
 // Assign lock status
-$smarty->assign('lock', $gContent->isLocked() );
+$gBitSmarty->assign('lock', $gContent->isLocked() );
 // If not locked and last version is user version then can undo
-$smarty->assign('canundo','n');
+$gBitSmarty->assign('canundo','n');
 if( !$gContent->isLocked() && ( ($gBitUser->hasPermission( 'bit_p_edit' ) == 'y' && $gContent->mInfo["modifier_user_id"]==$gBitUser->mUserId) || $gBitUser->hasPermission( 'bit_p_remove' ) ) ) {
-   $smarty->assign('canundo','y');
+   $gBitSmarty->assign('canundo','y');
 }
 if($gBitUser->hasPermission( 'bit_p_admin_wiki' )) {
-  $smarty->assign('canundo','y');
+  $gBitSmarty->assign('canundo','y');
 }
 // Process an undo here
 if(isset($_REQUEST["undo"])) {
@@ -135,17 +135,17 @@ if(isset($_REQUEST["undo"])) {
 if ($wiki_uses_slides == 'y') {
 	$slides = split("-=[^=]+=-",$gContent->mInfo["data"]);
 	if(count($slides)>1) {
-		$smarty->assign('show_slideshow','y');
+		$gBitSmarty->assign('show_slideshow','y');
 	} else {
 		$slides = explode(defined('PAGE_SEP') ? PAGE_SEP : "...page...",$gContent->mInfo["data"]);
 		if(count($slides)>1) {
-			$smarty->assign('show_slideshow','y');
+			$gBitSmarty->assign('show_slideshow','y');
 		} else {
-			$smarty->assign('show_slideshow','n');
+			$gBitSmarty->assign('show_slideshow','n');
 		}
 	}
 } else {
-	$smarty->assign('show_slideshow','n');
+	$gBitSmarty->assign('show_slideshow','n');
 }
 if(isset($_REQUEST['refresh'])) {
 	
@@ -160,7 +160,7 @@ if(isset($_REQUEST['refresh'])) {
 // pdata is parse_data
 //   if using cache then update the cache
 // assign_by_ref
-$smarty->assign('cached_page','n');
+$gBitSmarty->assign('cached_page','n');
 if(isset($gContent->mInfo['wiki_cache']) && $gContent->mInfo['wiki_cache']>0) {
 	$wiki_cache=$gContent->mInfo['wiki_cache'];
 }
@@ -169,7 +169,7 @@ if($wiki_cache>0) {
 	$now = date('U');
 	if($cache_info['cache_timestamp']+$wiki_cache > $now) {
 		$pdata = $cache_info['cache'];
-		$smarty->assign('cached_page','y');
+		$gBitSmarty->assign('cached_page','y');
 	} else {
 		$pdata = $gContent->parseData();
 		$gContent->updateCache( $pdata );
@@ -183,30 +183,30 @@ if( $pages > 1 ) {
 		$_REQUEST['pagenum']=1;
 	}
 	$pdata=$wikilib->get_page($pdata,$_REQUEST['pagenum']);
-	$smarty->assign('pages',$pages);
+	$gBitSmarty->assign('pages',$pages);
 	if($pages>$_REQUEST['pagenum']) {
-		$smarty->assign('next_page',$_REQUEST['pagenum']+1);
+		$gBitSmarty->assign('next_page',$_REQUEST['pagenum']+1);
 	} else {
-		$smarty->assign('next_page',$_REQUEST['pagenum']);
+		$gBitSmarty->assign('next_page',$_REQUEST['pagenum']);
 	}
 	if($_REQUEST['pagenum']>1) {
-		$smarty->assign('prev_page',$_REQUEST['pagenum']-1);
+		$gBitSmarty->assign('prev_page',$_REQUEST['pagenum']-1);
 	} else {
-		$smarty->assign('prev_page',1);
+		$gBitSmarty->assign('prev_page',1);
 	}
-	$smarty->assign('first_page',1);
-	$smarty->assign('last_page',$pages);
-	$smarty->assign('pagenum',$_REQUEST['pagenum']);
+	$gBitSmarty->assign('first_page',1);
+	$gBitSmarty->assign('last_page',$pages);
+	$gBitSmarty->assign('pagenum',$_REQUEST['pagenum']);
 }
 
-$smarty->assign_by_ref('parsed',$pdata);
-//$smarty->assign_by_ref('last_modified',date("l d of F, Y  [H:i:s]",$gContent->mInfo["last_modified"]));
-$smarty->assign_by_ref('last_modified',$gContent->mInfo["last_modified"]);
+$gBitSmarty->assign_by_ref('parsed',$pdata);
+//$gBitSmarty->assign_by_ref('last_modified',date("l d of F, Y  [H:i:s]",$gContent->mInfo["last_modified"]));
+$gBitSmarty->assign_by_ref('last_modified',$gContent->mInfo["last_modified"]);
 if(empty($gContent->mInfo["user"])) {
   $gContent->mInfo["user"]='anonymous';
 }
-$smarty->assign_by_ref('lastUser',$gContent->mInfo["user"]);
-$smarty->assign_by_ref('description',$gContent->mInfo["description"]);
+$gBitSmarty->assign_by_ref('lastUser',$gContent->mInfo["user"]);
+$gBitSmarty->assign_by_ref('description',$gContent->mInfo["description"]);
 
 // Comments engine!
 if( $gBitSystem->isFeatureActive( 'feature_wiki_comments' ) ) {
@@ -238,7 +238,7 @@ if( $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) ) {
         $fhash = md5($name = $_FILES['userfile1']['name']);
         $fw = fopen($w_use_dir.$fhash,"wb");
         if(!$fw) {
-          $smarty->assign('msg',tra('Cannot write to this file:').$fhash);
+          $gBitSmarty->assign('msg',tra('Cannot write to this file:').$fhash);
           $gBitSystem->display( 'error.tpl' );
           die;
         }
@@ -262,23 +262,23 @@ if( $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) ) {
       $wikilib->wiki_attach_file($gContent->mInfo['title'],$name,$type,$size, $data, $_REQUEST["attach_comment"], $user,$fhash);
     }
   }
-  $smarty->assign('atts',$gContent->mStorage);
-  $smarty->assign('atts_count',count($gContent->mStorage));
+  $gBitSmarty->assign('atts',$gContent->mStorage);
+  $gBitSmarty->assign('atts_count',count($gContent->mStorage));
 }
 
 if( $gBitSystem->isFeatureActive( 'feature_wiki_footnotes' ) && $gBitUser->isValid() ) {
 	if( $footnote = $gContent->getFootnote( $gBitUser->mUserId ) ) {
-		$smarty->assign( 'footnote', $gContent->parseData( $footnote ) );
+		$gBitSmarty->assign( 'footnote', $gContent->parseData( $footnote ) );
 	}
 }
 
 if( $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) ) {
 	require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
 	$copyrights = $copyrightslib->list_copyrights( $gContent->mPageId );
-	$smarty->assign('pageCopyrights', $copyrights["data"]);
+	$gBitSmarty->assign('pageCopyrights', $copyrights["data"]);
 }
 
-$smarty->assign('wiki_extras','y');
+$gBitSmarty->assign('wiki_extras','y');
 if( $gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
 	$cat_type=BITPAGE_CONTENT_TYPE_GUID;
 	$cat_objid = $gContent->mContentId;
@@ -294,14 +294,14 @@ if( $gBitSystem->isFeatureActive( 'feature_user_watches' ) ) {
 				$gBitUser->expungeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'] );
 			}
 		} else {
-			$smarty->assign('msg', tra("This feature requires a registered user.").": feature_user_watches");
+			$gBitSmarty->assign('msg', tra("This feature requires a registered user.").": feature_user_watches");
 			$gBitSystem->display( 'error.tpl' );
 			die;
 		}
 	}
-	$smarty->assign('user_watching_page','n');
+	$gBitSmarty->assign('user_watching_page','n');
 	if( $watch = $gBitUser->getEventWatches( 'wiki_page_changed', $gContent->mPageId ) ) {
-		$smarty->assign('user_watching_page','y');
+		$gBitSmarty->assign('user_watching_page','y');
 	}
 }
 $sameurl_elements=Array('title','page');
@@ -339,13 +339,13 @@ if( $gBitSystem->isPackageActive( 'pigeonholes' ) ) {
 
 // Flag for 'page bar' that currently 'Page view' mode active
 // so it is needed to show comments & attachments panels
-$smarty->assign('show_page','y');
+$gBitSmarty->assign('show_page','y');
 
 // Display the Index Template
-$smarty->assign('dblclickedit','y');
-$smarty->assign('print_page','n');
-$smarty->assign('show_page_bar','y');
-$smarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
+$gBitSmarty->assign('dblclickedit','y');
+$gBitSmarty->assign('print_page','n');
+$gBitSmarty->assign('show_page_bar','y');
+$gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
 
 if( isset( $_REQUEST['s5'] ) ) {
 	include_once( WIKI_PKG_PATH.'s5.php');

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.1.1.1.2.1 2005/06/27 17:47:43 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.1.1.1.2.2 2005/07/26 15:50:32 drewslater Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.1.1.1.2.1 2005/06/27 17:47:43 lsces Exp $
+ * $Id: lookup_page_inc.php,v 1.1.1.1.2.2 2005/07/26 15:50:32 drewslater Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -33,8 +33,8 @@
 				if (count($existsInfo)) {
 					if (count($existsInfo) > 1) {
 						// Display page so user can select which wiki page they want (there are multiple that share this name)
-						$smarty->assign( 'choose', $_REQUEST['page'] );
-						$smarty->assign('dupePages', $existsInfo);
+						$gBitSmarty->assign( 'choose', $_REQUEST['page'] );
+						$gBitSmarty->assign('dupePages', $existsInfo);
 						$gBitSystem->display('bitpackage:wiki/page_select.tpl');
 						die;
 					} else {
@@ -46,8 +46,8 @@
 		if( !$gContent->load() && $loadPage ) {
 			$gContent->mInfo['title'] = $loadPage;
 		}
-		$smarty->assign_by_ref( 'gContent', $gContent );
-		$smarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
+		$gBitSmarty->assign_by_ref( 'gContent', $gContent );
+		$gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
 	}
 
 	// we weren't passed a structure, but maybe this page belongs to one. let's check...
@@ -64,10 +64,10 @@
 			if( $gStructure->load() ) {
 				$gStructure->loadNavigation();
 				$gStructure->loadPath();
-				$smarty->assign( 'structureInfo', $gStructure->mInfo );
+				$gBitSmarty->assign( 'structureInfo', $gStructure->mInfo );
 			}
 		} else {
-			$smarty->assign('showstructs', $structs);
+			$gBitSmarty->assign('showstructs', $structs);
 		}
 	}
 
@@ -76,7 +76,7 @@
 		global $gNote;
 		$gNote = new BitSticky( NULL, NULL, $gContent->mContentId );
 		$gNote->load();
-		$smarty->assign_by_ref( 'stickyInfo', $gNote->mInfo );
+		$gBitSmarty->assign_by_ref( 'stickyInfo', $gNote->mInfo );
 	}
 
 	// if we are looking up a page
@@ -114,22 +114,22 @@
 
 			// When WIKI_PKG_URL.'edit.php' is loading, check to see if there is an editing conflict
 			if( $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->mPrefs['warn_on_edit_time'] * 60 ) ) {
-				$smarty->assign('editpageconflict', 'y');
+				$gBitSmarty->assign('editpageconflict', 'y');
 			} else {
 				if (!(isset($_REQUEST['save'])) && $gContent->isValid() ) {
 					$_SESSION["edit_lock"] = $gBitUser->storeSemaphore( $gContent->mContentId );
-					$smarty->assign('editpageconflict', 'n');
+					$gBitSmarty->assign('editpageconflict', 'n');
 				}
 			}
 		}
 
 		if( $semUser = $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->mPrefs['warn_on_edit_time'] * 60 ) ) {
 			$gContent->mErrors['edit_conflict'] = 'This page is being edited by '.$gBitUser->getDisplayName( TRUE, $semUser ).'. Proceed at your own peril';
-			$smarty->assign( 'semUser', $semUser );
+			$gBitSmarty->assign( 'semUser', $semUser );
 			$beingedited = 'y';
 		} else {
 			$beingedited = 'n';
 		}
-		$smarty->assign('beingEdited', $beingedited);
+		$gBitSmarty->assign('beingEdited', $beingedited);
 	}
 ?>

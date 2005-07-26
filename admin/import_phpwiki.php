@@ -1,11 +1,11 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/Attic/import_phpwiki.php,v 1.1 2005/06/19 06:12:45 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/Attic/import_phpwiki.php,v 1.1.1.1.2.1 2005/07/26 15:50:48 drewslater Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 require_once( '../../bit_setup_inc.php' );
 if (!$gBitUser->isAdmin()) {
-    $smarty->assign('msg', tra("You dont have permission to use this feature"));
+    $gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
     $gBitSystem->display( 'error.tpl' );
     die;
 }
@@ -47,7 +47,7 @@ function parse_output(&$obj, &$parts, $i) {
 function compare_import_versions($a1, $a2) {
     return $a1["version"] - $a2["version"];
 }
-$smarty->assign('result', 'y');
+$gBitSmarty->assign('result', 'y');
 if (isset($_REQUEST["import"])) {
 	
     $path = $_REQUEST["path"];
@@ -151,8 +151,8 @@ if (isset($_REQUEST["import"])) {
 	}
     }
     closedir ($h);
-    $smarty->assign('lines', $lines);
-    $smarty->assign('result', 'y');
+    $gBitSmarty->assign('lines', $lines);
+    $gBitSmarty->assign('result', 'y');
 }
 
 $gBitSystem->display( 'bitpackage:wiki/import_phpwiki.tpl');

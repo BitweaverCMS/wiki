@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.2 2005/06/30 18:14:41 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.3 2005/07/26 15:50:48 drewslater Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -61,7 +61,7 @@ $formWikiLists = array(
 		'note' => 'Size of page in bytes.',
 	),
 );
-$smarty->assign( 'formWikiLists',$formWikiLists );
+$gBitSmarty->assign( 'formWikiLists',$formWikiLists );
 
 if (isset($_REQUEST["wikilistconf"])) {
 	
@@ -133,7 +133,7 @@ $formWikiFeatures = array(
 	),
 );
 
-$smarty->assign( 'formWikiFeatures',$formWikiFeatures );
+$gBitSmarty->assign( 'formWikiFeatures',$formWikiFeatures );
 if (isset($_REQUEST["wikifeatures"])) {
 	
 	foreach( $formWikiFeatures as $item => $data ) {
@@ -141,35 +141,35 @@ if (isset($_REQUEST["wikifeatures"])) {
 	}
 	if (isset($_REQUEST["feature_warn_on_edit"]) && $_REQUEST["feature_warn_on_edit"] == "y") {
 		$gBitSystem->storePreference("feature_warn_on_edit", 'y');
-		$smarty->assign("feature_warn_on_edit", 'y');
+		$gBitSmarty->assign("feature_warn_on_edit", 'y');
 	} else {
 		$gBitSystem->storePreference("feature_warn_on_edit", 'n');
-		$smarty->assign("feature_warn_on_edit", 'n');
+		$gBitSmarty->assign("feature_warn_on_edit", 'n');
 	}
 	$gBitSystem->storePreference("warn_on_edit_time", $_REQUEST["warn_on_edit_time"]);
-	$smarty->assign('warn_on_edit_time', $_REQUEST["warn_on_edit_time"]);
+	$gBitSmarty->assign('warn_on_edit_time', $_REQUEST["warn_on_edit_time"]);
 	$gBitSystem->storePreference('wiki_cache', $_REQUEST["wiki_cache"]);
-	$smarty->assign('wiki_cache', $_REQUEST["wiki_cache"]);
+	$gBitSmarty->assign('wiki_cache', $_REQUEST["wiki_cache"]);
 
-	$smarty->assign('dump_url', $wikilib->getStorageUrl( "dump/$bitdomain" ));
+	$gBitSmarty->assign('dump_url', $wikilib->getStorageUrl( "dump/$bitdomain" ));
 	/*
 	  if(isset($_REQUEST["feature_wiki_notepad"]) && $_REQUEST["feature_wiki_notepad"]=="y") {
 		$gBitSystem->storePreference("feature_wiki_notepad",'y');
-		$smarty->assign("feature_wiki_notepad",'y');
+		$gBitSmarty->assign("feature_wiki_notepad",'y');
 	  } else {
 		$gBitSystem->storePreference("feature_wiki_notepad",'n');
-		$smarty->assign("feature_wiki_notepad",'n');
+		$gBitSmarty->assign("feature_wiki_notepad",'n');
 	  }
 	*/
 	/* not sure if the following are still required */
 	$gBitSystem->storePreference('feature_wiki_tables', $_REQUEST['feature_wiki_tables']);
-	$smarty->assign('feature_wiki_tables', $_REQUEST['feature_wiki_tables']);
+	$gBitSmarty->assign('feature_wiki_tables', $_REQUEST['feature_wiki_tables']);
 	if (isset($_REQUEST["feature_userVersions"]) && $_REQUEST["feature_userVersions"] == "y") {
 		$gBitSystem->storePreference("feature_userVersions", 'y');
-		$smarty->assign("feature_userVersions", 'y');
+		$gBitSmarty->assign("feature_userVersions", 'y');
 	} else {
 		$gBitSystem->storePreference("feature_userVersions", 'n');
-		$smarty->assign("feature_userVersions", 'n');
+		$gBitSmarty->assign("feature_userVersions", 'n');
 	}
 }
 $formWikiInOut = array(
@@ -214,7 +214,7 @@ $formWikiInOut = array(
 		'note' => 'Allow joining of pages for printing purposes.',
 	),
 );
-$smarty->assign( 'formWikiInOut',$formWikiInOut );
+$gBitSmarty->assign( 'formWikiInOut',$formWikiInOut );
 
 if (isset($_REQUEST["wikiinout"])) {
 	
@@ -241,7 +241,7 @@ $formWikiBooks = array(
 		'note' => 'This option will remove the names of the navigation controls and replace them with appropriate icons for navigation. This can be useful if you feel that navigation is too cluttered when showing that many words.',
 	),
 );
-$smarty->assign( 'formWikiBooks',$formWikiBooks );
+$gBitSmarty->assign( 'formWikiBooks',$formWikiBooks );
 
 if (isset($_REQUEST["wikibooks"])) {
 	
@@ -264,7 +264,7 @@ $formWikiWatch = array(
 		'note' => 'Allow watching of comments (who knows if this works).',
 	),
 );
-$smarty->assign( 'formWikiWatch',$formWikiWatch );
+$gBitSmarty->assign( 'formWikiWatch',$formWikiWatch );
 
 if (isset($_REQUEST["wikiwatch"])) {
 	
@@ -283,7 +283,7 @@ if (isset($_REQUEST["createtag"])) {
 	
 	// Check existance
 	if ($adminlib->tag_exists($_REQUEST["tagname"])) {
-		$smarty->assign('msg', tra("Tag already exists"));
+		$gBitSmarty->assign('msg', tra("Tag already exists"));
 		$gBitSystem->display( 'error.tpl' );
 		die;
 	}
@@ -293,7 +293,7 @@ if (isset($_REQUEST["restoretag"])) {
 	
 	// Check existance
 	if (!$adminlib->tag_exists($_REQUEST["restagname"])) {
-		$smarty->assign('msg', tra("Tag not found"));
+		$gBitSmarty->assign('msg', tra("Tag not found"));
 		$gBitSystem->display( 'error.tpl' );
 		die;
 	}
@@ -307,31 +307,31 @@ if (isset($_REQUEST["removetag"])) {
 if (isset($_REQUEST["setwikihome"])) {
 	
 	$gBitSystem->storePreference('wikiHomePage', $_REQUEST["wikiHomePage"]);
-	$smarty->assign('wikiHomePage', $_REQUEST["wikiHomePage"]);
+	$gBitSmarty->assign('wikiHomePage', $_REQUEST["wikiHomePage"]);
 }
 if (isset($_REQUEST["wikidiscussprefs"])) {
 	
 	if (isset($_REQUEST["feature_wiki_discuss"])) {
 		$gBitSystem->storePreference('feature_wiki_discuss', 'y');
-		$smarty->assign('feature_wiki_discuss', 'y');
+		$gBitSmarty->assign('feature_wiki_discuss', 'y');
 	} else {
 		$gBitSystem->storePreference("feature_wiki_discuss", 'n');
-		$smarty->assign('feature_wiki_discuss', 'n');
+		$gBitSmarty->assign('feature_wiki_discuss', 'n');
 	}
 	if (isset($_REQUEST["wiki_forum"])) {
 		$gBitSystem->storePreference('wiki_forum', $_REQUEST["wiki_forum"]);
-		$smarty->assign('wiki_forum', $_REQUEST["wiki_forum"]);
+		$gBitSmarty->assign('wiki_forum', $_REQUEST["wiki_forum"]);
 		$wiki_forum_id = $gBitSystem->getOne("select `forumID` from `tiki_forums` where `name`='" . $_REQUEST["wiki_forum"] . "'");
 		$gBitSystem->storePreference('wiki_forum_id', $wiki_forum_id);
-		$smarty->assign('wiki_forum_id', $wiki_forum_id);
+		$gBitSmarty->assign('wiki_forum_id', $wiki_forum_id);
 	}
 }
 if (isset($_REQUEST["setwikiregex"])) {
 	
 	$gBitSystem->storePreference('wiki_page_regex', $_REQUEST["wiki_page_regex"]);
-	$smarty->assign( 'wiki_page_regex', $_REQUEST["wiki_page_regex"] );
+	$gBitSmarty->assign( 'wiki_page_regex', $_REQUEST["wiki_page_regex"] );
 } else {
-    $smarty->assign( 'wiki_page_regex', $gBitSystem->getPreference( 'wiki_page_regex', 'strict' ) );
+    $gBitSmarty->assign( 'wiki_page_regex', $gBitSystem->getPreference( 'wiki_page_regex', 'strict' ) );
 }
 if (isset($_REQUEST["wikisetprefs"])) {
 	
@@ -340,7 +340,7 @@ if (isset($_REQUEST["wikisetprefs"])) {
 	}
 	if (isset($_REQUEST["keep_versions"])) {
 		$gBitSystem->storePreference("keep_versions", $_REQUEST["keep_versions"]);
-		$smarty->assign('keep_versions', $_REQUEST["keep_versions"]);
+		$gBitSmarty->assign('keep_versions', $_REQUEST["keep_versions"]);
 	}
 }
 if (isset($_REQUEST["wikisetcopyright"])) {
@@ -348,26 +348,26 @@ if (isset($_REQUEST["wikisetcopyright"])) {
 	simple_set_toggle( 'wiki_feature_copyrights','wiki' );
 	if (isset($_REQUEST["wikiLicensePage"])) {
 		$gBitSystem->storePreference("wikiLicensePage", $_REQUEST["wikiLicensePage"]);
-		$smarty->assign('wikiLicensePage', $_REQUEST["wikiLicensePage"]);
+		$gBitSmarty->assign('wikiLicensePage', $_REQUEST["wikiLicensePage"]);
 	}
 	if (isset($_REQUEST["wikiSubmitNotice"])) {
 		$gBitSystem->storePreference("wikiSubmitNotice", $_REQUEST["wikiSubmitNotice"]);
-		$smarty->assign('wikiSubmitNotice', $_REQUEST["wikiSubmitNotice"]);
+		$gBitSmarty->assign('wikiSubmitNotice', $_REQUEST["wikiSubmitNotice"]);
 	}
 }
 if ( $gBitSystem->isPackageActive( 'tiki_forums' ) ) {
 	$commentslib = new Comments();
 	$all_forums = $commentslib->list_forums(0, -1, 'name_asc', '');
-	$smarty->assign_by_ref("all_forums", $all_forums["data"]);
+	$gBitSmarty->assign_by_ref("all_forums", $all_forums["data"]);
 }
 $tags = $adminlib->get_tags();
-$smarty->assign_by_ref("tags", $tags);
-$smarty->assign("maxVersions", $gBitSystem->getPreference("maxVersions", 0));
-$smarty->assign("keep_versions", $gBitSystem->getPreference("keep_versions", 1));
+$gBitSmarty->assign_by_ref("tags", $tags);
+$gBitSmarty->assign("maxVersions", $gBitSystem->getPreference("maxVersions", 0));
+$gBitSmarty->assign("keep_versions", $gBitSystem->getPreference("keep_versions", 1));
 
-$smarty->assign("wiki_feature_copyrights", $gBitSystem->getPreference("wiki_feature_copyrights"));
-$smarty->assign('wikiLicensePage', $gBitSystem->getPreference("wikiLicensePage"));
-$smarty->assign('wikiSubmitNotice', $gBitSystem->getPreference("wikiSubmitNotice"));
+$gBitSmarty->assign("wiki_feature_copyrights", $gBitSystem->getPreference("wiki_feature_copyrights"));
+$gBitSmarty->assign('wikiLicensePage', $gBitSystem->getPreference("wikiLicensePage"));
+$gBitSmarty->assign('wikiSubmitNotice', $gBitSystem->getPreference("wikiSubmitNotice"));
 
 
 ?>

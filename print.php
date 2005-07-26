@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.1.1.1.2.1 2005/06/27 17:47:41 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.1.1.1.2.2 2005/07/26 15:50:47 drewslater Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print.php,v 1.1.1.1.2.1 2005/06/27 17:47:41 lsces Exp $
+ * $Id: print.php,v 1.1.1.1.2.2 2005/07/26 15:50:47 drewslater Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -27,7 +27,7 @@ include( WIKI_PKG_PATH.'lookup_page_inc.php' );
 
 // Now check permissions to access this page
 if (!$gContent->hasUserPermission( 'bit_p_view' )) {
-	$smarty->assign('msg', tra("Permission denied you cannot view this page"));
+	$gBitSmarty->assign('msg', tra("Permission denied you cannot view this page"));
 	$gBitSystem->display( 'error.tpl' );
 	die;
 }
@@ -59,18 +59,18 @@ if (isset($wiki_feature_copyrights) && $wiki_feature_copyrights == 'y' && isset(
 }
 // Verify lock status
 if ($info["flag"] == 'L') {
-	$smarty->assign('lock', true);
+	$gBitSmarty->assign('lock', true);
 } else {
-	$smarty->assign('lock', false);
+	$gBitSmarty->assign('lock', false);
 }
-$smarty->assign('cached_page','n');
+$gBitSmarty->assign('cached_page','n');
 if(isset($gContent->mInfo['wiki_cache']) && $gContent->mInfo['wiki_cache']>0) {$wiki_cache=$gContent->mInfo['wiki_cache'];}
 if($wiki_cache>0) {
  $cache_info = $wikilib->get_cache_info($page);
  $now = date('U');
  if($cache_info['cache_timestamp']+$wiki_cache > $now) {
    $pdata = $cache_info['cache'];
-   $smarty->assign('cached_page','y');
+   $gBitSmarty->assign('cached_page','y');
  } else {
    $pdata = $gContent->parseData();
    $wikilib->update_cache($page,$pdata);
@@ -78,12 +78,12 @@ if($wiki_cache>0) {
 } else {
  $pdata = $gContent->parseData();
 }
-$smarty->assign_by_ref('parsed', $pdata);
-$smarty->assign_by_ref('last_modified', $info["last_modified"]);
+$gBitSmarty->assign_by_ref('parsed', $pdata);
+$gBitSmarty->assign_by_ref('last_modified', $info["last_modified"]);
 if (empty($info["user"])) {
 	$info["user"] = 'anonymous';
 }
-$smarty->assign_by_ref('lastUser', $info["user"]);
+$gBitSmarty->assign_by_ref('lastUser', $info["user"]);
 //Store the page URL to be displayed on print page
 $http_domain = $wikilib->getPreference('http_domain', false);
 $http_port = $wikilib->getPreference('http_port', 80);
@@ -93,13 +93,13 @@ if ($http_domain) {
 	if ($http_port != 80)
 		$prefix .= ':' . $http_port;
 	$prefix .= $https_prefix;
-	$smarty->assign('urlprefix', $prefix);
+	$gBitSmarty->assign('urlprefix', $prefix);
 }
 
 // Display the Index Template
-$smarty->assign('print_page','y');
+$gBitSmarty->assign('print_page','y');
 $gBitSystem->display( 'bitpackage:wiki/show_page.tpl');
-$smarty->assign('show_page_bar', 'n');
-$smarty->assign('print_page', 'y');
-$smarty->display("bitpackage:wiki/print.tpl");
+$gBitSmarty->assign('show_page_bar', 'n');
+$gBitSmarty->assign('print_page', 'y');
+$gBitSmarty->display("bitpackage:wiki/print.tpl");
 ?>

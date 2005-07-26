@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print_pages.php,v 1.1.1.1.2.1 2005/06/27 17:47:46 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print_pages.php,v 1.1.1.1.2.2 2005/07/26 15:50:47 drewslater Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print_pages.php,v 1.1.1.1.2.1 2005/06/27 17:47:46 lsces Exp $
+ * $Id: print_pages.php,v 1.1.1.1.2.2 2005/07/26 15:50:47 drewslater Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -34,7 +34,7 @@ if (isset($_REQUEST["find"])) {
 } else {
 	$find = '';
 }
-$smarty->assign('find', $find);
+$gBitSmarty->assign('find', $find);
 if (isset($_REQUEST["addpage"])) {
 	if (!in_array($_REQUEST["title"], $printpages)) {
 		$printpages[] = $_REQUEST["title"];
@@ -43,11 +43,11 @@ if (isset($_REQUEST["addpage"])) {
 if (isset($_REQUEST["clearpages"])) {
 	$printpages = array();
 }
-$smarty->assign('printpages', $printpages);
+$gBitSmarty->assign('printpages', $printpages);
 $form_printpages = urlencode(serialize($printpages));
-$smarty->assign('form_printpages', $form_printpages);
+$gBitSmarty->assign('form_printpages', $form_printpages);
 $pages = $wikilib->getList(0, -1, 'title_asc', $find);
-$smarty->assign_by_ref('pages', $pages["data"]);
+$gBitSmarty->assign_by_ref('pages', $pages["data"]);
 
 // Display the template
 $gBitSystem->display( 'bitpackage:wiki/print_pages.tpl');

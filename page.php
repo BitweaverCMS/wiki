@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page.php,v 1.1.1.1.2.1 2005/06/27 17:47:42 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page.php,v 1.1.1.1.2.2 2005/07/26 15:50:32 drewslater Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page.php,v 1.1.1.1.2.1 2005/06/27 17:47:42 lsces Exp $
+ * $Id: page.php,v 1.1.1.1.2.2 2005/07/26 15:50:32 drewslater Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -19,26 +19,26 @@
 require_once( '../bit_setup_inc.php' );
 include_once (HTML_PKG_PATH.'htmlpages_lib.php');
 if ($feature_html_pages != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_html_pages");
+	$gBitSmarty->assign('msg', tra("This feature is disabled").": feature_html_pages");
 	$gBitSystem->display( 'error.tpl' );
 	die;
 }
 if (!$gBitUser->hasPermission( 'bit_p_view_html_pages' )) {
-	$smarty->assign('msg', tra("You dont have permission to use this feature"));
+	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
 	$gBitSystem->display( 'error.tpl' );
 	die;
 }
 if (!isset($_REQUEST["title"])) {
-	$smarty->assign('msg', tra("No page indicated"));
+	$gBitSmarty->assign('msg', tra("No page indicated"));
 	$gBitSystem->display( 'error.tpl' );
 	die;
 }
 $page_data = $htmlpageslib->get_html_page($_REQUEST["title"]);
-$smarty->assign('type', $page_data["type"]);
-$smarty->assign('refresh', $page_data["refresh"]);
-$smarty->assign('title', $_REQUEST["title"]);
+$gBitSmarty->assign('type', $page_data["type"]);
+$gBitSmarty->assign('refresh', $page_data["refresh"]);
+$gBitSmarty->assign('title', $_REQUEST["title"]);
 $parsed = $htmlpageslib->parse_html_page($_REQUEST["title"], $page_data["content"]);
-$smarty->assign_by_ref('parsed', $parsed);
+$gBitSmarty->assign_by_ref('parsed', $parsed);
 $section = 'html_pages';
 
 // Display the template

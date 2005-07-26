@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.8 2005/07/25 16:31:25 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.9 2005/07/26 15:50:32 drewslater Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.8 2005/07/25 16:31:25 squareing Exp $
+ * $Id: edit.php,v 1.1.1.1.2.9 2005/07/26 15:50:32 drewslater Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -48,7 +48,7 @@ if( $gContent->isLocked() ) {
 // see if we should show the attachments tab at all
 foreach( $gLibertySystem->mPlugins as $plugin ) {
 	if( ( $plugin['plugin_type'] == 'storage' ) && ( $plugin['is_active'] == 'y' ) ) {
-		$smarty->assign( 'show_attachments','y' );
+		$gBitSmarty->assign( 'show_attachments','y' );
 	}
 }
 
@@ -235,7 +235,7 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 
 if(isset($gContent->mInfo['wiki_cache']) && $gContent->mInfo['wiki_cache']!=0) {
   $wiki_cache = $gContent->mInfo['wiki_cache'];
-  $smarty->assign('wiki_cache',$wiki_cache);
+  $gBitSmarty->assign('wiki_cache',$wiki_cache);
 }
 
 if( !empty( $gContent->mInfo ) ) {
@@ -243,20 +243,20 @@ if( !empty( $gContent->mInfo ) ) {
 	$formInfo['edit'] = !empty( $gContent->mInfo['data'] ) ? $gContent->mInfo['data'] : '';
 }
 
-$smarty->assign('footnote', '');
-$smarty->assign('has_footnote', 'n');
+$gBitSmarty->assign('footnote', '');
+$gBitSmarty->assign('has_footnote', 'n');
 if ($gBitSystem->isFeatureActive( 'feature_wiki_footnotes' ) ) {
 	if( $gBitUser->mUserId ) {
 		$footnote = $gContent->getFootnote( $gBitUser->mUserId );
-		$smarty->assign('footnote', $footnote);
+		$gBitSmarty->assign('footnote', $footnote);
 		if ($footnote)
-			$smarty->assign('has_footnote', 'y');
-		$smarty->assign('parsed_footnote', $wikilib->parseData($footnote));
+			$gBitSmarty->assign('has_footnote', 'y');
+		$gBitSmarty->assign('parsed_footnote', $wikilib->parseData($footnote));
 		if (isset($_REQUEST['footnote'])) {
 			
-			$smarty->assign('parsed_footnote', $wikilib->parseData($_REQUEST['footnote']));
-			$smarty->assign('footnote', $_REQUEST['footnote']);
-			$smarty->assign('has_footnote', 'y');
+			$gBitSmarty->assign('parsed_footnote', $wikilib->parseData($_REQUEST['footnote']));
+			$gBitSmarty->assign('footnote', $_REQUEST['footnote']);
+			$gBitSmarty->assign('has_footnote', 'y');
 			if( empty( $_REQUEST['footnote'] ) ) {
 				$gContent->expungeFootnote( $gBitUser->mUserId );
 			} else {
@@ -303,8 +303,8 @@ if(isset($_REQUEST["preview"])) {
 		include_once( PIGEONHOLES_PKG_PATH.'pigeonholes_processor_inc.php' );
 	}
 
-	$smarty->assign('preview',1);
-	$smarty->assign('title',$_REQUEST["title"]);
+	$gBitSmarty->assign('preview',1);
+	$gBitSmarty->assign('title',$_REQUEST["title"]);
 
 	$parsed = $gContent->parseData($formInfo['edit'], (!empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] :
 		( isset($gContent->mInfo['format_guid']) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ) ) );
@@ -313,23 +313,23 @@ if(isset($_REQUEST["preview"])) {
 	if ($wiki_spellcheck == 'y') {
 		if (isset($_REQUEST["spellcheck"]) && $_REQUEST["spellcheck"] == 'on') {
 			$parsed = $gBitSystem->spellcheckreplace($edit_data, $parsed, $gBitLanguage->mLanguage, 'editwiki');
-			$smarty->assign('spellcheck', 'y');
+			$gBitSmarty->assign('spellcheck', 'y');
 		} else {
-			$smarty->assign('spellcheck', 'n');
+			$gBitSmarty->assign('spellcheck', 'n');
 		}
 	}
-	$smarty->assign_by_ref('parsed', $parsed);
+	$gBitSmarty->assign_by_ref('parsed', $parsed);
 }
 
 if( $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) ) {
 	if (isset($_REQUEST['copyrightTitle'])) {
-		$smarty->assign('copyrightTitle', $_REQUEST["copyrightTitle"]);
+		$gBitSmarty->assign('copyrightTitle', $_REQUEST["copyrightTitle"]);
 	}
 	if (isset($_REQUEST['copyrightYear'])) {
-		$smarty->assign('copyrightYear', $_REQUEST["copyrightYear"]);
+		$gBitSmarty->assign('copyrightYear', $_REQUEST["copyrightYear"]);
 	}
 	if (isset($_REQUEST['copyrightAuthors'])) {
-		$smarty->assign('copyrightAuthors', $_REQUEST["copyrightAuthors"]);
+		$gBitSmarty->assign('copyrightAuthors', $_REQUEST["copyrightAuthors"]);
 	}
 }
 
@@ -449,7 +449,7 @@ if (isset($_REQUEST["fCancel"])) {
 if ($gBitSystem->isFeatureActive( 'feature_wiki_templates' ) && $gBitUser->hasPermission( 'bit_p_use_content_templates' )) {
 	$templates = $wikilib->list_templates('wiki', 0, -1, 'name_asc', '');
 }
-$smarty->assign_by_ref('templates', $templates["data"]);
+$gBitSmarty->assign_by_ref('templates', $templates["data"]);
 
 // External Packages
 // Categories
@@ -478,31 +478,31 @@ if ($gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
 }
 
 if( $gContent->isInStructure() ) {
-	$smarty->assign('showstructs', $gContent->getStructures() );
+	$gBitSmarty->assign('showstructs', $gContent->getStructures() );
 }
 // Flag for 'page bar' that currently 'Edit' mode active
 // so no need to show comments & attachments, but need
 // to show 'wiki quick help'
-$smarty->assign('edit_page', 'y');
+$gBitSmarty->assign('edit_page', 'y');
 // Set variables so the preview page will keep the newly inputted category information
 if (isset($_REQUEST['cat_categorize'])) {
 	if ($_REQUEST['cat_categorize'] == 'on') {
-		$smarty->assign('categ_checked', 'y');
+		$gBitSmarty->assign('categ_checked', 'y');
 	}
 }
 
 // WYSIWYG and Quicktag variable
-$smarty->assign( 'textarea_id', 'editwiki' );
+$gBitSmarty->assign( 'textarea_id', 'editwiki' );
 
 
 // formInfo might be set due to a error on submit
 if( empty( $formInfo ) ) {
 	$formInfo = &$gContent->mInfo;
 }
-$smarty->assign_by_ref( 'pageInfo', $formInfo );
-$smarty->assign_by_ref( 'errors', $gContent->mErrors );
-$smarty->assign( (!empty( $_REQUEST['tab'] ) ? $_REQUEST['tab'] : 'body').'TabSelect', 'tdefault' );
-$smarty->assign('show_page_bar', 'y');
+$gBitSmarty->assign_by_ref( 'pageInfo', $formInfo );
+$gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
+$gBitSmarty->assign( (!empty( $_REQUEST['tab'] ) ? $_REQUEST['tab'] : 'body').'TabSelect', 'tdefault' );
+$gBitSmarty->assign('show_page_bar', 'y');
 
 $gBitSystem->display( 'bitpackage:wiki/edit_page.tpl', 'Edit: '.$gContent->getTitle() );
 ?>

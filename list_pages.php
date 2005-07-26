@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.1.1.1.2.3 2005/07/05 21:17:07 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.1.1.1.2.4 2005/07/26 15:50:32 drewslater Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: list_pages.php,v 1.1.1.1.2.3 2005/07/05 21:17:07 squareing Exp $
+ * $Id: list_pages.php,v 1.1.1.1.2.4 2005/07/26 15:50:32 drewslater Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -58,7 +58,7 @@ if (isset($_REQUEST["submit_mult"]) && isset($_REQUEST["checked"]) && $_REQUEST[
 			}
 		}
 		if( !empty( $errors ) ) {
-			$smarty->assign_by_ref( 'errors', $errors );
+			$gBitSmarty->assign_by_ref( 'errors', $errors );
 		}
 	}
 }
@@ -71,7 +71,7 @@ if ( empty( $_REQUEST["sort_mode"] ) ) {
 } else {
 	$sort_mode = $_REQUEST["sort_mode"];
 }
-$smarty->assign_by_ref('sort_mode', $sort_mode);
+$gBitSmarty->assign_by_ref('sort_mode', $sort_mode);
 // If offset is set use it if not then use offset =0
 // use the maxRecords php variable to set the limit
 // if sortMode is not set then use last_modified_desc
@@ -84,7 +84,7 @@ if (isset($_REQUEST['page'])) {
 	$page = &$_REQUEST['page'];
 	$offset = ($page - 1) * $maxRecords;
 }
-$smarty->assign_by_ref('offset', $offset);
+$gBitSmarty->assign_by_ref('offset', $offset);
 if (isset($_REQUEST["find"])) {
 	$find = $_REQUEST["find"];
 // If we leave $_REQUEST["find"] set, it also seems to affect other places
@@ -93,29 +93,29 @@ if (isset($_REQUEST["find"])) {
 } else {
 	$find = '';
 }
-$smarty->assign_by_ref('find', $find);
+$gBitSmarty->assign_by_ref('find', $find);
 // Get a list of last changes to the Wiki database
 $Content = new BitPage();
 $sort_mode = preg_replace( '/^user_/', 'creator_user_', $sort_mode );
 $listpages = $Content->getList( $offset, $maxRecords, $sort_mode, $find, NULL, TRUE );
 // If there're more records then assign next_offset
 $cant_pages = ceil($listpages["cant"] / $maxRecords);
-$smarty->assign_by_ref('cant_pages', $cant_pages);
-$smarty->assign_by_ref('pagecount', $listpages['cant']);
-$smarty->assign('actual_page', 1 + ($offset / $maxRecords));
+$gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
+$gBitSmarty->assign_by_ref('pagecount', $listpages['cant']);
+$gBitSmarty->assign('actual_page', 1 + ($offset / $maxRecords));
 if ($listpages["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
+	$gBitSmarty->assign('next_offset', $offset + $maxRecords);
 } else {
-	$smarty->assign('next_offset', -1);
+	$gBitSmarty->assign('next_offset', -1);
 }
 // If offset is > 0 then prev_offset
 if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
+	$gBitSmarty->assign('prev_offset', $offset - $maxRecords);
 } else {
-	$smarty->assign('prev_offset', -1);
+	$gBitSmarty->assign('prev_offset', -1);
 }
 
-$smarty->assign_by_ref('listpages', $listpages["data"]);
+$gBitSmarty->assign_by_ref('listpages', $listpages["data"]);
 //print_r($listpages["data"]);
 
 // Display the template
