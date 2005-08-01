@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.1.1.1.2.4 2005/07/26 15:50:32 drewslater Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.1.1.1.2.5 2005/08/01 12:44:02 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: orphan_pages.php,v 1.1.1.1.2.4 2005/07/26 15:50:32 drewslater Exp $
+ * $Id: orphan_pages.php,v 1.1.1.1.2.5 2005/08/01 12:44:02 lsces Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -17,7 +17,6 @@
  * required setup
  */
 require_once( '../bit_setup_inc.php' );
-include_once( WIKI_PKG_PATH.'BitPage.php' );
 include_once( WIKI_PKG_PATH.'BitPage.php' );
 $BitPage = new BitPage();
 
