@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_comm_received_objects.php,v 1.2 2005/06/28 07:46:28 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_comm_received_objects.php,v 1.3 2005/08/01 18:42:06 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: mod_comm_received_objects.php,v 1.2 2005/06/28 07:46:28 spiderr Exp $
+ * $Id: mod_comm_received_objects.php,v 1.3 2005/08/01 18:42:06 squareing Exp $
  * @package wiki
  * @subpackage modules
  */
@@ -19,5 +19,5 @@
 require_once( WIKI_PKG_PATH.'BitPage.php' );
 global $wikilib;
 $ranking = $wikilib->list_received_pages(0, -1, $sort_mode = 'title_asc', '');
-$smarty->assign('modReceivedPages', $ranking["cant"]);
+$gBitSmarty->assign('modReceivedPages', $ranking["cant"]);
 ?>

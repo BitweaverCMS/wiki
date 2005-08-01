@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/rename_page.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/rename_page.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: rename_page.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+ * $Id: rename_page.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -22,30 +22,30 @@ include_once( WIKI_PKG_PATH.'BitPage.php');
 $gBitSystem->verifyPackage( 'wiki' );
 // Get the page from the request var or default it to HomePage
 if (!isset($_REQUEST["page"])) {
-	$smarty->assign('msg', tra("No page indicated"));
+	$gBitSmarty->assign('msg', tra("No page indicated"));
 	$gBitSystem->display( 'error.tpl' );
 	die;
 } else {
 	$page = $_REQUEST["page"];
-	$smarty->assign_by_ref('page', $_REQUEST["page"]);
+	$gBitSmarty->assign_by_ref('page', $_REQUEST["page"]);
 }
 include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 // Now check permissions to access this page
 if (!$gBitUser->hasPermission( 'bit_p_rename' )) {
-	$smarty->assign('msg', tra("Permission denied you cannot remove versions from this page"));
+	$gBitSmarty->assign('msg', tra("Permission denied you cannot remove versions from this page"));
 	$gBitSystem->display( 'error.tpl' );
 	die;
 }
 // If the page doesn't exist then display an error
 if (!$wikilib->pageExists($page,true)) { // true: casesensitive check here
-	$smarty->assign('msg', tra("Page cannot be found"));
+	$gBitSmarty->assign('msg', tra("Page cannot be found"));
 	$gBitSystem->display( 'error.tpl' );
 	die;
 }
 if (isset($_REQUEST["rename"])) {
 	
 	if (!$wikilib->wiki_rename_page($_REQUEST['oldpage'], $_REQUEST['newpage'])) {
-		$smarty->assign('msg', tra("Cannot rename page maybe new page already exists"));
+		$gBitSmarty->assign('msg', tra("Cannot rename page maybe new page already exists"));
 		$gBitSystem->display( 'error.tpl' );
 		die;
 	}
@@ -54,5 +54,5 @@ if (isset($_REQUEST["rename"])) {
 }
 
 $gBitSystem->display( 'bitpackage:wiki/rename_page.tpl');
-$smarty->assign('show_page_bar', 'y');
+$gBitSmarty->assign('show_page_bar', 'y');
 ?>

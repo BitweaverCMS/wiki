@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.php,v 1.3 2005/07/25 20:02:58 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.php,v 1.4 2005/08/01 18:42:06 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: mod_top_pages.php,v 1.3 2005/07/25 20:02:58 squareing Exp $
+ * $Id: mod_top_pages.php,v 1.4 2005/08/01 18:42:06 squareing Exp $
  * @package wiki
  * @subpackage modules
  */
@@ -21,5 +21,5 @@ global $wikilib, $modlib;
 
 $params = $modlib->get_module_params('bitpackage:blogs/mod_top_visited_blogs.tpl', $gQueryUserId);
 $ranking = $wikilib->getList(0, $params['rows'], 'hits_desc', '',$gQueryUserId,' `hits` IS NOT NULL ');
-$smarty->assign('modTopPages', $ranking["data"]);
+$gBitSmarty->assign('modTopPages', $ranking["data"]);
 ?>

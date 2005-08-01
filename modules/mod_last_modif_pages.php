@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_last_modif_pages.php,v 1.2 2005/06/28 07:46:28 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_last_modif_pages.php,v 1.3 2005/08/01 18:42:06 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: mod_last_modif_pages.php,v 1.2 2005/06/28 07:46:28 spiderr Exp $
+ * $Id: mod_last_modif_pages.php,v 1.3 2005/08/01 18:42:06 squareing Exp $
  * @package wiki
  * @subpackage modules
  */
@@ -20,6 +20,6 @@ global $gQueryUserId, $module_rows, $module_params, $wikilib;
 require_once( WIKI_PKG_PATH.'BitPage.php' );
 $ranking = $wikilib->getList(0, $module_rows, 'last_modified_desc', NULL, $gQueryUserId );
 
-$smarty->assign('modLastModif', $ranking["data"]);
-$smarty->assign('maxlen', isset($module_params["maxlen"]) ? $module_params["maxlen"] : 0);
+$gBitSmarty->assign('modLastModif', $ranking["data"]);
+$gBitSmarty->assign('maxlen', isset($module_params["maxlen"]) ? $module_params["maxlen"] : 0);
 ?>

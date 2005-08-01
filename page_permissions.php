@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_permissions.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_permissions.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_permissions.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+ * $Id: page_permissions.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -26,7 +26,7 @@ include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 	$gBitSystem->verifyPackage( 'wiki' );
 	// Get the page from the request var or default it to HomePage
 	if( !$gContent->isValid() ) {
-		$smarty->assign('msg', tra("No page indicated"));
+		$gBitSmarty->assign('msg', tra("No page indicated"));
 		$gBitSystem->display( 'error.tpl' );
 		die;
 	}
@@ -35,13 +35,13 @@ include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 	if ($wiki_creator_admin == 'y') {
 		if( $gContent->isOwner() ) {
 			$bit_p_admin_wiki = 'y';
-			$smarty->assign('bit_p_admin_wiki', 'y');
+			$gBitSmarty->assign('bit_p_admin_wiki', 'y');
 		}
 	}
 
 	// Now check permissions to access this page
 	if (!$gBitUser->hasPermission( 'bit_p_admin_wiki' )) {
-		$smarty->assign('msg', tra("Permission denied you cannot assign permissions for this page"));
+		$gBitSmarty->assign('msg', tra("Permission denied you cannot assign permissions for this page"));
 		$gBitSystem->display( 'error.tpl' );
 		die;
 	}
@@ -55,7 +55,7 @@ include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 	}
 	
 	$emails = $notificationlib->get_mail_events('wiki_page_changes', $gContent->mInfo['content_type_guid'] . $gContent->mContentId);
-	$smarty->assign('emails', $emails);
+	$gBitSmarty->assign('emails', $emails);
 
 // Process the form to assign a new permission to this page
 if (isset($_REQUEST["assign"])) {
@@ -88,18 +88,18 @@ if (isset($_REQUEST["action"])) {
 }
 // Now we have to get the individual page permissions if any
 $page_perms = $gBitUser->get_object_permissions( $gContent->mContentId, $gContent->mInfo['content_type_guid'] );
-$smarty->assign_by_ref('page_perms', $page_perms);
+$gBitSmarty->assign_by_ref('page_perms', $page_perms);
 // Get a list of groups
 $listHash = array( 'sort_mode' => 'group_name_asc' );
 $groups = $gBitUser->getAllGroups( $listHash );
-$smarty->assign_by_ref('groups', $groups["data"]);
+$gBitSmarty->assign_by_ref('groups', $groups["data"]);
 // Get a list of permissions
 $perms = $gBitUser->getGroupPermissions( '', WIKI_PKG_NAME );
-$smarty->assign_by_ref('perms', $perms);
+$gBitSmarty->assign_by_ref('perms', $perms);
 
 
-$smarty->assign( (!empty( $_REQUEST['tab'] ) ? $_REQUEST['tab'] : 'permissions').'TabSelect', 'tdefault' );
+$gBitSmarty->assign( (!empty( $_REQUEST['tab'] ) ? $_REQUEST['tab'] : 'permissions').'TabSelect', 'tdefault' );
 
-$smarty->assign('show_page_bar', 'y');
+$gBitSmarty->assign('show_page_bar', 'y');
 $gBitSystem->display( 'bitpackage:wiki/page_permissions.tpl');
 ?>

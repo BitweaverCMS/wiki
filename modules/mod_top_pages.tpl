@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.tpl,v 1.3 2005/07/25 20:02:58 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.tpl,v 1.4 2005/08/01 18:42:06 squareing Exp $ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'wiki' )}
 	{if $nonums eq 'y'}

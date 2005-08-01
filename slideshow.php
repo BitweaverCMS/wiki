@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: slideshow.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+ * $Id: slideshow.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -35,11 +35,11 @@ if (!isset($_REQUEST["page"])) {
 	$_REQUEST["page"] = $wikiHomePage;
 
 	$page = $wikiHomePage;
-	$smarty->assign('page', $wikiHomePage);
+	$gBitSmarty->assign('page', $wikiHomePage);
 } else {
 	$page = $_REQUEST["page"];
 
-	$smarty->assign_by_ref('page', $_REQUEST["page"]);
+	$gBitSmarty->assign_by_ref('page', $_REQUEST["page"]);
 }
 
 require_once ( WIKI_PKG_PATH.'page_setup_inc.php' );
@@ -58,7 +58,7 @@ if ($gBitUser->hasPermission( 'bit_p_admin_wiki' )) {
 
 // If the page doesn't exist then display an error
 if (!$wikilib->pageExists($page)) {
-	$smarty->assign('msg', tra("Page cannot be found"));
+	$gBitSmarty->assign('msg', tra("Page cannot be found"));
 
 	$gBitSystem->display( 'error.tpl' );
 	die;
@@ -66,7 +66,7 @@ if (!$wikilib->pageExists($page)) {
 
 // Now check permissions to access this page
 if (!$gBitUser->hasPermission( 'bit_p_view' )) {
-	$smarty->assign('msg', tra("Permission denied you cannot view this page"));
+	$gBitSmarty->assign('msg', tra("Permission denied you cannot view this page"));
 
 	$gBitSystem->display( 'error.tpl' );
 	die;
@@ -114,20 +114,20 @@ $info = $gContent->mInfo;
 
 // Verify lock status
 if ($info["flag"] == 'L') {
-	$smarty->assign('lock', true);
+	$gBitSmarty->assign('lock', true);
 } else {
-	$smarty->assign('lock', false);
+	$gBitSmarty->assign('lock', false);
 }
 
 // If not locked and last version is user version then can undo
-$smarty->assign('canundo', 'n');
+$gBitSmarty->assign('canundo', 'n');
 
 if ($info["flag"] != 'L' && (($gBitUser->hasPermission( 'bit_p_edit' ) && $info["user"] == $user) || ($gBitUser->hasPermission( 'bit_p_remove' )))) {
-	$smarty->assign('canundo', 'y');
+	$gBitSmarty->assign('canundo', 'y');
 }
 
 if ($gBitUser->hasPermission( 'bit_p_admin_wiki' )) {
-	$smarty->assign('canundo', 'y');
+	$gBitSmarty->assign('canundo', 'y');
 }
 
 //Now process the pages
@@ -144,8 +144,8 @@ if (!isset($_REQUEST["slide"])) {
 	$_REQUEST["slide"] = 0;
 }
 
-$smarty->assign('prev_slide', $_REQUEST["slide"] - 1);
-$smarty->assign('next_slide', $_REQUEST["slide"] + 1);
+$gBitSmarty->assign('prev_slide', $_REQUEST["slide"] - 1);
+$gBitSmarty->assign('next_slide', $_REQUEST["slide"] + 1);
 
 if (isset($reqs[1][$_REQUEST["slide"]])) {
 	$slide_title = $reqs[1][$_REQUEST["slide"]];
@@ -167,34 +167,34 @@ if (isset($reqs[1][$_REQUEST["slide"] + 1])) {
 	$slide_next_title = 'next';
 }
 
-$smarty->assign('slide_prev_title', $slide_prev_title);
-$smarty->assign('slide_next_title', $slide_next_title);
+$gBitSmarty->assign('slide_prev_title', $slide_prev_title);
+$gBitSmarty->assign('slide_next_title', $slide_next_title);
 
-$smarty->assign('slide_title', $slide_title);
-$smarty->assign('slide_data', $slide_data);
+$gBitSmarty->assign('slide_title', $slide_title);
+$gBitSmarty->assign('slide_data', $slide_data);
 
 $total_slides = count($slides) - 1;
 $current_slide = $_REQUEST["slide"] + 1;
-$smarty->assign('total_slides', $total_slides);
-$smarty->assign('current_slide', $current_slide);
+$gBitSmarty->assign('total_slides', $total_slides);
+$gBitSmarty->assign('current_slide', $current_slide);
 
-//$smarty->assign_by_ref('last_modified',date("l d of F, Y  [H:i:s]",$info["last_modified"]));
-$smarty->assign_by_ref('last_modified', $info["last_modified"]);
+//$gBitSmarty->assign_by_ref('last_modified',date("l d of F, Y  [H:i:s]",$info["last_modified"]));
+$gBitSmarty->assign_by_ref('last_modified', $info["last_modified"]);
 
 if (empty($info["user"])) {
 	$info["user"] = 'anonymous';
 }
 
-$smarty->assign_by_ref('lastUser', $info["user"]);
+$gBitSmarty->assign_by_ref('lastUser', $info["user"]);
 
 $section = 'wiki';
 
-$smarty->assign('wiki_extras', 'y');
+$gBitSmarty->assign('wiki_extras', 'y');
 
 
 
 // Display the Index Template
-$smarty->assign('show_page_bar', 'y');
-$smarty->display("bitpackage:wiki/slideshow.tpl");
+$gBitSmarty->assign('show_page_bar', 'y');
+$gBitSmarty->display("bitpackage:wiki/slideshow.tpl");
 
 ?>

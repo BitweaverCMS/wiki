@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.3 2005/07/25 20:02:57 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.4 2005/08/01 18:42:04 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit_book.php,v 1.3 2005/07/25 20:02:57 squareing Exp $
+ * $Id: edit_book.php,v 1.4 2005/08/01 18:42:04 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -25,7 +25,7 @@ if( isset( $_COOKIE['book_section'] ) && $_COOKIE['book_section'] == 'o' ) {
 } else {
 	$book_section = 'none';
 }
-$smarty->assign( 'book_section',$book_section );
+$gBitSmarty->assign( 'book_section',$book_section );
 
 include_once( WIKI_PKG_PATH.'lookup_page_inc.php');
 include_once( LIBERTY_PKG_PATH.'LibertyStructure.php');
@@ -35,12 +35,12 @@ global $gStructure;
 
 // check what tab is active
 if( isset( $_REQUEST['tab'] ) ) {
-	$smarty->assign( $_REQUEST['tab'].'TabSelect','tdefault' );
+	$gBitSmarty->assign( $_REQUEST['tab'].'TabSelect','tdefault' );
 }
 
 if( isset($_REQUEST["createstructure"]) ) {
 	if ((empty($_REQUEST['name']))) {
-		$smarty->assign('msg', tra("You must specify a name."));
+		$gBitSmarty->assign('msg', tra("You must specify a name."));
 		$gBitSystem->display( 'error.tpl' );
 		die;
 	}
@@ -64,7 +64,7 @@ if( isset($_REQUEST["createstructure"]) ) {
 		$structure_id = $gStructure->storeNode( $structureHash );
 		//Cannot create a structure if a structure already exists
 		if (!isset($structure_id)) {
-			$smarty->assign('msg', $_REQUEST['name'] . " " . tra("page not added (Exists)"));
+			$gBitSmarty->assign('msg', $_REQUEST['name'] . " " . tra("page not added (Exists)"));
 			$gBitSystem->display( 'error.tpl' );
 			die;
 		}

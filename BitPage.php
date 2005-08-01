@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.5 2005/07/25 20:02:57 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.6 2005/08/01 18:42:04 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.5 $ $Date: 2005/07/25 20:02:57 $ $Author: squareing $
+ * @version $Revision: 1.6 $ $Date: 2005/08/01 18:42:04 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.5 2005/07/25 20:02:57 squareing Exp $
+ * $Id: BitPage.php,v 1.6 2005/08/01 18:42:04 squareing Exp $
  */
 
 /**
@@ -151,20 +151,20 @@ class BitPage extends LibertyAttachable {
 				$emails = $notificationlib->get_mail_events('wiki_page_changes', $this->mInfo['content_type_guid'] . $this->mContentId);
 
 				foreach ($emails as $email) {
-					global $smarty;
-					$smarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
+					global $gBitSmarty;
+					$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
 
-					$smarty->assign('mail_page', $this->mInfo['title'] );
-					$smarty->assign('mail_date', date("U"));
-					$smarty->assign('mail_user', $this->mInfo['modifier_user'] );
-					$smarty->assign('mail_comment', $this->mInfo['comment']);
-					$smarty->assign('mail_last_version', 1);
-					$smarty->assign('mail_data', $this->mInfo['data'] );
+					$gBitSmarty->assign('mail_page', $this->mInfo['title'] );
+					$gBitSmarty->assign('mail_date', date("U"));
+					$gBitSmarty->assign('mail_user', $this->mInfo['modifier_user'] );
+					$gBitSmarty->assign('mail_comment', $this->mInfo['comment']);
+					$gBitSmarty->assign('mail_last_version', 1);
+					$gBitSmarty->assign('mail_data', $this->mInfo['data'] );
 					$foo = parse_url($_SERVER["REQUEST_URI"]);
 					$machine = httpPrefix(). dirname( $foo["path"] );
-					$smarty->assign('mail_machine', $machine);
-					$smarty->assign('mail_pagedata', $this->mInfo['data'] );
-					$mail_data = $smarty->fetch('bitpackage:wiki/wiki_change_notification.tpl');
+					$gBitSmarty->assign('mail_machine', $machine);
+					$gBitSmarty->assign('mail_pagedata', $this->mInfo['data'] );
+					$mail_data = $gBitSmarty->fetch('bitpackage:wiki/wiki_change_notification.tpl');
 
 					if( $this->getPreference('wiki_forum') ) {
 						include_once( LIBERTY_PKG_PATH.'LibertyComment.php' );
@@ -186,26 +186,26 @@ this watch code is only half fixed - spiderr
 					foreach ($nots as $not) {
 						if ($wiki_watch_editor != 'y' && $not['user_id'] == $user)
 							break;
-						$smarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
+						$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
 
-						$smarty->assign('mail_page', $pageName);
-						$smarty->assign('mail_date', date("U"));
-						$smarty->assign('mail_user', $edit_user);
-						$smarty->assign('mail_comment', $edit_comment);
-						$smarty->assign('mail_last_version', $version);
-						$smarty->assign('mail_data', $edit_data);
-						$smarty->assign('mail_hash', $not['hash']);
+						$gBitSmarty->assign('mail_page', $pageName);
+						$gBitSmarty->assign('mail_date', date("U"));
+						$gBitSmarty->assign('mail_user', $edit_user);
+						$gBitSmarty->assign('mail_comment', $edit_comment);
+						$gBitSmarty->assign('mail_last_version', $version);
+						$gBitSmarty->assign('mail_data', $edit_data);
+						$gBitSmarty->assign('mail_hash', $not['hash']);
 						$foo = parse_url($_SERVER["REQUEST_URI"]);
 						$machine = httpPrefix(). dirname( $foo["path"] );
-						$smarty->assign('mail_machine', $machine);
+						$gBitSmarty->assign('mail_machine', $machine);
 						$parts = explode('/', $foo['path']);
 
 						if (count($parts) > 1)
 							unset ($parts[count($parts) - 1]);
 
-						$smarty->assign('mail_machine_raw', httpPrefix(). implode('/', $parts));
-						$smarty->assign('mail_pagedata', $edit_data);
-						$mail_data = $smarty->fetch('bitpackage:wiki/user_watch_wiki_page_changed.tpl');
+						$gBitSmarty->assign('mail_machine_raw', httpPrefix(). implode('/', $parts));
+						$gBitSmarty->assign('mail_pagedata', $edit_data);
+						$mail_data = $gBitSmarty->fetch('bitpackage:wiki/user_watch_wiki_page_changed.tpl');
 						@mail($not['email'], tra('Wiki page'). ' ' . $pageName . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
 					}
 				}
