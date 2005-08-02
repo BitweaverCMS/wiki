@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.10 2005/07/26 15:50:32 drewslater Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.11 2005/08/02 14:14:08 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.10 $ $Date: 2005/07/26 15:50:32 $ $Author: drewslater $
+ * @version $Revision: 1.2.2.11 $ $Date: 2005/08/02 14:14:08 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.10 2005/07/26 15:50:32 drewslater Exp $
+ * $Id: BitPage.php,v 1.2.2.11 2005/08/02 14:14:08 lsces Exp $
  */
 
 /**
@@ -1483,9 +1483,9 @@ class WikiLib extends BitPage {
 		}
 
 		$query = "select `name` ,`created`,tcts.`template_id` from `".BIT_DB_PREFIX."tiki_content_templates` tct, `".BIT_DB_PREFIX."tiki_content_templates_sections` tcts ";
-		$query.= " where tcts.`template_id`=tct.`template_id` and `section`=? $mid order by ".$this->convert_sortmode($sort_mode);
+		$query.= " where tcts.`template_id`=tct.`template_id` and tcts.`section`=? $mid order by ".$this->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_content_templates` tct, `".BIT_DB_PREFIX."tiki_content_templates_sections` tcts ";
-		$query_cant.= "where tcts.`template_id`=tct.`template_id` and `section`=? $mid";
+		$query_cant.= "where tcts.`template_id`=tct.`template_id` and tcts.`section`=? $mid";
 		$result = $this->query($query,$bindvars,$maxRecords,$offset);
 		$cant = $this->getOne($query_cant,$bindvars);
 		$ret = array();
