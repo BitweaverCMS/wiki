@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.11 2005/08/02 14:14:08 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.12 2005/08/02 17:17:28 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.11 $ $Date: 2005/08/02 14:14:08 $ $Author: lsces $
+ * @version $Revision: 1.2.2.12 $ $Date: 2005/08/02 17:17:28 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.11 2005/08/02 14:14:08 lsces Exp $
+ * $Id: BitPage.php,v 1.2.2.12 2005/08/02 17:17:28 lsces Exp $
  */
 
 /**
@@ -495,7 +495,7 @@ this watch code is only half fixed - spiderr
 					$ret = "<a title=\"$desc\" href=\"" . BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
 				} else {
 					if( $gBitUser->hasPermission( 'bit_p_edit' ) ) {
-						$ret = "<a href=\"".WIKI_PKG_URL."edit.php?page_id=" . urlencode( $exists['title'] ). "\" class=\"create\">$pPageName</a>";
+						$ret = "<a href=\"".WIKI_PKG_URL."edit.php?page=" . urlencode( $exists['title'] ). "\" class=\"create\">$pPageName</a>";
 					} else {
 						$ret = $pPageName;
 					}
