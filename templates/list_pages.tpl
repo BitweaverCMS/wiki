@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.1.1.1.2.4 2005/07/18 09:30:36 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.1.1.1.2.5 2005/08/04 08:46:44 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -29,12 +29,10 @@
 				</ul>
 			</div>
 
-			<div class="clear"></div>
-
 			<input type="hidden" name="offset" value="{$offset}" />
 			<input type="hidden" name="sort_mode" value="{$sort_mode}" />
 
-			<table class="data">
+			<table class="clear data">
 				<caption>{tr}WikiPages Listing{/tr} <span class="total">[ {$pagecount} ]</span></caption>
 				<tr>
 					{*  at the moment, the only working option to use the checkboxes for is deleting pages. so for now the checkboxes are visible iff $bit_p_remove is set. Other applications make sense as well (categorize, convert to pdf, etc). Add necessary corresponding permission here: *}
