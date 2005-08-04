@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.9 2005/07/26 15:50:32 drewslater Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.10 2005/08/04 08:45:35 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.9 2005/07/26 15:50:32 drewslater Exp $
+ * $Id: edit.php,v 1.1.1.1.2.10 2005/08/04 08:45:35 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -460,7 +460,7 @@ if ($gBitSystem->isPackageActive( 'categories' ) ) {
 
 // Pigeonholes
 if( $gBitSystem->isPackageActive( 'pigeonholes' ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
-	include_once( PIGEONHOLES_PKG_PATH.'pigeonholes_processor_inc.php' );
+	include_once( PIGEONHOLES_PKG_PATH.'get_pigeonholes_pathlist_inc.php' );
 }
 
 // Nexus menus
