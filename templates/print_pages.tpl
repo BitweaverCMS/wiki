@@ -59,7 +59,7 @@
 		<div class="other box">
 		<div class="boxtitle">{tr}Filter{/tr}</div>
 		<div class="boxcontent">
-		<form action="{$gBitLoc.WIKI_PKG_URL}print_pages.php" method="post">
+		<form action="{$smarty.const.WIKI_PKG_URL}print_pages.php" method="post">
 		<input type="hidden" name="sendarticles" value="{$form_sendarticles|escape}" />
 		<input type="hidden" name="printpages" value="{$form_printpages|escape}" />
 		{tr}Filter{/tr}:&nbsp;<input type="text" name="find" value="{$find|escape}" />&nbsp;<input type="submit" name="filter" value="{tr}filter{/tr}" /><br />
@@ -70,7 +70,7 @@
 		<div class="other box">
 		<div class="boxtitle">{tr}Print Wiki Pages{/tr}</div>
 		<div class="boxcontent">
-		<form action="{$gBitLoc.WIKI_PKG_URL}print_pages.php" method="post">
+		<form action="{$smarty.const.WIKI_PKG_URL}print_pages.php" method="post">
 		<input type="hidden" name="printpages" value="{$form_printpages|escape}" />
 		<input type="hidden" name="find" value="{$find|escape}" />
 		<select name="title">
@@ -93,7 +93,7 @@
 		</div>
 
 		<div class="boxcontent">
-		<form method="post" action="{$gBitLoc.WIKI_PKG_URL}print_multi_pages.php">
+		<form method="post" action="{$smarty.const.WIKI_PKG_URL}print_multi_pages.php">
 		<input type="hidden" name="printpages" value="{$form_printpages|escape}" />
 		<input type="submit" name="print" value="{tr}print{/tr}" />
 		</form>

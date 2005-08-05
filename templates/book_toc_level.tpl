@@ -1,1 +1,1 @@
-<li><a href="{$gBitLoc.WIKI_PKG_URL}index.php?structure_id={$that.structure_id}">{$that.title}</a></li>{if $that.sub}<ul>{section name=xitem loop=$that.sub}{include file="structures_toc_level.tpl" that=$that.sub[xitem]}{/section}</ul>{/if}
+<li><a href="{$smarty.const.WIKI_PKG_URL}index.php?structure_id={$that.structure_id}">{$that.title}</a></li>{if $that.sub}<ul>{section name=xitem loop=$that.sub}{include file="structures_toc_level.tpl" that=$that.sub[xitem]}{/section}</ul>{/if}

@@ -6,4 +6,4 @@
 {tr}Comment:{/tr} {$mail_comment}
 
 {tr}If you don't want to receive these notifications follow this link:{/tr}
-{$mail_machine_raw}/{$gBitLoc.USERS_PKG_URL}user_watches.php?hash={$mail_hash}
+{$mail_machine_raw}/{$smarty.const.USERS_PKG_URL}user_watches.php?hash={$mail_hash}

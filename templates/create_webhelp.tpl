@@ -1,13 +1,13 @@
-<a href="{$gBitLoc.WIKI_PKG_URL}create_webhelp.php" class="pagetitle">{tr}Create WebHelp{/tr}</a>
+<a href="{$smarty.const.WIKI_PKG_URL}create_webhelp.php" class="pagetitle">{tr}Create WebHelp{/tr}</a>
 
 Here you can generate static HTML files from Wiki Book.
 
 <br /><br />
 
 {if  $generated eq 'y'}
-<a href="{$gBitLoc.BITHELP_PKG_URL}{$dir}/index.html">{tr}You can browse the generated WebHelp here{/tr}</a><br /><br />
+<a href="{$smarty.const.BITHELP_PKG_URL}{$dir}/index.html">{tr}You can browse the generated WebHelp here{/tr}</a><br /><br />
 {/if}
-<form method="post" action="{$gBitLoc.WIKI_PKG_URL}create_webhelp.php">
+<form method="post" action="{$smarty.const.WIKI_PKG_URL}create_webhelp.php">
 <table class="panel">
   <tr>
   	<td>{tr}Structure{/tr}</td>

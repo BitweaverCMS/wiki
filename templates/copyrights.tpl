@@ -35,9 +35,9 @@
 					<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
 					<input type="hidden" name="copyright_id" value="{$copyrights[i].copyright_id|escape}" />
 					<input type="submit" name="editcopyright" value="{tr}edit{/tr}" />
-					<a href="{$gBitLoc.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=up&amp;copyright_id={$copyrights[i].copyright_id}">{biticon ipackage=liberty iname="nav_up" iexplain="move up"}</a>
-					<a href="{$gBitLoc.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=down&amp;copyright_id={$copyrights[i].copyright_id}">{biticon ipackage=liberty iname="nav_down" iexplain="move down"}</a>
-					<a title="{tr}Delete this copyright{/tr}" href="{$gBitLoc.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=delete&amp;copyright_id={$copyrights[i].copyright_id}" 
+					<a href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=up&amp;copyright_id={$copyrights[i].copyright_id}">{biticon ipackage=liberty iname="nav_up" iexplain="move up"}</a>
+					<a href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=down&amp;copyright_id={$copyrights[i].copyright_id}">{biticon ipackage=liberty iname="nav_down" iexplain="move down"}</a>
+					<a title="{tr}Delete this copyright{/tr}" href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=delete&amp;copyright_id={$copyrights[i].copyright_id}" 
 						onclick="return confirm('{tr}Are you sure you want to delete this copyright?{/tr}')">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
 				</div>
 			{/form}
