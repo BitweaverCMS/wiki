@@ -72,16 +72,16 @@ array( 'PHP' => '
 	global $gBitSystem;
 	require_once( WIKI_PKG_PATH."BitPage.php" );
 	$max = $gBitSystem->GetOne( "SELECT MAX(`page_id`) FROM `'.BIT_DB_PREFIX.'tiki_pages`" );
-	$gBitSystem->mDb->mDb->CreateSequence( "tiki_pages_page_id_seq", $max + 1 );
+	$gBitDb->CreateSequence( "tiki_pages_page_id_seq", $max + 1 );
 	$query = "SELECT uu.`user_id`, uu2.`user_id` AS modifier_user_id, tp.`lastModif` AS created, tp.`lastModif` AS `last_modified`, tp.`data`, tp.`pageName` AS `title`, tp.`ip`, tp.`hits`
 			  FROM `'.BIT_DB_PREFIX.'tiki_pages` tp INNER JOIN `'.BIT_DB_PREFIX.'users_users` uu ON( tp.`creator`=uu.`login` ) INNER JOIN `'.BIT_DB_PREFIX.'users_users` uu2 ON( tp.`user`=uu2.`login` )";
 	if( $rs = $gBitSystem->query( $query ) ) {
 		while( !$rs->EOF ) {
-			$conId = $gBitSystem->mDb->mDb->GenID( "tiki_content_id_seq" );
+			$conId = $gBitSystem->GenID( "tiki_content_id_seq" );
 			$rs->fields["content_id"] = $conId;
 			$rs->fields["content_type_guid"] = BITPAGE_CONTENT_TYPE_GUID;
 			$rs->fields["format_guid"] = PLUGIN_GUID_TIKIWIKI;
-			$gBitSystem->mDb->associateInsert( "tiki_content", $rs->fields );
+			$gBitSystem->associateInsert( "tiki_content", $rs->fields );
 			$gBitSystem->query( "UPDATE `'.BIT_DB_PREFIX.'tiki_pages` SET `content_id`=? WHERE `pageName`=?", array( $conId, $rs->fields["title"] ) );
 			if( $w_use_dir = $gBitSystem->getPreference("w_use_dir") ) {
 				$page = new BitPage( NULL, $conId );

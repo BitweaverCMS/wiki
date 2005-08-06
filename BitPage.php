@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.16 2005/08/06 08:08:30 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.17 2005/08/06 18:31:29 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.16 $ $Date: 2005/08/06 08:08:30 $ $Author: lsces $
+ * @version $Revision: 1.2.2.17 $ $Date: 2005/08/06 18:31:29 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.16 2005/08/06 08:08:30 lsces Exp $
+ * $Id: BitPage.php,v 1.2.2.17 2005/08/06 18:31:29 lsces Exp $
  */
 
 /**
@@ -105,7 +105,7 @@ class BitPage extends LibertyAttachable {
 	* @access public
 	**/
 	function store( &$pParamHash ) {
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 		if( $this->verify( $pParamHash ) && LibertyAttachable::store( $pParamHash ) ) {
 			if(isset($pParamHash['wiki_cache']) ) {
 				$this->setPageCache( $pParamHash['wiki_cache'] );
@@ -182,7 +182,7 @@ this watch code is only half fixed - spiderr
 */
 			}
 		}
-		$this->mDb->CompleteTrans();
+		$this->CompleteTrans();
 		return( count( $this->mErrors ) == 0 );
 	}
 	// }}}
@@ -286,15 +286,15 @@ this watch code is only half fixed - spiderr
 	function expunge() {
 		$ret = FALSE;
 		if( $this->isValid() ) {
-			$this->mDb->StartTrans();
+			$this->StartTrans();
 			$this->expungeVersion(); // will nuke all versions
 			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_pages` WHERE `content_id` = ?";
 			$result = $this->query( $query, array( $this->mContentId ) );
 			if( LibertyAttachable::expunge() ) {
 				$ret = TRUE;
-				$this->mDb->CompleteTrans();
+				$this->CompleteTrans();
 			} else {
-				$this->mDb->RollbackTrans();
+				$this->RollbackTrans();
 			}
 		}
 		return $ret;
@@ -579,7 +579,7 @@ this watch code is only half fixed - spiderr
 		$ret = FALSE;
 		if( $this->isValid() ) {
 			global $gBitUser;
-			$this->mDb->StartTrans();
+			$this->StartTrans();
 			// JHT - cache invalidation appears to be handled by store function - so don't need to do it here
 			$query = "select *, `user_id` AS modifier_user_id, `data` AS `edit` from `".BIT_DB_PREFIX."tiki_history` where `page_id`=? and `version`=?";
 			$result = $this->query($query,array( $this->mPageId, $pVersion ) );
@@ -599,9 +599,9 @@ this watch code is only half fixed - spiderr
 					$result = $this->query($query,array($action,$this->mPageId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
 					$ret = TRUE;
 				}
-				$this->mDb->CompleteTrans();
+				$this->CompleteTrans();
 			} else {
-				$this->mDb->RollbackTrans();
+				$this->RollbackTrans();
 			}
 		}
 		return $ret;
@@ -616,7 +616,7 @@ this watch code is only half fixed - spiderr
 	function expungeVersion( $pVersion=NULL, $comment = '' ) {
 		$ret = FALSE;
 		if( $this->isValid() ) {
-			$this->mDb->StartTrans();
+			$this->StartTrans();
 			$bindVars = array( $this->mPageId );
 			$versionSql = '';
 			if( $pVersion ) {
@@ -633,7 +633,7 @@ this watch code is only half fixed - spiderr
 				$result = $this->query($query,array($action,$this->mPageId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
 				$ret = TRUE;
 			}
-			$this->mDb->CompleteTrans();
+			$this->CompleteTrans();
 		}
 		return $ret;
 	}
@@ -834,10 +834,10 @@ this watch code is only half fixed - spiderr
 		// If sort mode is links then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 		// If sort mode is backlinks then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 		$result = $this->query($query,$bindVars,$maxRecords,$offset);
 		$cant = $this->getOne($query_cant,$bindVars);
-		$this->mDb->CompleteTrans();
+		$this->CompleteTrans();
 		$ret = array();
 		while ($res = $result->fetchRow()) {
 			$aux = array();
@@ -1296,7 +1296,7 @@ class WikiLib extends BitPage {
 	function remove_all_versions( $pPageId, $comment = '') {
 		if( is_numeric( $pPageId ) ) {
 			global $gBitUser;
-			$this->mDb->StartTrans();
+			$this->StartTrans();
 
 			//Delete structure references before we delete the page
 			$query  = "SELECT ts.`structure_id`, tc.`title`
@@ -1323,7 +1323,7 @@ class WikiLib extends BitPage {
 
 			#$this->remove_object('wiki page', $delPageName);
 
-			$this->mDb->CompleteTrans();
+			$this->CompleteTrans();
 
 			return true;
 		}
