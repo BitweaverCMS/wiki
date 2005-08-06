@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.13 2005/08/06 04:24:35 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.14 2005/08/06 05:37:40 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.13 $ $Date: 2005/08/06 04:24:35 $ $Author: lsces $
+ * @version $Revision: 1.2.2.14 $ $Date: 2005/08/06 05:37:40 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.13 2005/08/06 04:24:35 lsces Exp $
+ * $Id: BitPage.php,v 1.2.2.14 2005/08/06 05:37:40 lsces Exp $
  */
 
 /**
@@ -26,7 +26,6 @@ require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
  * builds on core bitweaver functionality, such as the Liberty CMS engine
  *
  * @package wiki
- * @subpackage BitPage
  *
  * created 2004/8/15
  */
@@ -310,6 +309,10 @@ this watch code is only half fixed - spiderr
 
 		return( count( $this->mErrors ) == 0 );
 	}
+
+	/**
+	 * Remove page from database
+	 */ 
 	function expunge() {
 		$ret = FALSE;
 		if( $this->isValid() ) {
@@ -375,8 +378,10 @@ this watch code is only half fixed - spiderr
 		return( $this->setLock( NULL, $pModUserId ) );
     }
 
-    // Removes last version of the page (from pages) if theres some
-	// version in the tiki_history then the last version becomes the actual version
+    /**
+     * Removes last version of the page (from pages) if theres some
+	 * version in the tiki_history then the last version becomes the actual version
+	 */
 	function removeLastVersion( $comment = '' ) {
 		if( $this->mPageId ) {
 			$this->invalidateCache();
@@ -397,10 +402,10 @@ this watch code is only half fixed - spiderr
 		}
 	}
 
-
-
-
 	// *********  Footnote functions for the wiki ********** //
+	/**
+	 *  Store footnote
+	 */
 	function storeFootnote($pUserId, $data) {
 		if( $this->mPageId ) {
 			$querydel = "delete from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?";
@@ -410,6 +415,9 @@ this watch code is only half fixed - spiderr
 		}
 	}
 
+	/**
+	 *  Delete footnote
+	 */
 	function expungeFootnote( $pUserId ) {
 		if( $this->mPageId ) {
 			$query = "delete from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?";
@@ -417,8 +425,9 @@ this watch code is only half fixed - spiderr
 		}
 	}
 
-
-	// Functions for wiki page footnotes
+	/**
+	 *  Get footnote
+	 */
 	function getFootnote( $pUserId ) {
 		if( $this->mPageId ) {
 			$count = $this->getOne( "select count(*) from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?", array( $pUserId, $this->mPageId ) );
@@ -533,9 +542,8 @@ this watch code is only half fixed - spiderr
 
 	// *********  History functions for the wiki ********** //
     /**
-    * Get complete set of historical data in order to display a given wiki page version
-    * @param pExistsHash the hash that was returned by LibertyContent::pageExists
-    * @return array of mInfo data
+    * Get count of the number of historic records for the page
+    * @return count
     */
 	function getHistoryCount() {
 		$ret = NULL;
@@ -549,6 +557,11 @@ this watch code is only half fixed - spiderr
 		return $ret;
 	}
 
+    /**
+    * Get complete set of historical data in order to display a given wiki page version
+    * @param pExistsHash the hash that was returned by LibertyContent::pageExists
+    * @return array of mInfo data
+    */
 	function getHistory( $pVersion=NULL, $pUserId=NULL, $pOffset = 0, $maxRecords = -1 ) {
 		$ret = NULL;
 		if( $this->isValid() ) {
@@ -586,7 +599,12 @@ this watch code is only half fixed - spiderr
 		return $ret;
 	}
 
-
+	/**
+	 * Roll back to a specific version of a page
+	 * @param pVersion Version number to roll back to
+	 * @param comment Comment text to be added to the action log
+	 * @return TRUE if completed successfully
+	 */
 	function rollbackVersion( $pVersion, $comment = '' ) {
 		$ret = FALSE;
 		if( $this->isValid() ) {
@@ -613,16 +631,18 @@ this watch code is only half fixed - spiderr
 				}
 				$this->mDb->CompleteTrans();
 			} else {
-vd( $this->mErrors );
-				$this->RollbackTrans();
+				$this->mDb->RollbackTrans();
 			}
 		}
 		return $ret;
 	}
 
-
-
-	// Removes a specific version of a page
+	/**
+	 * Removes a specific version of a page
+	 * @param pVersion Version number to roll back to
+	 * @param comment Comment text to be added to the action log
+	 * @return TRUE if completed successfully
+	 */
 	function expungeVersion( $pVersion=NULL, $comment = '' ) {
 		$ret = FALSE;
 		if( $this->isValid() ) {
@@ -686,8 +706,14 @@ vd( $this->mErrors );
 	}
 */
 
-   	// Methods to cache and handle the cached version of wiki pages
-	// to prevent parsing large pages.
+   	/**
+   	 * Methods to cache and handle the cached version of wiki pages
+	 * to prevent parsing large pages.
+	 */
+   	/**
+   	 * Save cached version of page to store
+   	 * @param cache Data to be cached
+	 */
 	function setPageCache( $cache ) {
 		if( $this->mPageId ) {
 			$query = "update `".BIT_DB_PREFIX."tiki_pages` set `wiki_cache`=? where `page_id`=?";
@@ -695,6 +721,10 @@ vd( $this->mErrors );
 		}
 	}
 
+   	/**
+   	 * Get cached version of page from store
+   	 * @param page ? Not used
+	 */
 	function get_cache_info($page) {
 		if( $this->mPageId ) {
 			$query = "select `cache`,`cache_timestamp` from `".BIT_DB_PREFIX."tiki_pages` where `page_id`=?";
@@ -702,6 +732,11 @@ vd( $this->mErrors );
 			return $result->fetchRow();
 		}
 	}
+
+   	/**
+   	 * Update cached version of page in store
+   	 * @param data Data to be cached
+	 */
 	function updateCache( $data ) {
 		if( $this->mPageId ) {
 			$now = date('U');
@@ -710,6 +745,11 @@ vd( $this->mErrors );
 			return true;
 		}
 	}
+
+   	/**
+   	 * Flag cached version as out of date
+   	 * Cache will be updated next time the page is accessed
+	 */
 	function invalidateCache() {
 		if( $this->mPageId ) {
 			$query = "UPDATE `".BIT_DB_PREFIX."tiki_pages` SET `cache_timestamp`=? WHERE `page_id`=?";
@@ -717,7 +757,17 @@ vd( $this->mErrors );
 		}
 	}
 
-
+   	/**
+   	 * Generate list of pages
+   	 * @param offset Number of the first record to list
+   	 * @param maxRecords Number of records to list
+   	 * @param sort_mode Order in which the records will be sorted
+   	 * @param find Filter to be applied to the list
+   	 * @param pUserId If set additionally filter on UserId
+   	 * @param pExtras If set adds additional counts of links to and from each page
+   	 *	This can take some time to calculate, and so should not normally be enabled
+   	 * @param pOrphansOnly If Set list only unattached pages ( ones not used in other content )
+	 */
 	function getList($offset = 0, $maxRecords = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE ) {
 		global $gBitSystem;
 		if ($sort_mode == 'size_desc') {
@@ -814,8 +864,10 @@ vd( $this->mErrors );
 		// If sort mode is links then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 		// If sort mode is backlinks then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 
+		$this->mDb->StartTrans();
 		$result = $this->query($query,$bindVars,$maxRecords,$offset);
 		$cant = $this->getOne($query_cant,$bindVars);
+		$this->mDb->CompleteTrans();
 		$ret = array();
 		while ($res = $result->fetchRow()) {
 			$aux = array();
@@ -882,7 +934,6 @@ vd( $this->mErrors );
 define('PLUGINS_DIR', WIKI_PKG_PATH.'plugins');
 /**
  * @package wiki
- * @subpackage WikiLib
  */
 class WikiLib extends BitPage {
     function WikiLib() {
