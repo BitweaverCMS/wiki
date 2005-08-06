@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.14 2005/08/06 05:37:40 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.15 2005/08/06 07:19:35 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.14 $ $Date: 2005/08/06 05:37:40 $ $Author: lsces $
+ * @version $Revision: 1.2.2.15 $ $Date: 2005/08/06 07:19:35 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.14 2005/08/06 05:37:40 lsces Exp $
+ * $Id: BitPage.php,v 1.2.2.15 2005/08/06 07:19:35 lsces Exp $
  */
 
 /**
@@ -116,8 +116,6 @@ class BitPage extends LibertyAttachable {
 			$table = BIT_DB_PREFIX."tiki_pages";
             if( $this->mPageId ) {
 				$this->invalidateCache();
-//print "if( empty( ".$pParamHash['minor']." ) && !empty( ".$this->mInfo['version']." ) && ".$pParamHash['field_changed'];
-//die;
 				if( !empty( $pParamHash['force_history'] ) || ( empty( $pParamHash['minor'] ) && !empty( $this->mInfo['version'] ) && $pParamHash['field_changed'] )) {
 					if( $this->mPageName != 'SandBox' && empty( $pParamHash['has_no_history'] ) ) {
 						$query = "insert into `".BIT_DB_PREFIX."tiki_history`( `page_id`, `version`, `last_modified`, `user_id`, `ip`, `comment`, `data`, `description`, `format_guid`) values(?,?,?,?,?,?,?,?,?)";
@@ -142,7 +140,8 @@ class BitPage extends LibertyAttachable {
 
 				$result = $this->associateInsert( $table, $pParamHash['page_store'] );
 			}
-
+			// Access new data for notifications
+			$this->load();
 
 			if( isset( $mailEvents ) ) {
 				global $notificationlib, $gBitSystem;
@@ -159,9 +158,7 @@ class BitPage extends LibertyAttachable {
 					$gBitSmarty->assign('mail_comment', $this->mInfo['comment']);
 					$gBitSmarty->assign('mail_last_version', 1);
 					$gBitSmarty->assign('mail_data', $this->mInfo['data'] );
-					$foo = parse_url($_SERVER["REQUEST_URI"]);
-					$machine = httpPrefix(). dirname( $foo["path"] );
-					$gBitSmarty->assign('mail_machine', $machine);
+					$gBitSmarty->assign('mail_machine', httpPrefix());
 					$gBitSmarty->assign('mail_pagedata', $this->mInfo['data'] );
 					$mail_data = $gBitSmarty->fetch('bitpackage:wiki/wiki_change_notification.tpl');
 
@@ -210,7 +207,6 @@ this watch code is only half fixed - spiderr
 				}
 */
 			}
-			$this->load();
 		}
 		$this->mDb->CompleteTrans();
 		return( count( $this->mErrors ) == 0 );
