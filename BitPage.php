@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.12 2005/08/02 17:17:28 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.13 2005/08/06 04:24:35 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.12 $ $Date: 2005/08/02 17:17:28 $ $Author: lsces $
+ * @version $Revision: 1.2.2.13 $ $Date: 2005/08/06 04:24:35 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.12 2005/08/02 17:17:28 lsces Exp $
+ * $Id: BitPage.php,v 1.2.2.13 2005/08/06 04:24:35 lsces Exp $
  */
 
 /**
@@ -106,8 +106,8 @@ class BitPage extends LibertyAttachable {
 	* @access public
 	**/
 	function store( &$pParamHash ) {
+		$this->mDb->StartTrans();
 		if( $this->verify( $pParamHash ) && LibertyAttachable::store( $pParamHash ) ) {
-			$this->mDb->StartTrans();
 			if(isset($pParamHash['wiki_cache']) ) {
 				$this->setPageCache( $pParamHash['wiki_cache'] );
 			}
@@ -211,9 +211,9 @@ this watch code is only half fixed - spiderr
 				}
 */
 			}
-			$this->mDb->CompleteTrans();
 			$this->load();
 		}
+		$this->mDb->CompleteTrans();
 		return( count( $this->mErrors ) == 0 );
 	}
 	// }}}
