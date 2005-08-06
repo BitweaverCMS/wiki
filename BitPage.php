@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.15 2005/08/06 07:19:35 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.16 2005/08/06 08:08:30 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.15 $ $Date: 2005/08/06 07:19:35 $ $Author: lsces $
+ * @version $Revision: 1.2.2.16 $ $Date: 2005/08/06 08:08:30 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.15 2005/08/06 07:19:35 lsces Exp $
+ * $Id: BitPage.php,v 1.2.2.16 2005/08/06 08:08:30 lsces Exp $
  */
 
 /**
@@ -144,36 +144,10 @@ class BitPage extends LibertyAttachable {
 			$this->load();
 
 			if( isset( $mailEvents ) ) {
-				global $notificationlib, $gBitSystem;
+				global $notificationlib;
 				include_once( KERNEL_PKG_PATH.'notification_lib.php' );
-				$emails = $notificationlib->get_mail_events('wiki_page_changes', $this->mInfo['content_type_guid'] . $this->mContentId);
+				$notificationlib->post_content_event($this->mContentId, $this->mInfo['content_type_guid'], 'wiki', $this->mInfo['title'], $this->mInfo['modifier_user'], $this->mInfo['comment'], $this->mInfo['data']);
 
-				foreach ($emails as $email) {
-					global $gBitSmarty;
-					$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
-
-					$gBitSmarty->assign('mail_page', $this->mInfo['title'] );
-					$gBitSmarty->assign('mail_date', date("U"));
-					$gBitSmarty->assign('mail_user', $this->mInfo['modifier_user'] );
-					$gBitSmarty->assign('mail_comment', $this->mInfo['comment']);
-					$gBitSmarty->assign('mail_last_version', 1);
-					$gBitSmarty->assign('mail_data', $this->mInfo['data'] );
-					$gBitSmarty->assign('mail_machine', httpPrefix());
-					$gBitSmarty->assign('mail_pagedata', $this->mInfo['data'] );
-					$mail_data = $gBitSmarty->fetch('bitpackage:wiki/wiki_change_notification.tpl');
-
-					if( $this->getPreference('wiki_forum') ) {
-						include_once( LIBERTY_PKG_PATH.'LibertyComment.php' );
-						$comment = new LibertyComment( NULL, $this->mContentId );
-						$forums = $comment->list_forums( 0, 1, 'name_asc', $this->getPreference('wiki_forum') );
-						if ($forums) {
-							$forumEmail = $forums["data"][0]["outbound_from"];
-							@mail($email, $name, $mail_data, "From: $forumEmail\r\nContent-type: text/plain;charset=utf-8\r\n" );
-						}
-					} else {
-						@mail($email, tra('Wiki page'). ' ' . $name . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n" );
-					}
-				}
 /*
 this watch code is only half fixed - spiderr
 				if( $gBitSystem->isFeatureActive( 'feature_user_watches') ) {
