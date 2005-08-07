@@ -1,6 +1,6 @@
 <?php
 
-global $gBitSystem, $gUpgradeFrom, $gUpgradeTo;
+global $gBitSystem, $gUpgradeFrom, $gUpgradeTo, $gBitDb;
 
 $upgrades = array(
 
@@ -69,23 +69,23 @@ array( 'ALTER' => array(
 
 // STEP 3
 array( 'PHP' => '
-	global $gBitSystem;
+	global $gBitSystem, $gBitDb;
 	require_once( WIKI_PKG_PATH."BitPage.php" );
-	$max = $gBitSystem->GetOne( "SELECT MAX(`page_id`) FROM `'.BIT_DB_PREFIX.'tiki_pages`" );
-	$gBitDb->CreateSequence( "tiki_pages_page_id_seq", $max + 1 );
+	$max = $gBitDb->GetOne( "SELECT MAX(`page_id`) FROM `'.BIT_DB_PREFIX.'tiki_pages`" );
+	$gBitSystem->mDb->mDb->CreateSequence( "tiki_pages_page_id_seq", $max + 1 );
 	$query = "SELECT uu.`user_id`, uu2.`user_id` AS modifier_user_id, tp.`lastModif` AS created, tp.`lastModif` AS `last_modified`, tp.`data`, tp.`pageName` AS `title`, tp.`ip`, tp.`hits`
 			  FROM `'.BIT_DB_PREFIX.'tiki_pages` tp INNER JOIN `'.BIT_DB_PREFIX.'users_users` uu ON( tp.`creator`=uu.`login` ) INNER JOIN `'.BIT_DB_PREFIX.'users_users` uu2 ON( tp.`user`=uu2.`login` )";
-	if( $rs = $gBitSystem->query( $query ) ) {
+	if( $rs = $gBitDb->query( $query ) ) {
 		while( !$rs->EOF ) {
-			$conId = $gBitSystem->GenID( "tiki_content_id_seq" );
+			$conId = $gBitDb->GenID( "tiki_content_id_seq" );
 			$rs->fields["content_id"] = $conId;
 			$rs->fields["content_type_guid"] = BITPAGE_CONTENT_TYPE_GUID;
 			$rs->fields["format_guid"] = PLUGIN_GUID_TIKIWIKI;
-			$gBitSystem->associateInsert( "tiki_content", $rs->fields );
-			$gBitSystem->query( "UPDATE `'.BIT_DB_PREFIX.'tiki_pages` SET `content_id`=? WHERE `pageName`=?", array( $conId, $rs->fields["title"] ) );
+			$gBitDb->associateInsert( "tiki_content", $rs->fields );
+			$gBitDb->query( "UPDATE `'.BIT_DB_PREFIX.'tiki_pages` SET `content_id`=? WHERE `pageName`=?", array( $conId, $rs->fields["title"] ) );
 			if( $w_use_dir = $gBitSystem->getPreference("w_use_dir") ) {
 				$page = new BitPage( NULL, $conId );
-				if( $page->load() && $rs2 = $gBitSystem->query( "SELECT * FROM `'.BIT_DB_PREFIX.'tiki_wiki_attachments` twa  INNER JOIN `'.BIT_DB_PREFIX.'users_users` uu ON( twa.`user`=uu.`login` ) WHERE twa.`page`=?", array( $rs->fields["title"] ) ) ) {
+				if( $page->load() && $rs2 = $gBitDb->query( "SELECT * FROM `'.BIT_DB_PREFIX.'tiki_wiki_attachments` twa  INNER JOIN `'.BIT_DB_PREFIX.'users_users` uu ON( twa.`user`=uu.`login` ) WHERE twa.`page`=?", array( $rs->fields["title"] ) ) ) {
 					while( !$rs2->EOF ) {
 						$info = $rs2->fields;
 						$storeHash["modifier_user_id"] = $rs->fields["modifier_user_id"];
@@ -95,7 +95,7 @@ array( 'PHP' => '
 						$storeHash["upload"]["size"] = filesize( $w_use_dir.$info["path"] );
 						$storeHash["upload"]["tmp_name"] = $w_use_dir.$info["path"];
 						if( $page->store( $storeHash ) ) {
-							$gBitSystem->query( "DELETE FROM `'.BIT_DB_PREFIX.'tiki_wiki_attachments` WHERE `page`=?", array( $rs->fields["title"] ) );
+							$gBitDb->query( "DELETE FROM `'.BIT_DB_PREFIX.'tiki_wiki_attachments` WHERE `page`=?", array( $rs->fields["title"] ) );
 						}
 						unset( $storeHash );
 						$rs2->MoveNext();
@@ -207,11 +207,11 @@ array( 'PHP' => '
 	require_once( LIBERTY_PKG_PATH."LibertyStructure.php" );
 	require_once( WIKI_PKG_PATH."BitBook.php" );
 	$query = "SELECT `structure_id`, `content_id` FROM `".BIT_DB_PREFIX."tiki_structures` WHERE `parent_id` IS NULL OR `parent_id`=0";
-	$roots = $gBitSystem->GetAssoc( $query );
+	$roots = $gBitDb->GetAssoc( $query );
 	$s = new LibertyStructure();
 	foreach( $roots AS $rootId=>$contentId ) {
-		$gBitSystem->query( "UPDATE `".BIT_DB_PREFIX."tiki_structures` SET `root_structure_id`=? WHERE `structure_id`=?", array( $rootId, $rootId ) );
-		$gBitSystem->query( "UPDATE `".BIT_DB_PREFIX."tiki_content` SET `content_type_guid`=? WHERE `content_id`=?", array( BITBOOK_CONTENT_TYPE_GUID, $contentId ) );
+		$gBitDb->query( "UPDATE `".BIT_DB_PREFIX."tiki_structures` SET `root_structure_id`=? WHERE `structure_id`=?", array( $rootId, $rootId ) );
+		$gBitDb->query( "UPDATE `".BIT_DB_PREFIX."tiki_content` SET `content_type_guid`=? WHERE `content_id`=?", array( BITBOOK_CONTENT_TYPE_GUID, $contentId ) );
 		$toc = $s->build_subtree_toc( $rootId );
 		$s->setTreeRoot( $rootId, $toc );
 	}
