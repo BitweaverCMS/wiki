@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.10 2005/08/04 08:45:35 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.11 2005/08/07 23:09:01 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.10 2005/08/04 08:45:35 squareing Exp $
+ * $Id: edit.php,v 1.1.1.1.2.11 2005/08/07 23:09:01 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -286,6 +286,10 @@ if (isset($_REQUEST["comment"])) {
 
 $cat_type = BITPAGE_CONTENT_TYPE_GUID;
 
+// get files from all packages that process this data further
+$integrationFiles = $gBitSystem->getPackageIntegrationFiles();
+$smarty->assign( 'integrationFiles', $integrationFiles );
+
 if(isset($_REQUEST["preview"])) {
 	if ($gBitSystem->isPackageActive( 'categories' ) &&  isset( $_REQUEST['cat_categories'] ) ) {
 		$cat_objid = $gContent->mContentId;
@@ -299,8 +303,8 @@ if(isset($_REQUEST["preview"])) {
 		}
 	}
 
-	if( $gBitSystem->isPackageActive( 'pigeonholes' ) && isset( $_REQUEST['pigeonholes'] ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
-		include_once( PIGEONHOLES_PKG_PATH.'pigeonholes_processor_inc.php' );
+	foreach( $integrationFiles as $files ) {
+		include_once( $files['processor'] );
 	}
 
 	$gBitSmarty->assign('preview',1);
@@ -427,9 +431,8 @@ if (isset($_REQUEST["fCancel"])) {
 			include_once( NEXUS_PKG_PATH.'insert_menu_item_inc.php' );
 		}
 
-		// add member to pigeonholes
-		if( $gBitSystem->isPackageActive( 'pigeonholes' ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
-			include_once( PIGEONHOLES_PKG_PATH.'pigeonholes_processor_inc.php' );
+		foreach( $integrationFiles as $files ) {
+			include_once( $files['processor'] );
 		}
 
 		if ( $gBitSystem->isFeatureActive( 'wiki_watch_author' ) ) {
@@ -458,9 +461,8 @@ if ($gBitSystem->isPackageActive( 'categories' ) ) {
 	include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
 }
 
-// Pigeonholes
-if( $gBitSystem->isPackageActive( 'pigeonholes' ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
-	include_once( PIGEONHOLES_PKG_PATH.'get_pigeonholes_pathlist_inc.php' );
+foreach( $integrationFiles as $files ) {
+	include_once( $files['form_info'] );
 }
 
 // Nexus menus
