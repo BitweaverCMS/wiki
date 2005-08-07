@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.1.1.1.2.6 2005/08/05 23:01:02 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.1.1.1.2.7 2005/08/07 12:26:09 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -9,6 +9,8 @@
 	{formfeedback error=$errors}
 
 	<div class="body">
+		{minifind sort_mode=$sort_mode}
+
 		{form id="checkform"}
 		{strip}
 			<div class="navbar">
@@ -199,6 +201,5 @@
 		{/form}
 
 		{pagination}
-		{minifind sort_mode=$sort_mode}
 	</div><!-- end .body -->
 </div><!-- end .wiki -->
