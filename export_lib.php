@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.1.1.1.2.2 2005/08/07 13:25:03 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.1.1.1.2.3 2005/08/07 16:27:49 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: export_lib.php,v 1.1.1.1.2.2 2005/08/07 13:25:03 lsces Exp $
+ * $Id: export_lib.php,v 1.1.1.1.2.3 2005/08/07 16:27:49 lsces Exp $
  * @package wiki
  */
 
@@ -31,8 +31,8 @@ class ExportLib extends BitBase {
 		include_once (UTIL_PKG_PATH."tar.class.php");
 		$tar = new tar();
 		$query = "SELECT tp.`page_id` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) 
-				  ORDER BY tc.".$this->getDb()->convert_sortmode("title_asc");
-		$result = $this->getDb()->query($query,array());
+				  ORDER BY tc.".$this->mDb->convert_sortmode("title_asc");
+		$result = $this->mDb->query($query,array());
 		while ($res = $result->fetchRow()) {
 			$page_id = $res["page_id"];
 			$content = $this->export_wiki_page($page_id, 0);
@@ -73,8 +73,8 @@ class ExportLib extends BitBase {
 				 "INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) " .
 				 "INNER JOIN `".BIT_DB_PREFIX."tiki_history` th ON (th.`page_id` = th.`page_id`) " .
 				 "INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = th.`user_id`) " .
-				 "WHERE tp.`page_id`=? order by th.".$this->getDb()->convert_sortmode("version_desc");
-		$result = $this->getDb()->query($query,array($page_id));
+				 "WHERE tp.`page_id`=? order by th.".$this->mDb->convert_sortmode("version_desc");
+		$result = $this->mDb->query($query,array($page_id));
 		$ret = array();
 		while ($res = $result->fetchRow()) {
 			array_push( $ret, $res );

@@ -72,7 +72,7 @@ array( 'PHP' => '
 	global $gBitSystem, $gBitDb;
 	require_once( WIKI_PKG_PATH."BitPage.php" );
 	$max = $gBitDb->GetOne( "SELECT MAX(`page_id`) FROM `'.BIT_DB_PREFIX.'tiki_pages`" );
-	$gBitSystem->getDb()->CreateSequence( "tiki_pages_page_id_seq", $max + 1 );
+	$gBitSystem->mDb->CreateSequence( "tiki_pages_page_id_seq", $max + 1 );
 	$query = "SELECT uu.`user_id`, uu2.`user_id` AS modifier_user_id, tp.`lastModif` AS created, tp.`lastModif` AS `last_modified`, tp.`data`, tp.`pageName` AS `title`, tp.`ip`, tp.`hits`
 			  FROM `'.BIT_DB_PREFIX.'tiki_pages` tp INNER JOIN `'.BIT_DB_PREFIX.'users_users` uu ON( tp.`creator`=uu.`login` ) INNER JOIN `'.BIT_DB_PREFIX.'users_users` uu2 ON( tp.`user`=uu2.`login` )";
 	if( $rs = $gBitDb->query( $query ) ) {
