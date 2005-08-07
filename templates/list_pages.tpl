@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.3 2005/07/25 20:02:59 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.4 2005/08/07 17:46:51 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -9,6 +9,8 @@
 	{formfeedback error=$errors}
 
 	<div class="body">
+		{minifind sort_mode=$sort_mode}
+
 		{form id="checkform"}
 		{strip}
 			<div class="navbar">
@@ -29,12 +31,10 @@
 				</ul>
 			</div>
 
-			<div class="clear"></div>
-
 			<input type="hidden" name="offset" value="{$offset}" />
 			<input type="hidden" name="sort_mode" value="{$sort_mode}" />
 
-			<table class="data">
+			<table class="clear data">
 				<caption>{tr}WikiPages Listing{/tr} <span class="total">[ {$pagecount} ]</span></caption>
 				<tr>
 					{*  at the moment, the only working option to use the checkboxes for is deleting pages. so for now the checkboxes are visible iff $bit_p_remove is set. Other applications make sense as well (categorize, convert to pdf, etc). Add necessary corresponding permission here: *}
@@ -93,7 +93,7 @@
 							{if $gBitSystem->isFeatureActive( 'wiki_list_name' )}
 								<h3><a href="{$listpages[changes].display_url}" title="{$listpages[changes].description}">{$listpages[changes].title}</a></h3>
 							{else}
-								<a href="{$gBitLoc.WIKI_PKG_URL}index.php?page_id={$listpages[changes].page_id}" title="{$listpages[changes].page_id}">Page #{$listpages[changes].page_id}</a>
+								<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$listpages[changes].page_id}" title="{$listpages[changes].page_id}">Page #{$listpages[changes].page_id}</a>
 							{/if}
 							{if $gBitSystem->isFeatureActive( 'wiki_list_creator' )}
 								{tr}Created by{/tr} {displayname real_name=$listpages[changes].creator_real_name user=$listpages[changes].creator_user}
@@ -140,7 +140,7 @@
 						{/if}
 						{if $gBitSystem->isFeatureActive( 'wiki_list_backlinks' )}
 							{if $gBitSystem->isFeatureActive( 'feature_backlinks' ) && $listpages[changes].backlinks > 0}
-								<td style="text-align:center;"><a href="{$gBitLoc.WIKI_PKG_URL}backlinks.php?page={$listpages[changes].title|escape:"url"}">{$listpages[changes].backlinks|default:"0"}</a></td>
+								<td style="text-align:center;"><a href="{$smarty.const.WIKI_PKG_URL}backlinks.php?page={$listpages[changes].title|escape:"url"}">{$listpages[changes].backlinks|default:"0"}</a></td>
 							{else}
 								<td style="text-align:center;">{$listpages[changes].backlinks|default:"0"}</td>
 							{/if}
@@ -153,7 +153,7 @@
 						{/if}
 						{if $gBitUser->hasPermission( 'bit_p_edit' )}
 							<td class="actionicon">
-								<a href="{$gBitLoc.WIKI_PKG_URL}edit.php?page_id={$listpages[changes].page_id}">{biticon ipackage="liberty" iname="edit" iexplain="edit"}</a>
+								<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$listpages[changes].page_id}">{biticon ipackage="liberty" iname="edit" iexplain="edit"}</a>
 								{if $checkboxes_on eq 'y'}
 									<input type="checkbox" name="checked[]" value="{$listpages[changes].page_id}" />
 								{/if}
@@ -201,6 +201,5 @@
 		{/form}
 
 		{pagination}
-		{minifind sort_mode=$sort_mode}
 	</div><!-- end .body -->
 </div><!-- end .wiki -->

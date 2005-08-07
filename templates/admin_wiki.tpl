@@ -145,9 +145,9 @@
 			{legend legend="Dumps and Export"}
 				<div class="row">
 					{forminput}
-						<a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=wiki&amp;dump=1">{tr}Generate dump{/tr}</a><br />
-						<a href="{$gBitLoc.BIT_ROOT_URL}dump/{$bitdomain}new.tar">{tr}Download last dump{/tr}</a><br />
-						<a href="{$gBitLoc.WIKI_PKG_URL}export_wiki_pages.php">{tr}Export wiki pages{/tr}</a>
+						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=wiki&amp;dump=1">{tr}Generate dump{/tr}</a><br />
+						<a href="{$smarty.const.BIT_ROOT_URL}dump/{$bitdomain}new.tar">{tr}Download last dump{/tr}</a><br />
+						<a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php">{tr}Export wiki pages{/tr}</a>
 					{/forminput}
 				</div>
 			{/legend}
@@ -282,7 +282,7 @@
 
 {if $gBitSystem->isPackageActive( 'tikiforums' )}
 			<div class="boxcontent">
-				<form method="post" action="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=wiki">
+				<form method="post" action="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=wiki">
 				<table class="panel"><tr>
 					<th colspan="2">{tr}Wiki Discussion{/tr}</th>
 				</tr><tr>

@@ -1,12 +1,24 @@
-{tr}The page {$mail_page} was changed by {$mail_user} at {$mail_date|bit_short_datetime}{/tr}
-{tr}You can edit the page following this link:{/tr}
-{$mail_machine}?page={$mail_page|escape:"url"}
+{tr}The page {$mail_page} was changed at {$mail_date|bit_short_datetime}{/tr} by {$mail_user}
+
+{tr}You can view the page by following this link:
+    {$mail_machine}{$smarty.const.WIKI_PKG_URL}index.php?page={$mail_page|escape:"url"}{/tr}
+
+
+{tr}You can edit the page by following this link:
+    {$mail_machine}{$smarty.const.WIKI_PKG_URL}edit.php?page={$mail_page|escape:"url"}{/tr}
+
+
+{tr}You can view a diff back to the previous version by following
+this link:
+    {$mail_machine}{$smarty.const.WIKI_PKG_URL}page_history.php?page={$mail_page|escape:"url"}&diff2={$mail_last_version}{/tr}
+
+
 {tr}Comment:{/tr} {$mail_comment}
 
-{tr}Diff:{/tr} {$mail_machine_raw}/{$gBitLoc.WIKI_PKG_URL}pagehistory.php?page={$mail_page|escape:"url"}&diff2={$mail_last_version}
 
-{tr}If you don't want to receive these notifications follow this link:{/tr}
-{$mail_machine_raw}/{$gBitLoc.USERS_PKG_URL}user_watches.php?hash={$mail_hash}
+{tr}The new page content follows below.{/tr}
 
-{tr}The new page content is:{/tr}
+***********************************************************
+
 {$mail_pagedata}
+

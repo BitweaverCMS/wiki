@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.4 2005/08/07 17:46:49 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: slideshow.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+ * $Id: slideshow.php,v 1.4 2005/08/07 17:46:49 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -78,7 +78,7 @@ if (!$gBitUser->hasPermission( 'bit_p_view' )) {
 $anonpref = $wikilib->getPreference('userbreadCrumb', 4);
 
 if( $gBitUser->isRegistered() ) {
-	$userbreadCrumb = $wikilib->get_user_preference($user, 'userbreadCrumb', $anonpref);
+	$userbreadCrumb = $wikilib->getPreference('userbreadCrumb', $anonpref, $user );
 } else {
 	$userbreadCrumb = $anonpref;
 }

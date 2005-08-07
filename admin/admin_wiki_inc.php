@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.3 2005/08/01 18:42:05 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.4 2005/08/07 17:46:50 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -321,7 +321,7 @@ if (isset($_REQUEST["wikidiscussprefs"])) {
 	if (isset($_REQUEST["wiki_forum"])) {
 		$gBitSystem->storePreference('wiki_forum', $_REQUEST["wiki_forum"]);
 		$gBitSmarty->assign('wiki_forum', $_REQUEST["wiki_forum"]);
-		$wiki_forum_id = $gBitSystem->getOne("select `forumID` from `tiki_forums` where `name`='" . $_REQUEST["wiki_forum"] . "'");
+		$wiki_forum_id = $gBitSystem->mDb->getOne("select `forumID` from `tiki_forums` where `name`='" . $_REQUEST["wiki_forum"] . "'");
 		$gBitSystem->storePreference('wiki_forum_id', $wiki_forum_id);
 		$gBitSmarty->assign('wiki_forum_id', $wiki_forum_id);
 	}

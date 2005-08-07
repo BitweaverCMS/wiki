@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.6 2005/08/01 18:42:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.7 2005/08/07 17:46:49 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.6 $ $Date: 2005/08/01 18:42:04 $ $Author: squareing $
+ * @version $Revision: 1.7 $ $Date: 2005/08/07 17:46:49 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.6 2005/08/01 18:42:04 squareing Exp $
+ * $Id: BitPage.php,v 1.7 2005/08/07 17:46:49 squareing Exp $
  */
 
 /**
@@ -26,7 +26,6 @@ require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
  * builds on core bitweaver functionality, such as the Liberty CMS engine
  *
  * @package wiki
- * @subpackage BitPage
  *
  * created 2004/8/15
  */
@@ -56,7 +55,7 @@ class BitPage extends LibertyAttachable {
 			$userWhere = " AND tc.`user_id`=?";
 			array_push( $bindVars, $pUserId );
 		}
-		$ret = $this->getOne("select `page_id` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) where tc.`title`=? AND tc.`content_type_guid`=? $userWhere", $bindVars );
+		$ret = $this->mDb->getOne("select `page_id` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) where tc.`title`=? AND tc.`content_type_guid`=? $userWhere", $bindVars );
 		return $ret;
 	}
 
@@ -73,7 +72,7 @@ class BitPage extends LibertyAttachable {
 					"LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = tc.`modifier_user_id`) " .
 					"LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = tc.`user_id`) " .
 					"WHERE tp.`$lookupColumn`=?";
-			$result = $this->query( $query, array( $lookupId ) );
+			$result = $this->mDb->query( $query, array( $lookupId ) );
 
 			if ( $result && $result->numRows() ) {
 				$this->mInfo = $result->fields;
@@ -106,8 +105,8 @@ class BitPage extends LibertyAttachable {
 	* @access public
 	**/
 	function store( &$pParamHash ) {
+		$this->mDb->StartTrans();
 		if( $this->verify( $pParamHash ) && LibertyAttachable::store( $pParamHash ) ) {
-			$this->mDb->StartTrans();
 			if(isset($pParamHash['wiki_cache']) ) {
 				$this->setPageCache( $pParamHash['wiki_cache'] );
 			}
@@ -117,19 +116,17 @@ class BitPage extends LibertyAttachable {
 			$table = BIT_DB_PREFIX."tiki_pages";
             if( $this->mPageId ) {
 				$this->invalidateCache();
-//print "if( empty( ".$pParamHash['minor']." ) && !empty( ".$this->mInfo['version']." ) && ".$pParamHash['field_changed'];
-//die;
 				if( !empty( $pParamHash['force_history'] ) || ( empty( $pParamHash['minor'] ) && !empty( $this->mInfo['version'] ) && $pParamHash['field_changed'] )) {
 					if( $this->mPageName != 'SandBox' && empty( $pParamHash['has_no_history'] ) ) {
 						$query = "insert into `".BIT_DB_PREFIX."tiki_history`( `page_id`, `version`, `last_modified`, `user_id`, `ip`, `comment`, `data`, `description`, `format_guid`) values(?,?,?,?,?,?,?,?,?)";
- 						$result = $this->query( $query, array( $this->mPageId, (int)$this->mInfo['version'], (int)$this->mInfo['last_modified'] , $this->mInfo['modifier_user_id'], $this->mInfo['ip'], $this->mInfo['comment'], $this->mInfo['data'], $this->mInfo['description'], $this->mInfo['format_guid'] ) );
+ 						$result = $this->mDb->query( $query, array( $this->mPageId, (int)$this->mInfo['version'], (int)$this->mInfo['last_modified'] , $this->mInfo['modifier_user_id'], $this->mInfo['ip'], $this->mInfo['comment'], $this->mInfo['data'], $this->mInfo['description'], $this->mInfo['format_guid'] ) );
 					}
 					$action = "Created";
 					$mailEvents = 'wiki_page_changes';
 				}
 
 				$locId = array ( "name" => "page_id", "value" => $this->mPageId );
-				$result = $this->associateUpdate( $table, $pParamHash['page_store'], $locId );
+				$result = $this->mDb->associateUpdate( $table, $pParamHash['page_store'], $locId );
 
 			} else {
 				$pParamHash['page_store']['content_id'] = $pParamHash['content_id'];
@@ -137,66 +134,37 @@ class BitPage extends LibertyAttachable {
 					// if pParamHash['page_id'] is set, some is requesting a particular page_id. Use with caution!
 					$pParamHash['page_store']['page_id'] = $pParamHash['page_id'];
 				} else {
-					$pParamHash['page_store']['page_id'] = $this->GenID( 'tiki_pages_page_id_seq');
+					$pParamHash['page_store']['page_id'] = $this->mDb->GenID( 'tiki_pages_page_id_seq');
 				}
 				$this->mPageId = $pParamHash['page_store']['page_id'];
 
-				$result = $this->associateInsert( $table, $pParamHash['page_store'] );
+				$result = $this->mDb->associateInsert( $table, $pParamHash['page_store'] );
 			}
-
+			// Access new data for notifications
+			$this->load();
 
 			if( isset( $mailEvents ) ) {
-				global $notificationlib, $gBitSystem;
+				global $notificationlib, $gBitUser, $gBitSystem, $gBitSmarty;
 				include_once( KERNEL_PKG_PATH.'notification_lib.php' );
-				$emails = $notificationlib->get_mail_events('wiki_page_changes', $this->mInfo['content_type_guid'] . $this->mContentId);
+				$notificationlib->post_content_event($this->mContentId, $this->mInfo['content_type_guid'], 'wiki', $this->mInfo['title'], $this->mInfo['modifier_user'], $this->mInfo['comment'], $this->mInfo['data']);
 
-				foreach ($emails as $email) {
-					global $gBitSmarty;
-					$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
-
-					$gBitSmarty->assign('mail_page', $this->mInfo['title'] );
-					$gBitSmarty->assign('mail_date', date("U"));
-					$gBitSmarty->assign('mail_user', $this->mInfo['modifier_user'] );
-					$gBitSmarty->assign('mail_comment', $this->mInfo['comment']);
-					$gBitSmarty->assign('mail_last_version', 1);
-					$gBitSmarty->assign('mail_data', $this->mInfo['data'] );
-					$foo = parse_url($_SERVER["REQUEST_URI"]);
-					$machine = httpPrefix(). dirname( $foo["path"] );
-					$gBitSmarty->assign('mail_machine', $machine);
-					$gBitSmarty->assign('mail_pagedata', $this->mInfo['data'] );
-					$mail_data = $gBitSmarty->fetch('bitpackage:wiki/wiki_change_notification.tpl');
-
-					if( $this->getPreference('wiki_forum') ) {
-						include_once( LIBERTY_PKG_PATH.'LibertyComment.php' );
-						$comment = new LibertyComment( NULL, $this->mContentId );
-						$forums = $comment->list_forums( 0, 1, 'name_asc', $this->getPreference('wiki_forum') );
-						if ($forums) {
-							$forumEmail = $forums["data"][0]["outbound_from"];
-							@mail($email, $name, $mail_data, "From: $forumEmail\r\nContent-type: text/plain;charset=utf-8\r\n" );
-						}
-					} else {
-						@mail($email, tra('Wiki page'). ' ' . $name . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n" );
-					}
-				}
-/*
-this watch code is only half fixed - spiderr
 				if( $gBitSystem->isFeatureActive( 'feature_user_watches') ) {
-					$nots = $this->get_event_watches( 'wiki_page_changed', $this->mPageId );
+					$nots = $gBitUser->get_event_watches( 'wiki_page_changed', $this->mPageId );
 
 					foreach ($nots as $not) {
-						if ($wiki_watch_editor != 'y' && $not['user_id'] == $user)
-							break;
+#						if ($wiki_watch_editor != 'y' && $not['user_id'] == $user)
+#							break;
 						$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
 
-						$gBitSmarty->assign('mail_page', $pageName);
+						$gBitSmarty->assign('mail_page', $this->mInfo['title']);
 						$gBitSmarty->assign('mail_date', date("U"));
-						$gBitSmarty->assign('mail_user', $edit_user);
-						$gBitSmarty->assign('mail_comment', $edit_comment);
-						$gBitSmarty->assign('mail_last_version', $version);
-						$gBitSmarty->assign('mail_data', $edit_data);
+						$gBitSmarty->assign('mail_user', $this->mInfo['modifier_user']);
+						$gBitSmarty->assign('mail_comment', $this->mInfo['comment']);
+						$gBitSmarty->assign('mail_last_version', $this->mInfo['version'] - 1);
+						$gBitSmarty->assign('mail_data', $this->mInfo['data']);
 						$gBitSmarty->assign('mail_hash', $not['hash']);
 						$foo = parse_url($_SERVER["REQUEST_URI"]);
-						$machine = httpPrefix(). dirname( $foo["path"] );
+						$machine = httpPrefix();
 						$gBitSmarty->assign('mail_machine', $machine);
 						$parts = explode('/', $foo['path']);
 
@@ -204,16 +172,16 @@ this watch code is only half fixed - spiderr
 							unset ($parts[count($parts) - 1]);
 
 						$gBitSmarty->assign('mail_machine_raw', httpPrefix(). implode('/', $parts));
-						$gBitSmarty->assign('mail_pagedata', $edit_data);
+						$gBitSmarty->assign('mail_pagedata', $this->mInfo['data']);
 						$mail_data = $gBitSmarty->fetch('bitpackage:wiki/user_watch_wiki_page_changed.tpl');
-						@mail($not['email'], tra('Wiki page'). ' ' . $pageName . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
+						$email_to = $not['email'];
+						$email_to = 'jht@lj.net';
+						@mail($email_to, tra('Wiki page'). ' ' . $this->mInfo['title'] . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
 					}
 				}
-*/
 			}
-			$this->mDb->CompleteTrans();
-			$this->load();
 		}
+		$this->mDb->CompleteTrans();
 		return( count( $this->mErrors ) == 0 );
 	}
 	// }}}
@@ -310,13 +278,17 @@ this watch code is only half fixed - spiderr
 
 		return( count( $this->mErrors ) == 0 );
 	}
+
+	/**
+	 * Remove page from database
+	 */ 
 	function expunge() {
 		$ret = FALSE;
 		if( $this->isValid() ) {
 			$this->mDb->StartTrans();
 			$this->expungeVersion(); // will nuke all versions
 			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_pages` WHERE `content_id` = ?";
-			$result = $this->query( $query, array( $this->mContentId ) );
+			$result = $this->mDb->query( $query, array( $this->mContentId ) );
 			if( LibertyAttachable::expunge() ) {
 				$ret = TRUE;
 				$this->mDb->CompleteTrans();
@@ -361,7 +333,7 @@ this watch code is only half fixed - spiderr
 			}
 			array_push( $bindVars, $pLock, $this->mPageId );
 			$query = "update `".BIT_DB_PREFIX."tiki_pages` SET $userSql `flag`=? where `page_id`=?";
-			$result = $this->query($query, $bindVars );
+			$result = $this->mDb->query($query, $bindVars );
 			$this->mInfo['flag'] = $pLock;
 		}
 		return true;
@@ -375,13 +347,15 @@ this watch code is only half fixed - spiderr
 		return( $this->setLock( NULL, $pModUserId ) );
     }
 
-    // Removes last version of the page (from pages) if theres some
-	// version in the tiki_history then the last version becomes the actual version
+    /**
+     * Removes last version of the page (from pages) if theres some
+	 * version in the tiki_history then the last version becomes the actual version
+	 */
 	function removeLastVersion( $comment = '' ) {
 		if( $this->mPageId ) {
 			$this->invalidateCache();
-			$query = "select * from `".BIT_DB_PREFIX."tiki_history` where `page_id`=? order by ".$this->convert_sortmode("last_modified_desc");
-			$result = $this->query($query, array( $this->mPageId ) );
+			$query = "select * from `".BIT_DB_PREFIX."tiki_history` where `page_id`=? order by ".$this->mDb->convert_sortmode("last_modified_desc");
+			$result = $this->mDb->query($query, array( $this->mPageId ) );
 			if ($result->numRows()) {
 				// We have a version
 				$res = $result->fetchRow();
@@ -393,37 +367,41 @@ this watch code is only half fixed - spiderr
 			$action = "Removed last version";
 			$t = date("U");
 			$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`( `action`, `page_id`, `last_modified`, `user_id`, `ip`, `comment`) values( ?, ?, ?, ?, ?, ?)";
-			$result = $this->query($query, array( $action, $this->mPageId, $t, ROOT_USER_ID, $_SERVER["REMOTE_ADDR"], $comment ) );
+			$result = $this->mDb->query($query, array( $action, $this->mPageId, $t, ROOT_USER_ID, $_SERVER["REMOTE_ADDR"], $comment ) );
 		}
 	}
 
-
-
-
 	// *********  Footnote functions for the wiki ********** //
+	/**
+	 *  Store footnote
+	 */
 	function storeFootnote($pUserId, $data) {
 		if( $this->mPageId ) {
 			$querydel = "delete from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?";
-			$this->query( $querydel, array( $pUserId, $this->mPageId ) );
+			$this->mDb->query( $querydel, array( $pUserId, $this->mPageId ) );
 			$query = "insert into `".BIT_DB_PREFIX."tiki_page_footnotes`(`user_id`,`page_id`,`data`) values(?,?,?)";
-			$this->query( $query, array( $pUserId, $this->mPageId, $data ) );
+			$this->mDb->query( $query, array( $pUserId, $this->mPageId, $data ) );
 		}
 	}
 
+	/**
+	 *  Delete footnote
+	 */
 	function expungeFootnote( $pUserId ) {
 		if( $this->mPageId ) {
 			$query = "delete from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?";
-			$this->query($query,array($pUserId,$this->mPageId));
+			$this->mDb->query($query,array($pUserId,$this->mPageId));
 		}
 	}
 
-
-	// Functions for wiki page footnotes
+	/**
+	 *  Get footnote
+	 */
 	function getFootnote( $pUserId ) {
 		if( $this->mPageId ) {
-			$count = $this->getOne( "select count(*) from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?", array( $pUserId, $this->mPageId ) );
+			$count = $this->mDb->getOne( "select count(*) from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?", array( $pUserId, $this->mPageId ) );
 			if( $count ) {
-				return $this->getOne("select `data` from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?",array( $pUserId, $this->mPageId ) );
+				return $this->mDb->getOne("select `data` from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?",array( $pUserId, $this->mPageId ) );
 			}
 		}
 	}
@@ -495,7 +473,7 @@ this watch code is only half fixed - spiderr
 					$ret = "<a title=\"$desc\" href=\"" . BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
 				} else {
 					if( $gBitUser->hasPermission( 'bit_p_edit' ) ) {
-						$ret = "<a href=\"".WIKI_PKG_URL."edit.php?page_id=" . urlencode( $exists['title'] ). "\" class=\"create\">$pPageName</a>";
+						$ret = "<a href=\"".WIKI_PKG_URL."edit.php?page=" . urlencode( $exists['title'] ). "\" class=\"create\">$pPageName</a>";
 					} else {
 						$ret = $pPageName;
 					}
@@ -520,7 +498,7 @@ this watch code is only half fixed - spiderr
 			$query = "SELECT tl.`from_content_id`, tc.`title`
 					  FROM `".BIT_DB_PREFIX."tiki_links` tl INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tl.`from_content_id`=tc.`content_id`)
 					  WHERE tl.`to_content_id` = ?";
-			$result = $this->query( $query, array( $this->mContentId ) );
+			$result = $this->mDb->query( $query, array( $this->mContentId ) );
 			$ret = array();
 			while ( !$result->EOF ) {
 				$ret[$result->fields["from_content_id"]] = $result->fields["title"];
@@ -533,9 +511,8 @@ this watch code is only half fixed - spiderr
 
 	// *********  History functions for the wiki ********** //
     /**
-    * Get complete set of historical data in order to display a given wiki page version
-    * @param pExistsHash the hash that was returned by LibertyContent::pageExists
-    * @return array of mInfo data
+    * Get count of the number of historic records for the page
+    * @return count
     */
 	function getHistoryCount() {
 		$ret = NULL;
@@ -543,12 +520,17 @@ this watch code is only half fixed - spiderr
 			$query = "SELECT COUNT(*) AS `count`
 					FROM `".BIT_DB_PREFIX."tiki_history`
 					WHERE `page_id` = ?";
-			$rs = $this->query($query, array($this->mPageId));
+			$rs = $this->mDb->query($query, array($this->mPageId));
 			$ret = $rs->fields['count'];
 		}
 		return $ret;
 	}
 
+    /**
+    * Get complete set of historical data in order to display a given wiki page version
+    * @param pExistsHash the hash that was returned by LibertyContent::pageExists
+    * @return array of mInfo data
+    */
 	function getHistory( $pVersion=NULL, $pUserId=NULL, $pOffset = 0, $maxRecords = -1 ) {
 		$ret = NULL;
 		if( $this->isValid() ) {
@@ -573,7 +555,7 @@ this watch code is only half fixed - spiderr
 						LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = tc.`user_id`)
 				   WHERE $whereSql $versionSql order by th.`version` desc";
 
-			$result = $this->query( $query, $bindVars, $maxRecords, $pOffset );
+			$result = $this->mDb->query( $query, $bindVars, $maxRecords, $pOffset );
 			$ret = array();
 			while( !$result->EOF ) {
 				$aux = $result->fields;
@@ -586,7 +568,12 @@ this watch code is only half fixed - spiderr
 		return $ret;
 	}
 
-
+	/**
+	 * Roll back to a specific version of a page
+	 * @param pVersion Version number to roll back to
+	 * @param comment Comment text to be added to the action log
+	 * @return TRUE if completed successfully
+	 */
 	function rollbackVersion( $pVersion, $comment = '' ) {
 		$ret = FALSE;
 		if( $this->isValid() ) {
@@ -594,7 +581,7 @@ this watch code is only half fixed - spiderr
 			$this->mDb->StartTrans();
 			// JHT - cache invalidation appears to be handled by store function - so don't need to do it here
 			$query = "select *, `user_id` AS modifier_user_id, `data` AS `edit` from `".BIT_DB_PREFIX."tiki_history` where `page_id`=? and `version`=?";
-			$result = $this->query($query,array( $this->mPageId, $pVersion ) );
+			$result = $this->mDb->query($query,array( $this->mPageId, $pVersion ) );
 			if( $result->numRows() ) {
 				$res = $result->fetchRow();
 				$res['comment'] = 'Rollback to version '.$pVersion.' by '.$gBitUser->getDisplayName();
@@ -608,21 +595,23 @@ this watch code is only half fixed - spiderr
 					$action = "Changed actual version to $pVersion";
 					$t = date("U");
 					$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`(`action`,`page_id`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?)";
-					$result = $this->query($query,array($action,$this->mPageId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
+					$result = $this->mDb->query($query,array($action,$this->mPageId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
 					$ret = TRUE;
 				}
 				$this->mDb->CompleteTrans();
 			} else {
-vd( $this->mErrors );
-				$this->RollbackTrans();
+				$this->mDb->RollbackTrans();
 			}
 		}
 		return $ret;
 	}
 
-
-
-	// Removes a specific version of a page
+	/**
+	 * Removes a specific version of a page
+	 * @param pVersion Version number to roll back to
+	 * @param comment Comment text to be added to the action log
+	 * @return TRUE if completed successfully
+	 */
 	function expungeVersion( $pVersion=NULL, $comment = '' ) {
 		$ret = FALSE;
 		if( $this->isValid() ) {
@@ -633,14 +622,14 @@ vd( $this->mErrors );
 				$versionSql = " and `version`=? ";
 				array_push( $bindVars, $pVersion );
 			}
-			$hasRows = $this->getOne( "SELECT COUNT(`version`) FROM `".BIT_DB_PREFIX."tiki_history` WHERE `page_id`=? $versionSql ", $bindVars );
+			$hasRows = $this->mDb->getOne( "SELECT COUNT(`version`) FROM `".BIT_DB_PREFIX."tiki_history` WHERE `page_id`=? $versionSql ", $bindVars );
 			$query = "delete from `".BIT_DB_PREFIX."tiki_history` where `page_id`=? $versionSql ";
-			$result = $this->query( $query, $bindVars );
+			$result = $this->mDb->query( $query, $bindVars );
 			if( $hasRows ) {
 				$action = "Removed version $pVersion";
 				$t = date("U");
 				$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`(`action`,`page_id`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?)";
-				$result = $this->query($query,array($action,$this->mPageId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
+				$result = $this->mDb->query($query,array($action,$this->mPageId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
 				$ret = TRUE;
 			}
 			$this->mDb->CompleteTrans();
@@ -654,7 +643,7 @@ vd( $this->mErrors );
 		$query = "SELECT th.*, tc.`title`
 				  FROM `".BIT_DB_PREFIX."tiki_history` th INNER JOIN `".BIT_DB_PREFIX."tiki_pages` tp ON (tp.`page_id` = th.`page_id`) INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
 				  WHERE th.`page_id`=? and th.`version`=? ";
-		$result = $this->query($query,array($page_id,$version));
+		$result = $this->mDb->query($query,array($page_id,$version));
 		$res = $result->fetchRow();
 		return $res;
 	}
@@ -672,7 +661,7 @@ vd( $this->mErrors );
 				  WHERE th.`page_id` = ?
 				  ORDER BY th.`version` desc";
 
-		$result = $this->query($query,array($pageId));
+		$result = $this->mDb->query($query,array($pageId));
 		$ret = array();
 		while ($res = $result->fetchRow()) {
 			$aux = $res;
@@ -686,38 +675,68 @@ vd( $this->mErrors );
 	}
 */
 
-   	// Methods to cache and handle the cached version of wiki pages
-	// to prevent parsing large pages.
+   	/**
+   	 * Methods to cache and handle the cached version of wiki pages
+	 * to prevent parsing large pages.
+	 */
+   	/**
+   	 * Save cached version of page to store
+   	 * @param cache Data to be cached
+	 */
 	function setPageCache( $cache ) {
 		if( $this->mPageId ) {
 			$query = "update `".BIT_DB_PREFIX."tiki_pages` set `wiki_cache`=? where `page_id`=?";
-			$this->query( $query, array( $cache, $this->mPageId ) );
+			$this->mDb->query( $query, array( $cache, $this->mPageId ) );
 		}
 	}
 
+   	/**
+   	 * Get cached version of page from store
+   	 * @param page ? Not used
+	 */
 	function get_cache_info($page) {
 		if( $this->mPageId ) {
 			$query = "select `cache`,`cache_timestamp` from `".BIT_DB_PREFIX."tiki_pages` where `page_id`=?";
-			$result = $this->query( $query, array( $this->mPageId ) );
+			$result = $this->mDb->query( $query, array( $this->mPageId ) );
 			return $result->fetchRow();
 		}
 	}
+
+   	/**
+   	 * Update cached version of page in store
+   	 * @param data Data to be cached
+	 */
 	function updateCache( $data ) {
 		if( $this->mPageId ) {
 			$now = date('U');
 			$query = "update `".BIT_DB_PREFIX."tiki_pages` set `cache`=?, `cache_timestamp`=$now where `page_id`=?";
-			$result = $this->query( $query, array( $data, $this->mPageId ) );
+			$result = $this->mDb->query( $query, array( $data, $this->mPageId ) );
 			return true;
 		}
 	}
+
+   	/**
+   	 * Flag cached version as out of date
+   	 * Cache will be updated next time the page is accessed
+	 */
 	function invalidateCache() {
 		if( $this->mPageId ) {
 			$query = "UPDATE `".BIT_DB_PREFIX."tiki_pages` SET `cache_timestamp`=? WHERE `page_id`=?";
-			$this->query( $query, array( 0, $this->mPageId ) );
+			$this->mDb->query( $query, array( 0, $this->mPageId ) );
 		}
 	}
 
-
+   	/**
+   	 * Generate list of pages
+   	 * @param offset Number of the first record to list
+   	 * @param maxRecords Number of records to list
+   	 * @param sort_mode Order in which the records will be sorted
+   	 * @param find Filter to be applied to the list
+   	 * @param pUserId If set additionally filter on UserId
+   	 * @param pExtras If set adds additional counts of links to and from each page
+   	 *	This can take some time to calculate, and so should not normally be enabled
+   	 * @param pOrphansOnly If Set list only unattached pages ( ones not used in other content )
+	 */
 	function getList($offset = 0, $maxRecords = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE ) {
 		global $gBitSystem;
 		if ($sort_mode == 'size_desc') {
@@ -763,7 +782,7 @@ vd( $this->mErrors );
 		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name ,`page_id`, `hits`, `page_size` as `len`, tc.`title`, tc.`format_guid`, tp.`description`, tc.`last_modified`, tc.`created`, `ip`, `comment`, `version`, `flag`, tp.`content_id`
 				  FROM `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`), `".BIT_DB_PREFIX."users_users` uue, `".BIT_DB_PREFIX."users_users` uuc
 				  WHERE tc.`content_type_guid`=? AND tc.`modifier_user_id`=uue.`user_id` AND tc.`user_id`=uuc.`user_id` $mid
-				  ORDER BY ".$this->convert_sortmode($sort_mode);
+				  ORDER BY ".$this->mDb->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from 
 			`".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc 
 			ON (tc.`content_id` = tp.`content_id`) 
@@ -799,7 +818,7 @@ vd( $this->mErrors );
 				  AND tc.`user_id`=uuc.`user_id` $mid
 				  AND tl.`to_content_id` is NULL
 				  ORDER BY "
-			. $this->convert_sortmode($sort_mode);
+			. $this->mDb->convert_sortmode($sort_mode);
 			$query_cant = "select count(*) 
 			FROM `".BIT_DB_PREFIX."tiki_pages` tp 
 				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` tl on tp.`content_id` =  tl.`to_content_id` 
@@ -814,8 +833,10 @@ vd( $this->mErrors );
 		// If sort mode is links then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 		// If sort mode is backlinks then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 
-		$result = $this->query($query,$bindVars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindVars);
+		$this->mDb->StartTrans();
+		$result = $this->mDb->query($query,$bindVars,$maxRecords,$offset);
+		$cant = $this->mDb->getOne($query_cant,$bindVars);
+		$this->mDb->CompleteTrans();
 		$ret = array();
 		while ($res = $result->fetchRow()) {
 			$aux = array();
@@ -827,9 +848,9 @@ vd( $this->mErrors );
 			$aux['display_url'] = $this->getDisplayUrl( $aux['title'], $aux );
 			if( $pExtras ) {
 				// USE SPARINGLY!!! This gets expensive fast
-//				$aux['versions"] = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_history` where `page_id`=?", array( $res["page_id"] ) );
-				$aux['links'] = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_links` where `from_content_id`=?", array( $res["content_id"] ) );
-				$aux['backlinks'] = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_links` where `to_content_id`=?", array( $res["content_id"] ) );
+//				$aux['versions"] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_history` where `page_id`=?", array( $res["page_id"] ) );
+				$aux['links'] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_links` where `from_content_id`=?", array( $res["content_id"] ) );
+				$aux['backlinks'] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_links` where `to_content_id`=?", array( $res["content_id"] ) );
 			}
 			$ret[] = $aux;
 		}
@@ -882,7 +903,6 @@ vd( $this->mErrors );
 define('PLUGINS_DIR', WIKI_PKG_PATH.'plugins');
 /**
  * @package wiki
- * @subpackage WikiLib
  */
 class WikiLib extends BitPage {
     function WikiLib() {
@@ -976,7 +996,7 @@ class WikiLib extends BitPage {
 			}
 			$exp = implode(" or ", $exps);
 			$query = "SELECT tc.`title` FROM `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) WHERE $exp";
-			$result = $this->query($query,$bindvars);
+			$result = $this->mDb->query($query,$bindvars);
 			while ($res = $result->fetchRow()) {
 				$ret[] = $res["title"];
 			}
@@ -990,7 +1010,7 @@ class WikiLib extends BitPage {
 					  FROM `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
 					  WHERE `$who`=?";
 
-			$result = $this->query($query,array($pUserId),$max);
+			$result = $this->mDb->query($query,array($pUserId),$max);
 			$ret = array();
 
 			while ($res = $result->fetchRow()) {
@@ -1009,7 +1029,7 @@ class WikiLib extends BitPage {
 	// column to tiki_pages
 	function page_rank($loops = 16) {
 		$query = "select `content_id`, tc.`title`  from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON( tp.`content_id`=tc.`content_id` ";
-		$result = $this->query($query,array());
+		$result = $this->mDb->query($query,array());
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -1025,7 +1045,7 @@ class WikiLib extends BitPage {
 			$pages[$conId] = $val;
 			// Fixed query.  -rlpowell
 			$query = "update `".BIT_DB_PREFIX."tiki_pages` set `page_rank`=? where `content_id`= ?";
-			$result = $this->query($query, array((int)$val, $conId) );
+			$result = $this->mDb->query($query, array((int)$val, $conId) );
 		}
 
 		for ($i = 0; $i < $loops; $i++) {
@@ -1033,7 +1053,7 @@ class WikiLib extends BitPage {
 				// Get all the pages linking to this one
 				// Fixed query.  -rlpowell
 				$query = "select `from_content_id`  from `".BIT_DB_PREFIX."tiki_links` where `to_content_id` = ?";
-				$result = $this->query($query, array( $pagename ) );
+				$result = $this->mDb->query($query, array( $pagename ) );
 				$sum = 0;
 
 				while ($res = $result->fetchRow()) {
@@ -1042,7 +1062,7 @@ class WikiLib extends BitPage {
 				if (isset($pages[$linking])) {
 					// Fixed query.  -rlpowell
 					$q2 = "select count(*) from `".BIT_DB_PREFIX."tiki_links` where `from_page`= ?";
-					$cant = $this->getOne($q2, array($linking) );
+					$cant = $this->mDb->getOne($q2, array($linking) );
 					if ($cant == 0) $cant = 1;
 					$sum += $pages[$linking] / $cant;
 				}
@@ -1052,7 +1072,7 @@ class WikiLib extends BitPage {
 				$pages[$pagename] = $val;
 				// Fixed query.  -rlpowell
 				$query = "update `".BIT_DB_PREFIX."tiki_pages` set `page_rank`=? where `title`=?";
-				$result = $this->query($query, array((int)$val, $pagename) );
+				$result = $this->mDb->query($query, array((int)$val, $pagename) );
 
 				// Update
 			}
@@ -1102,7 +1122,7 @@ class WikiLib extends BitPage {
 		from `".BIT_DB_PREFIX."tiki_pages`
 		order by `hits` desc";
 
-		$result = $this->query($query, array(),$limit);
+		$result = $this->mDb->query($query, array(),$limit);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -1118,8 +1138,8 @@ class WikiLib extends BitPage {
 	// Returns the name of "n" random pages
 	function get_random_pages( $pNumPages=10 ) {
 		$ret = NULL;
-		$query = "select `content_id`, `title`  from `".BIT_DB_PREFIX."tiki_content` WHERE `content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' ORDER BY ".$this->convert_sortmode( 'random' );
-		$rs = $this->query( $query, array(), $pNumPages );
+		$query = "select `content_id`, `title`  from `".BIT_DB_PREFIX."tiki_content` WHERE `content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' ORDER BY ".$this->mDb->convert_sortmode( 'random' );
+		$rs = $this->mDb->query( $query, array(), $pNumPages );
 		while( $rs && !$rs->EOF ) {
 			$ret[$rs->fields['content_id']]['title'] = $rs->fields['title'];
 			$ret[$rs->fields['content_id']]['display_url'] = $this->getDisplayUrl( $rs->fields['title'] );
@@ -1138,7 +1158,7 @@ class WikiLib extends BitPage {
 
     function wiki_get_link_structure($page, $level) {
 		$query = "select `to_page` from `".BIT_DB_PREFIX."tiki_links` where `from_page`=?";
-		$result = $this->query($query,array($page));
+		$result = $this->mDb->query($query,array($page));
 		$aux['pages'] = array();
 		$aux['name'] = $page;
 		while ($res = $result->fetchRow()) {
@@ -1158,43 +1178,43 @@ class WikiLib extends BitPage {
 		global $count_admin_pvs, $user;
 		if ($count_admin_pvs == 'y' || !$gBitUser->isAdmin()) {
 		$query = "update `".BIT_DB_PREFIX."tiki_wiki_attachments` set `downloads`=`downloads`+1 where `att_id`=?";
-		$result = $this->query($query,array((int)$id));
+		$result = $this->mDb->query($query,array((int)$id));
 		}
 		return true;
 	}
 	function get_wiki_attachment($att_id) {
 		$query = "select * from `".BIT_DB_PREFIX."tiki_wiki_attachments` where `att_id`=?";
-		$result = $this->query($query,array((int)$att_id));
+		$result = $this->mDb->query($query,array((int)$att_id));
 		if (!$result->numRows()) return false;
 		$res = $result->fetchRow();
 		return $res;
 	}
 	function remove_wiki_attachment($att_id) {
 		global $w_use_dir;
-		$path = $this->getOne("select `path` from `".BIT_DB_PREFIX."tiki_wiki_attachments` where `att_id`=$att_id");
+		$path = $this->mDb->getOne("select `path` from `".BIT_DB_PREFIX."tiki_wiki_attachments` where `att_id`=$att_id");
 		if ($path) {
 			@unlink ($w_use_dir . $path);
 		}
 		$query = "delete from `".BIT_DB_PREFIX."tiki_wiki_attachments` where `att_id`='$att_id'";
-		$result = $this->query($query);
+		$result = $this->mDb->query($query);
 	}
 	function wiki_attach_file($page, $name, $type, $size, $data, $comment, $pUserId, $fhash) {
 		$comment = strip_tags($comment);
 		$now = date("U");
 		$query = "insert into `".BIT_DB_PREFIX."tiki_wiki_attachments` (`page`,`filename`,`filesize`,`filetype`,`data`,`created`,`downloads`,`user_id`,`comment`,`path`) values(?,?,?,?,?,?,0,?,?,?)";
-		$result = $this->query($query,array($page,$name, (int) $size,$type,$data, (int) $now, $pUserId, $comment,$fhash));
+		$result = $this->mDb->query($query,array($page,$name, (int) $size,$type,$data, (int) $now, $pUserId, $comment,$fhash));
 	}
 
 
 
 	function wiki_link_structure() {
-		$query = "select `title` from `".BIT_DB_PREFIX."tiki_pages` order by ".$this->convert_sortmode("title_asc");
-		$result = $this->query($query);
+		$query = "select `title` from `".BIT_DB_PREFIX."tiki_pages` order by ".$this->mDb->convert_sortmode("title_asc");
+		$result = $this->mDb->query($query);
 		while ($res = $result->fetchRow()) {
 			print ($res["title"] . " ");
 			$page = $res["title"];
 			$query2 = "select `to_page` from `".BIT_DB_PREFIX."tiki_links` where `from_page`=?";
-			$result2 = $this->query($query2, array( $page ) );
+			$result2 = $this->mDb->query($query2, array( $page ) );
 			$pages = array();
 			while ($res2 = $result2->fetchRow()) {
 			if (($res2["to_page"] <> $res["title"]) && (!in_array($res2["to_page"], $pages))) {
@@ -1249,10 +1269,10 @@ class WikiLib extends BitPage {
 		$mid = "";
 		}
 
-		$query = "select * from `".BIT_DB_PREFIX."tiki_received_pages` $mid order by ".$this->convert_sortmode($sort_mode);
+		$query = "select * from `".BIT_DB_PREFIX."tiki_received_pages` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_received_pages` $mid";
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
+		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -1281,24 +1301,24 @@ class WikiLib extends BitPage {
 			$query  = "SELECT ts.`structure_id`, tc.`title`
 					   FROM `".BIT_DB_PREFIX."tiki_structures` ts INNER JOIN `".BIT_DB_PREFIX."tiki_pages` tp ON (tp.`page_id` = ts.`content_id`) INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
 					   WHERE ts.`content_id`=?";
-			$result = $this->query($query, array( $pPageId ) );
+			$result = $this->mDb->query($query, array( $pPageId ) );
 			if ( $result ) $delPageName = $result['title'];
 			else $delPageName = '';
 			while ($res = $result->fetchRow()) {
 				$this->remove_from_structure($res["structure_id"]);
 			}
 			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_history` where `page_id` = ?";
-			$result = $this->query( $query, array( $pPageId ) );
+			$result = $this->mDb->query( $query, array( $pPageId ) );
 			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_links` where `from_content_id` = ?";
-			$result = $this->query( $query, array( $pPageId ) );
+			$result = $this->mDb->query( $query, array( $pPageId ) );
 			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_pages` where `page_id` = ?";
-			$result = $this->query( $query, array( $pPageId ) );
+			$result = $this->mDb->query( $query, array( $pPageId ) );
 			$action = "Removed";
 			$t = date("U");
 			$query = "INSERT INTO `".BIT_DB_PREFIX."tiki_actionlog`(`action`,`page_id`, `title`, `last_modified`, `user_id`, `ip`, `comment`) VALUES (?,?,?,?,?,?,?)";
-			$result = $this->query( $query, array( $action, $pPageId, $delPageName, (int)$t, $gBitUser->mUserId, $_SERVER["REMOTE_ADDR"], $comment ) );
+			$result = $this->mDb->query( $query, array( $action, $pPageId, $delPageName, (int)$t, $gBitUser->mUserId, $_SERVER["REMOTE_ADDR"], $comment ) );
 			$query = "UPDATE `".BIT_DB_PREFIX."users_groups` SET `group_home`=? WHERE `group_home`=?";
-			$this->query($query, array(NULL, $delPageName));
+			$this->mDb->query($query, array(NULL, $delPageName));
 
 			#$this->remove_object('wiki page', $delPageName);
 
@@ -1319,7 +1339,7 @@ class WikiLib extends BitPage {
 		$tar->addFile( $gBitSystem->getStyleCss() );
 		// Foreach page
 		$query = "select * from `".BIT_DB_PREFIX."tiki_pages`";
-		$result = $this->query($query,array());
+		$result = $this->mDb->query($query,array());
 
 		while ($res = $result->fetchRow()) {
 			$title = $res["title"] . '.html';
@@ -1340,7 +1360,7 @@ class WikiLib extends BitPage {
 		$action = "dump created";
 		$t = date("U");
 		$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`(`action`,`page_id`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?)";
-		$result = $this->query($query,array($action,1,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
+		$result = $this->mDb->query($query,array($action,1,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
 	}
 
 /* using BitPage::getList() now - xing
@@ -1388,10 +1408,10 @@ class WikiLib extends BitPage {
 		// If sort mode is backlinks then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 		$query = "SELECT tc.`title`, tc.`hits`, tp.`page_size` as `len` ,tc.`last_modified`, tc.`user_id`, tc.`ip`, tp.`comment`, tp.`version`, tp.`flag`, tc.`content_id`, tp.`page_id`
 				  FROM `".BIT_DB_PREFIX."tiki_content` tc INNER JOIN `".BIT_DB_PREFIX."tiki_pages` tp on (tp.`content_id` = tc.`content_id` )
-				  WHERE tc.`content_type_guid`='bitpage' $mid order by ".$this->convert_sortmode($sort_mode);
+				  WHERE tc.`content_type_guid`='bitpage' $mid order by ".$this->mDb->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_content` tc $mid_cant";
-		$result = $this->query($query,$bindvars,-1,0);
-		$cant = $this->getOne($query_cant,$bindvars);
+		$result = $this->mDb->query($query,$bindvars,-1,0);
+		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
 		$num_or = 0;
 
@@ -1399,9 +1419,9 @@ class WikiLib extends BitPage {
 
 			$page_ci = $res["content_id"];
 			$queryc = "select count(*) from `".BIT_DB_PREFIX."tiki_links` where `to_content_id`=?";
-			$cant = $this->getOne($queryc,array($page_ci));
+			$cant = $this->mDb->getOne($queryc,array($page_ci));
 			$queryc = "select count(*) from `".BIT_DB_PREFIX."tiki_structures` ts, `".BIT_DB_PREFIX."tiki_pages` tp where ts.`content_id`=tp.`page_id` and tp.`content_id`=?";
-			$cant += $this->getOne($queryc,array($page_ci));
+			$cant += $this->mDb->getOne($queryc,array($page_ci));
 
 			if ($cant == 0) {
 				$num_or++;
@@ -1421,9 +1441,9 @@ class WikiLib extends BitPage {
 				$aux["comment"] = $res["comment"];
 				$aux["version"] = $res["version"];
 				$aux["flag"] = $res["flag"] == 'y' ? tra('locked') : tra('unlocked');
-				$aux["versions"] = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_history` where `page_id`=?",array($page_id));
-				$aux["links"] = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_links` where `from_content_id`=?",array($page_ci));
-				$aux["backlinks"] = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_links` where `to_content_id`=?",array($page_ci));
+				$aux["versions"] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_history` where `page_id`=?",array($page_id));
+				$aux["links"] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_links` where `from_content_id`=?",array($page_ci));
+				$aux["backlinks"] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_links` where `to_content_id`=?",array($page_ci));
 				$ret[] = $aux;
 			}
 		}
@@ -1483,17 +1503,17 @@ class WikiLib extends BitPage {
 		}
 
 		$query = "select `name` ,`created`,tcts.`template_id` from `".BIT_DB_PREFIX."tiki_content_templates` tct, `".BIT_DB_PREFIX."tiki_content_templates_sections` tcts ";
-		$query.= " where tcts.`template_id`=tct.`template_id` and `section`=? $mid order by ".$this->convert_sortmode($sort_mode);
+		$query.= " where tcts.`template_id`=tct.`template_id` and tcts.`section`=? $mid order by ".$this->mDb->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_content_templates` tct, `".BIT_DB_PREFIX."tiki_content_templates_sections` tcts ";
-		$query_cant.= "where tcts.`template_id`=tct.`template_id` and `section`=? $mid";
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
+		$query_cant.= "where tcts.`template_id`=tct.`template_id` and tcts.`section`=? $mid";
+		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
 		$query2 = "select `section`  from `".BIT_DB_PREFIX."tiki_content_templates_sections` where `template_id`=?";
 
-		$result2 = $this->query($query2,array((int)$res["template_id"]));
+		$result2 = $this->mDb->query($query2,array((int)$res["template_id"]));
 		$sections = array();
 
 		while ($res2 = $result2->fetchRow()) {
@@ -1513,7 +1533,7 @@ class WikiLib extends BitPage {
 	/*shared*/
 	function get_template($template_id) {
 		$query = "select * from `".BIT_DB_PREFIX."tiki_content_templates` where `template_id`=?";
-		$result = $this->query($query,array((int)$template_id));
+		$result = $this->mDb->query($query,array((int)$template_id));
 		if (!$result->numRows()) return false;
 		$res = $result->fetchRow();
 		return $res;
@@ -1557,10 +1577,10 @@ class WikiLib extends BitPage {
 				"INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) " .
 				"INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id`= th.`user_id`) " .
 				"$where " .
-				"order by th.".$this->convert_sortmode($sort_mode);
+				"order by th.".$this->mDb->convert_sortmode($sort_mode);
 		$query_cant = "SELECT COUNT(*) FROM `".BIT_DB_PREFIX."tiki_history` th " . $where;
-		$result = $this->query($query,$bindvars,$limit,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
+		$result = $this->mDb->query($query,$bindvars,$limit,$offset);
+		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
 		$r = array();
 		while ($res = $result->fetchRow()) {

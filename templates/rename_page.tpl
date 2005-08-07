@@ -4,7 +4,7 @@
 </div>
 
 <div class="body">
-<form action="{$gBitLoc.WIKI_PKG_URL}rename_page.php" method="post">
+<form action="{$smarty.const.WIKI_PKG_URL}rename_page.php" method="post">
 	<input type="hidden" name="oldpage" value="{$page|escape}" />
 	<input type="hidden" name="page" value="{$page|escape}" />
 	<table class="panel">

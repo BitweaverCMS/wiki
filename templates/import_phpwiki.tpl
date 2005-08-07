@@ -7,7 +7,7 @@
 
 <div class="body">
 
-<form method="post" action="{$gBitLoc.WIKI_PKG_URL}admin/import_phpwiki.php">
+<form method="post" action="{$smarty.const.WIKI_PKG_URL}admin/import_phpwiki.php">
 <table class="panel">
 <tr>
   <td>{tr}Path to where the dumped files are (relative to tiki basedir with trailing slash ex: dump/):{/tr}</td>

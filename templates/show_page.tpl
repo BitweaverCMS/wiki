@@ -42,7 +42,7 @@
 				{tr}The content on this page is licensed under the terms of the{/tr} <a href="{$wikiLicensePage}"><b>{tr}{$wikiSubmitNotice}{/tr}</b></a>.
 			{/if}
 			{if $gBitUser->hasPermission( 'bit_p_edit_copyrights' )}
-				<br />{tr}To edit the copyright notices{/tr} <a href="{$gBitSystem.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}">{tr}click here{/tr}</a>.
+				<br />{tr}To edit the copyright notices{/tr} <a href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}">{tr}click here{/tr}</a>.
 			{/if}
 		</p>
 	{/if}
@@ -50,17 +50,16 @@
 	{if $print_page ne 'y'}
 		{include file="bitpackage:wiki/page_action_bar.tpl"}
 	{/if}
-
-	{if $gBitSystem->isPackageActive( 'pigeonholes' )}
-		{include file="bitpackage:pigeonholes/display_members.tpl"}
-	{/if}
-
-	{if $gBitSystem->isPackageActive( 'categories' )}
-		{include file="bitpackage:categories/categories_objects.tpl"}
-	{/if}
 </div><!-- end .wiki -->
 
 {if $comments_at_top_of_page ne 'y' and $print_page ne 'y' and $feature_wiki_comments eq 'y' }
 	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
 
+{if $gBitSystem->isPackageActive( 'pigeonholes' )}
+	{include file="bitpackage:pigeonholes/display_members.tpl"}
+{/if}
+
+{if $gBitSystem->isPackageActive( 'categories' )}
+	{include file="bitpackage:categories/categories_objects.tpl"}
+{/if}
