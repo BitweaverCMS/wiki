@@ -12,7 +12,7 @@
 
 {tr}You can view a diff back to the previous version by following
 this link:
-    {$mail_machine}{$smarty.const.WIKI_PKG_URL}page_history.php?page={$mail_page|escape:"url"}&amp;diff2={$mail_last_version}{/tr}
+    {$mail_machine}{$smarty.const.WIKI_PKG_URL}page_history.php?page={$mail_page|escape:"url"}&diff2={$mail_last_version}{/tr}
 
 
 {tr}Comment:{/tr} {$mail_comment}

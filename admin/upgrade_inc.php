@@ -183,6 +183,10 @@ array( 'QUERY' =>
 	"UPDATE `".BIT_DB_PREFIX."tiki_categorized_objects` SET `object_type`='".BITPAGE_CONTENT_TYPE_GUID."', `object_id`=(SELECT tc.`content_id` FROM `".BIT_DB_PREFIX."tiki_content` tc WHERE tc.`title`=`".BIT_DB_PREFIX."tiki_categorized_objects`.`objId` AND `".BIT_DB_PREFIX."tiki_categorized_objects`.`object_type`='wiki page')",
 
 
+	// update user watches
+	"update `".BIT_DB_PREFIX."tiki_user_watches` as `tw` set `object` = (select `tp`.`page_id` from `tiki_pages` as `tp`, `tiki_content` as `tc` where `tp`.`content_id` = `tc`.`content_id` and   `tc`.`title` = `tw`.`title` )",
+
+
 	),
 )),
 

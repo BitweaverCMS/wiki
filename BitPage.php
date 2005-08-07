@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.17 2005/08/06 18:31:29 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.18 2005/08/07 08:32:51 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.17 $ $Date: 2005/08/06 18:31:29 $ $Author: lsces $
+ * @version $Revision: 1.2.2.18 $ $Date: 2005/08/07 08:32:51 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.17 2005/08/06 18:31:29 lsces Exp $
+ * $Id: BitPage.php,v 1.2.2.18 2005/08/07 08:32:51 jht001 Exp $
  */
 
 /**
@@ -144,29 +144,27 @@ class BitPage extends LibertyAttachable {
 			$this->load();
 
 			if( isset( $mailEvents ) ) {
-				global $notificationlib;
+				global $notificationlib, $gBitUser, $gBitSystem, $gBitSmarty;
 				include_once( KERNEL_PKG_PATH.'notification_lib.php' );
 				$notificationlib->post_content_event($this->mContentId, $this->mInfo['content_type_guid'], 'wiki', $this->mInfo['title'], $this->mInfo['modifier_user'], $this->mInfo['comment'], $this->mInfo['data']);
 
-/*
-this watch code is only half fixed - spiderr
 				if( $gBitSystem->isFeatureActive( 'feature_user_watches') ) {
-					$nots = $this->get_event_watches( 'wiki_page_changed', $this->mPageId );
+					$nots = $gBitUser->get_event_watches( 'wiki_page_changed', $this->mPageId );
 
 					foreach ($nots as $not) {
-						if ($wiki_watch_editor != 'y' && $not['user_id'] == $user)
-							break;
+#						if ($wiki_watch_editor != 'y' && $not['user_id'] == $user)
+#							break;
 						$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
 
-						$gBitSmarty->assign('mail_page', $pageName);
+						$gBitSmarty->assign('mail_page', $this->mInfo['title']);
 						$gBitSmarty->assign('mail_date', date("U"));
-						$gBitSmarty->assign('mail_user', $edit_user);
-						$gBitSmarty->assign('mail_comment', $edit_comment);
-						$gBitSmarty->assign('mail_last_version', $version);
-						$gBitSmarty->assign('mail_data', $edit_data);
+						$gBitSmarty->assign('mail_user', $this->mInfo['modifier_user']);
+						$gBitSmarty->assign('mail_comment', $this->mInfo['comment']);
+						$gBitSmarty->assign('mail_last_version', $this->mInfo['version'] - 1);
+						$gBitSmarty->assign('mail_data', $this->mInfo['data']);
 						$gBitSmarty->assign('mail_hash', $not['hash']);
 						$foo = parse_url($_SERVER["REQUEST_URI"]);
-						$machine = httpPrefix(). dirname( $foo["path"] );
+						$machine = httpPrefix();
 						$gBitSmarty->assign('mail_machine', $machine);
 						$parts = explode('/', $foo['path']);
 
@@ -174,12 +172,13 @@ this watch code is only half fixed - spiderr
 							unset ($parts[count($parts) - 1]);
 
 						$gBitSmarty->assign('mail_machine_raw', httpPrefix(). implode('/', $parts));
-						$gBitSmarty->assign('mail_pagedata', $edit_data);
+						$gBitSmarty->assign('mail_pagedata', $this->mInfo['data']);
 						$mail_data = $gBitSmarty->fetch('bitpackage:wiki/user_watch_wiki_page_changed.tpl');
-						@mail($not['email'], tra('Wiki page'). ' ' . $pageName . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
+						$email_to = $not['email'];
+						$email_to = 'jht@lj.net';
+						@mail($email_to, tra('Wiki page'). ' ' . $this->mInfo['title'] . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
 					}
 				}
-*/
 			}
 		}
 		$this->CompleteTrans();
