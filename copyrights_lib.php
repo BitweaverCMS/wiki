@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights_lib.php,v 1.1.1.1.2.1 2005/06/27 17:47:46 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights_lib.php,v 1.1.1.1.2.2 2005/08/07 13:25:03 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: copyrights_lib.php,v 1.1.1.1.2.1 2005/06/27 17:47:46 lsces Exp $
+ * $Id: copyrights_lib.php,v 1.1.1.1.2.2 2005/08/07 13:25:03 lsces Exp $
  * @package wiki
  */
 
@@ -21,10 +21,10 @@ class CopyrightsLib extends BitBase {
 		BitBase::BitBase();
 	}
 	function list_copyrights( $pPageId ) {
-		$query = "select * from `".BIT_DB_PREFIX."tiki_copyrights` WHERE `page_id`=? order by ".$this->convert_sortmode( "copyright_order_asc" );
+		$query = "select * from `".BIT_DB_PREFIX."tiki_copyrights` WHERE `page_id`=? order by ".$this->getDb()->convert_sortmode( "copyright_order_asc" );
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_copyrights` WHERE `page_id`=?";
-		$result = $this->query($query, array( $pPageId ));
-		$cant = $this->getOne($query_cant, array( $pPageId ));
+		$result = $this->getDb()->query($query, array( $pPageId ));
+		$cant = $this->getDb()->getOne($query_cant, array( $pPageId ));
 		$ret = array();
 		while ($res = $result->fetchRow()) {
 			$ret[] = $res;
@@ -36,11 +36,11 @@ class CopyrightsLib extends BitBase {
 	}
 	function top_copyright_order( $pPageId ) {
 		$query = "select MAX(`copyright_order`) from `".BIT_DB_PREFIX."tiki_copyrights` where `page_id` = ?";
-		return $this->getOne($query, array( $pPageId ));
+		return $this->getDb()->getOne($query, array( $pPageId ));
 	}
 	function unique_copyright( $pPageId , $title) {
 		$query = "select `copyrightID` from `".BIT_DB_PREFIX."tiki_copyrights` where `page_id`=? and `title`=?";
-		return $this->getOne($query, array( $pPageId ,$title));
+		return $this->getDb()->getOne($query, array( $pPageId ,$title));
 	}
 	function add_copyright( $pPageId , $title, $year, $authors, $pUserId) {
 		//$unique = $this->unique_copyright( $pPageId ,$title);
@@ -52,27 +52,27 @@ class CopyrightsLib extends BitBase {
 		$top = $this->top_copyright_order( $pPageId );
 		$order = $top + 1;
 		$query = "insert into `".BIT_DB_PREFIX."tiki_copyrights` (`page_id`, `title`, `year`, `authors`, `copyright_order`, `user_id`) values (?,?,?,?,?,?)";
-		$this->query($query,array( $pPageId ,$title,$year,$authors,$order,$pUserId));
+		$this->getDb()->query($query,array( $pPageId ,$title,$year,$authors,$order,$pUserId));
 		return true;
 	}
 	function edit_copyright($id, $title, $year, $authors, $pUserId) {
 		$query = "update `".BIT_DB_PREFIX."tiki_copyrights` SET `year`=?, `title`=?, `authors`=?, `user_id`=? where `copyright_id`=?";
-		$this->query($query,array($year,$title,$authors,$pUserId,(int)$id));
+		$this->getDb()->query($query,array($year,$title,$authors,$pUserId,(int)$id));
 		return true;
 	}
 	function remove_copyright($id) {
 		$query = "delete from `".BIT_DB_PREFIX."tiki_copyrights` where `copyright_id`=?";
-		$this->query($query,array((int)$id));
+		$this->getDb()->query($query,array((int)$id));
 		return true;
 	}
 	function up_copyright($id) {
 		$query = "update `".BIT_DB_PREFIX."tiki_copyrights` set `copyright_order`=`copyright_order`-1 where `copyright_id`=?";
-		$result = $this->query($query,array((int)$id));
+		$result = $this->getDb()->query($query,array((int)$id));
 		return true;
 	}
 	function down_copyright($id) {
 		$query = "update `".BIT_DB_PREFIX."tiki_copyrights` set `copyright_order`=`copyright_order`+1 where `copyright_id`=?";
-		$result = $this->query($query,array((int)$id));
+		$result = $this->getDb()->query($query,array((int)$id));
 		return true;
 	}
 }

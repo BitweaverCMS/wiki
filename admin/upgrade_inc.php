@@ -72,7 +72,7 @@ array( 'PHP' => '
 	global $gBitSystem, $gBitDb;
 	require_once( WIKI_PKG_PATH."BitPage.php" );
 	$max = $gBitDb->GetOne( "SELECT MAX(`page_id`) FROM `'.BIT_DB_PREFIX.'tiki_pages`" );
-	$gBitSystem->mDb->mDb->CreateSequence( "tiki_pages_page_id_seq", $max + 1 );
+	$gBitSystem->getDb()->CreateSequence( "tiki_pages_page_id_seq", $max + 1 );
 	$query = "SELECT uu.`user_id`, uu2.`user_id` AS modifier_user_id, tp.`lastModif` AS created, tp.`lastModif` AS `last_modified`, tp.`data`, tp.`pageName` AS `title`, tp.`ip`, tp.`hits`
 			  FROM `'.BIT_DB_PREFIX.'tiki_pages` tp INNER JOIN `'.BIT_DB_PREFIX.'users_users` uu ON( tp.`creator`=uu.`login` ) INNER JOIN `'.BIT_DB_PREFIX.'users_users` uu2 ON( tp.`user`=uu2.`login` )";
 	if( $rs = $gBitDb->query( $query ) ) {
@@ -211,7 +211,7 @@ array( 'PHP' => '
 	require_once( LIBERTY_PKG_PATH."LibertyStructure.php" );
 	require_once( WIKI_PKG_PATH."BitBook.php" );
 	$query = "SELECT `structure_id`, `content_id` FROM `".BIT_DB_PREFIX."tiki_structures` WHERE `parent_id` IS NULL OR `parent_id`=0";
-	$roots = $gBitDb->GetAssoc( $query );
+	$roots = $gBitDb->getAssoc( $query );
 	$s = new LibertyStructure();
 	foreach( $roots AS $rootId=>$contentId ) {
 		$gBitDb->query( "UPDATE `".BIT_DB_PREFIX."tiki_structures` SET `root_structure_id`=? WHERE `structure_id`=?", array( $rootId, $rootId ) );
