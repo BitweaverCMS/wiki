@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.12 2005/08/08 12:27:42 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.13 2005/08/11 12:55:53 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.12 2005/08/08 12:27:42 squareing Exp $
+ * $Id: edit.php,v 1.1.1.1.2.13 2005/08/11 12:55:53 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -307,7 +307,7 @@ if(isset($_REQUEST["preview"])) {
 	}
 
 	$gBitSmarty->assign('preview',1);
-	$gBitSmarty->assign('title',$_REQUEST["title"]);
+	$gBitSmarty->assign('title',!empty($_REQUEST["title"])?$_REQUEST["title"]:$gContent->mPageName);
 
 	$parsed = $gContent->parseData($formInfo['edit'], (!empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] :
 		( isset($gContent->mInfo['format_guid']) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ) ) );
