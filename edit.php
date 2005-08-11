@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.6 2005/08/07 17:46:49 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.7 2005/08/11 13:03:48 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.6 2005/08/07 17:46:49 squareing Exp $
+ * $Id: edit.php,v 1.7 2005/08/11 13:03:48 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -299,12 +299,15 @@ if(isset($_REQUEST["preview"])) {
 		}
 	}
 
-	if( $gBitSystem->isPackageActive( 'pigeonholes' ) && isset( $_REQUEST['pigeonholes'] ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
-		include_once( PIGEONHOLES_PKG_PATH.'pigeonholes_processor_inc.php' );
+	// get files from all packages that process this data further
+	foreach( $gBitSystem->getPackageIntegrationFiles( 'form_processor_inc.php', TRUE ) as $package => $file ) {
+		if( $gBitSystem->isPackageActive( $package ) ) {
+			include_once( $file );
+		}
 	}
 
 	$gBitSmarty->assign('preview',1);
-	$gBitSmarty->assign('title',$_REQUEST["title"]);
+	$gBitSmarty->assign('title',!empty($_REQUEST["title"])?$_REQUEST["title"]:$gContent->mPageName);
 
 	$parsed = $gContent->parseData($formInfo['edit'], (!empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] :
 		( isset($gContent->mInfo['format_guid']) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ) ) );
@@ -427,9 +430,11 @@ if (isset($_REQUEST["fCancel"])) {
 			include_once( NEXUS_PKG_PATH.'insert_menu_item_inc.php' );
 		}
 
-		// add member to pigeonholes
-		if( $gBitSystem->isPackageActive( 'pigeonholes' ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
-			include_once( PIGEONHOLES_PKG_PATH.'pigeonholes_processor_inc.php' );
+		// get files from all packages that process this data further
+		foreach( $gBitSystem->getPackageIntegrationFiles( 'form_processor_inc.php', TRUE ) as $package => $file ) {
+			if( $gBitSystem->isPackageActive( $package ) ) {
+				include_once( $file );
+			}
 		}
 
 		if ( $gBitSystem->isFeatureActive( 'wiki_watch_author' ) ) {
@@ -458,10 +463,15 @@ if ($gBitSystem->isPackageActive( 'categories' ) ) {
 	include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
 }
 
-// Pigeonholes
-if( $gBitSystem->isPackageActive( 'pigeonholes' ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
-	include_once( PIGEONHOLES_PKG_PATH.'get_pigeonholes_pathlist_inc.php' );
+// get files from all packages that process this data further
+foreach( $gBitSystem->getPackageIntegrationFiles( 'get_form_info_inc.php', TRUE ) as $package => $file ) {
+	if( $gBitSystem->isPackageActive( $package ) ) {
+		include_once( $file );
+	}
 }
+
+// assign the integration template files
+$gBitSmarty->assign( 'integrationFiles', $gBitSystem->getPackageIntegrationFiles( 'templates/form_info_inc.tpl', TRUE ) );
 
 // Nexus menus
 if( $gBitSystem->isPackageActive( 'nexus' ) && $gBitUser->hasPermission( 'bit_p_insert_nexus_item' ) ) {
@@ -493,7 +503,6 @@ if (isset($_REQUEST['cat_categorize'])) {
 
 // WYSIWYG and Quicktag variable
 $gBitSmarty->assign( 'textarea_id', 'editwiki' );
-
 
 // formInfo might be set due to a error on submit
 if( empty( $formInfo ) ) {
