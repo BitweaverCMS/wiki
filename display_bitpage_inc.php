@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.6 2005/07/26 15:50:32 drewslater Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.7 2005/08/12 11:38:54 wolff_borg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.1.1.1.2.6 2005/07/26 15:50:32 drewslater Exp $
+ * $Id: display_bitpage_inc.php,v 1.1.1.1.2.7 2005/08/12 11:38:54 wolff_borg Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -280,7 +280,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) ) {
 
 $gBitSmarty->assign('wiki_extras','y');
 if( $gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
-	$cat_type=BITPAGE_CONTENT_TYPE_GUID;
+	$cat_obj_type=BITPAGE_CONTENT_TYPE_GUID;
 	$cat_objid = $gContent->mContentId;
 	include( THEMES_PKG_PATH.'tc_inc.php' );
 }

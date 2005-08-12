@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.15 2005/08/12 05:09:19 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.16 2005/08/12 11:38:54 wolff_borg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.15 2005/08/12 05:09:19 jht001 Exp $
+ * $Id: edit.php,v 1.1.1.1.2.16 2005/08/12 11:38:54 wolff_borg Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -289,7 +289,7 @@ if (isset($_REQUEST["comment"])) {
 	$formInfo['comment'] = $_REQUEST["comment"];
 }
 
-$cat_type = BITPAGE_CONTENT_TYPE_GUID;
+$cat_obj_type = BITPAGE_CONTENT_TYPE_GUID;
 
 if(isset($_REQUEST["preview"])) {
 	if ($gBitSystem->isPackageActive( 'categories' ) &&  isset( $_REQUEST['cat_categories'] ) ) {
