@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.14 2005/08/11 16:39:12 otherlanddk Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.15 2005/08/12 05:09:19 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.14 2005/08/11 16:39:12 otherlanddk Exp $
+ * $Id: edit.php,v 1.1.1.1.2.15 2005/08/12 05:09:19 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -27,6 +27,11 @@ include( WIKI_PKG_PATH.'lookup_page_inc.php' );
 
 // Get plugins with descriptions
 global $wikilib, $gLibertySystem;
+
+#edit preview needs this
+if (!isset($_REQUEST['title']) && isset($gContent->mInfo['title'])) {
+	$_REQUEST['title'] = $gContent->mInfo['title'];
+	}
 
 $sandbox = FALSE;
 if ( (!empty($_REQUEST['page']) && $_REQUEST['page'] == 'SandBox') ||
