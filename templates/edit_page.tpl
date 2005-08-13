@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.7 2005/08/08 12:27:42 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.8 2005/08/13 10:09:33 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -29,7 +29,7 @@
 	{strip}
 	<div class="body">
 		{if $preview}
-			<h2>Preview {$title}</h2>
+			<h2>{tr}Preview {$title}{/tr}</h2>
 			<div class="preview">
 				{include file="bitpackage:wiki/page_header.tpl"}
 				{include file="bitpackage:wiki/page_display.tpl"}
