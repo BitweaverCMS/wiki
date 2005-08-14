@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.16 2005/08/12 11:38:54 wolff_borg Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.17 2005/08/14 20:16:45 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.16 2005/08/12 11:38:54 wolff_borg Exp $
+ * $Id: edit.php,v 1.1.1.1.2.17 2005/08/14 20:16:45 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -513,6 +513,11 @@ $gBitSmarty->assign( 'textarea_id', 'editwiki' );
 if( empty( $formInfo ) ) {
 	$formInfo = &$gContent->mInfo;
 }
+
+// make original page title available for template
+$formInfo['original_title'] = (!empty($gContent->mInfo['title'])) ? $gContent->mInfo['title']  : "" ;
+
+
 $gBitSmarty->assign_by_ref( 'pageInfo', $formInfo );
 $gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 $gBitSmarty->assign( (!empty( $_REQUEST['tab'] ) ? $_REQUEST['tab'] : 'body').'TabSelect', 'tdefault' );

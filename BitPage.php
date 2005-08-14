@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.21 2005/08/14 11:07:17 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.22 2005/08/14 20:16:45 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.21 $ $Date: 2005/08/14 11:07:17 $ $Author: wolff_borg $
+ * @version $Revision: 1.2.2.22 $ $Date: 2005/08/14 20:16:45 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.21 2005/08/14 11:07:17 wolff_borg Exp $
+ * $Id: BitPage.php,v 1.2.2.22 2005/08/14 20:16:45 jht001 Exp $
  */
 
 /**
@@ -228,26 +228,40 @@ class BitPage extends LibertyAttachable {
 		}
 
 		// check for name issues, first truncate length if too long
-		if( !empty( $pParamHash['title']) || !empty($this->mPageName))  {
+		if( empty( $pParamHash['title'] ) ) {
+			$this->mErrors['title'] = 'You must specify a name';
+			}
+		elseif( !empty( $pParamHash['title']) || !empty($this->mPageName))  {
 			if( empty( $this->mPageId ) ) {
 				if( empty( $pParamHash['title'] ) ) {
 					$this->mErrors['title'] = 'You must enter a name for this page.';
 				} else {
 					$pParamHash['content_store']['title'] = substr( $pParamHash['title'], 0, 160 );
+					if ($gBitSystem->isFeatureActive( 'feature_allow_dup_wiki_page_names')) {
+						# silently allow pages with duplicate names to be created
+					}
+					else {
+						if( $this->pageExists( $pParamHash['title'] ) ) {
+							$this->mErrors['title'] = 'Page "'.$pParamHash['title'].'" already exists. Please choose a different name.';
+						}
+					}
 				}
 			} else {
 				$pParamHash['content_store']['title'] = ( isset( $pParamHash['title'] ) ) ? substr( $pParamHash['title'], 0, 160 ) : $this->mPageName;
-/*				if( $gBitUser->hasPermission( 'bit_p_rename' ) && (isset( $this->mInfo['title'] ) && ($pParamHash['title'] != $this->mInfo['title'])) ) {
-				if( $this->pageExists( $pParamHash['title'] ) ) {
-					$this->mErrors['title'] = 'Page "'.$pParamHash['title'].'" already exists. Please choose a different name.';
-				} else {
-					$pParamHash['page_store']['title'] = substr( $pParamHash['title'], 0, 160 );
+				if ($gBitSystem->isFeatureActive( 'feature_allow_dup_wiki_page_names')) {
+					# silently allow pages with duplicate names to be created
 				}
-*/
+				else {
+					if( $gBitUser->hasPermission( 'bit_p_rename' ) 
+					&& (isset( $this->mInfo['title'] ) 
+					&& ($pParamHash['title'] != $this->mInfo['title'])) ) {
+						if( $this->pageExists( $pParamHash['title'] ) ) {
+							$this->mErrors['title'] = 'Page "'.$pParamHash['title'].'" already exists. Please choose a different name.';
+						}
+					}
+				}
 			}
-		} elseif( empty( $pParamHash['title'] ) ) {
-			// no name specified
-			$this->mErrors['title'] = 'You must specify a name';
+
 /*		} elseif( !empty( $pParamHash['page'] ) && !empty( $pParamHash['newpage'] ) && ( $pParamHash['page'] != $pParamHash['newpage'] ) ) {
 			// check for rename, and rename it now if we can
 			if ($this->wiki_rename_page( $pParamHash['page'], $pParamHash['newpage'])) {

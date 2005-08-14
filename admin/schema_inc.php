@@ -162,6 +162,7 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	array(WIKI_PKG_NAME, 'feature_history','y'),
 	array(WIKI_PKG_NAME, 'feature_lastChanges','y'),
 	array(WIKI_PKG_NAME, 'feature_likePages','y'),
+	array(WIKI_PKG_NAME, 'feature_allow_dup_wiki_page_names','y'),
 	array(WIKI_PKG_NAME, 'feature_listPages','y'),
 	array(WIKI_PKG_NAME, 'feature_page_title','y'),
 	array(WIKI_PKG_NAME, 'feature_ranking','n'),

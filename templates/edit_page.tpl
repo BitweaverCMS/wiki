@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.8 2005/08/13 10:09:33 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.9 2005/08/14 20:16:45 jht001 Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -8,7 +8,7 @@
 		{assign var=conDescr value=$gContent->mType.content_description}
 		{if $pageInfo.page_id}
 			{assign var=editLabel value="{tr}Edit{/tr} $conDescr"}
-			{tr}{tr}Edit{/tr} {$pageInfo.title}{/tr}
+			{tr}{tr}Edit{/tr} {$pageInfo.original_title}{/tr}
 		{else}
 			{assign var=editLabel value="{tr}Create{/tr} $conDescr"}
 			{tr}{$editLabel}{/tr}
