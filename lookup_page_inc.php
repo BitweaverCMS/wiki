@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.1.1.1.2.2 2005/07/26 15:50:32 drewslater Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.1.1.1.2.3 2005/08/14 11:08:26 wolff_borg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.1.1.1.2.2 2005/07/26 15:50:32 drewslater Exp $
+ * $Id: lookup_page_inc.php,v 1.1.1.1.2.3 2005/08/14 11:08:26 wolff_borg Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -99,7 +99,8 @@
 			}
 
 			if (isset($_SESSION["edit_lock"])) {
-				$gBitUser->expungeSemaphore($purlquery["page"], $_SESSION["edit_lock"]);
+				// TODO - find out if this function is supposed to exist - wolff_borg
+				//$gBitUser->expungeSemaphore($purlquery["page"], $_SESSION["edit_lock"]);
 			}
 		}
 
