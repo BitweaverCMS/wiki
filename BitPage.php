@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.20 2005/08/07 16:27:49 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.21 2005/08/14 11:07:17 wolff_borg Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.20 $ $Date: 2005/08/07 16:27:49 $ $Author: lsces $
+ * @version $Revision: 1.2.2.21 $ $Date: 2005/08/14 11:07:17 $ $Author: wolff_borg $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.20 2005/08/07 16:27:49 lsces Exp $
+ * $Id: BitPage.php,v 1.2.2.21 2005/08/14 11:07:17 wolff_borg Exp $
  */
 
 /**
@@ -1157,17 +1157,20 @@ class WikiLib extends BitPage {
     }
 
     function wiki_get_link_structure($page, $level) {
-		$query = "select `to_page` from `".BIT_DB_PREFIX."tiki_links` where `from_page`=?";
+		$query = "select tc2.`title` from `".BIT_DB_PREFIX."tiki_links` tl
+			INNER JOIN tiki_content tc1 ON tc1.`content_id` = tl.`from_content_id`
+			INNER JOIN tiki_content tc2 ON tc2.`content_id` = tl.`to_content_id`
+			WHERE tc1.`title`=?";
 		$result = $this->mDb->query($query,array($page));
 		$aux['pages'] = array();
 		$aux['name'] = $page;
 		while ($res = $result->fetchRow()) {
 			if ($level) {
-			$aux['pages'][] = $this->wiki_get_link_structure($res['to_page'], $level - 1);
+				$aux['pages'][] = $this->wiki_get_link_structure($res['title'], $level - 1);
 			} else {
-			$inner['name'] = $res['to_page'];
-			$inner['pages'] = array();
-			$aux['pages'][] = $inner;
+				$inner['name'] = $res['title'];
+				$inner['pages'] = array();
+				$aux['pages'][] = $inner;
 			}
 		}
 		return $aux;
