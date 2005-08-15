@@ -1,29 +1,29 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.10 2005/08/15 07:17:20 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.11 2005/08/15 13:55:17 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 {assign var=serviceEditTpls value=$gLibertySystem->getServiceValues('content_edit_tpl')}
 
-<div class="admin wiki">
+<div class="edit wiki">
 	<div class="header">
 		<h1>
-		{* this weird dual assign thing is cause smarty wont interpret backticks to object in assign tag - spiderr *}
-		{assign var=conDescr value=$gContent->mType.content_description}
-		{if $pageInfo.page_id}
-			{assign var=editLabel value="{tr}Edit{/tr} $conDescr"}
-			{tr}{tr}Edit{/tr} {$pageInfo.original_title}{/tr}
-		{else}
-			{assign var=editLabel value="{tr}Create{/tr} $conDescr"}
-			{tr}{$editLabel}{/tr}
-		{/if}
+			{* this weird dual assign thing is cause smarty wont interpret backticks to object in assign tag - spiderr *}
+			{assign var=conDescr value=$gContent->mType.content_description}
+			{if $pageInfo.page_id}
+				{assign var=editLabel value="{tr}Edit{/tr} $conDescr"}
+				{tr}{tr}Edit{/tr} {$pageInfo.original_title}{/tr}
+			{else}
+				{assign var=editLabel value="{tr}Create{/tr} $conDescr"}
+				{tr}{$editLabel}{/tr}
+			{/if}
 		</h1>
 	</div>
 
 	{* Check to see if there is an editing conflict *}
 	{if $errors.edit_conflict}
-		<script language="javascript" type="text/javascript">
-			<!--
+		<script type="text/javascript">
+			//<![CDATA[
 				alert( "{$errors.edit_conflict|strip_tags}" );
-			-->
+			//]]>
 		</script>
 		{formfeedback warning=`$errors.edit_conflict`}
 	{/if}
