@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.12 2005/08/15 14:38:13 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.13 2005/08/15 15:42:33 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 {assign var=serviceEditTpls value=$gLibertySystem->getServiceValues('content_edit_tpl')}
@@ -161,6 +161,35 @@
 						{jstab title="Miscellaneous"}
 							{legend legend="Miscellaneous Options"}
 								{include file="bitpackage:liberty/edit_format.tpl"}
+
+								{if $wiki_spellcheck eq 'y'}
+									<div class="row">
+										{formlabel label="Spellcheck" for="spellcheck"}
+										{forminput}
+											<input type="checkbox" name="spellcheck" id="spellcheck" {if $spellcheck eq 'y'}checked="checked"{/if} />
+											{formhelp note=""}
+										{/forminput}
+									</div>
+								{/if}
+
+								{if $gBitSystem->isFeatureActive( 'feature_wiki_icache' )}
+									<div class="row">
+										{formlabel label="Cache" for="wiki_cache"}
+										{forminput}
+											<select name="wiki_cache" id="wiki_cache">
+												<option value="0" {if $wiki_cache eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
+												<option value="60" {if $wiki_cache eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
+												<option value="300" {if $wiki_cache eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
+												<option value="600" {if $wiki_cache eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
+												<option value="900" {if $wiki_cache eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
+												<option value="1800" {if $wiki_cache eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
+												<option value="3600" {if $wiki_cache eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
+												<option value="7200" {if $wiki_cache eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
+											</select>
+											{formhelp note=""}
+										{/forminput}
+									</div>
+								{/if}
 							{/legend}
 						{/jstab}
 
@@ -172,11 +201,11 @@
 							{/jstab}
 						{/if}
 
-						{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) or $wiki_spellcheck eq 'y' or $gBitSystem->isFeatureActive( 'feature_wiki_icache' )}
-							{jstab title="Advanced Wiki"}
+						{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )}
+							{jstab title="Copyright"}
 								{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )}
 									<div class="row">
-										{legend legend="Copyright" for="copyrightTitle"}
+										{legend legend="Copyright Settings" for="copyrightTitle"}
 											<div class="row">
 												{formlabel label="Title" for="copyrightTitle"}
 												{forminput}
@@ -216,35 +245,6 @@
 												</div>
 											{/if}
 										{/legend}
-									</div>
-								{/if}
-
-								{if $wiki_spellcheck eq 'y'}
-									<div class="row">
-										{formlabel label="Spellcheck" for="spellcheck"}
-										{forminput}
-											<input type="checkbox" name="spellcheck" id="spellcheck" {if $spellcheck eq 'y'}checked="checked"{/if} />
-											{formhelp note=""}
-										{/forminput}
-									</div>
-								{/if}
-
-								{if $gBitSystem->isFeatureActive( 'feature_wiki_icache' )}
-									<div class="row">
-										{formlabel label="Cache" for="wiki_cache"}
-										{forminput}
-											<select name="wiki_cache" id="wiki_cache">
-												<option value="0" {if $wiki_cache eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
-												<option value="60" {if $wiki_cache eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
-												<option value="300" {if $wiki_cache eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
-												<option value="600" {if $wiki_cache eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
-												<option value="900" {if $wiki_cache eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
-												<option value="1800" {if $wiki_cache eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
-												<option value="3600" {if $wiki_cache eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
-												<option value="7200" {if $wiki_cache eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
-											</select>
-											{formhelp note=""}
-										{/forminput}
 									</div>
 								{/if}
 							{/jstab}
