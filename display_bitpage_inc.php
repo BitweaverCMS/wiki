@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.7 2005/08/12 11:38:54 wolff_borg Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.8 2005/08/15 07:17:20 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.1.1.1.2.7 2005/08/12 11:38:54 wolff_borg Exp $
+ * $Id: display_bitpage_inc.php,v 1.1.1.1.2.8 2005/08/15 07:17:20 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -18,10 +18,6 @@
  */
 include_once( WIKI_PKG_PATH.'BitBook.php');
 
-if (defined("CATEGORIES_PKG_PATH")) {
-	include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
-}
-
 $gBitSystem->verifyPackage( 'wiki' );
 
 $gBitSystem->verifyPermission( 'bit_p_view' );
@@ -30,6 +26,9 @@ $gBitSystem->verifyPermission( 'bit_p_view' );
 if( !$gContent->isValid() ) {
 	$gBitSystem->fatalError( 'Page cannot be found' );
 }
+
+$displayHash = array( 'perm_name' => 'bit_p_view' );
+$gContent->invokeServices( 'content_display_function', $displayHash );
 
 /*
 $gBitSmarty->assign('structure','n');
@@ -106,7 +105,7 @@ if( isset( $_REQUEST["action"] ) && (($_REQUEST["action"] == 'lock' || $_REQUEST
 
 // Save to notepad if user wants to
 if( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->isValid() && $gBitUser->hasPermission( 'bit_p_notepad' ) && isset($_REQUEST['savenotepad'])) {
-	
+
 	require_once( NOTEPAD_PKG_PATH.'notepad_lib.php' );
 	$notepadlib->replace_note( $user, 0, $gContent->mPageName, $gContent->mInfo['data'] );
 }
@@ -122,7 +121,7 @@ if($gBitUser->hasPermission( 'bit_p_admin_wiki' )) {
 }
 // Process an undo here
 if(isset($_REQUEST["undo"])) {
-	
+
 	if($gBitUser->hasPermission( 'bit_p_admin_wiki' ) || ($gContent->mInfo["flag"]!='L' && ( ($gBitUser->hasPermission( 'bit_p_edit' ) && $gContent->mInfo["user"]==$user)||($bit_p_remove=='y')) )) {
 		// Remove the last version
 		$gContent->removeLastVersion();
@@ -148,7 +147,7 @@ if ($wiki_uses_slides == 'y') {
 	$gBitSmarty->assign('show_slideshow','n');
 }
 if(isset($_REQUEST['refresh'])) {
-	
+
   $wikilib->invalidate_cache($gContent->mInfo['title']);
 }
 // Here's where the data is parsed
@@ -221,14 +220,14 @@ if( $gBitSystem->isFeatureActive( 'feature_wiki_comments' ) ) {
 $section='wiki';
 if( $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) ) {
   if(isset($_REQUEST["removeattach"])) {
-		
+
     $owner = $wikilib->get_attachment_owner($_REQUEST["removeattach"]);
     if( ($user && ($owner == $user) ) || ($gBitUser->hasPermission( 'bit_p_wiki_admin_attachments' )) ) {
       $wikilib->remove_wiki_attachment($_REQUEST["removeattach"]);
     }
   }
   if(isset($_REQUEST["attach"]) && ($gBitUser->hasPermission( 'bit_p_wiki_admin_attachments' ) || $gBitUser->hasPermission( 'bit_p_wiki_attach_files' ))) {
-		
+
     // Process an attachment here
     if(isset($_FILES['userfile1'])&&is_uploaded_file($_FILES['userfile1']['tmp_name'])) {
       $fp = fopen($_FILES['userfile1']['tmp_name'],"rb");
@@ -324,17 +323,6 @@ if(isset($_REQUEST['mode']) && $_REQUEST['mode']=='mobile') {
   */
   include_once( HAWHAW_PKG_PATH."hawtiki_lib.php" );
   HAWBIT_index($gContent->mInfo);
-}
-if( $gBitSystem->isPackageActive( 'categories' ) ) {
-	// Check to see if page is categorized
-	$cat_objid = $gContent->mContentId;
-	$cat_obj_type = BITPAGE_CONTENT_TYPE_GUID;
-	include_once( CATEGORIES_PKG_PATH.'categories_display_inc.php' );
-}
-
-// get the pigeonholes info
-if( $gBitSystem->isPackageActive( 'pigeonholes' ) ) {
-	include_once( PIGEONHOLES_PKG_PATH.'get_pigeonholes_info_inc.php' );
 }
 
 // Flag for 'page bar' that currently 'Page view' mode active

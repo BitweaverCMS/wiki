@@ -1,5 +1,7 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.9 2005/08/14 20:16:45 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.10 2005/08/15 07:17:20 spiderr Exp $ *}
 <div class="floaticon">{bithelp}</div>
+
+{assign var=serviceEditTpls value=$gLibertySystem->getServiceValues('content_edit_tpl')}
 
 <div class="admin wiki">
 	<div class="header">
@@ -126,6 +128,11 @@
 							</div>
 						{/if}
 
+						{if $serviceEditTpls.access_control }
+							{legend legend="Security Settings"}
+								{include file=$serviceEditTpls.access_control"}
+							{/legend}
+						{/if}
 
 						<div class="row submit">
 							<input type="submit" name="fCancel" value="{tr}Cancel{/tr}" />&nbsp;
@@ -137,21 +144,16 @@
 							{include file="bitpackage:liberty/edit_storage_list.tpl"}
 						{/if}
 					{/legend}
+
 				{/jstab}
 
-				{if $gBitSystem->isPackageActive( 'categories' )}
+				{if $serviceEditTpls.categorization }
 					{jstab title="Categorize"}
 						{legend legend="Categorize"}
-							{include file="bitpackage:categories/categorize.tpl"}
+							{include file=$serviceEditTpls.categorization"}
 						{/legend}
 					{/jstab}
 				{/if}
-
-				{foreach from=$integrationFiles item=file key=package}
-					{if $gBitSystem->isPackageActive( $package )}
-						{include file=$file}
-					{/if}
-				{/foreach}
 
 				{if $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) && $show_attachments eq 'y' && $gBitUser->hasPermission('bit_p_content_attachments')}
 					{jstab title="Attachments"}

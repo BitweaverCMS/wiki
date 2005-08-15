@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.18 2005/08/15 00:29:46 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.19 2005/08/15 07:17:20 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.18 2005/08/15 00:29:46 spiderr Exp $
+ * $Id: edit.php,v 1.1.1.1.2.19 2005/08/15 07:17:20 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -292,24 +292,6 @@ if (isset($_REQUEST["comment"])) {
 $cat_obj_type = BITPAGE_CONTENT_TYPE_GUID;
 
 if(isset($_REQUEST["preview"])) {
-	if ($gBitSystem->isPackageActive( 'categories' ) &&  isset( $_REQUEST['cat_categories'] ) ) {
-		$cat_objid = $gContent->mContentId;
-		include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
-		foreach( $categories['data'] as $key => $cat ) {
-			foreach( $_REQUEST['cat_categories'] as $rCat ) {
-				if( $cat['category_id'] == $rCat ) {
-					$categories['data'][$key]['incat'] = 'y';
-				}
-			}
-		}
-	}
-
-	// get files from all packages that process this data further
-	foreach( $gBitSystem->getPackageIntegrationFiles( 'form_processor_inc.php', TRUE ) as $package => $file ) {
-		if( $gBitSystem->isPackageActive( $package ) ) {
-			include_once( $file );
-		}
-	}
 
 	$gBitSmarty->assign('preview',1);
 	$gBitSmarty->assign('title',!empty($_REQUEST["title"])?$_REQUEST["title"]:$gContent->mPageName);
@@ -420,14 +402,6 @@ if (isset($_REQUEST["fCancel"])) {
 	}
 
 	if( $gContent->store( $_REQUEST ) ) {
-		if( $gBitSystem->isPackageActive( 'categories' ) ) {
-			$cat_objid = $gContent->mContentId;
-			$cat_obj_type = 'bitpage';
-			$cat_desc = ($gBitSystem->isFeatureActive( 'feature_wiki_description' ) && !empty( $_REQUEST["description"] )) ? substr($_REQUEST["description"],0,200) : '';
-			$cat_name = $gContent->mPageName;
-			$cat_href = WIKI_PKG_URL."index.php?content_id=".$cat_objid;
-			include_once( CATEGORIES_PKG_PATH.'categorize_inc.php' );
-		}
 		// nexus menu item storage
 		if( $gBitSystem->isPackageActive( 'nexus' ) && $gBitUser->hasPermission( 'bit_p_insert_nexus_item' ) ) {
 			$nexusHash['title'] = ( isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : NULL );
@@ -461,25 +435,7 @@ if ($gBitSystem->isFeatureActive( 'feature_wiki_templates' ) && $gBitUser->hasPe
 }
 $gBitSmarty->assign_by_ref('templates', $templates["data"]);
 
-
-$cat_objid = $gContent->mContentId;
-/*
-// External Packages
-// Categories
-if ($gBitSystem->isPackageActive( 'categories' ) ) {
-	include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
-}
-*/
-
-// get files from all packages that process this data further
-foreach( $gBitSystem->getPackageIntegrationFiles( 'get_form_info_inc.php', TRUE ) as $package => $file ) {
-	if( $gBitSystem->isPackageActive( $package ) ) {
-		include_once( $file );
-	}
-}
-
-// assign the integration template files
-$gBitSmarty->assign( 'integrationFiles', $gBitSystem->getPackageIntegrationFiles( 'templates/form_info_inc.tpl', TRUE ) );
+$gContent->invokeServices( 'content_edit_function' );
 
 // Nexus menus
 if( $gBitSystem->isPackageActive( 'nexus' ) && $gBitUser->hasPermission( 'bit_p_insert_nexus_item' ) ) {
