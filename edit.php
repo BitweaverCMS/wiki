@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.17 2005/08/14 20:16:45 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.18 2005/08/15 00:29:46 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.17 2005/08/14 20:16:45 jht001 Exp $
+ * $Id: edit.php,v 1.1.1.1.2.18 2005/08/15 00:29:46 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -258,7 +258,7 @@ if ($gBitSystem->isFeatureActive( 'feature_wiki_footnotes' ) ) {
 			$gBitSmarty->assign('has_footnote', 'y');
 		$gBitSmarty->assign('parsed_footnote', $wikilib->parseData($footnote));
 		if (isset($_REQUEST['footnote'])) {
-			
+
 			$gBitSmarty->assign('parsed_footnote', $wikilib->parseData($_REQUEST['footnote']));
 			$gBitSmarty->assign('footnote', $_REQUEST['footnote']);
 			$gBitSmarty->assign('has_footnote', 'y');
@@ -380,7 +380,7 @@ if (isset($_REQUEST["fCancel"])) {
 	}
 	die;
 } elseif (isset($_REQUEST["fSavePage"])) {
-	
+
 	// Check if all Request values are delivered, and if not, set them
 	// to avoid error messages. This can happen if some features are
 	// disabled
@@ -461,12 +461,15 @@ if ($gBitSystem->isFeatureActive( 'feature_wiki_templates' ) && $gBitUser->hasPe
 }
 $gBitSmarty->assign_by_ref('templates', $templates["data"]);
 
+
+$cat_objid = $gContent->mContentId;
+/*
 // External Packages
 // Categories
 if ($gBitSystem->isPackageActive( 'categories' ) ) {
-	$cat_objid = $gContent->mContentId;
 	include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
 }
+*/
 
 // get files from all packages that process this data further
 foreach( $gBitSystem->getPackageIntegrationFiles( 'get_form_info_inc.php', TRUE ) as $package => $file ) {
@@ -499,12 +502,6 @@ if( $gContent->isInStructure() ) {
 // so no need to show comments & attachments, but need
 // to show 'wiki quick help'
 $gBitSmarty->assign('edit_page', 'y');
-// Set variables so the preview page will keep the newly inputted category information
-if (isset($_REQUEST['cat_categorize'])) {
-	if ($_REQUEST['cat_categorize'] == 'on') {
-		$gBitSmarty->assign('categ_checked', 'y');
-	}
-}
 
 // WYSIWYG and Quicktag variable
 $gBitSmarty->assign( 'textarea_id', 'editwiki' );
