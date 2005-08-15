@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.11 2005/08/15 13:55:17 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.12 2005/08/15 14:38:13 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 {assign var=serviceEditTpls value=$gLibertySystem->getServiceValues('content_edit_tpl')}
@@ -28,7 +28,7 @@
 		{formfeedback warning=`$errors.edit_conflict`}
 	{/if}
 
-	{strip}
+{strip}
 	<div class="body">
 		{if $preview}
 			<h2>{tr}Preview {$title}{/tr}</h2>
@@ -128,12 +128,6 @@
 							</div>
 						{/if}
 
-						{if $serviceEditTpls.access_control }
-							{legend legend="Security Settings"}
-								{include file=$serviceEditTpls.access_control"}
-							{/legend}
-						{/if}
-
 						<div class="row submit">
 							<input type="submit" name="fCancel" value="{tr}Cancel{/tr}" />&nbsp;
 							<input type="submit" name="preview" value="{tr}Preview{/tr}" />&nbsp;
@@ -144,7 +138,6 @@
 							{include file="bitpackage:liberty/edit_storage_list.tpl"}
 						{/if}
 					{/legend}
-
 				{/jstab}
 
 				{if $serviceEditTpls.categorization }
@@ -164,128 +157,143 @@
 				{/if}
 
 				{jstab title="Advanced Options"}
-					{legend legend="Advanced Options"}
-						{include file="bitpackage:liberty/edit_format.tpl"}
+					{jstabs}
+						{jstab title="Miscellaneous"}
+							{legend legend="Miscellaneous Options"}
+								{include file="bitpackage:liberty/edit_format.tpl"}
+							{/legend}
+						{/jstab}
 
-						{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )}
-							<div class="row">
-								{formlabel label="Copyright" for="copyrightTitle"}
-								{forminput}
+						{if $serviceEditTpls.access_control }
+							{jstab title="Security"}
+								{legend legend="Security Settings"}
+									{include file=$serviceEditTpls.access_control"}
+								{/legend}
+							{/jstab}
+						{/if}
+
+						{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) or $wiki_spellcheck eq 'y' or $gBitSystem->isFeatureActive( 'feature_wiki_icache' )}
+							{jstab title="Advanced Wiki"}
+								{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )}
 									<div class="row">
-										{formlabel label="Title" for="copyrightTitle"}
+										{legend legend="Copyright" for="copyrightTitle"}
+											<div class="row">
+												{formlabel label="Title" for="copyrightTitle"}
+												{forminput}
+													<input size="40" type="text" name="copyrightTitle" id="copyrightTitle" value="{$copyrightTitle|escape}" />
+												{/forminput}
+											</div>
+
+											<div class="row">
+												{formlabel label="Authors" for="copyrightAuthors"}
+												{forminput}
+													<input size="40" type="text" name="copyrightAuthors" id="copyrightAuthors" value="{$copyrightAuthors|escape}" />
+												{/forminput}
+											</div>
+
+											<div class="row">
+												{formlabel label="Year" for="copyrightYear"}
+												{forminput}
+													<input size="4" type="text" name="copyrightYear" id="copyrightYear" value="{$copyrightYear|escape}" />
+												{/forminput}
+											</div>
+
+											<div class="row">
+												{formlabel label="License"}
+												{forminput}
+													<a href="{$smarty.const.WIKI_PKG_URL}index.php?page={$wikiLicensePage}">{tr}{$wikiLicensePage}{/tr}</a>
+													{formhelp note=""}
+												{/forminput}
+											</div>
+
+											{if $wikiSubmitNotice neq ""}
+												<div class="row">
+													{formlabel label="Important"}
+													{forminput}
+														{$wikiSubmitNotice}
+														{formhelp note=""}
+													{/forminput}
+												</div>
+											{/if}
+										{/legend}
+									</div>
+								{/if}
+
+								{if $wiki_spellcheck eq 'y'}
+									<div class="row">
+										{formlabel label="Spellcheck" for="spellcheck"}
 										{forminput}
-											<input size="40" type="text" name="copyrightTitle" id="copyrightTitle" value="{$copyrightTitle|escape}" />
+											<input type="checkbox" name="spellcheck" id="spellcheck" {if $spellcheck eq 'y'}checked="checked"{/if} />
+											{formhelp note=""}
 										{/forminput}
 									</div>
+								{/if}
 
+								{if $gBitSystem->isFeatureActive( 'feature_wiki_icache' )}
 									<div class="row">
-										{formlabel label="Authors" for="copyrightAuthors"}
+										{formlabel label="Cache" for="wiki_cache"}
 										{forminput}
-											<input size="40" type="text" name="copyrightAuthors" id="copyrightAuthors" value="{$copyrightAuthors|escape}" />
+											<select name="wiki_cache" id="wiki_cache">
+												<option value="0" {if $wiki_cache eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
+												<option value="60" {if $wiki_cache eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
+												<option value="300" {if $wiki_cache eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
+												<option value="600" {if $wiki_cache eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
+												<option value="900" {if $wiki_cache eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
+												<option value="1800" {if $wiki_cache eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
+												<option value="3600" {if $wiki_cache eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
+												<option value="7200" {if $wiki_cache eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
+											</select>
+											{formhelp note=""}
 										{/forminput}
 									</div>
-
-									<div class="row">
-										{formlabel label="Year" for="copyrightYear"}
-										{forminput}
-											<input size="4" type="text" name="copyrightYear" id="copyrightYear" value="{$copyrightYear|escape}" />
-										{/forminput}
-									</div>
-								{/forminput}
-							</div>
+								{/if}
+							{/jstab}
 						{/if}
 
-						{if $wiki_spellcheck eq 'y'}
-							<div class="row">
-								{formlabel label="Spellcheck" for="spellcheck"}
-								{forminput}
-									<input type="checkbox" name="spellcheck" id="spellcheck" {if $spellcheck eq 'y'}checked="checked"{/if} />
-									{formhelp note=""}
-								{/forminput}
-							</div>
+						{if $gBitSystem->isPackageActive( 'nexus' )}
+							{jstab title="Menus"}
+								{legend legend="Insert Link in Menu"}
+									{include file="bitpackage:nexus/insert_menu_item_inc.tpl"}
+								{/legend}
+							{/jstab}
 						{/if}
-
-						{if $gBitSystem->isFeatureActive( 'feature_wiki_icache' )}
-							<div class="row">
-								{formlabel label="Cache" for="wiki_cache"}
-								{forminput}
-									<select name="wiki_cache" id="wiki_cache">
-										<option value="0" {if $wiki_cache eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
-										<option value="60" {if $wiki_cache eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
-										<option value="300" {if $wiki_cache eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
-										<option value="600" {if $wiki_cache eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
-										<option value="900" {if $wiki_cache eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
-										<option value="1800" {if $wiki_cache eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
-										<option value="3600" {if $wiki_cache eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
-										<option value="7200" {if $wiki_cache eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
-									</select>
-									{formhelp note=""}
-								{/forminput}
-							</div>
-						{/if}
-
-						{if $wiki_feature_copyrights eq 'y'}
-							<div class="row">
-								{formlabel label="License"}
-								{forminput}
-									<a href="{$smarty.const.WIKI_PKG_URL}index.php?page={$wikiLicensePage}">{tr}{$wikiLicensePage}{/tr}</a>
-									{formhelp note=""}
-								{/forminput}
-							</div>
-
-							{if $wikiSubmitNotice neq ""}
-								<div class="row">
-									{formlabel label="Important"}
-									{forminput}
-										{$wikiSubmitNotice}
-										{formhelp note=""}
-									{/forminput}
-								</div>
-							{/if}
-						{/if}
-					{/legend}
-
-					{if $gBitSystem->isPackageActive( 'nexus' )}
-						{legend legend="Insert Link in Menu"}
-							{include file="bitpackage:nexus/insert_menu_item_inc.tpl"}
-						{/legend}
-					{/if}
+					{/jstabs}
 				{/jstab}
 
 				{if $gBitSystem->isFeatureActive( 'feature_wiki_url_import' )}
-				{jstab title="Import HMTL"}
-					{legend legend="Import HMTL"}
-						<div class="row">
-							{formlabel label="Import HTML from URL" for="suck_url"}
-							{forminput}
-								<input type="text" size="50" name="suck_url" id="suck_url" value="{$suck_url|escape}" />
-								{formhelp note=""}
-							{/forminput}
-						</div>
+					{jstab title="Import HMTL"}
+						{legend legend="Import HMTL"}
+							<div class="row">
+								{formlabel label="Import HTML from URL" for="suck_url"}
+								{forminput}
+									<input type="text" size="50" name="suck_url" id="suck_url" value="{$suck_url|escape}" />
+									{formhelp note=""}
+								{/forminput}
+							</div>
 
-						<div class="row">
-							{formlabel label="Try to convert HTML to wiki" for="parsehtml"}
-							{forminput}
-								<input type="checkbox" name="parsehtml" id="parsehtml" {if $parsehtml eq 'y'}checked="checked"{/if} />
-								{formhelp note=""}
-							{/forminput}
-						</div>
+							<div class="row">
+								{formlabel label="Try to convert HTML to wiki" for="parsehtml"}
+								{forminput}
+									<input type="checkbox" name="parsehtml" id="parsehtml" {if $parsehtml eq 'y'}checked="checked"{/if} />
+									{formhelp note=""}
+								{/forminput}
+							</div>
 
-					{* SPIDERKILL - disable wiki Import
-						{if $gBitUser->hasPermission( 'bit_p_admin_wiki' )}
-							<tr><td>
-								{tr}Import file{/tr}:</td><td>
-								<input name="userfile1" type="file" />
-								{ * <a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php?page_id={$pageInfo.page_id}&amp;all=1">{tr}export all versions{/tr}</a> * }
-							</td></tr>
-						{/if} { * end upload file row * }
-					*}
+						{* SPIDERKILL - disable wiki Import
+							{if $gBitUser->hasPermission( 'bit_p_admin_wiki' )}
+								<tr><td>
+									{tr}Import file{/tr}:</td><td>
+									<input name="userfile1" type="file" />
+									{ * <a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php?page_id={$pageInfo.page_id}&amp;all=1">{tr}export all versions{/tr}</a> * }
+								</td></tr>
+							{/if} { * end upload file row * }
+						*}
 
-						<div class="row submit">
-							<input type="submit" name="do_suck" value="{tr}Import{/tr}" />
-						</div>
-					{/legend}
-				{/jstab}
+							<div class="row submit">
+								<input type="submit" name="do_suck" value="{tr}Import{/tr}" />
+							</div>
+						{/legend}
+					{/jstab}
 				{/if}
 			{/jstabs}
 		{/form}
