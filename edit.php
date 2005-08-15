@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.19 2005/08/15 07:17:20 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.20 2005/08/15 21:30:21 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.19 2005/08/15 07:17:20 spiderr Exp $
+ * $Id: edit.php,v 1.1.1.1.2.20 2005/08/15 21:30:21 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -31,7 +31,7 @@ global $wikilib, $gLibertySystem;
 #edit preview needs this
 if (!isset($_REQUEST['title']) && isset($gContent->mInfo['title'])) {
 	$_REQUEST['title'] = $gContent->mInfo['title'];
-	}
+}
 
 $sandbox = FALSE;
 if ( (!empty($_REQUEST['page']) && $_REQUEST['page'] == 'SandBox') ||
@@ -291,26 +291,6 @@ if (isset($_REQUEST["comment"])) {
 
 $cat_obj_type = BITPAGE_CONTENT_TYPE_GUID;
 
-if(isset($_REQUEST["preview"])) {
-
-	$gBitSmarty->assign('preview',1);
-	$gBitSmarty->assign('title',!empty($_REQUEST["title"])?$_REQUEST["title"]:$gContent->mPageName);
-
-	$parsed = $gContent->parseData($formInfo['edit'], (!empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] :
-		( isset($gContent->mInfo['format_guid']) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ) ) );
-	/* SPELLCHECKING INITIAL ATTEMPT */
-	//This nice function does all the job!
-	if ($wiki_spellcheck == 'y') {
-		if (isset($_REQUEST["spellcheck"]) && $_REQUEST["spellcheck"] == 'on') {
-			$parsed = $gBitSystem->spellcheckreplace($edit_data, $parsed, $gBitLanguage->mLanguage, 'editwiki');
-			$gBitSmarty->assign('spellcheck', 'y');
-		} else {
-			$gBitSmarty->assign('spellcheck', 'n');
-		}
-	}
-	$gBitSmarty->assign_by_ref('parsed', $parsed);
-}
-
 if( $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) ) {
 	if (isset($_REQUEST['copyrightTitle'])) {
 		$gBitSmarty->assign('copyrightTitle', $_REQUEST["copyrightTitle"]);
@@ -435,7 +415,28 @@ if ($gBitSystem->isFeatureActive( 'feature_wiki_templates' ) && $gBitUser->hasPe
 }
 $gBitSmarty->assign_by_ref('templates', $templates["data"]);
 
-$gContent->invokeServices( 'content_edit_function' );
+if(isset($_REQUEST["preview"])) {
+	$gBitSmarty->assign('preview',1);
+	$gBitSmarty->assign('title',!empty($_REQUEST["title"])?$_REQUEST["title"]:$gContent->mPageName);
+
+	$parsed = $gContent->parseData($formInfo['edit'], (!empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] :
+		( isset($gContent->mInfo['format_guid']) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ) ) );
+	/* SPELLCHECKING INITIAL ATTEMPT */
+	//This nice function does all the job!
+	if ($wiki_spellcheck == 'y') {
+		if (isset($_REQUEST["spellcheck"]) && $_REQUEST["spellcheck"] == 'on') {
+			$parsed = $gBitSystem->spellcheckreplace($edit_data, $parsed, $gBitLanguage->mLanguage, 'editwiki');
+			$gBitSmarty->assign('spellcheck', 'y');
+		} else {
+			$gBitSmarty->assign('spellcheck', 'n');
+		}
+	}
+	$gBitSmarty->assign_by_ref('parsed', $parsed);
+
+	$gContent->invokeServices( 'content_preview_function' );
+} else {
+	$gContent->invokeServices( 'content_edit_function' );
+}
 
 // Nexus menus
 if( $gBitSystem->isPackageActive( 'nexus' ) && $gBitUser->hasPermission( 'bit_p_insert_nexus_item' ) ) {
@@ -454,6 +455,7 @@ if ($gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
 if( $gContent->isInStructure() ) {
 	$gBitSmarty->assign('showstructs', $gContent->getStructures() );
 }
+
 // Flag for 'page bar' that currently 'Edit' mode active
 // so no need to show comments & attachments, but need
 // to show 'wiki quick help'
@@ -469,7 +471,6 @@ if( empty( $formInfo ) ) {
 
 // make original page title available for template
 $formInfo['original_title'] = (!empty($gContent->mInfo['title'])) ? $gContent->mInfo['title']  : "" ;
-
 
 $gBitSmarty->assign_by_ref( 'pageInfo', $formInfo );
 $gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
