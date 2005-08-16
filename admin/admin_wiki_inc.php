@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.6 2005/08/14 20:16:45 jht001 Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.7 2005/08/16 20:33:24 spiderr Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -64,7 +64,7 @@ $formWikiLists = array(
 $gBitSmarty->assign( 'formWikiLists',$formWikiLists );
 
 if (isset($_REQUEST["wikilistconf"])) {
-	
+
 	foreach( $formWikiLists as $item => $data ) {
 		simple_set_toggle( $item );
 	}
@@ -139,7 +139,7 @@ $formWikiFeatures = array(
 
 $gBitSmarty->assign( 'formWikiFeatures',$formWikiFeatures );
 if (isset($_REQUEST["wikifeatures"])) {
-	
+
 	foreach( $formWikiFeatures as $item => $data ) {
 		simple_set_toggle( $item,'wiki' );
 	}
@@ -221,7 +221,7 @@ $formWikiInOut = array(
 $gBitSmarty->assign( 'formWikiInOut',$formWikiInOut );
 
 if (isset($_REQUEST["wikiinout"])) {
-	
+
 	foreach( $formWikiInOut as $item => $data ) {
 		simple_set_toggle( $item,'wiki' );
 	}
@@ -244,11 +244,15 @@ $formWikiBooks = array(
 		'label' => 'Use navigation icons instead of words',
 		'note' => 'This option will remove the names of the navigation controls and replace them with appropriate icons for navigation. This can be useful if you feel that navigation is too cluttered when showing that many words.',
 	),
+	"wikibook_hide_add_content" => array(
+		'label' => 'Hide Edit "Structure Content"',
+		'note' => 'Hide the tabbed panel to add content to the structure. This might be hidden for performance reasons.',
+	),
 );
 $gBitSmarty->assign( 'formWikiBooks',$formWikiBooks );
 
 if (isset($_REQUEST["wikibooks"])) {
-	
+
 	foreach( $formWikiBooks as $item => $data ) {
 		simple_set_toggle( $item,'wiki' );
 	}
@@ -271,20 +275,20 @@ $formWikiWatch = array(
 $gBitSmarty->assign( 'formWikiWatch',$formWikiWatch );
 
 if (isset($_REQUEST["wikiwatch"])) {
-	
+
 	foreach( $formWikiWatch  as $item => $data ) {
 		simple_set_toggle( $item,'wiki' );
 	}
 }
 
 if (isset($_REQUEST["dump"])) {
-	
+
 	include (UTIL_PKG_PATH."tar.class.php");
 	error_reporting (E_ERROR | E_WARNING);
 	$wikilib->dumpPages();
 }
 if (isset($_REQUEST["createtag"])) {
-	
+
 	// Check existance
 	if ($adminlib->tag_exists($_REQUEST["tagname"])) {
 		$gBitSmarty->assign('msg', tra("Tag already exists"));
@@ -294,7 +298,7 @@ if (isset($_REQUEST["createtag"])) {
 	$adminlib->create_tag($_REQUEST["tagname"]);
 }
 if (isset($_REQUEST["restoretag"])) {
-	
+
 	// Check existance
 	if (!$adminlib->tag_exists($_REQUEST["restagname"])) {
 		$gBitSmarty->assign('msg', tra("Tag not found"));
@@ -304,17 +308,17 @@ if (isset($_REQUEST["restoretag"])) {
 	$adminlib->restore_tag($_REQUEST["restagname"]);
 }
 if (isset($_REQUEST["removetag"])) {
-	
+
 	// Check existance
 	$adminlib->remove_tag($_REQUEST["remtagname"]);
 }
 if (isset($_REQUEST["setwikihome"])) {
-	
+
 	$gBitSystem->storePreference('wikiHomePage', $_REQUEST["wikiHomePage"]);
 	$gBitSmarty->assign('wikiHomePage', $_REQUEST["wikiHomePage"]);
 }
 if (isset($_REQUEST["wikidiscussprefs"])) {
-	
+
 	if (isset($_REQUEST["feature_wiki_discuss"])) {
 		$gBitSystem->storePreference('feature_wiki_discuss', 'y');
 		$gBitSmarty->assign('feature_wiki_discuss', 'y');
@@ -331,14 +335,14 @@ if (isset($_REQUEST["wikidiscussprefs"])) {
 	}
 }
 if (isset($_REQUEST["setwikiregex"])) {
-	
+
 	$gBitSystem->storePreference('wiki_page_regex', $_REQUEST["wiki_page_regex"]);
 	$gBitSmarty->assign( 'wiki_page_regex', $_REQUEST["wiki_page_regex"] );
 } else {
     $gBitSmarty->assign( 'wiki_page_regex', $gBitSystem->getPreference( 'wiki_page_regex', 'strict' ) );
 }
 if (isset($_REQUEST["wikisetprefs"])) {
-	
+
 	if (isset($_REQUEST["maxVersions"])) {
 		$gBitSystem->storePreference("maxVersions", $_REQUEST["maxVersions"]);
 	}
@@ -348,7 +352,7 @@ if (isset($_REQUEST["wikisetprefs"])) {
 	}
 }
 if (isset($_REQUEST["wikisetcopyright"])) {
-	
+
 	simple_set_toggle( 'wiki_feature_copyrights','wiki' );
 	if (isset($_REQUEST["wikiLicensePage"])) {
 		$gBitSystem->storePreference("wikiLicensePage", $_REQUEST["wikiLicensePage"]);
