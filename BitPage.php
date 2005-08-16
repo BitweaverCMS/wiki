@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.23 2005/08/15 07:17:20 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.24 2005/08/16 04:38:48 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.23 $ $Date: 2005/08/15 07:17:20 $ $Author: spiderr $
+ * @version $Revision: 1.2.2.24 $ $Date: 2005/08/16 04:38:48 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.23 2005/08/15 07:17:20 spiderr Exp $
+ * $Id: BitPage.php,v 1.2.2.24 2005/08/16 04:38:48 spiderr Exp $
  */
 
 /**
@@ -61,28 +61,13 @@ class BitPage extends LibertyAttachable {
 
 	function load() {
 		if( $this->verifyId( $this->mPageId ) || $this->verifyId( $this->mContentId ) ) {
-			global $gBitSystem, $gLibertySystem;
+			global $gBitSystem;
 			$lookupColumn = !empty( $this->mPageId )? 'page_id' : 'content_id';
-			$lookupId = !empty( $this->mPageId )? $this->mPageId : $this->mContentId;
 
-			$whereSql = ''; $joinSql = ''; $selectSql = '';
-			if( $loadFuncs = $gLibertySystem->getServiceValues( 'content_load_function' ) ) {
-				foreach( $loadFuncs as $func ) {
-					if( function_exists( $func ) ) {
-						$loadHash = $func();
-						if( !empty( $loadHash['select_sql'] ) ) {
-							$selectSql .= $loadHash['select_sql'];
-						}
-						if( !empty( $loadHash['where_sql'] ) ) {
-							$whereSql .= $loadHash['where_sql'];
-						}
-						if( !empty( $loadHash['join_sql'] ) ) {
-							$joinSql .= $loadHash['join_sql'];
-						}
-					}
-				}
-			}
+			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
+			$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
+			array_push( $bindVars, $lookupId = !empty( $this->mPageId )? $this->mPageId : $this->mContentId );
 			$query = "select tp.*, tc.*,
 					  uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
 					  uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name $selectSql
@@ -91,7 +76,7 @@ class BitPage extends LibertyAttachable {
 						LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = tc.`modifier_user_id`)
 						LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = tc.`user_id`)
 					  WHERE tp.`$lookupColumn`=? $whereSql";
-			$result = $this->mDb->query( $query, array( $lookupId ) );
+			$result = $this->mDb->query( $query, $bindVars );
 
 			if ( $result && $result->numRows() ) {
 				$this->mInfo = $result->fields;
