@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/diff.php,v 1.1.1.1.2.1 2005/06/27 17:47:41 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/diff.php,v 1.1.1.1.2.2 2005/08/17 03:29:49 wolff_borg Exp $
  *
  * A PHP diff engine for phpwiki.
  *
@@ -10,7 +10,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: diff.php,v 1.1.1.1.2.1 2005/06/27 17:47:41 lsces Exp $
+ * $Id: diff.php,v 1.1.1.1.2.2 2005/08/17 03:29:49 wolff_borg Exp $
  * @package wiki
  */
 
@@ -47,6 +47,15 @@ class _WikiDiffEngine
 	$n_from = sizeof($from_lines);
 	$n_to = sizeof($to_lines);
 	$endskip = 0;
+        // Ignore differences in line endings
+        for ($i = 0; $i < $n_from; $i++)
+          {
+            $from_lines[$i] = rtrim($from_lines[$i]);
+          }
+        for ($i = 0; $i < $n_to; $i++)
+          {
+            $to_lines[$i] = rtrim($to_lines[$i]);
+          }
 	// Ignore trailing and leading matching lines.
 	while ($n_from > 0 && $n_to > 0)
 	  {
@@ -766,7 +775,7 @@ class WikiDiffFormatter
       }
   function format ($diff, $from_lines)
       {
-	$html = '<table  bgcolor="black" ' .
+	$html = '<table style="background-color: black" ' .
 		'cellspacing="2" cellpadding="2" border="0"><br />';
 	$html .= $this->_format($diff->edits, $from_lines);
 	$html .= "</table>\n";
@@ -863,14 +872,14 @@ class WikiDiffFormatter
 	reset($lines);
 	while (list ($junk, $line) = each($lines))
 	  {
-	    $html .= "<tr bgcolor=\"$color\"><td><tt>$prefix</tt>";
+	    $html .= "<tr style=\"background-color: $color\"><td><tt>$prefix</tt>";
 	    $html .= "<tt>" . htmlspecialchars($line) . "</tt></td></tr>\n";
 	  }
 	return $html;
       }
   function _emit_diff ($xbeg,$xlen,$ybeg,$ylen,$hunks)
       {
-	$html = '<tr><td><table  bgcolor="white"'
+	$html = '<tr><td><table style="background-color: white"'
 	      . ' cellspacing="0" border="0" cellpadding="4"><br />'
 	      . '<tr bgcolor="#cccccc"><td><tt>'
 	      . $this->_diff_header($xbeg, $xlen, $ybeg, $ylen)
@@ -880,8 +889,8 @@ class WikiDiffFormatter
 			'a' => $this->adds_prefix,
 			'd' => $this->deletes_prefix);
 	$color = array('c' => '#ffffff',
-		       'a' => '#ffcccc',
-		       'd' => '#ccffcc');
+		       'a' => '#ccffcc',
+		       'd' => '#ffcccc');
 	for (reset($hunks); $hunk = current($hunks); next($hunks))
 	  {
 	    if (!empty($hunk['c']))
@@ -889,10 +898,10 @@ class WikiDiffFormatter
 		                            $this->context_prefix, '#ffffff');
 	    if (!empty($hunk['d']))
 		$html .= $this->_emit_lines($hunk['d'],
-		                            $this->deletes_prefix, '#ccffcc');
+		                            $this->deletes_prefix, '#ffcccc');
 	    if (!empty($hunk['a']))
 		$html .= $this->_emit_lines($hunk['a'],
-		                            $this->adds_prefix, '#ffcccc');
+		                            $this->adds_prefix, '#ccffcc');
 	  }
 	$html .= "</table></td></tr></table></td></tr>\n";
 	return $html;
@@ -998,4 +1007,21 @@ if ($diff)
 	htmlspecialchars($pagename)), 0);
 }
 */
+
+
+    // \todo remove html hardcoded in diff2
+    function diff2($page1, $page2) {
+        $page1 = split("\n", $page1);
+        $page2 = split("\n", $page2);
+        $z = new WikiDiff($page1, $page2);
+        if ($z->isEmpty()) {
+            $html = '<hr><br />[' . tra("Versions are identical"). ']<br /><br />';
+        } else {
+            //$fmt = new WikiDiffFormatter;
+            $fmt = new WikiUnifiedDiffFormatter;
+            $html = $fmt->format($z, $page1);
+        }
+        return $html;
+    }
+
 ?>
