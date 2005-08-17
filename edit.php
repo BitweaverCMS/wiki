@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.20 2005/08/15 21:30:21 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.21 2005/08/17 23:42:54 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.20 2005/08/15 21:30:21 squareing Exp $
+ * $Id: edit.php,v 1.1.1.1.2.21 2005/08/17 23:42:54 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -382,20 +382,6 @@ if (isset($_REQUEST["fCancel"])) {
 	}
 
 	if( $gContent->store( $_REQUEST ) ) {
-		// nexus menu item storage
-		if( $gBitSystem->isPackageActive( 'nexus' ) && $gBitUser->hasPermission( 'bit_p_insert_nexus_item' ) ) {
-			$nexusHash['title'] = ( isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : NULL );
-			$nexusHash['hint'] = ( isset( $_REQUEST['description'] ) ? $_REQUEST['description'] : NULL );
-			include_once( NEXUS_PKG_PATH.'insert_menu_item_inc.php' );
-		}
-
-		// get files from all packages that process this data further
-		foreach( $gBitSystem->getPackageIntegrationFiles( 'form_processor_inc.php', TRUE ) as $package => $file ) {
-			if( $gBitSystem->isPackageActive( $package ) ) {
-				include_once( $file );
-			}
-		}
-
 		if ( $gBitSystem->isFeatureActive( 'wiki_watch_author' ) ) {
 			$gBitUser->storeWatch( "wiki_page_changed", $gContent->mPageId, $gContent->mContentTypeGuid, $_REQUEST['title'], $gContent->getDisplayUrl() );
 		}
@@ -436,11 +422,6 @@ if(isset($_REQUEST["preview"])) {
 	$gContent->invokeServices( 'content_preview_function' );
 } else {
 	$gContent->invokeServices( 'content_edit_function' );
-}
-
-// Nexus menus
-if( $gBitSystem->isPackageActive( 'nexus' ) && $gBitUser->hasPermission( 'bit_p_insert_nexus_item' ) ) {
-	include_once( NEXUS_PKG_PATH.'insert_menu_item_inc.php' );
 }
 
 // Configure quicktags list

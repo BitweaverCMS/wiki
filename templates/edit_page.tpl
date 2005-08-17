@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.15 2005/08/17 08:21:59 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.16 2005/08/17 23:42:54 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 {assign var=serviceEditTpls value=$gLibertySystem->getServiceValues('content_edit_tpl')}
@@ -84,6 +84,8 @@
 							</div>
 						{/if}
 
+						{include file="bitpackage:liberty/edit_format.tpl"}
+
 						{if $gBitSystem->isPackageActive( 'smileys' )}
 							{include file="bitpackage:smileys/smileys_full.tpl"}
 						{/if}
@@ -117,8 +119,6 @@
 								{/forminput}
 							</div>
 						{/if}
-
-						{include file="bitpackage:liberty/edit_format.tpl"}
 
 						{if $serviceEditTpls.access_control }
 							{include file=$serviceEditTpls.access_control"}
@@ -162,91 +162,91 @@
 					{/jstab}
 				{/if}
 
-				{jstab title="Advanced"}
-					{legend legend="Advanced Options"}
-						{if $wiki_spellcheck eq 'y'}
-							<div class="row">
-								{formlabel label="Spellcheck" for="spellcheck"}
-								{forminput}
-									<input type="checkbox" name="spellcheck" id="spellcheck" {if $spellcheck eq 'y'}checked="checked"{/if} />
-									{formhelp note=""}
-								{/forminput}
-							</div>
-						{/if}
+				{if $gBitSystem->isFeatureActive( 'feature_wiki_icache' ) or $serviceEditTpls.menu or $wiki_spellcheck eq 'y'}
+					{jstab title="Advanced"}
+						{legend legend="Advanced Options"}
+							{if $wiki_spellcheck eq 'y'}
+								<div class="row">
+									{formlabel label="Spellcheck" for="spellcheck"}
+									{forminput}
+										<input type="checkbox" name="spellcheck" id="spellcheck" {if $spellcheck eq 'y'}checked="checked"{/if} />
+										{formhelp note=""}
+									{/forminput}
+								</div>
+							{/if}
 
-						{if $gBitSystem->isFeatureActive( 'feature_wiki_icache' )}
-							<div class="row">
-								{formlabel label="Cache" for="wiki_cache"}
-								{forminput}
-									<select name="wiki_cache" id="wiki_cache">
-										<option value="0" {if $wiki_cache eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
-										<option value="60" {if $wiki_cache eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
-										<option value="300" {if $wiki_cache eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
-										<option value="600" {if $wiki_cache eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
-										<option value="900" {if $wiki_cache eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
-										<option value="1800" {if $wiki_cache eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
-										<option value="3600" {if $wiki_cache eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
-										<option value="7200" {if $wiki_cache eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
-									</select>
-									{formhelp note=""}
-								{/forminput}
-							</div>
-						{/if}
-					{/legend}
-
-					{if $gBitSystem->isPackageActive( 'nexus' )}
-						{legend legend="Insert Link in Menu"}
-							{include file="bitpackage:nexus/insert_menu_item_inc.tpl"}
+							{if $gBitSystem->isFeatureActive( 'feature_wiki_icache' )}
+								<div class="row">
+									{formlabel label="Cache" for="wiki_cache"}
+									{forminput}
+										<select name="wiki_cache" id="wiki_cache">
+											<option value="0" {if $wiki_cache eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
+											<option value="60" {if $wiki_cache eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
+											<option value="300" {if $wiki_cache eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
+											<option value="600" {if $wiki_cache eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
+											<option value="900" {if $wiki_cache eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
+											<option value="1800" {if $wiki_cache eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
+											<option value="3600" {if $wiki_cache eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
+											<option value="7200" {if $wiki_cache eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
+										</select>
+										{formhelp note=""}
+									{/forminput}
+								</div>
+							{/if}
 						{/legend}
-					{/if}
-				{/jstab}
+
+						{if $serviceEditTpls.menu}
+							{legend legend="Insert Link in Menu"}
+								{include file=$serviceEditTpls.menu"}
+							{/legend}
+						{/if}
+					{/jstab}
+				{/if}
 
 				{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )}
 					{jstab title="Copyright"}
-						{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )}
-							<div class="row">
-								{legend legend="Copyright Settings" for="copyrightTitle"}
-									<div class="row">
-										{formlabel label="Title" for="copyrightTitle"}
-										{forminput}
-											<input size="40" type="text" name="copyrightTitle" id="copyrightTitle" value="{$copyrightTitle|escape}" />
-										{/forminput}
-									</div>
+						<div class="row">
+							{legend legend="Copyright Settings" for="copyrightTitle"}
+								<div class="row">
+									{formlabel label="Title" for="copyrightTitle"}
+									{forminput}
+										<input size="40" type="text" name="copyrightTitle" id="copyrightTitle" value="{$copyrightTitle|escape}" />
+									{/forminput}
+								</div>
 
-									<div class="row">
-										{formlabel label="Authors" for="copyrightAuthors"}
-										{forminput}
-											<input size="40" type="text" name="copyrightAuthors" id="copyrightAuthors" value="{$copyrightAuthors|escape}" />
-										{/forminput}
-									</div>
+								<div class="row">
+									{formlabel label="Authors" for="copyrightAuthors"}
+									{forminput}
+										<input size="40" type="text" name="copyrightAuthors" id="copyrightAuthors" value="{$copyrightAuthors|escape}" />
+									{/forminput}
+								</div>
 
-									<div class="row">
-										{formlabel label="Year" for="copyrightYear"}
-										{forminput}
-											<input size="4" type="text" name="copyrightYear" id="copyrightYear" value="{$copyrightYear|escape}" />
-										{/forminput}
-									</div>
+								<div class="row">
+									{formlabel label="Year" for="copyrightYear"}
+									{forminput}
+										<input size="4" type="text" name="copyrightYear" id="copyrightYear" value="{$copyrightYear|escape}" />
+									{/forminput}
+								</div>
 
+								<div class="row">
+									{formlabel label="License"}
+									{forminput}
+										<a href="{$smarty.const.WIKI_PKG_URL}index.php?page={$wikiLicensePage}">{tr}{$wikiLicensePage}{/tr}</a>
+										{formhelp note=""}
+									{/forminput}
+								</div>
+
+								{if $wikiSubmitNotice neq ""}
 									<div class="row">
-										{formlabel label="License"}
+										{formlabel label="Important"}
 										{forminput}
-											<a href="{$smarty.const.WIKI_PKG_URL}index.php?page={$wikiLicensePage}">{tr}{$wikiLicensePage}{/tr}</a>
+											{$wikiSubmitNotice}
 											{formhelp note=""}
 										{/forminput}
 									</div>
-
-									{if $wikiSubmitNotice neq ""}
-										<div class="row">
-											{formlabel label="Important"}
-											{forminput}
-												{$wikiSubmitNotice}
-												{formhelp note=""}
-											{/forminput}
-										</div>
-									{/if}
-								{/legend}
-							</div>
-						{/if}
+								{/if}
+							{/legend}
+						</div>
 					{/jstab}
 				{/if}
 
