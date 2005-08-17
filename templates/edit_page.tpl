@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.14 2005/08/15 20:29:41 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.15 2005/08/17 08:21:59 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 {assign var=serviceEditTpls value=$gLibertySystem->getServiceValues('content_edit_tpl')}
@@ -118,6 +118,12 @@
 							</div>
 						{/if}
 
+						{include file="bitpackage:liberty/edit_format.tpl"}
+
+						{if $serviceEditTpls.access_control }
+							{include file=$serviceEditTpls.access_control"}
+						{/if}
+
 						{if $gBitUser->hasPermission( 'bit_p_minor' )}
 							<div class="row">
 								{formlabel label="Minor save" for="isminor"}
@@ -158,8 +164,6 @@
 
 				{jstab title="Advanced"}
 					{legend legend="Advanced Options"}
-						{include file="bitpackage:liberty/edit_format.tpl"}
-
 						{if $wiki_spellcheck eq 'y'}
 							<div class="row">
 								{formlabel label="Spellcheck" for="spellcheck"}
@@ -189,12 +193,6 @@
 							</div>
 						{/if}
 					{/legend}
-
-					{if $serviceEditTpls.access_control }
-						{legend legend="Security Settings"}
-							{include file=$serviceEditTpls.access_control"}
-						{/legend}
-					{/if}
 
 					{if $gBitSystem->isPackageActive( 'nexus' )}
 						{legend legend="Insert Link in Menu"}
