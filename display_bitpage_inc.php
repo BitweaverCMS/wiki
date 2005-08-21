@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.8 2005/08/15 07:17:20 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.9 2005/08/21 21:04:25 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.1.1.1.2.8 2005/08/15 07:17:20 spiderr Exp $
+ * $Id: display_bitpage_inc.php,v 1.1.1.1.2.9 2005/08/21 21:04:25 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -91,7 +91,7 @@ if(!in_array($gContent->mInfo['title'],$_SESSION["breadCrumb"])) {
 }
 //print_r($_SESSION["breadCrumb"]);
 // Now increment page hits since we are visiting this page
-if($count_admin_pvs == 'y' || !$gBitUser->isAdmin()) {
+if( $gBitSystem->isFeatureActive( 'count_admin_pvs' ) || !$gBitUser->isAdmin() ) {
   $gContent->addHit();
 }
 // Check if we have to perform an action for this page
