@@ -43,13 +43,7 @@
 			{if $gBitUser->hasPermission( 'bit_p_print' )}
 				<a title="{tr}print{/tr}" style="display:none;" href="{$smarty.const.WIKI_PKG_URL}print.php?{if $structureInfo.root_structure_id}structure_id={$structureInfo.root_structure_id}{else}page_id={$pageInfo.page_id}{/if}">{biticon ipackage=liberty iname="print" iexplain="print"}</a>
 			{/if}
-			{if $gBitSystem->isPackageActive( 'pdf' ) && $gContent->hasUserPermission( 'bit_p_pdf_generation' )}
-				{if $structureInfo.root_structure_id}
-					<a title="{tr}create PDF{/tr}" href="{$smarty.const.PDF_PKG_URL}?structure_id={$structureInfo.root_structure_id}">{biticon ipackage="pdf" iname="pdf" iexplain="PDF"}</a>
-				{else}
-					<a title="{tr}create PDF{/tr}" href="{$smarty.const.PDF_PKG_URL}?content_id={$pageInfo.content_id}">{biticon ipackage="pdf" iname="pdf" iexplain="PDF"}</a>
-				{/if}
-			{/if}
+			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon'}
 			{if $user and $gBitSystem->isPackageActive( 'notepad' ) and $gBitUser->hasPermission( 'bit_p_notepad' )}
 				<a title="{tr}Save{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;savenotepad=1">{biticon ipackage="wiki" iname="save" iexplain="save"}</a>
 			{/if}

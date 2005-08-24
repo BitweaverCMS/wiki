@@ -5,7 +5,9 @@
 	define('BITPAGE_CONTENT_TYPE_GUID', 'bitpage' );
 
 	if($gBitSystem->isPackageActive( 'wiki' ) ) {
-		$gBitSystem->registerAppMenu( 'wiki', 'Wiki', WIKI_PKG_URL.'index.php', 'bitpackage:wiki/menu_wiki.tpl', 'wiki');
+		if ($gBitUser->hasPermission( 'bit_p_view' )) {
+			$gBitSystem->registerAppMenu( 'wiki', 'Wiki', WIKI_PKG_URL.'index.php', 'bitpackage:wiki/menu_wiki.tpl', 'wiki');
+		}
 
 		$gBitSystem->registerNotifyEvent( array( "wiki_page_changes" => tra("Any wiki page is changed") ) );
 

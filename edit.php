@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.7 2005/08/11 13:03:48 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.8 2005/08/24 21:00:26 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.7 2005/08/11 13:03:48 squareing Exp $
+ * $Id: edit.php,v 1.8 2005/08/24 21:00:26 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -27,6 +27,11 @@ include( WIKI_PKG_PATH.'lookup_page_inc.php' );
 
 // Get plugins with descriptions
 global $wikilib, $gLibertySystem;
+
+#edit preview needs this
+if (!isset($_REQUEST['title']) && isset($gContent->mInfo['title'])) {
+	$_REQUEST['title'] = $gContent->mInfo['title'];
+}
 
 $sandbox = FALSE;
 if ( (!empty($_REQUEST['page']) && $_REQUEST['page'] == 'SandBox') ||
@@ -83,7 +88,7 @@ function walk_and_parse(&$c, &$src, &$p)
 				switch ($c[$i]["data"]["name"])
 				{
 				case "br": $src .= "\n"; break;
-				case "title"; $src .= "\n!"; $p['stack'][] = array('tag' => 'title', 'string' => "\n"); break;
+				case "title": $src .= "\n!"; $p['stack'][] = array('tag' => 'title', 'string' => "\n"); break;
 				case "p": $src .= "\n"; $p['stack'][] = array('tag' => 'p', 'string' => "\n"); break;
 				case "b": $src .= '__'; $p['stack'][] = array('tag' => 'b', 'string' => '__'); break;
 				case "i": $src .= "''"; $p['stack'][] = array('tag' => 'i', 'string' => "''"); break;
@@ -253,7 +258,7 @@ if ($gBitSystem->isFeatureActive( 'feature_wiki_footnotes' ) ) {
 			$gBitSmarty->assign('has_footnote', 'y');
 		$gBitSmarty->assign('parsed_footnote', $wikilib->parseData($footnote));
 		if (isset($_REQUEST['footnote'])) {
-			
+
 			$gBitSmarty->assign('parsed_footnote', $wikilib->parseData($_REQUEST['footnote']));
 			$gBitSmarty->assign('footnote', $_REQUEST['footnote']);
 			$gBitSmarty->assign('has_footnote', 'y');
@@ -284,45 +289,7 @@ if (isset($_REQUEST["comment"])) {
 	$formInfo['comment'] = $_REQUEST["comment"];
 }
 
-$cat_type = BITPAGE_CONTENT_TYPE_GUID;
-
-if(isset($_REQUEST["preview"])) {
-	if ($gBitSystem->isPackageActive( 'categories' ) &&  isset( $_REQUEST['cat_categories'] ) ) {
-		$cat_objid = $gContent->mContentId;
-		include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
-		foreach( $categories['data'] as $key => $cat ) {
-			foreach( $_REQUEST['cat_categories'] as $rCat ) {
-				if( $cat['category_id'] == $rCat ) {
-					$categories['data'][$key]['incat'] = 'y';
-				}
-			}
-		}
-	}
-
-	// get files from all packages that process this data further
-	foreach( $gBitSystem->getPackageIntegrationFiles( 'form_processor_inc.php', TRUE ) as $package => $file ) {
-		if( $gBitSystem->isPackageActive( $package ) ) {
-			include_once( $file );
-		}
-	}
-
-	$gBitSmarty->assign('preview',1);
-	$gBitSmarty->assign('title',!empty($_REQUEST["title"])?$_REQUEST["title"]:$gContent->mPageName);
-
-	$parsed = $gContent->parseData($formInfo['edit'], (!empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] :
-		( isset($gContent->mInfo['format_guid']) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ) ) );
-	/* SPELLCHECKING INITIAL ATTEMPT */
-	//This nice function does all the job!
-	if ($wiki_spellcheck == 'y') {
-		if (isset($_REQUEST["spellcheck"]) && $_REQUEST["spellcheck"] == 'on') {
-			$parsed = $gBitSystem->spellcheckreplace($edit_data, $parsed, $gBitLanguage->mLanguage, 'editwiki');
-			$gBitSmarty->assign('spellcheck', 'y');
-		} else {
-			$gBitSmarty->assign('spellcheck', 'n');
-		}
-	}
-	$gBitSmarty->assign_by_ref('parsed', $parsed);
-}
+$cat_obj_type = BITPAGE_CONTENT_TYPE_GUID;
 
 if( $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) ) {
 	if (isset($_REQUEST['copyrightTitle'])) {
@@ -375,7 +342,7 @@ if (isset($_REQUEST["fCancel"])) {
 	}
 	die;
 } elseif (isset($_REQUEST["fSavePage"])) {
-	
+
 	// Check if all Request values are delivered, and if not, set them
 	// to avoid error messages. This can happen if some features are
 	// disabled
@@ -415,28 +382,6 @@ if (isset($_REQUEST["fCancel"])) {
 	}
 
 	if( $gContent->store( $_REQUEST ) ) {
-		if( $gBitSystem->isPackageActive( 'categories' ) ) {
-			$cat_objid = $gContent->mContentId;
-			$cat_obj_type = 'bitpage';
-			$cat_desc = ($gBitSystem->isFeatureActive( 'feature_wiki_description' ) && !empty( $_REQUEST["description"] )) ? substr($_REQUEST["description"],0,200) : '';
-			$cat_name = $gContent->mPageName;
-			$cat_href = WIKI_PKG_URL."index.php?content_id=".$cat_objid;
-			include_once( CATEGORIES_PKG_PATH.'categorize_inc.php' );
-		}
-		// nexus menu item storage
-		if( $gBitSystem->isPackageActive( 'nexus' ) && $gBitUser->hasPermission( 'bit_p_insert_nexus_item' ) ) {
-			$nexusHash['title'] = ( isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : NULL );
-			$nexusHash['hint'] = ( isset( $_REQUEST['description'] ) ? $_REQUEST['description'] : NULL );
-			include_once( NEXUS_PKG_PATH.'insert_menu_item_inc.php' );
-		}
-
-		// get files from all packages that process this data further
-		foreach( $gBitSystem->getPackageIntegrationFiles( 'form_processor_inc.php', TRUE ) as $package => $file ) {
-			if( $gBitSystem->isPackageActive( $package ) ) {
-				include_once( $file );
-			}
-		}
-
 		if ( $gBitSystem->isFeatureActive( 'wiki_watch_author' ) ) {
 			$gBitUser->storeWatch( "wiki_page_changed", $gContent->mPageId, $gContent->mContentTypeGuid, $_REQUEST['title'], $gContent->getDisplayUrl() );
 		}
@@ -456,26 +401,27 @@ if ($gBitSystem->isFeatureActive( 'feature_wiki_templates' ) && $gBitUser->hasPe
 }
 $gBitSmarty->assign_by_ref('templates', $templates["data"]);
 
-// External Packages
-// Categories
-if ($gBitSystem->isPackageActive( 'categories' ) ) {
-	$cat_objid = $gContent->mContentId;
-	include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
-}
+if(isset($_REQUEST["preview"])) {
+	$gBitSmarty->assign('preview',1);
+	$gBitSmarty->assign('title',!empty($_REQUEST["title"])?$_REQUEST["title"]:$gContent->mPageName);
 
-// get files from all packages that process this data further
-foreach( $gBitSystem->getPackageIntegrationFiles( 'get_form_info_inc.php', TRUE ) as $package => $file ) {
-	if( $gBitSystem->isPackageActive( $package ) ) {
-		include_once( $file );
+	$parsed = $gContent->parseData($formInfo['edit'], (!empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] :
+		( isset($gContent->mInfo['format_guid']) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ) ) );
+	/* SPELLCHECKING INITIAL ATTEMPT */
+	//This nice function does all the job!
+	if ($wiki_spellcheck == 'y') {
+		if (isset($_REQUEST["spellcheck"]) && $_REQUEST["spellcheck"] == 'on') {
+			$parsed = $gBitSystem->spellcheckreplace($edit_data, $parsed, $gBitLanguage->mLanguage, 'editwiki');
+			$gBitSmarty->assign('spellcheck', 'y');
+		} else {
+			$gBitSmarty->assign('spellcheck', 'n');
+		}
 	}
-}
+	$gBitSmarty->assign_by_ref('parsed', $parsed);
 
-// assign the integration template files
-$gBitSmarty->assign( 'integrationFiles', $gBitSystem->getPackageIntegrationFiles( 'templates/form_info_inc.tpl', TRUE ) );
-
-// Nexus menus
-if( $gBitSystem->isPackageActive( 'nexus' ) && $gBitUser->hasPermission( 'bit_p_insert_nexus_item' ) ) {
-	include_once( NEXUS_PKG_PATH.'insert_menu_item_inc.php' );
+	$gContent->invokeServices( 'content_preview_function' );
+} else {
+	$gContent->invokeServices( 'content_edit_function' );
 }
 
 // Configure quicktags list
@@ -490,16 +436,11 @@ if ($gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
 if( $gContent->isInStructure() ) {
 	$gBitSmarty->assign('showstructs', $gContent->getStructures() );
 }
+
 // Flag for 'page bar' that currently 'Edit' mode active
 // so no need to show comments & attachments, but need
 // to show 'wiki quick help'
 $gBitSmarty->assign('edit_page', 'y');
-// Set variables so the preview page will keep the newly inputted category information
-if (isset($_REQUEST['cat_categorize'])) {
-	if ($_REQUEST['cat_categorize'] == 'on') {
-		$gBitSmarty->assign('categ_checked', 'y');
-	}
-}
 
 // WYSIWYG and Quicktag variable
 $gBitSmarty->assign( 'textarea_id', 'editwiki' );
@@ -508,6 +449,10 @@ $gBitSmarty->assign( 'textarea_id', 'editwiki' );
 if( empty( $formInfo ) ) {
 	$formInfo = &$gContent->mInfo;
 }
+
+// make original page title available for template
+$formInfo['original_title'] = (!empty($gContent->mInfo['title'])) ? $gContent->mInfo['title']  : "" ;
+
 $gBitSmarty->assign_by_ref( 'pageInfo', $formInfo );
 $gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 $gBitSmarty->assign( (!empty( $_REQUEST['tab'] ) ? $_REQUEST['tab'] : 'body').'TabSelect', 'tdefault' );

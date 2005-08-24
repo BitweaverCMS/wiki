@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.7 2005/08/07 17:46:49 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.8 2005/08/24 21:00:26 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.7 $ $Date: 2005/08/07 17:46:49 $ $Author: squareing $
+ * @version $Revision: 1.8 $ $Date: 2005/08/24 21:00:26 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.7 2005/08/07 17:46:49 squareing Exp $
+ * $Id: BitPage.php,v 1.8 2005/08/24 21:00:26 squareing Exp $
  */
 
 /**
@@ -63,16 +63,20 @@ class BitPage extends LibertyAttachable {
 		if( $this->verifyId( $this->mPageId ) || $this->verifyId( $this->mContentId ) ) {
 			global $gBitSystem;
 			$lookupColumn = !empty( $this->mPageId )? 'page_id' : 'content_id';
-			$lookupId = !empty( $this->mPageId )? $this->mPageId : $this->mContentId;
-			$query = "select tp.*, tc.*, " .
-					"uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, " .
-					"uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name " .
-					"FROM `".BIT_DB_PREFIX."tiki_pages` tp " .
-					"INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) " .
-					"LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = tc.`modifier_user_id`) " .
-					"LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = tc.`user_id`) " .
-					"WHERE tp.`$lookupColumn`=?";
-			$result = $this->mDb->query( $query, array( $lookupId ) );
+
+			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
+			$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
+
+			array_push( $bindVars, $lookupId = !empty( $this->mPageId )? $this->mPageId : $this->mContentId );
+			$query = "select tp.*, tc.*,
+					  uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
+					  uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name $selectSql
+					  FROM `".BIT_DB_PREFIX."tiki_pages` tp
+						INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) $joinSql
+						LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = tc.`modifier_user_id`)
+						LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = tc.`user_id`)
+					  WHERE tp.`$lookupColumn`=? $whereSql";
+			$result = $this->mDb->query( $query, $bindVars );
 
 			if ( $result && $result->numRows() ) {
 				$this->mInfo = $result->fields;
@@ -228,26 +232,40 @@ class BitPage extends LibertyAttachable {
 		}
 
 		// check for name issues, first truncate length if too long
-		if( !empty( $pParamHash['title']) || !empty($this->mPageName))  {
+		if( empty( $pParamHash['title'] ) ) {
+			$this->mErrors['title'] = 'You must specify a name';
+			}
+		elseif( !empty( $pParamHash['title']) || !empty($this->mPageName))  {
 			if( empty( $this->mPageId ) ) {
 				if( empty( $pParamHash['title'] ) ) {
 					$this->mErrors['title'] = 'You must enter a name for this page.';
 				} else {
 					$pParamHash['content_store']['title'] = substr( $pParamHash['title'], 0, 160 );
+					if ($gBitSystem->isFeatureActive( 'feature_allow_dup_wiki_page_names')) {
+						# silently allow pages with duplicate names to be created
+					}
+					else {
+						if( $this->pageExists( $pParamHash['title'] ) ) {
+							$this->mErrors['title'] = 'Page "'.$pParamHash['title'].'" already exists. Please choose a different name.';
+						}
+					}
 				}
 			} else {
 				$pParamHash['content_store']['title'] = ( isset( $pParamHash['title'] ) ) ? substr( $pParamHash['title'], 0, 160 ) : $this->mPageName;
-/*				if( $gBitUser->hasPermission( 'bit_p_rename' ) && (isset( $this->mInfo['title'] ) && ($pParamHash['title'] != $this->mInfo['title'])) ) {
-				if( $this->pageExists( $pParamHash['title'] ) ) {
-					$this->mErrors['title'] = 'Page "'.$pParamHash['title'].'" already exists. Please choose a different name.';
-				} else {
-					$pParamHash['page_store']['title'] = substr( $pParamHash['title'], 0, 160 );
+				if ($gBitSystem->isFeatureActive( 'feature_allow_dup_wiki_page_names')) {
+					# silently allow pages with duplicate names to be created
 				}
-*/
+				else {
+					if( $gBitUser->hasPermission( 'bit_p_rename' )
+					&& (isset( $this->mInfo['title'] )
+					&& ($pParamHash['title'] != $this->mInfo['title'])) ) {
+						if( $this->pageExists( $pParamHash['title'] ) ) {
+							$this->mErrors['title'] = 'Page "'.$pParamHash['title'].'" already exists. Please choose a different name.';
+						}
+					}
+				}
 			}
-		} elseif( empty( $pParamHash['title'] ) ) {
-			// no name specified
-			$this->mErrors['title'] = 'You must specify a name';
+
 /*		} elseif( !empty( $pParamHash['page'] ) && !empty( $pParamHash['newpage'] ) && ( $pParamHash['page'] != $pParamHash['newpage'] ) ) {
 			// check for rename, and rename it now if we can
 			if ($this->wiki_rename_page( $pParamHash['page'], $pParamHash['newpage'])) {
@@ -281,7 +299,7 @@ class BitPage extends LibertyAttachable {
 
 	/**
 	 * Remove page from database
-	 */ 
+	 */
 	function expunge() {
 		$ret = FALSE;
 		if( $this->isValid() ) {
@@ -435,7 +453,7 @@ class BitPage extends LibertyAttachable {
 			$pPageName = $this->mPageName;
 		}
 		$rewrite_tag = $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ? 'view/':'';
-		if ($gBitSystem->isFeatureActive( 'pretty_urls' ) 
+		if ($gBitSystem->isFeatureActive( 'pretty_urls' )
 		|| $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ) {
 			$baseUrl = WIKI_PKG_URL . $rewrite_tag;
 			$baseUrl .= urlencode( $pPageName );
@@ -443,7 +461,7 @@ class BitPage extends LibertyAttachable {
 		else {
 			$baseUrl = WIKI_PKG_URL . 'index.php?page=';
 			$baseUrl .= urlencode( $pPageName );
-		}	
+		}
 		return $baseUrl;
 	}
 
@@ -586,7 +604,7 @@ class BitPage extends LibertyAttachable {
 				$res = $result->fetchRow();
 				$res['comment'] = 'Rollback to version '.$pVersion.' by '.$gBitUser->getDisplayName();
 				// JHT 2005-06-19_15:22:18
-				// set ['force_history'] to 
+				// set ['force_history'] to
 				// make sure we don't destory current content without leaving a copy in history
 				// if rollback can destroy the current page version, it can be used
 				// maliciously
@@ -783,50 +801,50 @@ class BitPage extends LibertyAttachable {
 				  FROM `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`), `".BIT_DB_PREFIX."users_users` uue, `".BIT_DB_PREFIX."users_users` uuc
 				  WHERE tc.`content_type_guid`=? AND tc.`modifier_user_id`=uue.`user_id` AND tc.`user_id`=uuc.`user_id` $mid
 				  ORDER BY ".$this->mDb->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from 
-			`".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc 
-			ON (tc.`content_id` = tp.`content_id`) 
+		$query_cant = "select count(*) from
+			`".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc
+			ON (tc.`content_id` = tp.`content_id`)
 			WHERE tc.`content_type_guid`=? $mid";
 
 		if ($pOrphansOnly) {
-			$query = "SELECT 
-			uue.`login` AS modifier_user, 
-			uue.`real_name` AS modifier_real_name, 
-			uuc.`login` AS creator_user, 
+			$query = "SELECT
+			uue.`login` AS modifier_user,
+			uue.`real_name` AS modifier_real_name,
+			uuc.`login` AS creator_user,
 			uuc.`real_name` AS creator_real_name ,
-			`page_id`, 
-			`hits`, 
-			`page_size` as `len`, 
-			tc.`title`, 
-			tc.`format_guid`, 
-			tp.`description`, 
-			tc.`last_modified`, 
-			tc.`created`, 
-			`ip`, 
-			`comment`, 
-			`version`, 
-			`flag`, 
+			`page_id`,
+			`hits`,
+			`page_size` as `len`,
+			tc.`title`,
+			tc.`format_guid`,
+			tp.`description`,
+			tc.`last_modified`,
+			tc.`created`,
+			`ip`,
+			`comment`,
+			`version`,
+			`flag`,
 			tp.`content_id`
-			FROM `".BIT_DB_PREFIX."tiki_pages` tp 
-				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` tl ON tp.`content_id` =  tl.`to_content_id` 
-				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc 
+			FROM `".BIT_DB_PREFIX."tiki_pages` tp
+				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` tl ON tp.`content_id` =  tl.`to_content_id`
+				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc
 				ON (tc.`content_id` = tp.`content_id`),
-				`".BIT_DB_PREFIX."users_users` uue, 
+				`".BIT_DB_PREFIX."users_users` uue,
 				`".BIT_DB_PREFIX."users_users` uuc
-				  WHERE tc.`content_type_guid`=? 
-				  AND tc.`modifier_user_id`=uue.`user_id` 
+				  WHERE tc.`content_type_guid`=?
+				  AND tc.`modifier_user_id`=uue.`user_id`
 				  AND tc.`user_id`=uuc.`user_id` $mid
 				  AND tl.`to_content_id` is NULL
 				  ORDER BY "
 			. $this->mDb->convert_sortmode($sort_mode);
-			$query_cant = "select count(*) 
-			FROM `".BIT_DB_PREFIX."tiki_pages` tp 
-				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` tl on tp.`content_id` =  tl.`to_content_id` 
-				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc 
+			$query_cant = "select count(*)
+			FROM `".BIT_DB_PREFIX."tiki_pages` tp
+				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` tl on tp.`content_id` =  tl.`to_content_id`
+				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc
 				ON (tc.`content_id` = tp.`content_id`)
-				  WHERE tc.`content_type_guid`=? 
+				  WHERE tc.`content_type_guid`=?
 				  AND tl.`to_content_id` is NULL";
-		}	
+		}
 
 
 		// If sort mode is versions then offset is 0, maxRecords is -1 (again) and sort_mode is nil
@@ -1157,17 +1175,20 @@ class WikiLib extends BitPage {
     }
 
     function wiki_get_link_structure($page, $level) {
-		$query = "select `to_page` from `".BIT_DB_PREFIX."tiki_links` where `from_page`=?";
+		$query = "select tc2.`title` from `".BIT_DB_PREFIX."tiki_links` tl
+			INNER JOIN tiki_content tc1 ON tc1.`content_id` = tl.`from_content_id`
+			INNER JOIN tiki_content tc2 ON tc2.`content_id` = tl.`to_content_id`
+			WHERE tc1.`title`=?";
 		$result = $this->mDb->query($query,array($page));
 		$aux['pages'] = array();
 		$aux['name'] = $page;
 		while ($res = $result->fetchRow()) {
 			if ($level) {
-			$aux['pages'][] = $this->wiki_get_link_structure($res['to_page'], $level - 1);
+				$aux['pages'][] = $this->wiki_get_link_structure($res['title'], $level - 1);
 			} else {
-			$inner['name'] = $res['to_page'];
-			$inner['pages'] = array();
-			$aux['pages'][] = $inner;
+				$inner['name'] = $res['title'];
+				$inner['pages'] = array();
+				$aux['pages'][] = $inner;
 			}
 		}
 		return $aux;
@@ -1604,7 +1625,7 @@ class WikiLib extends BitPage {
 
 /**
  * the wikilib class
- * @global WikiLib $wikilib 
+ * @global WikiLib $wikilib
  */
 global $wikilib;
 // Perhaps someone overrode the wikilib class to do there own magic, and have alread instantiated...
