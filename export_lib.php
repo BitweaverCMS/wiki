@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.1.1.1.2.4 2005/08/25 17:04:06 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.1.1.1.2.5 2005/08/25 23:58:25 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: export_lib.php,v 1.1.1.1.2.4 2005/08/25 17:04:06 lsces Exp $
+ * $Id: export_lib.php,v 1.1.1.1.2.5 2005/08/25 23:58:25 lsces Exp $
  * @package wiki
  */
 
@@ -43,8 +43,9 @@ class ExportLib extends BitBase {
 	}
 
 	function export_wiki_page($page_id, $nversions = 1) {
+		global $gBitSystem;
 		$head = '';
-		$head .= "Date: " . $this->get_rfc2822_datetime(). "\r\n";
+		$head .= "Date: " . $gBitSystem->mServerTimestamp->get_rfc2822_datetime(). "\r\n";
 		$head .= sprintf("Mime-Version: 1.0 (Produced by Tiki)\r\n");
 		$iter = $this->get_page_history($page_id);
 		$gWikiPage = new BitPage( $page_id );
