@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.1.1.1.2.3 2005/08/07 16:27:49 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.1.1.1.2.4 2005/08/25 17:04:06 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: export_lib.php,v 1.1.1.1.2.3 2005/08/07 16:27:49 lsces Exp $
+ * $Id: export_lib.php,v 1.1.1.1.2.4 2005/08/25 17:04:06 lsces Exp $
  * @package wiki
  */
 
@@ -27,7 +27,7 @@ class ExportLib extends BitBase {
 	}
 
 	function MakeWikiZip( $pExportFile ) {
-		global $gBitUser;
+		global $gBitUser,$gBitSystem;
 		include_once (UTIL_PKG_PATH."tar.class.php");
 		$tar = new tar();
 		$query = "SELECT tp.`page_id` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) 
@@ -36,7 +36,7 @@ class ExportLib extends BitBase {
 		while ($res = $result->fetchRow()) {
 			$page_id = $res["page_id"];
 			$content = $this->export_wiki_page($page_id, 0);
-			$tar->addData($page_id, $content, date("U"));
+			$tar->addData($page_id, $content, $gBitSystem->getUTCTime());
 		}
 		$tar->toTar( $pExportFile, FALSE); 
 		return '';

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.9 2005/08/21 21:04:25 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.10 2005/08/25 17:04:06 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.1.1.1.2.9 2005/08/21 21:04:25 spiderr Exp $
+ * $Id: display_bitpage_inc.php,v 1.1.1.1.2.10 2005/08/25 17:04:06 lsces Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -127,7 +127,7 @@ if(isset($_REQUEST["undo"])) {
 		$gContent->removeLastVersion();
 		// If page was deleted then re-create
 		if( !$fPID ) {
-			$wikilib->create_page($gContent->mInfo['title'],0,'',date("U"),'Tiki initialization');
+			$wikilib->create_page($gContent->mInfo['title'],0,'',$gBitSystem->getUTCTime(),'Tiki initialization');
 		}
 	}
 }
