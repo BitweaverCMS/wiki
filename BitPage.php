@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.25 2005/08/25 17:04:06 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.26 2005/08/25 20:17:06 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.25 $ $Date: 2005/08/25 17:04:06 $ $Author: lsces $
+ * @version $Revision: 1.2.2.26 $ $Date: 2005/08/25 20:17:06 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.25 2005/08/25 17:04:06 lsces Exp $
+ * $Id: BitPage.php,v 1.2.2.26 2005/08/25 20:17:06 lsces Exp $
  */
 
 /**
@@ -728,7 +728,8 @@ class BitPage extends LibertyAttachable {
 	 */
 	function updateCache( $data ) {
 		if( $this->mPageId ) {
-			$now = date('U');
+			global $gBitSystem;
+			$now = $gBitSystem->getUTCTime();
 			$query = "update `".BIT_DB_PREFIX."tiki_pages` set `cache`=?, `cache_timestamp`=$now where `page_id`=?";
 			$result = $this->mDb->query( $query, array( $data, $this->mPageId ) );
 			return true;
