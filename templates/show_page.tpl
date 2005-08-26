@@ -3,8 +3,11 @@
 	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
 
-{if $gBitSystem->isPackageActive( 'pigeonholes' )}
-	{include file="bitpackage:pigeonholes/display_paths.tpl"}
+{assign var=serviceNavTpls value=$gLibertySystem->getServiceValues('content_nav_tpl')}
+{assign var=serviceViewTpls value=$gLibertySystem->getServiceValues('content_view_tpl')}
+
+{if $serviceNavTpls.categorization}
+	{include file=$serviceNavTpls.categorization"}
 {/if}
 
 <div class="display wiki {$pageInfo.title|lower|regex_replace:"[\s|_]":""}">
@@ -56,10 +59,6 @@
 	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
 
-{if $gBitSystem->isPackageActive( 'pigeonholes' )}
-	{include file="bitpackage:pigeonholes/display_members.tpl"}
-{/if}
-
-{if $gBitSystem->isPackageActive( 'categories' )}
-	{include file="bitpackage:categories/categories_objects.tpl"}
+{if $serviceViewTpls.categorization}
+	{include file=$serviceViewTpls.categorization"}
 {/if}
