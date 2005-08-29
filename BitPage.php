@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.26 2005/08/25 20:17:06 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.27 2005/08/29 09:57:50 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.26 $ $Date: 2005/08/25 20:17:06 $ $Author: lsces $
+ * @version $Revision: 1.2.2.27 $ $Date: 2005/08/29 09:57:50 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.26 2005/08/25 20:17:06 lsces Exp $
+ * $Id: BitPage.php,v 1.2.2.27 2005/08/29 09:57:50 squareing Exp $
  */
 
 /**
@@ -454,8 +454,7 @@ class BitPage extends LibertyAttachable {
 			$pPageName = $this->mPageName;
 		}
 		$rewrite_tag = $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ? 'view/':'';
-		if ($gBitSystem->isFeatureActive( 'pretty_urls' )
-		|| $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ) {
+		if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ) {
 			$baseUrl = WIKI_PKG_URL . $rewrite_tag;
 			$baseUrl .= urlencode( $pPageName );
 		}
@@ -478,14 +477,13 @@ class BitPage extends LibertyAttachable {
 			if( is_array( $pExistsHash ) ) {
 				if( is_array( current( $pExistsHash ) ) ) {
 					$exists = $pExistsHash[0];
-					$multi = TRUE;
 				} else {
 					$exists = $pExistsHash;
-					$multi = FALSE;
 				}
+
 				// we have a multi-demensional array (likely returned from LibertyContent::pageExists() ) - meaning we potentially have multiple pages with the same name
-				if( $multi ) {
-					$desc = tra( 'multiple pages with this name' );
+				if( count( $pExistsHash ) > 1 ) {
+					$desc = tra( 'Multiple pages with this name' );
 					$ret = "<a title=\"$desc\" href=\"" .  BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
 				} elseif( count( $pExistsHash ) == 1 ) {
 					$desc = $exists['description'];
