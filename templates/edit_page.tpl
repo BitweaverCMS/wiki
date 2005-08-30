@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.8 2005/08/24 21:00:26 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.9 2005/08/30 22:40:17 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 {assign var=serviceEditTpls value=$gLibertySystem->getServiceValues('content_edit_tpl')}
@@ -20,11 +20,9 @@
 
 	{* Check to see if there is an editing conflict *}
 	{if $errors.edit_conflict}
-		<script type="text/javascript">
-			//<![CDATA[
-				alert( "{$errors.edit_conflict|strip_tags}" );
-			//]]>
-		</script>
+		<script type="text/javascript">//<![CDATA[
+			alert( "{$errors.edit_conflict|strip_tags}" );
+		//]]></script>
 		{formfeedback warning=`$errors.edit_conflict`}
 	{/if}
 

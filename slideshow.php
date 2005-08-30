@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.4 2005/08/07 17:46:49 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.5 2005/08/30 22:40:17 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: slideshow.php,v 1.4 2005/08/07 17:46:49 squareing Exp $
+ * $Id: slideshow.php,v 1.5 2005/08/30 22:40:17 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -25,7 +25,7 @@ $gBitSystem->verifyPackage( 'wiki' );
 //print($GLOBALS["HTTP_REFERER"]);
 
 if (!isset($_SESSION["thedate"])) {
-	$thedate = date("U");
+	$thedate = $gBitSystem->getUTCTime();
 } else {
 	$thedate = $_SESSION["thedate"];
 }

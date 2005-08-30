@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.3 2005/08/07 17:46:49 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.4 2005/08/30 22:40:17 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: export_lib.php,v 1.3 2005/08/07 17:46:49 squareing Exp $
+ * $Id: export_lib.php,v 1.4 2005/08/30 22:40:17 squareing Exp $
  * @package wiki
  */
 
@@ -27,7 +27,7 @@ class ExportLib extends BitBase {
 	}
 
 	function MakeWikiZip( $pExportFile ) {
-		global $gBitUser;
+		global $gBitUser,$gBitSystem;
 		include_once (UTIL_PKG_PATH."tar.class.php");
 		$tar = new tar();
 		$query = "SELECT tp.`page_id` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) 
@@ -36,15 +36,16 @@ class ExportLib extends BitBase {
 		while ($res = $result->fetchRow()) {
 			$page_id = $res["page_id"];
 			$content = $this->export_wiki_page($page_id, 0);
-			$tar->addData($page_id, $content, date("U"));
+			$tar->addData($page_id, $content, $gBitSystem->getUTCTime());
 		}
 		$tar->toTar( $pExportFile, FALSE); 
 		return '';
 	}
 
 	function export_wiki_page($page_id, $nversions = 1) {
+		global $gBitSystem;
 		$head = '';
-		$head .= "Date: " . $this->get_rfc2822_datetime(). "\r\n";
+		$head .= "Date: " . $gBitSystem->mServerTimestamp->get_rfc2822_datetime(). "\r\n";
 		$head .= sprintf("Mime-Version: 1.0 (Produced by Tiki)\r\n");
 		$iter = $this->get_page_history($page_id);
 		$gWikiPage = new BitPage( $page_id );

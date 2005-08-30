@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.8 2005/08/24 21:00:26 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.9 2005/08/30 22:40:17 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.8 $ $Date: 2005/08/24 21:00:26 $ $Author: squareing $
+ * @version $Revision: 1.9 $ $Date: 2005/08/30 22:40:17 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.8 2005/08/24 21:00:26 squareing Exp $
+ * $Id: BitPage.php,v 1.9 2005/08/30 22:40:17 squareing Exp $
  */
 
 /**
@@ -161,7 +161,7 @@ class BitPage extends LibertyAttachable {
 						$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
 
 						$gBitSmarty->assign('mail_page', $this->mInfo['title']);
-						$gBitSmarty->assign('mail_date', date("U"));
+						$gBitSmarty->assign('mail_date', $gBitSystem->getUTCTime());
 						$gBitSmarty->assign('mail_user', $this->mInfo['modifier_user']);
 						$gBitSmarty->assign('mail_comment', $this->mInfo['comment']);
 						$gBitSmarty->assign('mail_last_version', $this->mInfo['version'] - 1);
@@ -371,6 +371,7 @@ class BitPage extends LibertyAttachable {
 	 */
 	function removeLastVersion( $comment = '' ) {
 		if( $this->mPageId ) {
+			global $gBitSystem;
 			$this->invalidateCache();
 			$query = "select * from `".BIT_DB_PREFIX."tiki_history` where `page_id`=? order by ".$this->mDb->convert_sortmode("last_modified_desc");
 			$result = $this->mDb->query($query, array( $this->mPageId ) );
@@ -383,7 +384,7 @@ class BitPage extends LibertyAttachable {
 				$this->remove_all_versions($page);
 			}
 			$action = "Removed last version";
-			$t = date("U");
+			$t = $gBitSystem->getUTCTime();
 			$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`( `action`, `page_id`, `last_modified`, `user_id`, `ip`, `comment`) values( ?, ?, ?, ?, ?, ?)";
 			$result = $this->mDb->query($query, array( $action, $this->mPageId, $t, ROOT_USER_ID, $_SERVER["REMOTE_ADDR"], $comment ) );
 		}
@@ -453,8 +454,7 @@ class BitPage extends LibertyAttachable {
 			$pPageName = $this->mPageName;
 		}
 		$rewrite_tag = $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ? 'view/':'';
-		if ($gBitSystem->isFeatureActive( 'pretty_urls' )
-		|| $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ) {
+		if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ) {
 			$baseUrl = WIKI_PKG_URL . $rewrite_tag;
 			$baseUrl .= urlencode( $pPageName );
 		}
@@ -477,14 +477,13 @@ class BitPage extends LibertyAttachable {
 			if( is_array( $pExistsHash ) ) {
 				if( is_array( current( $pExistsHash ) ) ) {
 					$exists = $pExistsHash[0];
-					$multi = TRUE;
 				} else {
 					$exists = $pExistsHash;
-					$multi = FALSE;
 				}
+
 				// we have a multi-demensional array (likely returned from LibertyContent::pageExists() ) - meaning we potentially have multiple pages with the same name
-				if( $multi ) {
-					$desc = tra( 'multiple pages with this name' );
+				if( count( $pExistsHash ) > 1 ) {
+					$desc = tra( 'Multiple pages with this name' );
 					$ret = "<a title=\"$desc\" href=\"" .  BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
 				} elseif( count( $pExistsHash ) == 1 ) {
 					$desc = $exists['description'];
@@ -595,7 +594,7 @@ class BitPage extends LibertyAttachable {
 	function rollbackVersion( $pVersion, $comment = '' ) {
 		$ret = FALSE;
 		if( $this->isValid() ) {
-			global $gBitUser;
+			global $gBitUser,$gBitSystem;
 			$this->mDb->StartTrans();
 			// JHT - cache invalidation appears to be handled by store function - so don't need to do it here
 			$query = "select *, `user_id` AS modifier_user_id, `data` AS `edit` from `".BIT_DB_PREFIX."tiki_history` where `page_id`=? and `version`=?";
@@ -611,7 +610,7 @@ class BitPage extends LibertyAttachable {
 				$res['force_history'] = 1;
 				if( $this->store( $res ) ) {
 					$action = "Changed actual version to $pVersion";
-					$t = date("U");
+					$t = $gBitSystem->getUTCTime();
 					$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`(`action`,`page_id`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?)";
 					$result = $this->mDb->query($query,array($action,$this->mPageId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
 					$ret = TRUE;
@@ -644,8 +643,9 @@ class BitPage extends LibertyAttachable {
 			$query = "delete from `".BIT_DB_PREFIX."tiki_history` where `page_id`=? $versionSql ";
 			$result = $this->mDb->query( $query, $bindVars );
 			if( $hasRows ) {
+				global $gBitSystem;
 				$action = "Removed version $pVersion";
-				$t = date("U");
+				$t = $gBitSystem->getUTCTime();
 				$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`(`action`,`page_id`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?)";
 				$result = $this->mDb->query($query,array($action,$this->mPageId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
 				$ret = TRUE;
@@ -726,7 +726,8 @@ class BitPage extends LibertyAttachable {
 	 */
 	function updateCache( $data ) {
 		if( $this->mPageId ) {
-			$now = date('U');
+			global $gBitSystem;
+			$now = $gBitSystem->getUTCTime();
 			$query = "update `".BIT_DB_PREFIX."tiki_pages` set `cache`=?, `cache_timestamp`=$now where `page_id`=?";
 			$result = $this->mDb->query( $query, array( $data, $this->mPageId ) );
 			return true;
@@ -1210,6 +1211,7 @@ class WikiLib extends BitPage {
 		$res = $result->fetchRow();
 		return $res;
 	}
+
 	function remove_wiki_attachment($att_id) {
 		global $w_use_dir;
 		$path = $this->mDb->getOne("select `path` from `".BIT_DB_PREFIX."tiki_wiki_attachments` where `att_id`=$att_id");
@@ -1219,9 +1221,11 @@ class WikiLib extends BitPage {
 		$query = "delete from `".BIT_DB_PREFIX."tiki_wiki_attachments` where `att_id`='$att_id'";
 		$result = $this->mDb->query($query);
 	}
+
 	function wiki_attach_file($page, $name, $type, $size, $data, $comment, $pUserId, $fhash) {
+		global $gBitSystem;
 		$comment = strip_tags($comment);
-		$now = date("U");
+		$now = $gBitSystem->getUTCTime();
 		$query = "insert into `".BIT_DB_PREFIX."tiki_wiki_attachments` (`page`,`filename`,`filesize`,`filetype`,`data`,`created`,`downloads`,`user_id`,`comment`,`path`) values(?,?,?,?,?,?,0,?,?,?)";
 		$result = $this->mDb->query($query,array($page,$name, (int) $size,$type,$data, (int) $now, $pUserId, $comment,$fhash));
 	}
@@ -1315,7 +1319,7 @@ class WikiLib extends BitPage {
 	// Removes all the versions of a page and the page itself
 	function remove_all_versions( $pPageId, $comment = '') {
 		if( is_numeric( $pPageId ) ) {
-			global $gBitUser;
+			global $gBitUser,$gBitSystem;
 			$this->mDb->StartTrans();
 
 			//Delete structure references before we delete the page
@@ -1335,7 +1339,7 @@ class WikiLib extends BitPage {
 			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_pages` where `page_id` = ?";
 			$result = $this->mDb->query( $query, array( $pPageId ) );
 			$action = "Removed";
-			$t = date("U");
+			$t = $gBitSystem->getUTCTime();
 			$query = "INSERT INTO `".BIT_DB_PREFIX."tiki_actionlog`(`action`,`page_id`, `title`, `last_modified`, `user_id`, `ip`, `comment`) VALUES (?,?,?,?,?,?,?)";
 			$result = $this->mDb->query( $query, array( $action, $pPageId, $delPageName, (int)$t, $gBitUser->mUserId, $_SERVER["REMOTE_ADDR"], $comment ) );
 			$query = "UPDATE `".BIT_DB_PREFIX."users_groups` SET `group_home`=? WHERE `group_home`=?";
@@ -1379,7 +1383,7 @@ class WikiLib extends BitPage {
 		$tar->toTar( $this->getStoragePath( "dump/".$bitdomain )."new.tar", FALSE);
 		unset ($tar);
 		$action = "dump created";
-		$t = date("U");
+		$t = $gBitSystem->getUTCTime();
 		$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`(`action`,`page_id`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?)";
 		$result = $this->mDb->query($query,array($action,1,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
 	}
