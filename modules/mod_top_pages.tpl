@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.tpl,v 1.5 2005/08/07 17:46:50 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.tpl,v 1.6 2005/09/03 10:22:39 squareing Exp $ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'wiki' )}
 	{if $nonums eq 'y'}
@@ -9,11 +9,11 @@
 	{bitmodule title="$moduleTitle" name="top_pages"}
 		<ol class="wiki">
 			{section name=ix loop=$modTopPages}
-				<li><a href="{$smarty.const.WIKI_PKG_URL}index.php?page={$modTopPages[ix].page_name}">{$modTopPages[ix].title}</a></li>
+				<li><a href="{$modTopPages[ix].display_url}">{$modTopPages[ix].title}</a></li>
 			{sectionelse}
 				<li></li>
 			{/section}
-		<ol>
+		</ol>
 	{/bitmodule}
 {/if}
 {/strip}

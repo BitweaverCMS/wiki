@@ -279,29 +279,3 @@
 	{/jstab}
 {/jstabs}
 {/strip}
-
-{if $gBitSystem->isPackageActive( 'tikiforums' )}
-			<div class="boxcontent">
-				<form method="post" action="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=wiki">
-				<table class="panel"><tr>
-					<th colspan="2">{tr}Wiki Discussion{/tr}</th>
-				</tr><tr>
-					<td width="70%"><label for="feature_wiki_discuss">{tr}Discuss pages on forums{/tr}:</label> </td>
-					<td width="30%"><input type="checkbox" name="feature_wiki_discuss" id="feature_wiki_discuss" {if $gBitSystem->mPrefs.feature_wiki_discuss eq 'y'}checked="checked"{/if} /></td>
-				</tr><tr>
-					<td>{tr}Forum{/tr}:</td>
-					<td>
-						<select name="wiki_forum">
-							{section name=ix loop=$all_forums}
-								<option value="{$all_forums[ix].name|escape}" {if $all_forums[ix].name eq $wiki_forum}selected="selected"{/if}>{$all_forums[ix].name}</option>
-							{sectionelse}
-								<option>{tr}No records found{/tr}</option>
-							{/section}
-						</select>
-					</td>
-				</tr><tr class="panelsubmitrow">
-					<td colspan="2"><input type="submit" name="wikidiscussprefs" value="{tr}Change preferences{/tr}" /></td>
-				</tr></table>
-				</form>
-			</div>
-{/if}
