@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.7 2005/08/16 20:33:24 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.8 2005/09/07 07:38:33 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -200,6 +200,10 @@ $formWikiInOut = array(
 	"feature_wiki_description" => array(
 		'label' => 'Description',
 		'note' => 'Display a brief page description just below the title of the page.',
+	),
+	"hide_wiki_date" => array(
+		'label' => 'Hide Date',
+		'note' => 'Hide the date and creation / modification information.',
 	),
 	"feature_wiki_footnotes" => array(
 		'label' => 'Footnotes',
