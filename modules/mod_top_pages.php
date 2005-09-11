@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.php,v 1.1.1.1.2.4 2005/09/01 14:12:33 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.php,v 1.1.1.1.2.5 2005/09/11 08:43:32 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: mod_top_pages.php,v 1.1.1.1.2.4 2005/09/01 14:12:33 spiderr Exp $
+ * $Id: mod_top_pages.php,v 1.1.1.1.2.5 2005/09/11 08:43:32 squareing Exp $
  * @package wiki
  * @subpackage modules
  */
@@ -17,9 +17,9 @@
  * required setup
  */
 require_once( WIKI_PKG_PATH.'BitPage.php' );
-global $wikilib, $modlib;
+global $gQueryUser, $module_rows, $module_params;
 
-$params = $modlib->get_module_params('bitpackage:wiki/mod_top_pages.tpl', $gQueryUserId);
-$ranking = $wikilib->getList(0, $params['rows'], 'hits_desc', '',$gQueryUserId,' `hits` IS NOT NULL ');
-$gBitSmarty->assign('modTopPages', $ranking["data"]);
+$modWiki = new BitPage();
+$modRank = $modWiki->getList( 0, !empty( $module_rows ) ? $module_rows : 10, 'hits_desc', !empty( $module_params['user_pages'] ) ? $gQueryUser->mUserId : NULL );
+$gBitSmarty->assign( 'modTopPages', $modRank["data"] );
 ?>
