@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.1.1.1.2.7 2005/08/07 12:26:09 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.1.1.1.2.8 2005/09/17 18:41:13 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -170,14 +170,11 @@
 
 			{if $checkboxes_on eq 'y'}
 				<div style="text-align:right;">
-					<script type="text/javascript">
-						<!--
+					<script type="text/javascript">//<![CDATA[
 						// check / uncheck all.
-						// in the future, we could extend this to happen serverside as well for the convenience of people w/o javascript.
 						document.write("<label for=\"switcher\">{tr}Select All{/tr}</label> ");
 						document.write("<input name=\"switcher\" id=\"switcher\" type=\"checkbox\" onclick=\"switchCheckboxes(this.form.id,'checked[]','switcher')\" />");
-						//-->
-					</script>
+					//]]></script>
 
 					<br />
 
@@ -186,15 +183,14 @@
 						{if $gBitUser->hasPermission( 'bit_p_remove' )}
 							<option value="remove_pages">{tr}remove{/tr}</option>
 						{/if}
-						{* add here e.g. <option value="categorize">{tr}categorize{/tr}</option> *}
 					</select>
 
-					<script type="text/javascript">
-						<!-- //Fake js to allow the use of the <noscript> tag (so non-js-users can still submit) -->
-					</script>
+					<script type="text/javascript">//<![CDATA[
+					// Fake js to allow the use of the <noscript> tag (so non-js-users kenn still submit)
+					//]]></script>
 
 					<noscript>
-						<div><input type="submit" value="{tr}ok{/tr}" /></div>
+						<div><input type="submit" value="{tr}Submit{/tr}" /></div>
 					</noscript>
 				</div>
 			{/if}
