@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.27 2005/08/29 09:57:50 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.28 2005/09/18 16:36:51 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.27 $ $Date: 2005/08/29 09:57:50 $ $Author: squareing $
+ * @version $Revision: 1.2.2.28 $ $Date: 2005/09/18 16:36:51 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.27 2005/08/29 09:57:50 squareing Exp $
+ * $Id: BitPage.php,v 1.2.2.28 2005/09/18 16:36:51 spiderr Exp $
  */
 
 /**
@@ -1353,18 +1353,31 @@ class WikiLib extends BitPage {
 		}
 	}
 */
+	function getDumpFile() {
+		global $gBitSystem;
+		return( $this->getStoragePath( $gBitSystem->getPreference( 'bitdomain' ), NULL, WIKI_PKG_NAME ).'dump.tar' );
+	}
+
+	function getDumpUrl() {
+		global $gBitSystem;
+		return( $this->getStorageUrl( $gBitSystem->getPreference( 'bitdomain' ), NULL, WIKI_PKG_NAME ).'dump.tar' );
+	}
 
 	// Dumps the database to dump/new.tar
 	// changed for virtualhost support
 	function dumpPages() {
-		global $bitdomain, $wikiHomePage, $gBitSystem, $gBitUser;
+		global $wikiHomePage, $gBitSystem, $gBitUser;
 
-		@unlink( BIT_ROOT_PATH."dump/" . $bitdomain . "new.tar" );
 		$tar = new tar();
 		$tar->addFile( $gBitSystem->getStyleCss() );
 		// Foreach page
 		$query = "select * from `".BIT_DB_PREFIX."tiki_pages`";
 		$result = $this->mDb->query($query,array());
+
+		$dumpFile = $this->getDumpFile();
+		if( file_exists( $dumpFile ) ) {
+			unlink( $dumpFile );
+		}
 
 		while ($res = $result->fetchRow()) {
 			$title = $res["title"] . '.html';
@@ -1380,7 +1393,7 @@ class WikiLib extends BitPage {
 			$tar->addData($title, $data, $res["last_modified"]);
 		}
 
-		$tar->toTar( $this->getStoragePath( "dump/".$bitdomain )."new.tar", FALSE);
+		$tar->toTar( $dumpFile, FALSE );
 		unset ($tar);
 		$action = "dump created";
 		$t = $gBitSystem->getUTCTime();

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.8 2005/09/07 07:38:33 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.9 2005/09/18 16:36:52 spiderr Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -155,7 +155,6 @@ if (isset($_REQUEST["wikifeatures"])) {
 	$gBitSystem->storePreference('wiki_cache', $_REQUEST["wiki_cache"]);
 	$gBitSmarty->assign('wiki_cache', $_REQUEST["wiki_cache"]);
 
-	$gBitSmarty->assign('dump_url', $wikilib->getStorageUrl( "dump/$bitdomain" ));
 	/*
 	  if(isset($_REQUEST["feature_wiki_notepad"]) && $_REQUEST["feature_wiki_notepad"]=="y") {
 		$gBitSystem->storePreference("feature_wiki_notepad",'y');
@@ -290,6 +289,9 @@ if (isset($_REQUEST["dump"])) {
 	include (UTIL_PKG_PATH."tar.class.php");
 	error_reporting (E_ERROR | E_WARNING);
 	$wikilib->dumpPages();
+}
+if( file_exists( $wikilib->getDumpFile() ) ) {
+	$gBitSmarty->assign('dumpUrl', $wikilib->getDumpUrl() );
 }
 if (isset($_REQUEST["createtag"])) {
 
