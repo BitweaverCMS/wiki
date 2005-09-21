@@ -1,7 +1,5 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.17 2005/08/26 20:27:19 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.18 2005/09/21 21:45:06 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
-
-{assign var=serviceEditTpls value=$gLibertySystem->getServiceValues('content_edit_tpl')}
 
 <div class="edit wiki">
 	<div class="header">
@@ -118,10 +116,6 @@
 							</div>
 						{/if}
 
-						{if $serviceEditTpls.access_control }
-							{include file=$serviceEditTpls.access_control"}
-						{/if}
-
 						{if $gBitUser->hasPermission( 'bit_p_minor' )}
 							<div class="row">
 								{formlabel label="Minor save" for="isminor"}
@@ -131,6 +125,8 @@
 								{/forminput}
 							</div>
 						{/if}
+
+						{include file="bitpackage:liberty/edit_service_minis_inc.tpl}
 
 						<div class="row submit">
 							<input type="submit" name="fCancel" value="{tr}Cancel{/tr}" />&nbsp;
@@ -144,13 +140,7 @@
 					{/legend}
 				{/jstab}
 
-				{if $serviceEditTpls.categorization }
-					{jstab title="Categorize"}
-						{legend legend="Categorize"}
-							{include file=$serviceEditTpls.categorization"}
-						{/legend}
-					{/jstab}
-				{/if}
+				{include file="bitpackage:liberty/edit_service_tabs_inc.tpl}
 
 				{if $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) && $show_attachments eq 'y' && $gBitUser->hasPermission('bit_p_content_attachments')}
 					{jstab title="Attachments"}
@@ -160,7 +150,7 @@
 					{/jstab}
 				{/if}
 
-				{if $gBitSystem->isFeatureActive( 'feature_wiki_icache' ) or $serviceEditTpls.menu or $wiki_spellcheck eq 'y'}
+				{if $gBitSystem->isFeatureActive( 'feature_wiki_icache' ) or $wiki_spellcheck eq 'y'}
 					{jstab title="Advanced"}
 						{legend legend="Advanced Options"}
 							{if $wiki_spellcheck eq 'y'}
@@ -192,12 +182,6 @@
 								</div>
 							{/if}
 						{/legend}
-
-						{if $serviceEditTpls.menu}
-							{legend legend="Insert Link in Menu"}
-								{include file=$serviceEditTpls.menu"}
-							{/legend}
-						{/if}
 					{/jstab}
 				{/if}
 
