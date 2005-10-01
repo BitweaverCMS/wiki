@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.28 2005/09/18 16:36:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.29 2005/10/01 13:08:03 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.28 $ $Date: 2005/09/18 16:36:51 $ $Author: spiderr $
+ * @version $Revision: 1.2.2.29 $ $Date: 2005/10/01 13:08:03 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.28 2005/09/18 16:36:51 spiderr Exp $
+ * $Id: BitPage.php,v 1.2.2.29 2005/10/01 13:08:03 spiderr Exp $
  */
 
 /**
@@ -234,8 +234,7 @@ class BitPage extends LibertyAttachable {
 		// check for name issues, first truncate length if too long
 		if( empty( $pParamHash['title'] ) ) {
 			$this->mErrors['title'] = 'You must specify a name';
-			}
-		elseif( !empty( $pParamHash['title']) || !empty($this->mPageName))  {
+		} elseif( !empty( $pParamHash['title']) || !empty($this->mPageName))  {
 			if( empty( $this->mPageId ) ) {
 				if( empty( $pParamHash['title'] ) ) {
 					$this->mErrors['title'] = 'You must enter a name for this page.';
@@ -243,8 +242,7 @@ class BitPage extends LibertyAttachable {
 					$pParamHash['content_store']['title'] = substr( $pParamHash['title'], 0, 160 );
 					if ($gBitSystem->isFeatureActive( 'feature_allow_dup_wiki_page_names')) {
 						# silently allow pages with duplicate names to be created
-					}
-					else {
+					} else {
 						if( $this->pageExists( $pParamHash['title'] ) ) {
 							$this->mErrors['title'] = 'Page "'.$pParamHash['title'].'" already exists. Please choose a different name.';
 						}
@@ -254,8 +252,7 @@ class BitPage extends LibertyAttachable {
 				$pParamHash['content_store']['title'] = ( isset( $pParamHash['title'] ) ) ? substr( $pParamHash['title'], 0, 160 ) : $this->mPageName;
 				if ($gBitSystem->isFeatureActive( 'feature_allow_dup_wiki_page_names')) {
 					# silently allow pages with duplicate names to be created
-				}
-				else {
+				} else {
 					if( $gBitUser->hasPermission( 'bit_p_rename' )
 					&& (isset( $this->mInfo['title'] )
 					&& ($pParamHash['title'] != $this->mInfo['title'])) ) {
