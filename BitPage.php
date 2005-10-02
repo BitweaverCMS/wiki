@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.29 2005/10/01 13:08:03 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.30 2005/10/02 03:58:24 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.29 $ $Date: 2005/10/01 13:08:03 $ $Author: spiderr $
+ * @version $Revision: 1.2.2.30 $ $Date: 2005/10/02 03:58:24 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.29 2005/10/01 13:08:03 spiderr Exp $
+ * $Id: BitPage.php,v 1.2.2.30 2005/10/02 03:58:24 jht001 Exp $
  */
 
 /**
@@ -179,7 +179,6 @@ class BitPage extends LibertyAttachable {
 						$gBitSmarty->assign('mail_pagedata', $this->mInfo['data']);
 						$mail_data = $gBitSmarty->fetch('bitpackage:wiki/user_watch_wiki_page_changed.tpl');
 						$email_to = $not['email'];
-						$email_to = 'jht@lj.net';
 						@mail($email_to, tra('Wiki page'). ' ' . $this->mInfo['title'] . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
 					}
 				}
