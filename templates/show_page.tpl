@@ -7,7 +7,7 @@
 {assign var=serviceViewTpls value=$gLibertySystem->getServiceValues('content_view_tpl')}
 
 {if $serviceNavTpls.categorization}
-	{include file=$serviceNavTpls.categorization"}
+	{include file=$serviceNavTpls.categorization}
 {/if}
 
 <div class="display wiki {$pageInfo.title|lower|regex_replace:"[\s|_]":""}">
@@ -60,5 +60,5 @@
 {/if}
 
 {if $serviceViewTpls.categorization}
-	{include file=$serviceViewTpls.categorization"}
+	{include file=$serviceViewTpls.categorization}
 {/if}
