@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/Attic/mod_breadcrumb.tpl,v 1.1.1.1.2.2 2005/08/05 23:01:00 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/Attic/mod_breadcrumb.tpl,v 1.1.1.1.2.3 2005/10/03 02:28:38 spiderr Exp $ *}
 {strip}
 {if $gBitSystem->isFeatureActive( 'feature_featuredLinks' )}
 	{bitmodule title="$moduleTitle" name="breadcrumb"}
@@ -16,7 +16,7 @@
 			{sectionelse}
 				<li></li>
 			{/section}
-		</ul>
+		</ol>
 	{/bitmodule}
 {/if}
 {/strip}
