@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.30 2005/10/02 03:58:24 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.31 2005/10/09 05:20:10 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.30 $ $Date: 2005/10/02 03:58:24 $ $Author: jht001 $
+ * @version $Revision: 1.2.2.31 $ $Date: 2005/10/09 05:20:10 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.30 2005/10/02 03:58:24 jht001 Exp $
+ * $Id: BitPage.php,v 1.2.2.31 2005/10/09 05:20:10 spiderr Exp $
  */
 
 /**
@@ -1018,6 +1018,9 @@ class WikiLib extends BitPage {
 		}
 		return $ret;
 	}
+/*
+
+	DEPRECTATED - spider 2005-10-07
 
 	function get_user_pages( $pUserId, $max, $who='user_id') {
 		if( $pUserId ) {
@@ -1035,7 +1038,7 @@ class WikiLib extends BitPage {
 			return $ret;
 		}
 	}
-
+*/
 	// This function calculates the page_ranks for the tiki_pages
 	// it can be used to compute the most relevant pages
 	// according to the number of links they have
@@ -1191,7 +1194,7 @@ class WikiLib extends BitPage {
 		return $aux;
     }
 
-	// *********  File attachments functions for the wiki ********** //
+	/* *********  UNUSED FUNCTIONS - will delete soon - spiderr 2005-10-07 **********
 	function add_wiki_attachment_hit($id) {
 		global $count_admin_pvs, $user;
 		if ($count_admin_pvs == 'y' || !$gBitUser->isAdmin()) {
@@ -1225,27 +1228,6 @@ class WikiLib extends BitPage {
 		$query = "insert into `".BIT_DB_PREFIX."tiki_wiki_attachments` (`page`,`filename`,`filesize`,`filetype`,`data`,`created`,`downloads`,`user_id`,`comment`,`path`) values(?,?,?,?,?,?,0,?,?,?)";
 		$result = $this->mDb->query($query,array($page,$name, (int) $size,$type,$data, (int) $now, $pUserId, $comment,$fhash));
 	}
-
-
-
-	function wiki_link_structure() {
-		$query = "select `title` from `".BIT_DB_PREFIX."tiki_pages` order by ".$this->mDb->convert_sortmode("title_asc");
-		$result = $this->mDb->query($query);
-		while ($res = $result->fetchRow()) {
-			print ($res["title"] . " ");
-			$page = $res["title"];
-			$query2 = "select `to_page` from `".BIT_DB_PREFIX."tiki_links` where `from_page`=?";
-			$result2 = $this->mDb->query($query2, array( $page ) );
-			$pages = array();
-			while ($res2 = $result2->fetchRow()) {
-			if (($res2["to_page"] <> $res["title"]) && (!in_array($res2["to_page"], $pages))) {
-				$pages[] = $res2["to_page"];
-				print ($res2["to_page"] . " ");
-			}
-			}
-			print ("\n");
-		}
-    }
     function list_plugins() {
 		$files = array();
 		if (is_dir(PLUGINS_DIR)) {
@@ -1277,41 +1259,6 @@ class WikiLib extends BitPage {
 		$func_name = str_replace(".php", "", $file). '_extended_help';
 		return function_exists($func_name) ? $func_name() : "";
 	}
-
-	/*shared*/
-	function list_received_pages($offset, $maxRecords, $sort_mode = 'title_asc', $find) {
-		$bindvars = array();
-		if ($find) {
-		$findesc = '%'.strtoupper( $find ).'%';
-		$mid = " where (UPPER(`pagename`) like ? or UPPER(`data`) like ?)";
-		$bindvbars[] = $findesc;
-		$bindvbars[] = $findesc;
-		} else {
-		$mid = "";
-		}
-
-		$query = "select * from `".BIT_DB_PREFIX."tiki_received_pages` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_received_pages` $mid";
-		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->mDb->getOne($query_cant,$bindvars);
-		$ret = array();
-
-		while ($res = $result->fetchRow()) {
-		if ($this->pageExists($res["title"])) {
-			$res["exists"] = 'y';
-		} else {
-			$res["exists"] = 'n';
-		}
-
-		$ret[] = $res;
-		}
-
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		return $retval;
-	}
-/*
 	// Removes all the versions of a page and the page itself
 	function remove_all_versions( $pPageId, $comment = '') {
 		if( is_numeric( $pPageId ) ) {
@@ -1349,6 +1296,60 @@ class WikiLib extends BitPage {
 		}
 	}
 */
+
+
+	function wiki_link_structure() {
+		$query = "select `title` from `".BIT_DB_PREFIX."tiki_pages` order by ".$this->mDb->convert_sortmode("title_asc");
+		$result = $this->mDb->query($query);
+		while ($res = $result->fetchRow()) {
+			print ($res["title"] . " ");
+			$page = $res["title"];
+			$query2 = "select `to_page` from `".BIT_DB_PREFIX."tiki_links` where `from_page`=?";
+			$result2 = $this->mDb->query($query2, array( $page ) );
+			$pages = array();
+			while ($res2 = $result2->fetchRow()) {
+			if (($res2["to_page"] <> $res["title"]) && (!in_array($res2["to_page"], $pages))) {
+				$pages[] = $res2["to_page"];
+				print ($res2["to_page"] . " ");
+			}
+			}
+			print ("\n");
+		}
+    }
+	/*shared*/
+	function list_received_pages($offset, $maxRecords, $sort_mode = 'title_asc', $find) {
+		$bindvars = array();
+		if ($find) {
+		$findesc = '%'.strtoupper( $find ).'%';
+		$mid = " where (UPPER(`pagename`) like ? or UPPER(`data`) like ?)";
+		$bindvbars[] = $findesc;
+		$bindvbars[] = $findesc;
+		} else {
+		$mid = "";
+		}
+
+		$query = "select * from `".BIT_DB_PREFIX."tiki_received_pages` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
+		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_received_pages` $mid";
+		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+		$cant = $this->mDb->getOne($query_cant,$bindvars);
+		$ret = array();
+
+		while ($res = $result->fetchRow()) {
+		if ($this->pageExists($res["title"])) {
+			$res["exists"] = 'y';
+		} else {
+			$res["exists"] = 'n';
+		}
+
+		$ret[] = $res;
+		}
+
+		$retval = array();
+		$retval["data"] = $ret;
+		$retval["cant"] = $cant;
+		return $retval;
+	}
+
 	function getDumpFile() {
 		global $gBitSystem;
 		return( $this->getStoragePath( $gBitSystem->getPreference( 'bitdomain' ), NULL, WIKI_PKG_NAME ).'dump.tar' );
