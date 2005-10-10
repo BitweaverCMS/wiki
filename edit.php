@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.21 2005/08/17 23:42:54 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.22 2005/10/10 10:02:45 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.21 2005/08/17 23:42:54 squareing Exp $
+ * $Id: edit.php,v 1.1.1.1.2.22 2005/10/10 10:02:45 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -246,6 +246,7 @@ if(isset($gContent->mInfo['wiki_cache']) && $gContent->mInfo['wiki_cache']!=0) {
 if( !empty( $gContent->mInfo ) ) {
 	$formInfo = $gContent->mInfo;
 	$formInfo['edit'] = !empty( $gContent->mInfo['data'] ) ? $gContent->mInfo['data'] : '';
+	$formInfo['comment'] = '';
 }
 
 $gBitSmarty->assign('footnote', '');
