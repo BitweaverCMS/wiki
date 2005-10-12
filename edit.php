@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.8 2005/08/24 21:00:26 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.9 2005/10/12 15:14:13 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.8 2005/08/24 21:00:26 squareing Exp $
+ * $Id: edit.php,v 1.9 2005/10/12 15:14:13 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -39,6 +39,7 @@ if ( (!empty($_REQUEST['page']) && $_REQUEST['page'] == 'SandBox') ||
 	$gContent->mInfo['title'] = 'SandBox';
 	$sandbox = TRUE;
 }
+
 
 if( $sandbox && !$gBitSystem->isFeatureActive( 'feature_sandbox' ) ) {
 	$gBitSystem->fatalError( "The SandBox is disabled" );
@@ -246,6 +247,7 @@ if(isset($gContent->mInfo['wiki_cache']) && $gContent->mInfo['wiki_cache']!=0) {
 if( !empty( $gContent->mInfo ) ) {
 	$formInfo = $gContent->mInfo;
 	$formInfo['edit'] = !empty( $gContent->mInfo['data'] ) ? $gContent->mInfo['data'] : '';
+	$formInfo['comment'] = '';
 }
 
 $gBitSmarty->assign('footnote', '');
@@ -288,6 +290,14 @@ if(isset($_REQUEST["description"])) {
 if (isset($_REQUEST["comment"])) {
 	$formInfo['comment'] = $_REQUEST["comment"];
 }
+else {
+	# comment needs to get set to null when page is updated and user didn't supply a comment
+	# but if comment is a null value then the comment column in the page table row is not updated
+	# and retains its now incorrect value
+	# so set to blank
+	# there must be a better way to fix this...
+	$formInfo['comment'] = ' ';
+	}
 
 $cat_obj_type = BITPAGE_CONTENT_TYPE_GUID;
 

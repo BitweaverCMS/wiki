@@ -1,13 +1,15 @@
-<div class="display wiki">
+<div class="listing wiki">
 	<div class="header">
-		<h1>{tr}Pages like{/tr} <a href="{$pageInfo.display_url}">{$pageInfo.title}</a></h1>
+		<h1>{tr}Pages like{/tr}: <a href="{$pageInfo.display_url}">{$pageInfo.title}</a></h1>
 	</div>
 
 	<div class="body">
-		{section name=back loop=$likepages}
-			<a href="{$pageInfo.display_url}">{$likepages[back]}</a><br />
-		{sectionelse}
-			<div class="norecords">{tr}No pages found{/tr}</div>
-		{/section}
+		<ul>
+			{section name=back loop=$likepages}
+				<li class="{cycle values='odd,even'}"><a href="{$pageInfo.display_url}">{$likepages[back]}</a></li>
+			{sectionelse}
+				<li class="norecords">{tr}No pages found{/tr}</li>
+			{/section}
+		</ul>
 	</div>
 </div>

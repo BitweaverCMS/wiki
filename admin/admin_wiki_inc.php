@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.5 2005/08/24 21:00:26 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.6 2005/10/12 15:14:13 spiderr Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -155,7 +155,6 @@ if (isset($_REQUEST["wikifeatures"])) {
 	$gBitSystem->storePreference('wiki_cache', $_REQUEST["wiki_cache"]);
 	$gBitSmarty->assign('wiki_cache', $_REQUEST["wiki_cache"]);
 
-	$gBitSmarty->assign('dump_url', $wikilib->getStorageUrl( "dump/$bitdomain" ));
 	/*
 	  if(isset($_REQUEST["feature_wiki_notepad"]) && $_REQUEST["feature_wiki_notepad"]=="y") {
 		$gBitSystem->storePreference("feature_wiki_notepad",'y');
@@ -200,6 +199,10 @@ $formWikiInOut = array(
 	"feature_wiki_description" => array(
 		'label' => 'Description',
 		'note' => 'Display a brief page description just below the title of the page.',
+	),
+	"hide_wiki_date" => array(
+		'label' => 'Hide Date',
+		'note' => 'Hide the date and creation / modification information.',
 	),
 	"feature_wiki_footnotes" => array(
 		'label' => 'Footnotes',
@@ -286,6 +289,9 @@ if (isset($_REQUEST["dump"])) {
 	include (UTIL_PKG_PATH."tar.class.php");
 	error_reporting (E_ERROR | E_WARNING);
 	$wikilib->dumpPages();
+}
+if( file_exists( $wikilib->getDumpFile() ) ) {
+	$gBitSmarty->assign('dumpUrl', $wikilib->getDumpUrl() );
 }
 if (isset($_REQUEST["createtag"])) {
 

@@ -145,8 +145,8 @@
 			{legend legend="Dumps and Export"}
 				<div class="row">
 					{forminput}
+						{if $dumpUrl}<a href="{$dumpUrl}">{tr}Download last dump{/tr}</a><br />{/if}
 						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=wiki&amp;dump=1">{tr}Generate dump{/tr}</a><br />
-						<a href="{$smarty.const.BIT_ROOT_URL}dump/{$bitdomain}new.tar">{tr}Download last dump{/tr}</a><br />
 						<a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php">{tr}Export wiki pages{/tr}</a>
 					{/forminput}
 				</div>
@@ -156,7 +156,7 @@
 				<div class="row">
 					{formlabel label="Create a tag" for="tagname"}
 					{forminput}
-						<input maxlength="20" size="20" type="text" name="tagname" id="tagname" /> 
+						<input maxlength="20" size="20" type="text" name="tagname" id="tagname" />
 						<input type="submit" name="createtag" value="{tr}create{/tr}" />
 						{formhelp note="Creating a wiki tag sets sort of 'bookmark' that can be used to restore the wiki to a specific state."}
 					{/forminput}
@@ -171,7 +171,7 @@
 							{sectionelse}
 								<option>{tr}No records found{/tr}</option>
 							{/section}
-						</select> 
+						</select>
 						<input type="submit" name="removetag" value="{tr}remove{/tr}" />
 						{formhelp note="Here you can remove any obsolete wiki tags. This will <strong>not</strong> harm your wiki pages in any way."}
 					{/forminput}
@@ -186,7 +186,7 @@
 							{sectionelse}
 								<option>{tr}No records found{/tr}</option>
 							{/section}
-						</select> 
+						</select>
 						<input type="submit" name="restoretag" value="{tr}restore{/tr}" />
 						{formhelp note="This will restore the entire wiki to when you created this tag. All the entries since then will be lost."}
 					{/forminput}
