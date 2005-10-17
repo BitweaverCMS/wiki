@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.31 2005/10/09 05:20:10 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.32 2005/10/17 08:28:39 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.31 $ $Date: 2005/10/09 05:20:10 $ $Author: spiderr $
+ * @version $Revision: 1.2.2.32 $ $Date: 2005/10/17 08:28:39 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.31 2005/10/09 05:20:10 spiderr Exp $
+ * $Id: BitPage.php,v 1.2.2.32 2005/10/17 08:28:39 jht001 Exp $
  */
 
 /**
@@ -604,6 +604,10 @@ class BitPage extends LibertyAttachable {
 				// if rollback can destroy the current page version, it can be used
 				// maliciously
 				$res['force_history'] = 1;
+				// JHT 2005-10-16_22:21:10
+				// title must be set or store fails
+				// we use current page name
+				$res['title'] = $this->mPageName;
 				if( $this->store( $res ) ) {
 					$action = "Changed actual version to $pVersion";
 					$t = $gBitSystem->getUTCTime();
