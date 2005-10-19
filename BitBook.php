@@ -1,9 +1,9 @@
-<?
+<?php
 /**
  * BitBook class
  *
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.1.1.1.2.1 $
+ * @version  $Revision: 1.1.1.1.2.2 $
  * @package  wiki
  */
 // +----------------------------------------------------------------------+
@@ -18,7 +18,7 @@
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
 //
-// $Id: BitBook.php,v 1.1.1.1.2.1 2005/06/27 10:08:43 lsces Exp $
+// $Id: BitBook.php,v 1.1.1.1.2.2 2005/10/19 21:13:46 squareing Exp $
 
 
 /**
@@ -34,7 +34,7 @@ define('BITBOOK_CONTENT_TYPE_GUID', 'bitbook' );
  *
  * @abstract
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.1.1.1.2.1 $
+ * @version  $Revision: 1.1.1.1.2.2 $
  * @package  wiki
  * @subpackage BitBook
  */
