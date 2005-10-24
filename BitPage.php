@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.32 2005/10/17 08:28:39 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.33 2005/10/24 08:47:18 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.32 $ $Date: 2005/10/17 08:28:39 $ $Author: jht001 $
+ * @version $Revision: 1.2.2.33 $ $Date: 2005/10/24 08:47:18 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.32 2005/10/17 08:28:39 jht001 Exp $
+ * $Id: BitPage.php,v 1.2.2.33 2005/10/24 08:47:18 squareing Exp $
  */
 
 /**
@@ -798,16 +798,38 @@ class BitPage extends LibertyAttachable {
 			$bindVars = array_merge($bindVars, array( $pUserId ));
 		}
 
-		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name ,`page_id`, `hits`, `page_size` as `len`, tc.`title`, tc.`format_guid`, tp.`description`, tc.`last_modified`, tc.`created`, `ip`, `comment`, `version`, `flag`, tp.`content_id`
-				  FROM `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`), `".BIT_DB_PREFIX."users_users` uue, `".BIT_DB_PREFIX."users_users` uuc
-				  WHERE tc.`content_type_guid`=? AND tc.`modifier_user_id`=uue.`user_id` AND tc.`user_id`=uuc.`user_id` $mid
-				  ORDER BY ".$this->mDb->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from
-			`".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc
-			ON (tc.`content_id` = tp.`content_id`)
+		$query = "SELECT
+			uue.`login` AS modifier_user,
+			uue.`real_name` AS modifier_real_name,
+			uuc.`login` AS creator_user,
+			uuc.`real_name` AS creator_real_name,
+			`page_id`,
+			`hits`,
+			`page_size` as `len`,
+			tc.`title`,
+			tc.`format_guid`,
+			tp.`description`,
+			tc.`last_modified`,
+			tc.`created`,
+			`ip`,
+			`comment`,
+			`version`,
+			`flag`,
+			tp.`content_id`
+				FROM `".BIT_DB_PREFIX."tiki_pages` tp
+				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`),
+				`".BIT_DB_PREFIX."users_users` uue,
+				`".BIT_DB_PREFIX."users_users` uuc
+				  WHERE tc.`content_type_guid`=?
+				  AND tc.`modifier_user_id`=uue.`user_id`
+				  AND tc.`user_id`=uuc.`user_id` $mid
+				  ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
+		$query_cant = "SELECT COUNT(*)
+			FROM `".BIT_DB_PREFIX."tiki_pages` tp
+			INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
 			WHERE tc.`content_type_guid`=? $mid";
 
-		if ($pOrphansOnly) {
+		if( $pOrphansOnly ) {
 			$query = "SELECT
 			uue.`login` AS modifier_user,
 			uue.`real_name` AS modifier_real_name,
@@ -827,37 +849,33 @@ class BitPage extends LibertyAttachable {
 			`flag`,
 			tp.`content_id`
 			FROM `".BIT_DB_PREFIX."tiki_pages` tp
-				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` tl ON tp.`content_id` =  tl.`to_content_id`
-				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc
-				ON (tc.`content_id` = tp.`content_id`),
+				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` tl ON (tp.`content_id` = tl.`to_content_id`)
+				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`),
 				`".BIT_DB_PREFIX."users_users` uue,
 				`".BIT_DB_PREFIX."users_users` uuc
 				  WHERE tc.`content_type_guid`=?
 				  AND tc.`modifier_user_id`=uue.`user_id`
 				  AND tc.`user_id`=uuc.`user_id` $mid
 				  AND tl.`to_content_id` is NULL
-				  ORDER BY "
-			. $this->mDb->convert_sortmode($sort_mode);
-			$query_cant = "select count(*)
-			FROM `".BIT_DB_PREFIX."tiki_pages` tp
-				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` tl on tp.`content_id` =  tl.`to_content_id`
-				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc
-				ON (tc.`content_id` = tp.`content_id`)
-				  WHERE tc.`content_type_guid`=?
-				  AND tl.`to_content_id` is NULL";
+				  ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
+			$query_cant = "SELECT COUNT(*)
+				FROM `".BIT_DB_PREFIX."tiki_pages` tp
+				LEFT JOIN `".BIT_DB_PREFIX."tiki_links` tl ON (tp.`content_id` = tl.`to_content_id`)
+				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
+				  WHERE tc.`content_type_guid`=? $mid
+				  AND tl.`to_content_id` IS NULL";
 		}
-
 
 		// If sort mode is versions then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 		// If sort mode is links then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 		// If sort mode is backlinks then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 
 		$this->mDb->StartTrans();
-		$result = $this->mDb->query($query,$bindVars,$maxRecords,$offset);
-		$cant = $this->mDb->getOne($query_cant,$bindVars);
+		$result = $this->mDb->query( $query, $bindVars, $maxRecords, $offset );
+		$cant = $this->mDb->getOne( $query_cant, $bindVars );
 		$this->mDb->CompleteTrans();
 		$ret = array();
-		while ($res = $result->fetchRow()) {
+		while( $res = $result->fetchRow() ) {
 			$aux = array();
 			$aux = $res;
 			$aux['creator'] = (isset( $res['creator_real_name'] ) ? $res['creator_real_name'] : $res['creator_user'] );
