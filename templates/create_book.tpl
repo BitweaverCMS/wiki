@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/create_book.tpl,v 1.1 2005/06/19 06:12:45 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/create_book.tpl,v 1.1.1.1.2.1 2005/10/29 11:46:47 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -21,7 +21,7 @@
 			<div class="row">
 				{formlabel label="Table of Contents<br />(optional)" for="chapters"}
 				{forminput}
-					<textarea rows="10" cols="60" name="chapters" id="chapters"></textarea>
+					<textarea rows="10" cols="50" name="chapters" id="chapters"></textarea>
 					{formhelp note="To enter the table of contents manually, you can add WikiPage names on separate lines. Pages that don't exist will be added automagically and you can edit them later."}
 				{/forminput}
 			</div>

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.19 2005/09/21 22:51:11 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.20 2005/10/29 11:46:47 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="edit wiki">
@@ -92,7 +92,7 @@
 
 						<div class="row">
 							{forminput}
-								<textarea id="{$textarea_id}" name="edit" rows="{$rows|default:20}" cols="{$cols|default:80}">{$pageInfo.data|escape:html}</textarea>
+								<textarea id="{$textarea_id}" name="edit" rows="{$rows|default:20}" cols="{$cols|default:50}">{$pageInfo.data|escape:html}</textarea>
 							{/forminput}
 						</div>
 
@@ -100,7 +100,7 @@
 							<div class="row">
 								{formlabel label="Footnotes" for="footnote"}
 								{forminput}
-									<textarea name="footnote" id="footnote" rows="8" cols="80">{$footnote|escape}</textarea>
+									<textarea name="footnote" id="footnote" rows="8" cols="50">{$footnote|escape}</textarea>
 									{formhelp note=""}
 								{/forminput}
 							</div>
