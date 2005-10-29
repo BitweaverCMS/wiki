@@ -22,7 +22,7 @@
 </td></tr>
 <tr><td>
 {tr}Data{/tr}:</td><td>
-<textarea name="data" rows="10" cols="60">{$data|escape}</textarea>
+<textarea name="data" rows="10" cols="50">{$data|escape}</textarea>
 </td></tr>
 <tr><td>
 {tr}Comment{/tr}:</td><td>

@@ -3,101 +3,101 @@
 $tables = array(
 
 'tiki_actionlog' => "
-  page_id I4 NOTNULL,
-  user_id I4 NOTNULL,
-  action C(255) NOTNULL,
-  last_modified I8,
-  title C(160),
-  ip C(15),
-  comment C(200)
+	page_id I4 NOTNULL,
+	user_id I4 NOTNULL,
+	action C(255) NOTNULL,
+	last_modified I8,
+	title C(160),
+	ip C(15),
+	comment C(200)
 ",
 
 'tiki_copyrights' => "
-  copyright_id I4 AUTO PRIMARY,
-  page_id I4 NOTNULL,
-  title C(200),
-  year I8,
-  authors C(200),
-  copyright_order I8,
-  user_id I4
+	copyright_id I4 AUTO PRIMARY,
+	page_id I4 NOTNULL,
+	title C(200),
+	year I8,
+	authors C(200),
+	copyright_order I8,
+	user_id I4
 ",
 
 'tiki_history' => "
-  page_id I4 PRIMARY,
-  version I4 PRIMARY,
-  last_modified I8 NOTNULL,
-  format_guid C(16) NOTNULL,
-  description C(200),
-  user_id C(40),
-  ip C(15),
-  comment C(200),
-  data X
-  CONSTRAINTS ', CONSTRAINT `tiki_history_page_ref` FOREIGN KEY (`page_id`) REFERENCES `".BIT_DB_PREFIX."tiki_pages`( `page_id` )'
+	page_id I4 PRIMARY,
+	version I4 PRIMARY,
+	last_modified I8 NOTNULL,
+	format_guid C(16) NOTNULL,
+	description C(200),
+	user_id C(40),
+	ip C(15),
+	comment C(200),
+	data X
+	CONSTRAINTS ', CONSTRAINT `tiki_history_page_ref` FOREIGN KEY (`page_id`) REFERENCES `".BIT_DB_PREFIX."tiki_pages`( `page_id` )'
 ",
 
 'tiki_links' => "
-  from_content_id I4 PRIMARY,
-  to_content_id I4 PRIMARY
+	from_content_id I4 PRIMARY,
+	to_content_id I4 PRIMARY
 ",
 
 'tiki_page_footnotes' => "
-  user_id C(40) PRIMARY,
-  page_id I4 NOTNULL,
-  data X
+	user_id C(40) PRIMARY,
+	page_id I4 NOTNULL,
+	data X
 ",
 
 'tiki_pages' => "
-  page_id I4 PRIMARY,
-  content_id I4 NOTNULL,
-  version I4 NOTNULL,
-  page_size I4 DEFAULT 0,
-  description C(200),
-  comment C(200),
-  flag C(1),
-  points I4,
-  votes I4,
-  cache X,
-  wiki_cache I8,
-  cache_timestamp I8,
-  page_rank N(4,3)
+	page_id I4 PRIMARY,
+	content_id I4 NOTNULL,
+	version I4 NOTNULL,
+	page_size I4 DEFAULT 0,
+	description C(200),
+	comment C(200),
+	flag C(1),
+	points I4,
+	votes I4,
+	cache X,
+	wiki_cache I8,
+	cache_timestamp I8,
+	page_rank N(4,3)
 ",
 
 'tiki_received_pages' => "
-  received_page_id I4 AUTO PRIMARY,
-  title C(160) NOTNULL,
-  data X,
-  description C(200),
-  comment C(200),
-  received_from_site C(200),
-  received_from_user C(200),
-  received_date I8
+	received_page_id I4 AUTO PRIMARY,
+	title C(160) NOTNULL,
+	data X,
+	description C(200),
+	comment C(200),
+	received_from_site C(200),
+	received_from_user C(200),
+	received_date I8
 ",
 
 'tiki_tags' => "
-  page_id I4 PRIMARY,
-  tag_name C(80) PRIMARY,
-  title C(160),
-  user_id I4 NOTNULL,
-  hits I4,
-  description C(200),
-  data X,
-  last_modified I8,
-  comment C(200),
-  version I4 NOTNULL,
-  ip C(15),
-  flag C(1)
+	page_id I4 PRIMARY,
+	tag_name C(80) PRIMARY,
+	title C(160),
+	user_id I4 NOTNULL,
+	hits I4,
+	description C(200),
+	data X,
+	last_modified I8,
+	comment C(200),
+	version I4 NOTNULL,
+	ip C(15),
+	flag C(1)
 ",
 
 'tiki_semaphores' => "
-  sem_name C(250) PRIMARY,
-  user_id I4 NOTNULL,
-  created I8
+	sem_name C(250) PRIMARY,
+	user_id I4 NOTNULL,
+	created I8
 ",
 
 'tiki_extwiki' => "
-  extwiki_id I4 AUTO PRIMARY,
-  name C(200) NOTNULL,
-  extwiki C(255)
+	extwiki_id I4 AUTO PRIMARY,
+	name C(200) NOTNULL,
+	extwiki C(255)
 "
 
 );
