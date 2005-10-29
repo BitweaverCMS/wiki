@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.33 2005/10/24 08:47:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.34 2005/10/29 09:53:06 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.33 $ $Date: 2005/10/24 08:47:18 $ $Author: squareing $
+ * @version $Revision: 1.2.2.34 $ $Date: 2005/10/29 09:53:06 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.33 2005/10/24 08:47:18 squareing Exp $
+ * $Id: BitPage.php,v 1.2.2.34 2005/10/29 09:53:06 squareing Exp $
  */
 
 /**
@@ -756,7 +756,7 @@ class BitPage extends LibertyAttachable {
    	 *	This can take some time to calculate, and so should not normally be enabled
    	 * @param pOrphansOnly If Set list only unattached pages ( ones not used in other content )
 	 */
-	function getList($offset = 0, $maxRecords = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE ) {
+	function getList($offset = 0, $maxRecords = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE, $pGetData=FALSE ) {
 		global $gBitSystem;
 		if ($sort_mode == 'size_desc') {
 			$sort_mode = 'page_size_desc';
@@ -798,6 +798,12 @@ class BitPage extends LibertyAttachable {
 			$bindVars = array_merge($bindVars, array( $pUserId ));
 		}
 
+		if( $pGetData ) {
+			$get_data = 'tc.`data`,';
+		} else {
+			$get_data = '';
+		}
+
 		$query = "SELECT
 			uue.`login` AS modifier_user,
 			uue.`real_name` AS modifier_real_name,
@@ -811,6 +817,7 @@ class BitPage extends LibertyAttachable {
 			tp.`description`,
 			tc.`last_modified`,
 			tc.`created`,
+			$get_data
 			`ip`,
 			`comment`,
 			`version`,
@@ -843,6 +850,7 @@ class BitPage extends LibertyAttachable {
 			tp.`description`,
 			tc.`last_modified`,
 			tc.`created`,
+			$get_data
 			`ip`,
 			`comment`,
 			`version`,
