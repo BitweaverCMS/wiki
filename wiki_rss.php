@@ -1,4 +1,13 @@
 <?php
+/**
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.1.2.3 2005/10/30 21:03:50 lsces Exp $
+ * @package wiki
+ * @subpackage functions
+ */
+
+/**
+ * Initialization
+ */
 require_once( "../bit_setup_inc.php" );
 require_once( RSS_PKG_PATH."rss_inc.php" );
 require_once( WIKI_PKG_PATH."BitPage.php" );
