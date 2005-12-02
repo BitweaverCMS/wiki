@@ -1,10 +1,10 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/print.tpl,v 1.1 2005/06/19 06:12:45 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/print.tpl,v 1.1.1.1.2.1 2005/12/02 11:31:23 squareing Exp $ *}
 
 {* Index we display a wiki page here *}
 
 {include file="bitpackage:kernel/header.tpl"}
 
-<div id="tikiprint">
+<div id="bitprint">
   {include file=$mid}
 </div>
 
