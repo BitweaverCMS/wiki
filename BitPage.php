@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.34 2005/10/29 09:53:06 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.35 2005/12/09 07:07:05 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.34 $ $Date: 2005/10/29 09:53:06 $ $Author: squareing $
+ * @version $Revision: 1.2.2.35 $ $Date: 2005/12/09 07:07:05 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.34 2005/10/29 09:53:06 squareing Exp $
+ * $Id: BitPage.php,v 1.2.2.35 2005/12/09 07:07:05 spiderr Exp $
  */
 
 /**
@@ -1409,7 +1409,7 @@ class WikiLib extends BitPage {
 		while ($res = $result->fetchRow()) {
 			$title = $res["title"] . '.html';
 
-			$dat = $this->parseData($res["data"]);
+			$dat = $this->parseData($res["data"], $this);
 			// Now change index.php?page=foo to foo.html
 			// and index.php to HomePage.html
 			$dat = preg_replace("/index.php\?page=([^\'\"\$]+)/", "$1.html", $dat);
