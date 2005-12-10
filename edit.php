@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.23 2005/10/10 21:11:40 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.24 2005/12/10 18:39:18 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.23 2005/10/10 21:11:40 jht001 Exp $
+ * $Id: edit.php,v 1.1.1.1.2.24 2005/12/10 18:39:18 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -461,12 +461,14 @@ if( empty( $formInfo ) ) {
 }
 
 // make original page title available for template
-$formInfo['original_title'] = (!empty($gContent->mInfo['title'])) ? $gContent->mInfo['title']  : "" ;
+$formInfo['original_title'] = ( !empty( $gContent->mInfo['title'] ) ) ? $gContent->mInfo['title']  : "" ;
 
 $gBitSmarty->assign_by_ref( 'pageInfo', $formInfo );
 $gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 $gBitSmarty->assign( (!empty( $_REQUEST['tab'] ) ? $_REQUEST['tab'] : 'body').'TabSelect', 'tdefault' );
 $gBitSmarty->assign('show_page_bar', 'y');
 
+// load the ajax library for this page
+$gBitSmarty->assign( 'loadAjax', TRUE );
 $gBitSystem->display( 'bitpackage:wiki/edit_page.tpl', 'Edit: '.$gContent->getTitle() );
 ?>
