@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.37 2005/12/09 10:41:44 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.38 2005/12/10 02:39:04 wolff_borg Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.37 $ $Date: 2005/12/09 10:41:44 $ $Author: wolff_borg $
+ * @version $Revision: 1.2.2.38 $ $Date: 2005/12/10 02:39:04 $ $Author: wolff_borg $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.37 2005/12/09 10:41:44 wolff_borg Exp $
+ * $Id: BitPage.php,v 1.2.2.38 2005/12/10 02:39:04 wolff_borg Exp $
  */
 
 /**
@@ -484,8 +484,7 @@ class BitPage extends LibertyAttachable {
 					$desc = tra( 'Multiple pages with this name' );
 					$ret = "<a title=\"$desc\" href=\"" .  BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
 				} else {
-					$desc = $exists['description'];
-					$desc = empty($desc) ? $exists['title'] : $exists['description'];
+					$desc = !isset($exists['description']) ? $exists['title'] : $exists['description'];
 					$ret = "<a title=\"$desc\" href=\"" . BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
 				}
 			} else {
