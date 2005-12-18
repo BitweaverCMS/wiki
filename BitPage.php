@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.12 2005/10/29 17:57:43 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.13 2005/12/18 22:33:42 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.12 $ $Date: 2005/10/29 17:57:43 $ $Author: squareing $
+ * @version $Revision: 1.13 $ $Date: 2005/12/18 22:33:42 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.12 2005/10/29 17:57:43 squareing Exp $
+ * $Id: BitPage.php,v 1.13 2005/12/18 22:33:42 squareing Exp $
  */
 
 /**
@@ -272,7 +272,7 @@ class BitPage extends LibertyAttachable {
 */		}
 
 		if( empty( $pParamHash['comment'] ) ) {
-			unset( $pParamHash['comment'] );
+			$pParamHash['page_store']['comment'] = NULL;
 		} else {
 			$pParamHash['page_store']['comment'] = substr( $pParamHash['comment'], 0, 200 );
 		}
@@ -473,23 +473,19 @@ class BitPage extends LibertyAttachable {
 			if( is_array( $pExistsHash ) ) {
 				if( is_array( current( $pExistsHash ) ) ) {
 					$exists = $pExistsHash[0];
+					$multiple = true;
 				} else {
 					$exists = $pExistsHash;
+					$multiple = false;
 				}
 
 				// we have a multi-demensional array (likely returned from LibertyContent::pageExists() ) - meaning we potentially have multiple pages with the same name
-				if( count( $pExistsHash ) > 1 ) {
+				if( $multiple ) {
 					$desc = tra( 'Multiple pages with this name' );
 					$ret = "<a title=\"$desc\" href=\"" .  BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
-				} elseif( count( $pExistsHash ) == 1 ) {
-					$desc = $exists['description'];
-					$ret = "<a title=\"$desc\" href=\"" . BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
 				} else {
-					if( $gBitUser->hasPermission( 'bit_p_edit' ) ) {
-						$ret = "<a href=\"".WIKI_PKG_URL."edit.php?page=" . urlencode( $exists['title'] ). "\" class=\"create\">$pPageName</a>";
-					} else {
-						$ret = $pPageName;
-					}
+					$desc = !isset($exists['description']) ? $exists['title'] : $exists['description'];
+					$ret = "<a title=\"$desc\" href=\"" . BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
 				}
 			} else {
 				if( $gBitUser->hasPermission( 'bit_p_edit' ) ) {
