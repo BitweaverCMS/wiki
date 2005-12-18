@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.38 2005/12/10 02:39:04 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.39 2005/12/18 17:55:36 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.38 $ $Date: 2005/12/10 02:39:04 $ $Author: wolff_borg $
+ * @version $Revision: 1.2.2.39 $ $Date: 2005/12/18 17:55:36 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.38 2005/12/10 02:39:04 wolff_borg Exp $
+ * $Id: BitPage.php,v 1.2.2.39 2005/12/18 17:55:36 squareing Exp $
  */
 
 /**
@@ -272,7 +272,7 @@ class BitPage extends LibertyAttachable {
 */		}
 
 		if( empty( $pParamHash['comment'] ) ) {
-			unset( $pParamHash['comment'] );
+			$pParamHash['page_store']['comment'] = NULL;
 		} else {
 			$pParamHash['page_store']['comment'] = substr( $pParamHash['comment'], 0, 200 );
 		}
