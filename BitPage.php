@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.43 2005/12/20 21:20:02 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.44 2005/12/20 21:43:48 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.43 $ $Date: 2005/12/20 21:20:02 $ $Author: squareing $
+ * @version $Revision: 1.2.2.44 $ $Date: 2005/12/20 21:43:48 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.43 2005/12/20 21:20:02 squareing Exp $
+ * $Id: BitPage.php,v 1.2.2.44 2005/12/20 21:43:48 spiderr Exp $
  */
 
 /**
@@ -43,8 +43,8 @@ class BitPage extends LibertyAttachable {
 				'handler_file' => 'BitPage.php',
 				'maintainer_url' => 'http://www.bitweaver.org'
 			) );
-		$this->mPageId = $pPageId;
-		$this->mContentId = $pContentId;
+		$this->mPageId = (int)$pPageId;
+		$this->mContentId = (int)$pContentId;
 		$this->mContentTypeGuid = BITPAGE_CONTENT_TYPE_GUID;
 	}
 
