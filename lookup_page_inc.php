@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.1.1.1.2.3 2005/08/14 11:08:26 wolff_borg Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.1.1.1.2.4 2005/12/20 19:59:39 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.1.1.1.2.3 2005/08/14 11:08:26 wolff_borg Exp $
+ * $Id: lookup_page_inc.php,v 1.1.1.1.2.4 2005/12/20 19:59:39 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -23,7 +23,7 @@
 
 	// if we already have a gContent, we assume someone else created it for us, and has properly loaded everything up.
 	if( empty( $gContent ) || !is_object( $gContent ) ) {
-		$gContent = new BitPage( !empty( $_REQUEST['page_id'] ) ? $_REQUEST['page_id'] : NULL, !empty( $_REQUEST['content_id'] ) ? $_REQUEST['content_id'] : NULL );
+		$gContent = new BitPage( @BitBase::verifyId( $_REQUEST['page_id'] ) ? $_REQUEST['page_id'] : NULL, @BitBase::verifyId( $_REQUEST['content_id'] ) ? $_REQUEST['content_id'] : NULL );
 
 		$loadPage = (!empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL);
 		if( empty( $gContent->mPageId ) && empty( $gContent->mContentId )  ) {

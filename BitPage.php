@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.41 2005/12/20 18:06:09 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.42 2005/12/20 19:58:07 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.41 $ $Date: 2005/12/20 18:06:09 $ $Author: squareing $
+ * @version $Revision: 1.2.2.42 $ $Date: 2005/12/20 19:58:07 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.41 2005/12/20 18:06:09 squareing Exp $
+ * $Id: BitPage.php,v 1.2.2.42 2005/12/20 19:58:07 squareing Exp $
  */
 
 /**
@@ -51,7 +51,7 @@ class BitPage extends LibertyAttachable {
 	function findByPageName( $pPageName, $pUserId=NULL ) {
 		$userWhere = '';
 		$bindVars = array( $pPageName, $this->mContentTypeGuid );
-		if( !empty( $pUserId ) ) {
+		if( @BitBase::verifyId( $pUserId ) ) {
 			$userWhere = " AND tc.`user_id`=?";
 			array_push( $bindVars, $pUserId );
 		}
@@ -62,12 +62,12 @@ class BitPage extends LibertyAttachable {
 	function load() {
 		if( $this->verifyId( $this->mPageId ) || $this->verifyId( $this->mContentId ) ) {
 			global $gBitSystem;
-			$lookupColumn = !empty( $this->mPageId ) ? 'page_id' : 'content_id';
+			$lookupColumn = @BitBase::verifyId( $this->mPageId ) ? 'page_id' : 'content_id';
 
 			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
 			$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
-			array_push( $bindVars, $lookupId = !empty( $this->mPageId )? $this->mPageId : $this->mContentId );
+			array_push( $bindVars, $lookupId = @BitBase::verifyId( $this->mPageId )? $this->mPageId : $this->mContentId );
 			$query = "select tp.*, tc.*,
 					  uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
 					  uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name $selectSql
@@ -545,7 +545,7 @@ class BitPage extends LibertyAttachable {
 		if( $this->isValid() ) {
 			global $gBitSystem;
 			$versionSql = '';
-			if( !empty( $pUserId ) ) {
+			if( @BitBase::verifyId( $pUserId ) ) {
 				$bindVars = array( $pUserId );
 				$whereSql = ' th.`user_id`=? ';
 			} else {
@@ -789,7 +789,7 @@ class BitPage extends LibertyAttachable {
 		} elseif ( is_string($find) and $find != '' ) { // or a string
 			$mid = " AND UPPER(tc.`title`) LIKE ? ";
 			$bindVars = array_merge($bindVars,array('%' . strtoupper( $find ) . '%'));
-		} elseif( !empty( $pUserId ) ) { // or a string
+		} elseif( @BitBase::verifyId( $pUserId ) ) { // or a string
 			$mid = " AND tc.`user_id` = ? ";
 			$bindVars = array_merge($bindVars, array( $pUserId ));
 		}
