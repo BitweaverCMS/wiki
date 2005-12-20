@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.40 2005/12/20 18:02:39 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.41 2005/12/20 18:06:09 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.40 $ $Date: 2005/12/20 18:02:39 $ $Author: squareing $
+ * @version $Revision: 1.2.2.41 $ $Date: 2005/12/20 18:06:09 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.40 2005/12/20 18:02:39 squareing Exp $
+ * $Id: BitPage.php,v 1.2.2.41 2005/12/20 18:06:09 squareing Exp $
  */
 
 /**
@@ -62,7 +62,7 @@ class BitPage extends LibertyAttachable {
 	function load() {
 		if( $this->verifyId( $this->mPageId ) || $this->verifyId( $this->mContentId ) ) {
 			global $gBitSystem;
-			$lookupColumn = empty( $this->mPageId ) ? 'page_id' : 'content_id';
+			$lookupColumn = !empty( $this->mPageId ) ? 'page_id' : 'content_id';
 
 			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
 			$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
