@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.39 2005/12/18 17:55:36 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.40 2005/12/20 18:02:39 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.39 $ $Date: 2005/12/18 17:55:36 $ $Author: squareing $
+ * @version $Revision: 1.2.2.40 $ $Date: 2005/12/20 18:02:39 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.39 2005/12/18 17:55:36 squareing Exp $
+ * $Id: BitPage.php,v 1.2.2.40 2005/12/20 18:02:39 squareing Exp $
  */
 
 /**
@@ -62,7 +62,7 @@ class BitPage extends LibertyAttachable {
 	function load() {
 		if( $this->verifyId( $this->mPageId ) || $this->verifyId( $this->mContentId ) ) {
 			global $gBitSystem;
-			$lookupColumn = !empty( $this->mPageId )? 'page_id' : 'content_id';
+			$lookupColumn = empty( $this->mPageId ) ? 'page_id' : 'content_id';
 
 			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
 			$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
@@ -118,7 +118,7 @@ class BitPage extends LibertyAttachable {
 			$pParamHash['page_store']['page_size'] = !empty( $pParamHash['edit'] ) ? strlen( $pParamHash['edit'] ) : 0;
 
 			$table = BIT_DB_PREFIX."tiki_pages";
-            if( $this->mPageId ) {
+			if( $this->verifyId( $this->mPageId ) ) {
 				$this->invalidateCache();
 				if( !empty( $pParamHash['force_history'] ) || ( empty( $pParamHash['minor'] ) && !empty( $this->mInfo['version'] ) && $pParamHash['field_changed'] )) {
 					if( $this->mPageName != 'SandBox' && empty( $pParamHash['has_no_history'] ) ) {
@@ -134,7 +134,7 @@ class BitPage extends LibertyAttachable {
 
 			} else {
 				$pParamHash['page_store']['content_id'] = $pParamHash['content_id'];
-				if( isset( $pParamHash['page_id'] ) && is_numeric( $pParamHash['page_id'] ) ) {
+				if( $this->verifyId( $pParamHash['page_id'] ) ) {
 					// if pParamHash['page_id'] is set, some is requesting a particular page_id. Use with caution!
 					$pParamHash['page_store']['page_id'] = $pParamHash['page_id'];
 				} else {
@@ -203,11 +203,11 @@ class BitPage extends LibertyAttachable {
 		global $gBitUser, $user, $bit_p_rename, $gBitSystem;
 
 		// make sure we're all loaded up of we have a mPageId
-		if( $this->mPageId && empty( $this->mInfo ) ) {
+		if( $this->verifyId( $this->mPageId ) && empty( $this->mInfo ) ) {
 			$this->load();
 		}
 
-		if( !empty( $this->mInfo['content_id'] ) ) {
+		if( $this->verifyId( $this->mInfo['content_id'] ) ) {
 			$pParamHash['content_id'] = $this->mInfo['content_id'];
 		}
 
@@ -216,7 +216,7 @@ class BitPage extends LibertyAttachable {
 			$pParamHash['content_type_guid'] = $this->mContentTypeGuid;
 		}
 
-		if( !empty( $pParamHash['content_id'] ) ) {
+		if( $this->verifyId( $pParamHash['content_id'] ) ) {
 			$pParamHash['page_store']['content_id'] = $pParamHash['content_id'];
 		}
 
@@ -234,7 +234,7 @@ class BitPage extends LibertyAttachable {
 		if( empty( $pParamHash['title'] ) ) {
 			$this->mErrors['title'] = 'You must specify a name';
 		} elseif( !empty( $pParamHash['title']) || !empty($this->mPageName))  {
-			if( empty( $this->mPageId ) ) {
+			if( !$this->verifyId( $this->mPageId ) ) {
 				if( empty( $pParamHash['title'] ) ) {
 					$this->mErrors['title'] = 'You must enter a name for this page.';
 				} else {
@@ -284,7 +284,7 @@ class BitPage extends LibertyAttachable {
 			}
 		}
 
-		if( empty( $this->mPageId ) ) {
+		if( !$this->verifyId( $this->mPageId ) ) {
 			$pParamHash['page_store']['version'] = 1;
 		} else {
 			$pParamHash['page_store']['version'] = $this->mInfo['version'] + 1;
@@ -322,13 +322,13 @@ class BitPage extends LibertyAttachable {
 	}
 
 	function isValid() {
-		return( !empty( $this->mPageId ) );
+		return( $this->verifyId( $this->mPageId ) );
 	}
 
 
     function isLocked() {
 		$ret = FALSE;
-		if( $this->mPageId ) {
+		if( $this->verifyId( $this->mPageId ) ) {
 			if( empty( $this->mInfo ) ) {
 				$this->load();
 			}
@@ -338,7 +338,7 @@ class BitPage extends LibertyAttachable {
     }
 
 	function setLock( $pLock, $pModUserId=NULL ) {
-		if( $this->mPageId ) {
+		if( $this->verifyId( $this->mPageId ) ) {
 			$bindVars = array();
 			$userSql = '';
 			if( $pModUserId ) {
@@ -366,7 +366,7 @@ class BitPage extends LibertyAttachable {
 	 * version in the tiki_history then the last version becomes the actual version
 	 */
 	function removeLastVersion( $comment = '' ) {
-		if( $this->mPageId ) {
+		if( $this->verifyId( $this->mPageId ) ) {
 			global $gBitSystem;
 			$this->invalidateCache();
 			$query = "select * from `".BIT_DB_PREFIX."tiki_history` where `page_id`=? order by ".$this->mDb->convert_sortmode("last_modified_desc");
@@ -391,7 +391,7 @@ class BitPage extends LibertyAttachable {
 	 *  Store footnote
 	 */
 	function storeFootnote($pUserId, $data) {
-		if( $this->mPageId ) {
+		if( $this->verifyId( $this->mPageId ) ) {
 			$querydel = "delete from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?";
 			$this->mDb->query( $querydel, array( $pUserId, $this->mPageId ) );
 			$query = "insert into `".BIT_DB_PREFIX."tiki_page_footnotes`(`user_id`,`page_id`,`data`) values(?,?,?)";
@@ -403,7 +403,7 @@ class BitPage extends LibertyAttachable {
 	 *  Delete footnote
 	 */
 	function expungeFootnote( $pUserId ) {
-		if( $this->mPageId ) {
+		if( $this->verifyId( $this->mPageId ) ) {
 			$query = "delete from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?";
 			$this->mDb->query($query,array($pUserId,$this->mPageId));
 		}
@@ -413,7 +413,7 @@ class BitPage extends LibertyAttachable {
 	 *  Get footnote
 	 */
 	function getFootnote( $pUserId ) {
-		if( $this->mPageId ) {
+		if( $this->verifyId( $this->mPageId ) ) {
 			$count = $this->mDb->getOne( "select count(*) from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?", array( $pUserId, $this->mPageId ) );
 			if( $count ) {
 				return $this->mDb->getOne("select `data` from `".BIT_DB_PREFIX."tiki_page_footnotes` where `user_id`=? and `page_id`=?",array( $pUserId, $this->mPageId ) );
@@ -698,7 +698,7 @@ class BitPage extends LibertyAttachable {
    	 * @param cache Data to be cached
 	 */
 	function setPageCache( $cache ) {
-		if( $this->mPageId ) {
+		if( $this->verifyId( $this->mPageId ) ) {
 			$query = "update `".BIT_DB_PREFIX."tiki_pages` set `wiki_cache`=? where `page_id`=?";
 			$this->mDb->query( $query, array( $cache, $this->mPageId ) );
 		}
@@ -709,7 +709,7 @@ class BitPage extends LibertyAttachable {
    	 * @param page ? Not used
 	 */
 	function get_cache_info($page) {
-		if( $this->mPageId ) {
+		if( $this->verifyId( $this->mPageId ) ) {
 			$query = "select `cache`,`cache_timestamp` from `".BIT_DB_PREFIX."tiki_pages` where `page_id`=?";
 			$result = $this->mDb->query( $query, array( $this->mPageId ) );
 			return $result->fetchRow();
@@ -721,7 +721,7 @@ class BitPage extends LibertyAttachable {
    	 * @param data Data to be cached
 	 */
 	function updateCache( $data ) {
-		if( $this->mPageId ) {
+		if( $this->verifyId( $this->mPageId ) ) {
 			global $gBitSystem;
 			$now = $gBitSystem->getUTCTime();
 			$query = "update `".BIT_DB_PREFIX."tiki_pages` set `cache`=?, `cache_timestamp`=$now where `page_id`=?";
@@ -735,7 +735,7 @@ class BitPage extends LibertyAttachable {
    	 * Cache will be updated next time the page is accessed
 	 */
 	function invalidateCache() {
-		if( $this->mPageId ) {
+		if( $this->verifyId( $this->mPageId ) ) {
 			$query = "UPDATE `".BIT_DB_PREFIX."tiki_pages` SET `cache_timestamp`=? WHERE `page_id`=?";
 			$this->mDb->query( $query, array( 0, $this->mPageId ) );
 		}
@@ -1287,7 +1287,7 @@ class WikiLib extends BitPage {
 	}
 	// Removes all the versions of a page and the page itself
 	function remove_all_versions( $pPageId, $comment = '') {
-		if( is_numeric( $pPageId ) ) {
+		if( $this->verifyId( $pPageId ) ) {
 			global $gBitUser,$gBitSystem;
 			$this->mDb->StartTrans();
 

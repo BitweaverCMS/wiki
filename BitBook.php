@@ -3,7 +3,7 @@
  * BitBook class
  *
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.1.1.1.2.2 $
+ * @version  $Revision: 1.1.1.1.2.3 $
  * @package  wiki
  */
 // +----------------------------------------------------------------------+
@@ -18,7 +18,7 @@
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
 //
-// $Id: BitBook.php,v 1.1.1.1.2.2 2005/10/19 21:13:46 squareing Exp $
+// $Id: BitBook.php,v 1.1.1.1.2.3 2005/12/20 18:02:39 squareing Exp $
 
 
 /**
@@ -34,25 +34,23 @@ define('BITBOOK_CONTENT_TYPE_GUID', 'bitbook' );
  *
  * @abstract
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.1.1.1.2.2 $
+ * @version  $Revision: 1.1.1.1.2.3 $
  * @package  wiki
  * @subpackage BitBook
  */
 class BitBook extends BitPage {
-
-
-    function BitBook( $pPageId=NULL, $pContentId=NULL ) {
-        $this->registerContentType( BITBOOK_CONTENT_TYPE_GUID, array(
-                'content_type_guid' => BITBOOK_CONTENT_TYPE_GUID,
-                'content_description' => 'Wiki Book',
-                'handler_class' => 'BitBook',
-                'handler_package' => 'wiki',
-                'handler_file' => 'BitBook.php',
-                'maintainer_url' => 'http://www.bitweaver.org'
-            ) );
-        BitPage::BitPage( $pPageId, $pContentId );
+	 function BitBook( $pPageId=NULL, $pContentId=NULL ) {
+		$this->registerContentType( BITBOOK_CONTENT_TYPE_GUID, array(
+			'content_type_guid' => BITBOOK_CONTENT_TYPE_GUID,
+			'content_description' => 'Wiki Book',
+			'handler_class' => 'BitBook',
+			'handler_package' => 'wiki',
+			'handler_file' => 'BitBook.php',
+			'maintainer_url' => 'http://www.bitweaver.org'
+		) );
+		BitPage::BitPage( $pPageId, $pContentId );
 		$this->mContentTypeGuid = BITBOOK_CONTENT_TYPE_GUID;
-    }
+	 }
 
 	function getList( &$pListHash ) {
 		$struct = new LibertyStructure();
