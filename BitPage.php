@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.42 2005/12/20 19:58:07 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.43 2005/12/20 21:20:02 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.42 $ $Date: 2005/12/20 19:58:07 $ $Author: squareing $
+ * @version $Revision: 1.2.2.43 $ $Date: 2005/12/20 21:20:02 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.42 2005/12/20 19:58:07 squareing Exp $
+ * $Id: BitPage.php,v 1.2.2.43 2005/12/20 21:20:02 squareing Exp $
  */
 
 /**
@@ -134,7 +134,7 @@ class BitPage extends LibertyAttachable {
 
 			} else {
 				$pParamHash['page_store']['content_id'] = $pParamHash['content_id'];
-				if( $this->verifyId( $pParamHash['page_id'] ) ) {
+				if( @$this->verifyId( $pParamHash['page_id'] ) ) {
 					// if pParamHash['page_id'] is set, some is requesting a particular page_id. Use with caution!
 					$pParamHash['page_store']['page_id'] = $pParamHash['page_id'];
 				} else {
@@ -216,7 +216,7 @@ class BitPage extends LibertyAttachable {
 			$pParamHash['content_type_guid'] = $this->mContentTypeGuid;
 		}
 
-		if( $this->verifyId( $pParamHash['content_id'] ) ) {
+		if( @$this->verifyId( $pParamHash['content_id'] ) ) {
 			$pParamHash['page_store']['content_id'] = $pParamHash['content_id'];
 		}
 
