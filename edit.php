@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.26 2005/12/20 21:20:02 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.27 2005/12/22 20:59:52 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.26 2005/12/20 21:20:02 squareing Exp $
+ * $Id: edit.php,v 1.1.1.1.2.27 2005/12/22 20:59:52 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -184,7 +184,7 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 		// Need to parse HTML?
 		if( $parsehtml == 'y' ) {
 			// Read compiled( serialized ) grammar
-			$grammarfile = HTML_PKG_PATH.'htmlgrammar.cmp';
+			$grammarfile = UTIL_PKG_PATH.'htmlparser/htmlgrammar.cmp';
 			if( !$fp = @fopen( $grammarfile,'r' ) ) {
 				$gBitSystem->fatalError( 'Can\'t parse remote HTML page' );
 			}
