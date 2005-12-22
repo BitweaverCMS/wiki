@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.1.1.1.2.4 2005/07/26 15:50:32 drewslater Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.1.1.1.2.5 2005/12/22 11:27:50 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: list_pages.php,v 1.1.1.1.2.4 2005/07/26 15:50:32 drewslater Exp $
+ * $Id: list_pages.php,v 1.1.1.1.2.5 2005/12/22 11:27:50 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -87,9 +87,6 @@ if (isset($_REQUEST['page'])) {
 $gBitSmarty->assign_by_ref('offset', $offset);
 if (isset($_REQUEST["find"])) {
 	$find = $_REQUEST["find"];
-// If we leave $_REQUEST["find"] set, it also seems to affect other places
-// like the shoutbox.
-	$_REQUEST["find"] = "";
 } else {
 	$find = '';
 }
