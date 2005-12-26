@@ -21,8 +21,10 @@ $modParams = $modlib->get_module_params('bitpackage:wiki/center_wiki_page.tpl', 
 $gBitSmarty->assign_by_ref('modParams', $modParams);
 
 // Load up the correct wiki page
-$_REQUEST['page'] = (!empty($modParams['page']) ? $modParams['page'] : 'HomePage');
-include_once(WIKI_PKG_PATH."lookup_page_inc.php");
+$_REQUEST['page_id'] = ( !empty( $modParams['page_id'] ) ? $modParams['page_id'] : NULL );
+$_REQUEST['content_id'] = ( !empty( $modParams['content_id'] ) ? $modParams['content_id'] : NULL );
+$_REQUEST['page'] = ( !empty( $modParams['page'] ) ? $modParams['page'] : 'HomePage' );
+include_once( WIKI_PKG_PATH."lookup_page_inc.php" );
 
 // Parse the wiki page data (This should be done by BitPage->load shouldn't it?)
 $gContent->mInfo['parsed_data'] = $gContent->parseData();

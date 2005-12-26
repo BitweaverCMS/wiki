@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.10 2005/12/18 22:33:43 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.11 2005/12/26 12:27:43 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.10 2005/12/18 22:33:43 squareing Exp $
+ * $Id: edit.php,v 1.11 2005/12/26 12:27:43 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -184,7 +184,7 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 		// Need to parse HTML?
 		if( $parsehtml == 'y' ) {
 			// Read compiled( serialized ) grammar
-			$grammarfile = HTML_PKG_PATH.'htmlgrammar.cmp';
+			$grammarfile = UTIL_PKG_PATH.'htmlparser/htmlgrammar.cmp';
 			if( !$fp = @fopen( $grammarfile,'r' ) ) {
 				$gBitSystem->fatalError( 'Can\'t parse remote HTML page' );
 			}
@@ -323,7 +323,7 @@ function parse_output( &$obj, &$parts,$i ) {
 // Pro
 // Check if the page has changed
 if( isset( $_REQUEST["fCancel"] ) ) {
-	if( !empty( $gContent->mContentId ) ) {
+	if( @BitBase::verifyId( $gContent->mContentId ) ) {
 		header( "Location: ".$gContent->getDisplayUrl() );
 	} else {
 		header( "Location: ".WIKI_PKG_URL );
