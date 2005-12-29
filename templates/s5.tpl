@@ -9,10 +9,10 @@
 	<meta name="presdate" content="20041007" />
 	<meta name="author" content="{displayname user_id=`$gContent->mInfo.user_id` nolink='yes'}" />
 	<meta name="company" content="" />
-	<link rel="stylesheet" href="{$smarty.const.THEMES_PKG_URL}s5/i18n/slides.css" type="text/css" media="projection" id="slideProj" />
-	<link rel="stylesheet" href="{$smarty.const.THEMES_PKG_URL}s5/i18n/print.css" type="text/css" media="print" id="slidePrint" />
-	<link rel="stylesheet" href="{$smarty.const.THEMES_PKG_URL}s5/opera.css" type="text/css" media="projection" id="operaFix" />
-	<script src="{$smarty.const.THEMES_PKG_URL}s5/slides.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="{$smarty.const.UTIL_PKG_URL}s5/i18n/slides.css" type="text/css" media="projection" id="slideProj" />
+	<link rel="stylesheet" href="{$smarty.const.UTIL_PKG_URL}s5/i18n/print.css" type="text/css" media="print" id="slidePrint" />
+	<link rel="stylesheet" href="{$smarty.const.UTIL_PKG_URL}s5/opera.css" type="text/css" media="projection" id="operaFix" />
+	<script src="{$smarty.const.UTIL_PKG_URL}s5/slides.js" type="text/javascript"></script>
 </head>
 <body>
 	<div class="layout">
