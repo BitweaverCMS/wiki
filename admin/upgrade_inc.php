@@ -33,8 +33,6 @@ array( 'RENAMECOLUMN' => array(
 	'tiki_history' => array( '`lastModif`' => '`last_modified` I8'	),
 	'tiki_copyrights' => array( '`copyrightId`' => '`copyright_id` I4 AUTO' ),
 	'tiki_extwiki' => array( '`extwikiId`' => '`extwiki_id` I4 AUTO' ),
-	'tiki_semaphores' => array( '`semName`' => '`sem_name` C(250)',
-							   '`timestamp`' => '`created` I8' ),
 	'tiki_tags' => array(	'`tagName`' => '`tag_name` C(80)',
 							'`pageName`' => '`page_name` C(160)',
 							'`lastModif`' => '`last_modified` I8' ),
@@ -63,9 +61,6 @@ array( 'ALTER' => array(
 	'tiki_links' => array(
 		'from_content_id' => array( '`from_content_id`', 'I4' ), // , 'NOTNULL' ),
 		'to_content_id' => array( '`to_content_id`', 'I4' ), // , 'NOTNULL' ),
-	),
-	'tiki_semaphores' => array(
-		'user_id' => array( '`user_id`', 'I4' ), // , 'NOTNULL' ),
 	),
 )),
 )),
@@ -122,8 +117,6 @@ array( 'QUERY' =>
 	"UPDATE `".BIT_DB_PREFIX."tiki_history` SET `user_id`=(SELECT `user_id` FROM `".BIT_DB_PREFIX."users_users` WHERE `".BIT_DB_PREFIX."users_users`.`login`=`".BIT_DB_PREFIX."tiki_history`.`user`)",
 	"UPDATE `".BIT_DB_PREFIX."tiki_history` SET `user_id`=".ROOT_USER_ID." WHERE `user_id` IS NULL",
 	"UPDATE `".BIT_DB_PREFIX."tiki_structures` SET `content_id`= (SELECT `content_id` FROM `".BIT_DB_PREFIX."tiki_pages` tp WHERE tp.`page_id`=`".BIT_DB_PREFIX."tiki_structures`.`page_id`)",
-	"UPDATE `".BIT_DB_PREFIX."tiki_semaphores` SET `user_id`=(SELECT `user_id` FROM `".BIT_DB_PREFIX."users_users` WHERE `".BIT_DB_PREFIX."users_users`.`login`=`".BIT_DB_PREFIX."tiki_semaphores`.`user`)",
-	"UPDATE `".BIT_DB_PREFIX."tiki_semaphores` SET `user_id`=(SELECT `user_id` FROM `".BIT_DB_PREFIX."users_users` WHERE `".BIT_DB_PREFIX."users_users`.`login`=`".BIT_DB_PREFIX."tiki_semaphores`.`user`)",
 	"UPDATE `".BIT_DB_PREFIX."tiki_copyrights` SET `page_id`= (SELECT `page_id` FROM `".BIT_DB_PREFIX."tiki_pages` tp WHERE tp.`pageName`=`".BIT_DB_PREFIX."tiki_copyrights`.`page`)",
 	"UPDATE `".BIT_DB_PREFIX."tiki_copyrights` SET `user_id`=(SELECT `user_id` FROM `".BIT_DB_PREFIX."users_users` WHERE `".BIT_DB_PREFIX."users_users`.`login`=`".BIT_DB_PREFIX."tiki_copyrights`.`userName`)",
 	"UPDATE `".BIT_DB_PREFIX."tiki_copyrights` SET `user_id`=".ROOT_USER_ID." WHERE `user_id` IS NULL",
@@ -234,7 +227,6 @@ array( 'PHP' => '
 array( 'DATADICT' => array(
 	array( 'DROPCOLUMN' => array(
 		'tiki_pages' => array( '`lastModif`', '`data`', '`pageName`', '`ip`', '`hits`', '`user`', '`creator`' ),
-		'tiki_semaphores' => array( '`user`' ),
 		'tiki_copyrights' => array( '`userName`', '`page`' ),
 		'tiki_page_footnotes' => array( '`user`', '`pageName`' ),
 		'tiki_actionlog' => array( '`user`', '`pageName`' ),
@@ -260,7 +252,6 @@ array( 'CREATEINDEX' => array(
 		'tiki_links_to_idx' => array( 'tiki_links', '`to_content_id`', array() ),
 		'tiki_links_ft_idx' => array( 'tiki_links', '`from_content_id`,`to_content_id`', array( 'UNIQUE' ) ),
 		'tiki_pages_content_idx' => array( 'tiki_pages', '`content_id`', array( 'UNIQUE' ) ),
-		'tiki_sema_user_idx' => array( 'tiki_semaphores', '`user_id`', array() ),
 	)),
 )),
 
