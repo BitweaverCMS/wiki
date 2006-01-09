@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.1.1.1.2.4 2005/12/20 19:59:39 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.1.1.1.2.5 2006/01/09 04:40:10 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.1.1.1.2.4 2005/12/20 19:59:39 squareing Exp $
+ * $Id: lookup_page_inc.php,v 1.1.1.1.2.5 2006/01/09 04:40:10 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -22,7 +22,7 @@
 	include_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
 
 	// if we already have a gContent, we assume someone else created it for us, and has properly loaded everything up.
-	if( empty( $gContent ) || !is_object( $gContent ) ) {
+// 	if( empty( $gContent ) || !is_object( $gContent ) || !$gContent->isValid() ) {
 		$gContent = new BitPage( @BitBase::verifyId( $_REQUEST['page_id'] ) ? $_REQUEST['page_id'] : NULL, @BitBase::verifyId( $_REQUEST['content_id'] ) ? $_REQUEST['content_id'] : NULL );
 
 		$loadPage = (!empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL);
@@ -46,9 +46,7 @@
 		if( !$gContent->load() && $loadPage ) {
 			$gContent->mInfo['title'] = $loadPage;
 		}
-		$gBitSmarty->assign_by_ref( 'gContent', $gContent );
-		$gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
-	}
+// 	}
 
 	// we weren't passed a structure, but maybe this page belongs to one. let's check...
 	if( empty( $gStructure ) ) {
@@ -132,5 +130,8 @@
 			$beingedited = 'n';
 		}
 		$gBitSmarty->assign('beingEdited', $beingedited);
-	}
+ 	}
+	$gBitSmarty->clear_assign( 'gContent' );
+	$gBitSmarty->assign( 'gContent', $gContent );
+	$gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
 ?>

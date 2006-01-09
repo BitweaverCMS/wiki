@@ -34,7 +34,7 @@
 {/if}
 
 <div class="display wikipage">
-	{if $modParams.display_title}
+	{if $gContent->mInfo.title}
 		<div class="header"><h1>{$gContent->mInfo.title}</h1></div>
 	{/if}
 	<div class="content">

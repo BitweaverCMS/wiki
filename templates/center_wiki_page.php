@@ -1,5 +1,5 @@
 <?php
-global $modlib, $gQueryUserId, $gBitSmarty, $fHomepage;
+global $modlib, $gQueryUserId, $gBitSmarty, $fHomepage, $gBitSystem, $module_params, $module_rows;
 
 $errors = array();
 $success = array();
@@ -17,13 +17,16 @@ if (!empty($_REQUEST['fSubmitCenterWikiPageSettings'])) {
 }
 
 // Get Parameters Assigned to this module
-$modParams = $modlib->get_module_params('bitpackage:wiki/center_wiki_page.tpl', $gQueryUserId);
-$gBitSmarty->assign_by_ref('modParams', $modParams);
+if( !empty( $gQueryUserId ) ) {
+	$module_params = $modlib->get_module_params('bitpackage:wiki/center_wiki_page.tpl', $gQueryUserId);
+} else {
+}
+$gBitSmarty->assign_by_ref('modParams', $module_params);
 
 // Load up the correct wiki page
-$_REQUEST['page_id'] = ( !empty( $modParams['page_id'] ) ? $modParams['page_id'] : NULL );
-$_REQUEST['content_id'] = ( !empty( $modParams['content_id'] ) ? $modParams['content_id'] : NULL );
-$_REQUEST['page'] = ( !empty( $modParams['page'] ) ? $modParams['page'] : 'HomePage' );
+$_REQUEST['page_id'] = ( !empty( $module_params['page_id'] ) ? $module_params['page_id'] : NULL );
+$_REQUEST['content_id'] = ( !empty( $module_params['content_id'] ) ? $module_params['content_id'] : NULL );
+$_REQUEST['page'] = ( !empty( $module_params['page'] ) ? $module_params['page'] : 'HomePage' );
 include_once( WIKI_PKG_PATH."lookup_page_inc.php" );
 
 // Parse the wiki page data (This should be done by BitPage->load shouldn't it?)
