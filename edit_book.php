@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.1.1.1.2.6 2005/12/20 19:59:39 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.1.1.1.2.7 2006/01/10 19:10:56 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit_book.php,v 1.1.1.1.2.6 2005/12/20 19:59:39 squareing Exp $
+ * $Id: edit_book.php,v 1.1.1.1.2.7 2006/01/10 19:10:56 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -97,6 +97,9 @@ if( isset($_REQUEST["createstructure"]) ) {
 	$_REQUEST['content_type'] = !isset( $_REQUEST['content_type'] ) ? 'bitpage' : $_REQUEST['content_type'];
 	// verify the book permission on structure load
 	$verifyStructurePermission = 'bit_p_admin_books';
+	// load the javascript dynamic tree
+	$gBitSmarty->assign( "loadDynamicTree", TRUE );
+	// set the correct display template
 	$mid = 'bitpackage:wiki/edit_book.tpl';
 	include_once( LIBERTY_PKG_PATH.'edit_structure_inc.php');
 } else {
@@ -106,5 +109,4 @@ if( isset($_REQUEST["createstructure"]) ) {
 $gBitSystem->setBrowserTitle( !empty($gStructure) ? 'Edit Wiki Book:'.$gStructure->mInfo["title"] : NULL );
 // Display the template
 $gBitSystem->display( $mid );
-
 ?>
