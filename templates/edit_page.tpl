@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.12 2005/12/05 23:56:06 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.13 2006/01/10 21:19:20 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="edit wiki">
@@ -74,7 +74,7 @@
 							<div class="row">
 								{formlabel label="Description" for="description"}
 								{forminput}
-									<input size="50" type="text" maxlength="200" name="description" id="description" value="{$pageInfo.description}" />
+									<input size="50" type="text" maxlength="200" name="description" id="description" value="{$pageInfo.description|escape:html}" />
 									{formhelp note="Brief description of the page. This is visible when you hover over a link to this page and just below the title of the wiki page."}
 								{/forminput}
 							</div>

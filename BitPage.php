@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.14 2005/12/26 12:27:43 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.15 2006/01/10 21:19:20 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.14 $ $Date: 2005/12/26 12:27:43 $ $Author: squareing $
+ * @version $Revision: 1.15 $ $Date: 2006/01/10 21:19:20 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.14 2005/12/26 12:27:43 squareing Exp $
+ * $Id: BitPage.php,v 1.15 2006/01/10 21:19:20 squareing Exp $
  */
 
 /**
@@ -473,10 +473,10 @@ class BitPage extends LibertyAttachable {
 			if( is_array( $pExistsHash ) ) {
 				if( is_array( current( $pExistsHash ) ) ) {
 					$exists = $pExistsHash[0];
-					$multiple = true;
+					$multiple = false;
 				} else {
 					$exists = $pExistsHash;
-					$multiple = false;
+					$multiple = true;
 				}
 
 				// we have a multi-demensional array (likely returned from LibertyContent::pageExists() ) - meaning we potentially have multiple pages with the same name

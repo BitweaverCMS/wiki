@@ -88,12 +88,6 @@ $tables = array(
 	flag C(1)
 ",
 
-'tiki_semaphores' => "
-	sem_name C(250) PRIMARY,
-	user_id I4 NOTNULL,
-	created I8
-",
-
 'tiki_extwiki' => "
 	extwiki_id I4 AUTO PRIMARY,
 	name C(200) NOTNULL,
