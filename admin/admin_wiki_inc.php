@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.9 2005/09/18 16:36:52 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.10 2006/01/11 19:01:47 damosoft Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -81,7 +81,7 @@ $formWikiFeatures = array(
 	),
 	"feature_allow_dup_wiki_page_names" => array(
 		'label' => 'Allow Duplicate Page Names',
-		'note' => 'Allow Wiki Pages with dupliczte page names',
+		'note' => 'Allow Wiki Pages with duplicate page names',
 	),
 	"feature_history" => array(
 		'label' => 'History',
