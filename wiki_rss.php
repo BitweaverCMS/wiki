@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.1.2.4 2005/12/26 12:02:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.1.2.5 2006/01/15 15:42:29 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
