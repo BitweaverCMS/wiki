@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.11 2006/01/11 19:04:57 damosoft Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.12 2006/01/16 22:36:09 lsces Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -66,7 +66,7 @@ $gBitSmarty->assign( 'formWikiLists',$formWikiLists );
 if (isset($_REQUEST["wikilistconf"])) {
 
 	foreach( $formWikiLists as $item => $data ) {
-		simple_set_toggle( $item );
+		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
 }
 
@@ -81,7 +81,7 @@ $formWikiFeatures = array(
 	),
 	"feature_allow_dup_wiki_page_names" => array(
 		'label' => 'Allow Duplicate Page Names',
-		'note' => 'Allow Wiki Pages with duplicate page names',
+		'note' => 'Allow Wiki Pages with dupliczte page names',
 	),
 	"feature_history" => array(
 		'label' => 'History',
@@ -141,7 +141,7 @@ $gBitSmarty->assign( 'formWikiFeatures',$formWikiFeatures );
 if (isset($_REQUEST["wikifeatures"])) {
 
 	foreach( $formWikiFeatures as $item => $data ) {
-		simple_set_toggle( $item,'wiki' );
+		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
 	if (isset($_REQUEST["feature_warn_on_edit"]) && $_REQUEST["feature_warn_on_edit"] == "y") {
 		$gBitSystem->storePreference("feature_warn_on_edit", 'y');
@@ -226,7 +226,7 @@ $gBitSmarty->assign( 'formWikiInOut',$formWikiInOut );
 if (isset($_REQUEST["wikiinout"])) {
 
 	foreach( $formWikiInOut as $item => $data ) {
-		simple_set_toggle( $item,'wiki' );
+		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
 }
 
@@ -257,7 +257,7 @@ $gBitSmarty->assign( 'formWikiBooks',$formWikiBooks );
 if (isset($_REQUEST["wikibooks"])) {
 
 	foreach( $formWikiBooks as $item => $data ) {
-		simple_set_toggle( $item,'wiki' );
+		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
 }
 
@@ -280,7 +280,7 @@ $gBitSmarty->assign( 'formWikiWatch',$formWikiWatch );
 if (isset($_REQUEST["wikiwatch"])) {
 
 	foreach( $formWikiWatch  as $item => $data ) {
-		simple_set_toggle( $item,'wiki' );
+		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
 }
 
