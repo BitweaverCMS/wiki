@@ -6,7 +6,7 @@
 
 	if($gBitSystem->isPackageActive( 'wiki' ) ) {
 		if ($gBitUser->hasPermission( 'bit_p_view' )) {
-			$gBitSystem->registerAppMenu( WIKI_PKG_DIR, 'Wiki', WIKI_PKG_URL.'index.php', 'bitpackage:wiki/menu_wiki.tpl', 'wiki');
+			$gBitSystem->registerAppMenu( WIKI_PKG_NAME, ucfirst( WIKI_PKG_DIR ), WIKI_PKG_URL.'index.php', 'bitpackage:wiki/menu_wiki.tpl', 'wiki');
 		}
 
 		$gBitSystem->registerNotifyEvent( array( "wiki_page_changes" => tra("Any wiki page is changed") ) );
