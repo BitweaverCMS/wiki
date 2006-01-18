@@ -5,7 +5,7 @@ global $gBitSystem, $gUpgradeFrom, $gUpgradeTo;
 $upgrades = array(
 
 'BONNIE' => array(
-	'CLYDE' => array(
+	'BWR1' => array(
 
 // STEP 0
 array( 'QUERY' =>
