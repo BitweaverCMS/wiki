@@ -4,8 +4,24 @@ global $gBitSystem, $gUpgradeFrom, $gUpgradeTo;
 
 $upgrades = array(
 
+'TIKIWIKI19' => array (
+	'TIKIWIKI18' => array (
+/* Sliced and diced TW 1.9 upgrade scripts that did actual schema alterations
+
+ALTER TABLE `tiki_pages`  modify  `wiki_cache` INT( 10  ) default null;
+ALTER TABLE `tiki_pages` ADD `lang` VARCHAR( 16 ) AFTER `page_size` ;
+ALTER TABLE `tiki_pages` ADD `lockedby` VARCHAR(200) default NULL;
+ALTER TABLE  `tiki_pages` DROP column `lock`;
+ALTER TABLE tiki_history ADD version_minor int(8) NOT NULL default 0 AFTER version;
+ALTER TABLE `tiki_pages` ADD `is_html` TINYINT(1) default 0;
+ALTER TABLE `tiki_pages` ADD created int(14);
+
+*/
+	)
+),
+
 'BONNIE' => array(
-	'CLYDE' => array(
+	'BWR1' => array(
 
 // STEP 0
 array( 'QUERY' =>

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.8 2006/01/17 00:23:45 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.9 2006/01/20 11:11:52 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -143,7 +143,7 @@ if (isset($_REQUEST["wikifeatures"])) {
 	foreach( $formWikiFeatures as $item => $data ) {
 		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
-	if (isset($_REQUEST["feature_warn_on_edit"]) && $_REQUEST["feature_warn_on_edit"] == "y") {
+	if (isset($_REQUEST["feature_warn_on_edit"]) && $_REQUEST["feature_warn_on_edit"][0] == "y") {
 		$gBitSystem->storePreference("feature_warn_on_edit", 'y');
 		$gBitSmarty->assign("feature_warn_on_edit", 'y');
 	} else {
