@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.45 2006/01/07 12:49:53 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.46 2006/01/20 09:55:15 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.45 $ $Date: 2006/01/07 12:49:53 $ $Author: wolff_borg $
+ * @version $Revision: 1.2.2.46 $ $Date: 2006/01/20 09:55:15 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.45 2006/01/07 12:49:53 wolff_borg Exp $
+ * $Id: BitPage.php,v 1.2.2.46 2006/01/20 09:55:15 squareing Exp $
  */
 
 /**
@@ -326,7 +326,7 @@ class BitPage extends LibertyAttachable {
 	}
 
 
-    function isLocked() {
+	function isLocked() {
 		$ret = FALSE;
 		if( $this->verifyId( $this->mPageId ) ) {
 			if( empty( $this->mInfo ) ) {
@@ -335,7 +335,7 @@ class BitPage extends LibertyAttachable {
 			$ret = (isset( $this->mInfo["flag"] ) && $this->mInfo["flag"] == 'L');
 		}
 		return( $ret );
-    }
+	}
 
 	function setLock( $pLock, $pModUserId=NULL ) {
 		if( $this->verifyId( $this->mPageId ) ) {
@@ -351,18 +351,18 @@ class BitPage extends LibertyAttachable {
 			$this->mInfo['flag'] = $pLock;
 		}
 		return true;
-    }
+	}
 
-    function lock( $pModUserId=NULL ) {
+	function lock( $pModUserId=NULL ) {
 		return( $this->setLock( 'L', $pModUserId ) );
 	}
 
-    function unlock( $pModUserId=NULL ) {
+	function unlock( $pModUserId=NULL ) {
 		return( $this->setLock( NULL, $pModUserId ) );
-    }
+	}
 
-    /**
-     * Removes last version of the page (from pages) if theres some
+	/**
+	 * Removes last version of the page (from pages) if theres some
 	 * version in the tiki_history then the last version becomes the actual version
 	 */
 	function removeLastVersion( $comment = '' ) {
@@ -421,29 +421,29 @@ class BitPage extends LibertyAttachable {
 		}
 	}
 
-    /**
-    * Generates a link to a wiki page within lists of pages
-    * @param pExistsHash the hash that was returned by LibertyContent::pageExists
-    * @return the link to display the page.
-    */
+	/**
+	* Generates a link to a wiki page within lists of pages
+	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
+	* @return the link to display the page.
+	*/
 	function getListLink( $pPageHash ) {
 		return BitPage::getDisplayUrl($pPageHash['title']);
 	}
 
 
-    /**
-    * Returns include file that will
-    * @return the fully specified path to file to be included
-    */
+	/**
+	* Returns include file that will
+	* @return the fully specified path to file to be included
+	*/
 	function getRenderFile() {
 		return WIKI_PKG_PATH."display_bitpage_inc.php";
 	}
 
-    /**
-    * Generates the URL to this wiki page
-    * @param pExistsHash the hash that was returned by LibertyContent::pageExists
-    * @return the link to display the page.
-    */
+	/**
+	* Generates the URL to this wiki page
+	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
+	* @return the link to display the page.
+	*/
 	function getDisplayUrl( $pPageName=NULL ) {
 		global $gBitSystem;
 		if( empty( $pPageName ) ) {
@@ -461,11 +461,11 @@ class BitPage extends LibertyAttachable {
 		return $baseUrl;
 	}
 
-    /**
-    * Returns HTML link to display a page if it exists, or to create if not
-    * @param pExistsHash the hash that was returned by LibertyContent::pageExists
-    * @return the link to display the page.
-    */
+	/**
+	* Returns HTML link to display a page if it exists, or to create if not
+	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
+	* @return the link to display the page.
+	*/
 	function getDisplayLink( $pPageName, $pExistsHash ) {
 		global $gBitSystem, $gBitUser;
 		$ret = $pPageName;
@@ -473,23 +473,23 @@ class BitPage extends LibertyAttachable {
 			if( is_array( $pExistsHash ) ) {
 				if( is_array( current( $pExistsHash ) ) ) {
 					$exists = $pExistsHash[0];
-					$multiple = false;
+					$multiple = TRUE;
 				} else {
 					$exists = $pExistsHash;
-					$multiple = true;
+					$multiple = FALSE;
 				}
 
 				// we have a multi-demensional array (likely returned from LibertyContent::pageExists() ) - meaning we potentially have multiple pages with the same name
 				if( $multiple ) {
 					$desc = tra( 'Multiple pages with this name' );
-					$ret = "<a title=\"$desc\" href=\"" .  BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
+					$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrl( $exists['title'] ).'">'.htmlspecialchars( $pPageName ).'</a>';
 				} else {
-					$desc = !isset($exists['description']) ? $exists['title'] : $exists['description'];
-					$ret = "<a title=\"$desc\" href=\"" . BitPage::getDisplayUrl( $exists['title'] ) . "\">$pPageName</a>";
+					$desc = empty( $exists['description'] ) ? $exists['title'] : $exists['description'];
+					$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrl( $exists['title'] ).'">'.htmlspecialchars( $pPageName ).'</a>';
 				}
 			} else {
 				if( $gBitUser->hasPermission( 'bit_p_edit' ) ) {
-					$ret = "<a href=\"".WIKI_PKG_URL."edit.php?page=" . urlencode( $pPageName ). "\" class=\"create\">$pPageName</a>";
+					$ret = '<a title="'.tra( "Create the page" ).': '.htmlspecialchars( $pPageName ).'" href="'.WIKI_PKG_URL.'edit.php?page='.urlencode( $pPageName ).'" class="create">'.htmlspecialchars( $pPageName ).'</a>';
 				} else {
 					$ret = $pPageName;
 				}
@@ -498,11 +498,11 @@ class BitPage extends LibertyAttachable {
 		return $ret;
 	}
 
-    /**
-    * Returns content_id's that link to this page
-    * @return hash of content
-    */
-    function getBacklinks() {
+	/**
+	* Returns content_id's that link to this page
+	* @return hash of content
+	*/
+	function getBacklinks() {
 		if( $this->isValid() ) {
 			$query = "SELECT tl.`from_content_id`, tc.`title`
 					  FROM `".BIT_DB_PREFIX."tiki_links` tl INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tl.`from_content_id`=tc.`content_id`)
@@ -515,14 +515,14 @@ class BitPage extends LibertyAttachable {
 			}
 			return $ret;
 		}
-    }
+	}
 
 
 	// *********  History functions for the wiki ********** //
-    /**
-    * Get count of the number of historic records for the page
-    * @return count
-    */
+	/**
+	* Get count of the number of historic records for the page
+	* @return count
+	*/
 	function getHistoryCount() {
 		$ret = NULL;
 		if( $this->isValid() ) {
@@ -535,11 +535,11 @@ class BitPage extends LibertyAttachable {
 		return $ret;
 	}
 
-    /**
-    * Get complete set of historical data in order to display a given wiki page version
-    * @param pExistsHash the hash that was returned by LibertyContent::pageExists
-    * @return array of mInfo data
-    */
+	/**
+	* Get complete set of historical data in order to display a given wiki page version
+	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
+	* @return array of mInfo data
+	*/
 	function getHistory( $pVersion=NULL, $pUserId=NULL, $pOffset = 0, $maxRecords = -1 ) {
 		$ret = NULL;
 		if( $this->isValid() ) {
@@ -557,12 +557,12 @@ class BitPage extends LibertyAttachable {
 				$versionSql = ' AND th.`version`=? ';
 			}
 			$query = "SELECT tc.`title`, th.*,
-						uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
-						uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name
-				   FROM `".BIT_DB_PREFIX."tiki_history` th INNER JOIN `".BIT_DB_PREFIX."tiki_pages` tp ON (tp.`page_id` = th.`page_id`) INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
-						LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = th.`user_id`)
-						LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = tc.`user_id`)
-				   WHERE $whereSql $versionSql order by th.`version` desc";
+				uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
+				uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name
+				FROM `".BIT_DB_PREFIX."tiki_history` th INNER JOIN `".BIT_DB_PREFIX."tiki_pages` tp ON (tp.`page_id` = th.`page_id`) INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
+				LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = th.`user_id`)
+				LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = tc.`user_id`)
+				WHERE $whereSql $versionSql order by th.`version` desc";
 
 			$result = $this->mDb->query( $query, $bindVars, $maxRecords, $pOffset );
 			$ret = array();
@@ -946,20 +946,20 @@ define('PLUGINS_DIR', WIKI_PKG_PATH.'plugins');
  * @package wiki
  */
 class WikiLib extends BitPage {
-    function WikiLib() {
+	function WikiLib() {
 		BitPage::BitPage();
-    }
+	}
 
-    // 29-Jun-2003, by zaufi
-    // The 2 functions below contain duplicate code
-    // to remove <PRE> tags... (moreover I copy this code
-    // from gBitSystem.php, and paste to artlib.php, bloglib.php
-    // and wikilib.php)
-    // TODO: it should be separate function to avoid
-    // maintain 3 pieces... (but I don't know PHP and TIKI
-    // architecture very well yet to make this :()
-    //Special parsing for multipage articles
-    function countPages($data) {
+	// 29-Jun-2003, by zaufi
+	// The 2 functions below contain duplicate code
+	// to remove <PRE> tags... (moreover I copy this code
+	// from gBitSystem.php, and paste to artlib.php, bloglib.php
+	// and wikilib.php)
+	// TODO: it should be separate function to avoid
+	// maintain 3 pieces... (but I don't know PHP and TIKI
+	// architecture very well yet to make this :()
+	//Special parsing for multipage articles
+	function countPages($data) {
 /*
 
 		SPIDER KILL - 2005-05-16 - This was causing apache segfaults
@@ -985,9 +985,9 @@ class WikiLib extends BitPage {
 */
 		// we always have at least one page
 		return( (preg_match_all( '/'.(defined('PAGE_SEP') ? preg_quote(PAGE_SEP) : '\.\.\.page\.\.\.').'/', $data, $matches ) + 1) );
-    }
+	}
 
-    function get_page($data, $i) {
+	function get_page($data, $i) {
 /*
 
 		SPIDER KILL - 2005-05-16 - This was causing apache segfaults
@@ -1019,7 +1019,7 @@ class WikiLib extends BitPage {
 			$ret = str_replace($pp["key"], "<pre>" . $pp["data"] . "</pre>", $ret);
 */
 		return $ret;
-    }
+	}
 
 	// Like pages are pages that share a word in common with the current page
 	function get_like_pages($page) {
@@ -1127,7 +1127,7 @@ class WikiLib extends BitPage {
 	}
 
 
-    function wiki_page_graph(&$str, &$graph, $garg) {
+	function wiki_page_graph(&$str, &$graph, $garg) {
 		$page = $str['name'];
 		$graph->addAttributes(array(
 				'nodesep' => (isset($garg['att']['nodesep']))?$garg['att']['nodesep']:".1",
@@ -1157,7 +1157,7 @@ class WikiLib extends BitPage {
 				));
 			//print("add edge $page to ".$neig['name']."<br/>");
 		}
-    }
+	}
 
 	// This funcion return the $limit most accessed pages
 	// it returns title and hits for each page
@@ -1193,14 +1193,14 @@ class WikiLib extends BitPage {
 		return $ret;
 	}
 
-    function get_graph_map($page, $level, $garg) {
+	function get_graph_map($page, $level, $garg) {
 		$str = $this->wiki_get_link_structure($page, $level);
 		$graph = new Image_GraphViz();
 		$this->wiki_page_graph($str, $graph, $garg);
 		return $graph->map();
-    }
+	}
 
-    function wiki_get_link_structure($page, $level) {
+	function wiki_get_link_structure($page, $level) {
 		$query = "select tc2.`title` from `".BIT_DB_PREFIX."tiki_links` tl
 			INNER JOIN tiki_content tc1 ON tc1.`content_id` = tl.`from_content_id`
 			INNER JOIN tiki_content tc2 ON tc2.`content_id` = tl.`to_content_id`
@@ -1218,7 +1218,7 @@ class WikiLib extends BitPage {
 			}
 		}
 		return $aux;
-    }
+	}
 
 	/* *********  UNUSED FUNCTIONS - will delete soon - spiderr 2005-10-07 **********
 	function add_wiki_attachment_hit($id) {
@@ -1254,7 +1254,7 @@ class WikiLib extends BitPage {
 		$query = "insert into `".BIT_DB_PREFIX."tiki_wiki_attachments` (`page`,`filename`,`filesize`,`filetype`,`data`,`created`,`downloads`,`user_id`,`comment`,`path`) values(?,?,?,?,?,?,0,?,?,?)";
 		$result = $this->mDb->query($query,array($page,$name, (int) $size,$type,$data, (int) $now, $pUserId, $comment,$fhash));
 	}
-    function list_plugins() {
+	function list_plugins() {
 		$files = array();
 		if (is_dir(PLUGINS_DIR)) {
 			if ($dh = opendir(PLUGINS_DIR)) {
@@ -1341,7 +1341,7 @@ class WikiLib extends BitPage {
 			}
 			print ("\n");
 		}
-    }
+	}
 	/*shared*/
 	function list_received_pages($offset, $maxRecords, $sort_mode = 'title_asc', $find) {
 		$bindvars = array();
