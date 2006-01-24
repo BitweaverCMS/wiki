@@ -162,7 +162,6 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	array( WIKI_PKG_NAME, 'feature_ranking','n'),
 	array( WIKI_PKG_NAME, 'feature_sandbox','y'),
 	array( WIKI_PKG_NAME, 'feature_warn_on_edit','n'),
-	array( WIKI_PKG_NAME, 'feature_wiki','y'),
 	array( WIKI_PKG_NAME, 'feature_wiki_attachments','y'),
 	array( WIKI_PKG_NAME, 'feature_wiki_books','y'),
 	array( WIKI_PKG_NAME, 'feature_wiki_comments','n'),
