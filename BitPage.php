@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.46 2006/01/20 09:55:15 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.47 2006/01/26 15:01:12 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.46 $ $Date: 2006/01/20 09:55:15 $ $Author: squareing $
+ * @version $Revision: 1.2.2.47 $ $Date: 2006/01/26 15:01:12 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.46 2006/01/20 09:55:15 squareing Exp $
+ * $Id: BitPage.php,v 1.2.2.47 2006/01/26 15:01:12 squareing Exp $
  */
 
 /**
@@ -78,13 +78,13 @@ class BitPage extends LibertyAttachable {
 					  WHERE tp.`$lookupColumn`=? $whereSql";
 			$result = $this->mDb->query( $query, $bindVars );
 
-			if ( $result && $result->numRows() ) {
-				$this->mInfo = $result->fields;
-				$this->mContentId = $result->fields['content_id'];
-				$this->mPageId = $result->fields['page_id'];
-				$this->mPageName = $result->fields['title'];
-				$this->mInfo['creator'] = (isset( $result->fields['creator_real_name'] ) ? $result->fields['creator_real_name'] : $result->fields['creator_user'] );
-				$this->mInfo['editor'] = (isset( $result->fields['modifier_real_name'] ) ? $result->fields['modifier_real_name'] : $result->fields['modifier_user'] );
+			if ( $row = $result->fetchRow() ) {
+				$this->mInfo = $row;
+				$this->mContentId = $this->mInfo['content_id'];
+				$this->mPageId = $this->mInfo['page_id'];
+				$this->mPageName = $this->mInfo['title'];
+				$this->mInfo['creator'] = (isset( $this->mInfo['creator_real_name'] ) ? $this->mInfo['creator_real_name'] : $this->mInfo['creator_user'] );
+				$this->mInfo['editor'] = (isset( $this->mInfo['modifier_real_name'] ) ? $this->mInfo['modifier_real_name'] : $this->mInfo['modifier_user'] );
 				$this->mInfo['display_url'] = $this->getDisplayUrl();
 				// Save some work if feature_wiki_attachments are not active
 				if( $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) ) {
@@ -507,12 +507,7 @@ class BitPage extends LibertyAttachable {
 			$query = "SELECT tl.`from_content_id`, tc.`title`
 					  FROM `".BIT_DB_PREFIX."tiki_links` tl INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tl.`from_content_id`=tc.`content_id`)
 					  WHERE tl.`to_content_id` = ?";
-			$result = $this->mDb->query( $query, array( $this->mContentId ) );
-			$ret = array();
-			while ( !$result->EOF ) {
-				$ret[$result->fields["from_content_id"]] = $result->fields["title"];
-				$result->MoveNext();
-			}
+			$ret = $this->mDb->getAssoc( $query, array( $this->mContentId ) );
 			return $ret;
 		}
 	}
