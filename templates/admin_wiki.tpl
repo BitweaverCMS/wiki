@@ -19,14 +19,14 @@
 				{formlabel label="Global WikiPage Cache" for="wiki_cache"}
 				{forminput}
 					<select name="wiki_cache" id="wiki_cache">
-						<option value="0" {if $wiki_cache eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
-						<option value="60" {if $wiki_cache eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
-						<option value="300" {if $wiki_cache eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
-						<option value="600" {if $wiki_cache eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
-						<option value="900" {if $wiki_cache eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
-						<option value="1800" {if $wiki_cache eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
-						<option value="3600" {if $wiki_cache eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
-						<option value="7200" {if $wiki_cache eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
+						<option value="0"    {if $gBitSystemPrefs.wiki_cache eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
+						<option value="60"   {if $gBitSystemPrefs.wiki_cache eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
+						<option value="300"  {if $gBitSystemPrefs.wiki_cache eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
+						<option value="600"  {if $gBitSystemPrefs.wiki_cache eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
+						<option value="900"  {if $gBitSystemPrefs.wiki_cache eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
+						<option value="1800" {if $gBitSystemPrefs.wiki_cache eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
+						<option value="3600" {if $gBitSystemPrefs.wiki_cache eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
+						<option value="7200" {if $gBitSystemPrefs.wiki_cache eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
 					</select>
 					{formhelp note="Cache wikipages for the given amount of time."}
 				{/forminput}
@@ -39,12 +39,12 @@
 				{/forminput}
 				{forminput}
 					<select name="warn_on_edit_time">
-						<option value="1" {if $warn_on_edit_time eq 1}selected="selected"{/if}>{tr}1{/tr}</option>
-						<option value="2" {if $warn_on_edit_time eq 2}selected="selected"{/if}>{tr}2{/tr}</option>
-						<option value="5" {if $warn_on_edit_time eq 5}selected="selected"{/if}>{tr}5{/tr}</option>
-						<option value="10" {if $warn_on_edit_time eq 10}selected="selected"{/if}>{tr}10{/tr}</option>
-						<option value="15" {if $warn_on_edit_time eq 15}selected="selected"{/if}>{tr}15{/tr}</option>
-						<option value="30" {if $warn_on_edit_time eq 30}selected="selected"{/if}>{tr}30{/tr}</option>
+						<option value="1"  {if $gBitSystemPrefs.warn_on_edit_time eq 1}selected="selected"{/if}>{tr}1{/tr}</option>
+						<option value="2"  {if $gBitSystemPrefs.warn_on_edit_time eq 2}selected="selected"{/if}>{tr}2{/tr}</option>
+						<option value="5"  {if $gBitSystemPrefs.warn_on_edit_time eq 5}selected="selected"{/if}>{tr}5{/tr}</option>
+						<option value="10" {if $gBitSystemPrefs.warn_on_edit_time eq 10}selected="selected"{/if}>{tr}10{/tr}</option>
+						<option value="15" {if $gBitSystemPrefs.warn_on_edit_time eq 15}selected="selected"{/if}>{tr}15{/tr}</option>
+						<option value="30" {if $gBitSystemPrefs.warn_on_edit_time eq 30}selected="selected"{/if}>{tr}30{/tr}</option>
 					</select> {tr}minutes{/tr}
 					{formhelp note="Display a warning if someone has started editing a page within this time range and somebody else starts editing the same page."}
 				{/forminput}
@@ -198,9 +198,9 @@
 					{formlabel label="Wiki Link Format" for="wiki_page_regex"}
 					{forminput}
 						<select name="wiki_page_regex" id="wiki_page_regex">
-							<option value="complete" {if $wiki_page_regex eq 'complete'}selected="selected"{/if}>{tr}complete{/tr}</option>
-							<option value="full" {if $wiki_page_regex eq 'full'}selected="selected"{/if}>{tr}latin{/tr}</option>
-							<option value="strict" {if $wiki_page_regex eq 'strict'}selected="selected"{/if}>{tr}english{/tr}</option>
+							<option value="complete" {if $gBitSystemPrefs.wiki_page_regex eq 'complete'}selected="selected"{/if}>{tr}complete{/tr}</option>
+							<option value="full"     {if $gBitSystemPrefs.wiki_page_regex eq 'full'}selected="selected"{/if}>{tr}latin{/tr}</option>
+							<option value="strict"   {if $gBitSystemPrefs.wiki_page_regex eq 'strict'}selected="selected"{/if}>{tr}english{/tr}</option>
 						</select>
 						{formhelp note="Controls recognition of Wiki links using the two parenthesis Wiki link syntax <i>((page name))</i>."}
 					{/forminput}
@@ -235,7 +235,7 @@
 				<div class="row">
 					{formlabel label="Enable Feature" for="wiki_feature_copyrights"}
 					{forminput}
-						{html_checkboxes name="wiki_feature_copyrights" values="y" checked=$wiki_feature_copyrights labels=false id="wiki_feature_copyrights"}
+						{html_checkboxes name="wiki_feature_copyrights" values="y" checked=$gBitSystemPrefs.wiki_feature_copyrights labels=false id="wiki_feature_copyrights"}
 					{/forminput}
 				</div>
 
