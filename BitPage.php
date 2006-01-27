@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.17 2006/01/25 15:40:26 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.18 2006/01/27 21:57:53 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.17 $ $Date: 2006/01/25 15:40:26 $ $Author: spiderr $
+ * @version $Revision: 1.18 $ $Date: 2006/01/27 21:57:53 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.17 2006/01/25 15:40:26 spiderr Exp $
+ * $Id: BitPage.php,v 1.18 2006/01/27 21:57:53 squareing Exp $
  */
 
 /**
@@ -200,7 +200,7 @@ class BitPage extends LibertyAttachable {
 	* @access private
 	**/
 	function verify( &$pParamHash ) {
-		global $gBitUser, $user, $bit_p_rename, $gBitSystem;
+		global $gBitUser, $gBitSystem;
 
 		// make sure we're all loaded up of we have a mPageId
 		if( $this->verifyId( $this->mPageId ) && empty( $this->mInfo ) ) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+ * $Id: page.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -18,16 +18,10 @@
  */
 require_once( '../bit_setup_inc.php' );
 include_once (HTML_PKG_PATH.'htmlpages_lib.php');
-if ($feature_html_pages != 'y') {
-	$gBitSmarty->assign('msg', tra("This feature is disabled").": feature_html_pages");
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
-if (!$gBitUser->hasPermission( 'bit_p_view_html_pages' )) {
-	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
+
+$gBitSystem->verifyFeature( 'feature_html_pages' );
+$gBitSystem->verifyPermission( 'bit_p_view_html_pages' );
+
 if (!isset($_REQUEST["title"])) {
 	$gBitSmarty->assign('msg', tra("No page indicated"));
 	$gBitSystem->display( 'error.tpl' );

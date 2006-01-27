@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/like_pages.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/like_pages.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: like_pages.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+ * $Id: like_pages.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -20,11 +20,9 @@ require_once( '../bit_setup_inc.php' );
 include_once( WIKI_PKG_PATH.'BitPage.php');
 include_once( WIKI_PKG_PATH.'lookup_page_inc.php' );
 $gBitSystem->verifyPackage( 'wiki' );
-if ($feature_likePages != 'y') {
-	$gBitSmarty->assign('msg', tra("This feature is disabled").": feature_likePages");
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
+$gBitSystem->verifyFeature( 'feature_likePages' );
+$gBitSystem->verifyPermission( 'bit_p_view', tra( "Permission denied you cannot view pages like this page" ) );
+
 // Get the page from the request var or default it to HomePage
 if( !$gContent->isValid() ) {
 	$gBitSmarty->assign('msg', tra("No page indicated"));
@@ -32,12 +30,6 @@ if( !$gContent->isValid() ) {
 	die;
 }
 include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
-// Now check permissions to access this page
-if (!$gBitUser->hasPermission( 'bit_p_view' )) {
-	$gBitSmarty->assign('msg', tra("Permission denied you cannot view pages like this page"));
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
 
 $likepages = $wikilib->get_like_pages( $gContent->mInfo['title'] );
 $gBitSmarty->assign_by_ref('likepages', $likepages);

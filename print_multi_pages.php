@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print_multi_pages.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print_multi_pages.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print_multi_pages.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+ * $Id: print_multi_pages.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -18,11 +18,9 @@
  */
 require_once( '../bit_setup_inc.php' );
 require_once( WIKI_PKG_PATH.'BitPage.php' );
-if ($feature_wiki_multiprint != 'y') {
-	$gBitSmarty->assign('msg', tra("This feature is disabled").": feature_wiki_multiprint");
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
+
+$gBitSystem->verifyFeature( 'feature_wiki_multiprint' );
+
 if (!isset($_REQUEST["printpages"])) {
 	$gBitSmarty->assign('msg', tra("No pages indicated"));
 	$gBitSystem->display( 'error.tpl' );
@@ -30,8 +28,8 @@ if (!isset($_REQUEST["printpages"])) {
 } else {
 	$printpages = unserialize(urldecode($_REQUEST["printpages"]));
 }
+
 if (isset($_REQUEST["print"])) {
-	
 	// Create XMLRPC object
 	$pages = array();
 	foreach( $printpages as $contentId ) {

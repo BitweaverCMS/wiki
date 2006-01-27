@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/received_pages.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/received_pages.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: received_pages.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+ * $Id: received_pages.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -19,16 +19,10 @@
 require_once( '../bit_setup_inc.php' );
 include_once (KERNEL_PKG_PATH.'comm_lib.php');
 include_once( WIKI_PKG_PATH.'BitPage.php');
-if ($feature_comm != 'y') {
-	$gBitSmarty->assign('msg', tra("This feature is disabled").": feature_comm");
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
-if (!$gBitUser->hasPermission( 'bit_p_admin_received_pages' )) {
-	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
+
+$gBitSystem->verifyFeature( 'feature_comm' );
+$gBitSystem->verifyPermission( 'bit_p_admin_received_pages' );
+
 if (!isset($_REQUEST["received_page_id"])) {
 	$_REQUEST["received_page_id"] = 0;
 }

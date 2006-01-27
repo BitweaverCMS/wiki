@@ -1,4 +1,4 @@
-{if $comments_at_top_of_page eq 'y' and $print_page ne 'y' and $feature_wiki_comments eq 'y' }
+{if $gBitSystem->isFeatureActive( 'comments_at_top_of_page' ) and $print_page ne 'y' and $gBitSystem->isFeatureActive( 'feature_wiki_comments' )}
 	{include file="bitpackage:wiki/page_header.tpl"}
 	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
@@ -55,7 +55,7 @@
 	{/if}
 </div><!-- end .wiki -->
 
-{if $comments_at_top_of_page ne 'y' and $print_page ne 'y' and $feature_wiki_comments eq 'y' }
+{if !$gBitSystem->isFeatureActive( 'comments_at_top_of_page' ) and $print_page ne 'y' and $gBitSystem->isFeatureActive( 'feature_wiki_comments' )}
 	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
 

@@ -3,13 +3,13 @@
  * assigned_modules
  *
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.3 $
+ * @version  $Revision: 1.4 $
  * @package  wiki
  * @subpackage  functions
  * @copyright Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * @license Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
  */
-// $Header: /cvsroot/bitweaver/_bit_wiki/backlinks.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/backlinks.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 
 /**
@@ -19,11 +19,8 @@ require_once( '../bit_setup_inc.php' );
 include_once( WIKI_PKG_PATH.'lookup_page_inc.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
-if ($feature_backlinks != 'y') {
-	$gBitSmarty->assign('msg', tra("This feature is disabled").": feature_backlinks");
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
+$gBitSystem->verifyFeature( 'feature_backlinks' );
+
 // Get the page from the request var or default it to HomePage
 if (!isset($_REQUEST["page"])) {
 	$gBitSmarty->assign('msg', tra("No page indicated"));
