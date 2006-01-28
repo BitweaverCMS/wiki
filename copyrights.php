@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights.php,v 1.1.1.1.2.3 2005/07/26 15:50:32 drewslater Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights.php,v 1.1.1.1.2.4 2006/01/28 09:19:48 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: copyrights.php,v 1.1.1.1.2.3 2005/07/26 15:50:32 drewslater Exp $
+ * $Id: copyrights.php,v 1.1.1.1.2.4 2006/01/28 09:19:48 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -24,7 +24,7 @@ require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
 require_once( WIKI_PKG_PATH.'lookup_page_inc.php' );
 
 if (isset($_REQUEST['addcopyright'])) {
-	if ($wiki_feature_copyrights == 'y' && isset($_REQUEST['copyrightTitle']) && isset($_REQUEST['copyrightYear'])
+	if ($gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) && isset($_REQUEST['copyrightTitle']) && isset($_REQUEST['copyrightYear'])
 		&& isset($_REQUEST['copyrightAuthors']) && !empty($_REQUEST['copyrightYear']) && !empty($_REQUEST['copyrightTitle'])) {
 		$copyrightYear = $_REQUEST['copyrightYear'];
 		$copyrightTitle = $_REQUEST['copyrightTitle'];
@@ -37,7 +37,7 @@ if (isset($_REQUEST['addcopyright'])) {
 	}
 }
 if (isset($_REQUEST['editcopyright'])) {
-	if ($wiki_feature_copyrights == 'y' && isset($_REQUEST['copyrightTitle']) && isset($_REQUEST['copyrightYear'])
+	if ($gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) && isset($_REQUEST['copyrightTitle']) && isset($_REQUEST['copyrightYear'])
 		&& isset($_REQUEST['copyrightAuthors']) && !empty($_REQUEST['copyrightYear']) && !empty($_REQUEST['copyrightTitle'])) {
 		$copyright_id = $_REQUEST['copyright_id'];
 		$copyrightYear = $_REQUEST['copyrightYear'];

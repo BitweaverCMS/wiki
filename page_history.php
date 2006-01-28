@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.2.2.3 2005/07/26 15:50:32 drewslater Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.2.2.4 2006/01/28 09:19:48 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.2.2.3 2005/07/26 15:50:32 drewslater Exp $
+ * $Id: page_history.php,v 1.2.2.4 2006/01/28 09:19:48 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -20,11 +20,8 @@ require_once( '../bit_setup_inc.php' );
 include_once( WIKI_PKG_PATH.'BitPage.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
-if ($feature_history != 'y') {
-	$gBitSmarty->assign('msg', tra("This feature is disabled").": feature_history");
-	$gBitSystem->display( 'error.tpl' );
-	exit;
-}
+$gBitSystem->verifyFeature( 'feature_history' );
+$gBitSystem->verifyPermission( 'bit_p_view', tra( "Permission denied you cannot browse this page history" ) );
 
 // Get the page from the request var or default it to HomePage
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
@@ -35,12 +32,6 @@ if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {
 	$gBitSystem->fatalError( "Unknown page" );
 }
 
-// Now check permissions to access this page
-if (!$gBitUser->hasPermission( 'bit_p_view' )) {
-	$gBitSmarty->assign('msg', tra("Permission denied you cannot browse this page history"));
-	$gBitSystem->display( 'error.tpl' );
-	exit;
-}
 $gBitSmarty->assign('source', 0);
 // If we have to include a preview please show it
 $gBitSmarty->assign('preview', false);

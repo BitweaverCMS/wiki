@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.11 2005/08/25 20:17:06 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.12 2006/01/28 09:19:48 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.1.1.1.2.11 2005/08/25 20:17:06 lsces Exp $
+ * $Id: display_bitpage_inc.php,v 1.1.1.1.2.12 2006/01/28 09:19:48 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -44,14 +44,13 @@ $gBitSmarty->assign_by_ref('page',$gContent->mInfo['title']);
 
 require_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 // Let creator set permissions
-if($wiki_creator_admin == 'y') {
-  if( $gContent->isOwner() ) {
-    $bit_p_admin_wiki = 'y';
-    $gBitSmarty->assign( 'bit_p_admin_wiki', 'y' );
-  }
+if($gBitSystem->isFeatureActive( 'wiki_creator_admin' )) {
+	if( $gContent->isOwner() ) {
+		$gBitUser->mPrefs['bit_p_admin_wiki'] = TRUE;
+	}
 }
 if(isset($_REQUEST["copyrightpage"])) {
-  $gBitSmarty->assign_by_ref('copyrightpage',$_REQUEST["copyrightpage"]);
+	$gBitSmarty->assign_by_ref('copyrightpage',$_REQUEST["copyrightpage"]);
 }
 if( $gBitSystem->isFeatureActive( 'feature_backlinks' ) ) {
 	// Get the backlinks for the page "page"
@@ -97,7 +96,7 @@ if( $gBitSystem->isFeatureActive( 'count_admin_pvs' ) || !$gBitUser->isAdmin() )
 // Check if we have to perform an action for this page
 // for example lock/unlock
 if( isset( $_REQUEST["action"] ) && (($_REQUEST["action"] == 'lock' || $_REQUEST["action"]=='unlock' ) &&
-	($gBitUser->hasPermission( 'bit_p_admin_wiki' )) || ($user and ($gBitUser->hasPermission( 'bit_p_lock' )) and ($feature_wiki_usrlock == 'y'))) ) {
+	($gBitUser->hasPermission( 'bit_p_admin_wiki' )) || ($user and ($gBitUser->hasPermission( 'bit_p_lock' )) and ($gBitSystem->isFeatureActive( 'feature_wiki_usrlock' )))) ) {
 	$gContent->setLock( ($_REQUEST["action"] == 'lock' ? 'L' : NULL ) );
 	$gBitSmarty->assign('lock', ($_REQUEST["action"] == 'lock') );
 }
@@ -122,7 +121,7 @@ if($gBitUser->hasPermission( 'bit_p_admin_wiki' )) {
 // Process an undo here
 if(isset($_REQUEST["undo"])) {
 
-	if($gBitUser->hasPermission( 'bit_p_admin_wiki' ) || ($gContent->mInfo["flag"]!='L' && ( ($gBitUser->hasPermission( 'bit_p_edit' ) && $gContent->mInfo["user"]==$user)||($bit_p_remove=='y')) )) {
+	if($gBitUser->hasPermission( 'bit_p_admin_wiki' ) || ($gContent->mInfo["flag"]!='L' && ( ($gBitUser->hasPermission( 'bit_p_edit' ) && $gContent->mInfo["user"]==$user)||($gBitUser->hasPermission( 'bit_p_remove' ))) )) {
 		// Remove the last version
 		$gContent->removeLastVersion();
 		// If page was deleted then re-create
@@ -131,7 +130,7 @@ if(isset($_REQUEST["undo"])) {
 		}
 	}
 }
-if ($wiki_uses_slides == 'y') {
+if ($gBitSystem->isFeatureActive( 'wiki_uses_slides' )) {
 	$slides = split("-=[^=]+=-",$gContent->mInfo["data"]);
 	if(count($slides)>1) {
 		$gBitSmarty->assign('show_slideshow','y');

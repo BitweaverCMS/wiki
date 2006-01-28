@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_permissions.php,v 1.1.1.1.2.2 2005/07/26 15:50:32 drewslater Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_permissions.php,v 1.1.1.1.2.3 2006/01/28 09:19:48 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_permissions.php,v 1.1.1.1.2.2 2005/07/26 15:50:32 drewslater Exp $
+ * $Id: page_permissions.php,v 1.1.1.1.2.3 2006/01/28 09:19:48 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -32,11 +32,8 @@ include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 	}
 	
 	// Let creator set permissions
-	if ($wiki_creator_admin == 'y') {
-		if( $gContent->isOwner() ) {
-			$bit_p_admin_wiki = 'y';
-			$gBitSmarty->assign('bit_p_admin_wiki', 'y');
-		}
+	if( $gBitSystem->isFeatureActive( 'wiki_creator_admin' ) && $gContent->isOwner() ) {
+		$gBitUser->mPrefs['bit_p_admin_wiki'] = TRUE;
 	}
 
 	// Now check permissions to access this page

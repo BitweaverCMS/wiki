@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/rankings.php,v 1.1.1.1.2.3 2005/07/26 15:50:47 drewslater Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/rankings.php,v 1.1.1.1.2.4 2006/01/28 09:19:48 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: rankings.php,v 1.1.1.1.2.3 2005/07/26 15:50:47 drewslater Exp $
+ * $Id: rankings.php,v 1.1.1.1.2.4 2006/01/28 09:19:48 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -20,17 +20,10 @@ require_once( '../bit_setup_inc.php' );
 include_once( KERNEL_PKG_PATH.'rank_lib.php' );
 
 $gBitSystem->verifyPackage( 'wiki' );
-if ($feature_wiki_rankings != 'y') {
-	$gBitSmarty->assign('msg', tra("This feature is disabled").": feature_wiki_rankings");
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
-if (!$gBitUser->hasPermission( 'bit_p_view' )) {
-	$gBitSmarty->assign('msg', tra("Permission denied you cannot view this section"));
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
+$gBitSystem->verifyFeature( 'feature_wiki_rankings' );
+$gBitSystem->verifyPermission( 'bit_p_view' );
 // Get the page from the request var or default it to HomePage
+
 if (!isset($_REQUEST["limit"])) {
 	$limit = 10;
 } else {
