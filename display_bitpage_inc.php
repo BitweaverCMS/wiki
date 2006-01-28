@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.9 2006/01/27 23:01:24 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.10 2006/01/28 09:14:09 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.9 2006/01/27 23:01:24 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.10 2006/01/28 09:14:09 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -96,7 +96,7 @@ if( $gBitSystem->isFeatureActive( 'count_admin_pvs' ) || !$gBitUser->isAdmin() )
 // Check if we have to perform an action for this page
 // for example lock/unlock
 if( isset( $_REQUEST["action"] ) && (($_REQUEST["action"] == 'lock' || $_REQUEST["action"]=='unlock' ) &&
-($gBitUser->hasPermission( 'bit_p_admin_wiki' )) || ($user and ($gBitUser->hasPermission( 'bit_p_lock' )) and ($gBitSystem->isFeatureActive( 'feature_wiki_usrlock' )))) ) {
+	($gBitUser->hasPermission( 'bit_p_admin_wiki' )) || ($user and ($gBitUser->hasPermission( 'bit_p_lock' )) and ($gBitSystem->isFeatureActive( 'feature_wiki_usrlock' )))) ) {
 	$gContent->setLock( ($_REQUEST["action"] == 'lock' ? 'L' : NULL ) );
 	$gBitSmarty->assign('lock', ($_REQUEST["action"] == 'lock') );
 }
@@ -162,10 +162,10 @@ $gBitSmarty->assign('cached_page','n');
 if(isset($gContent->mInfo['wiki_cache']) && $gContent->mInfo['wiki_cache']>0) {
 	$wiki_cache=$gContent->mInfo['wiki_cache'];
 }
-if($gBitSystem->getPreference( 'wiki_cache' ) > 0) {
+if($wiki_cache>0) {
 	$cache_info = $wikilib->get_cache_info($gContent->mInfo['title']);
 	$now = $gBitSystem->getUTCTime();
-	if( ( $cache_info['cache_timestamp'] + $gBitSystem->getPreference( 'wiki_cache' ) ) > $now) {
+	if($cache_info['cache_timestamp']+$wiki_cache > $now) {
 		$pdata = $cache_info['cache'];
 		$gBitSmarty->assign('cached_page','y');
 	} else {
