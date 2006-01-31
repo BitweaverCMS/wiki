@@ -2,7 +2,7 @@
 
 $tables = array(
 
-'tiki_actionlog' => "
+'wiki_action_log' => "
 	page_id I4 NOTNULL,
 	user_id I4 NOTNULL,
 	action C(255) NOTNULL,
@@ -12,7 +12,7 @@ $tables = array(
 	comment C(200)
 ",
 
-'tiki_copyrights' => "
+'liberty_copyrights' => "
 	copyright_id I4 AUTO PRIMARY,
 	page_id I4 NOTNULL,
 	title C(200),
@@ -22,7 +22,7 @@ $tables = array(
 	user_id I4
 ",
 
-'tiki_history' => "
+'liberty_content_history' => "
 	page_id I4 PRIMARY,
 	version I4 PRIMARY,
 	last_modified I8 NOTNULL,
@@ -32,21 +32,21 @@ $tables = array(
 	ip C(15),
 	comment C(200),
 	data X
-	CONSTRAINTS ', CONSTRAINT `tiki_history_page_ref` FOREIGN KEY (`page_id`) REFERENCES `".BIT_DB_PREFIX."tiki_pages`( `page_id` )'
+	CONSTRAINTS ', CONSTRAINT `tiki_history_page_ref` FOREIGN KEY (`page_id`) REFERENCES `".BIT_DB_PREFIX."wiki_pages`( `page_id` )'
 ",
 
-'tiki_links' => "
+'liberty_content_links' => "
 	from_content_id I4 PRIMARY,
 	to_content_id I4 PRIMARY
 ",
 
-'tiki_page_footnotes' => "
+'wiki_footnotes' => "
 	user_id C(40) PRIMARY,
 	page_id I4 NOTNULL,
 	data X
 ",
 
-'tiki_pages' => "
+'wiki_pages' => "
 	page_id I4 PRIMARY,
 	content_id I4 NOTNULL,
 	version I4 NOTNULL,
@@ -62,7 +62,7 @@ $tables = array(
 	page_rank N(4,3)
 ",
 
-'tiki_received_pages' => "
+'wiki_received_pages' => "
 	received_page_id I4 AUTO PRIMARY,
 	title C(160) NOTNULL,
 	data X,
@@ -73,7 +73,7 @@ $tables = array(
 	received_date I8
 ",
 
-'tiki_tags' => "
+'wiki_tags' => "
 	page_id I4 PRIMARY,
 	tag_name C(80) PRIMARY,
 	title C(160),
@@ -88,7 +88,7 @@ $tables = array(
 	flag C(1)
 ",
 
-'tiki_extwiki' => "
+'wiki_ext' => "
 	extwiki_id I4 AUTO PRIMARY,
 	name C(200) NOTNULL,
 	extwiki C(255)
@@ -114,9 +114,9 @@ $gBitInstaller->registerPackageInfo( WIKI_PKG_NAME, array(
 
 // ### Indexes
 $indices = array (
-	'tiki_pages_content_idx' => array( 'table' => 'tiki_pages', 'cols' => 'content_id', 'opts' => 'UNIQUE' ),
-	'tiki_pages_page_rank_idx' => array( 'table' => 'tiki_pages', 'cols' => 'page_rank', 'opts' => NULL ),
-	'tiki_page_footnotes_page_idx' => array( 'table' => 'tiki_page_footnotes', 'cols' => 'page_id', 'opts' => NULL )
+	'tiki_pages_content_idx' => array( 'table' => 'wiki_pages', 'cols' => 'content_id', 'opts' => 'UNIQUE' ),
+	'tiki_pages_page_rank_idx' => array( 'table' => 'wiki_pages', 'cols' => 'page_rank', 'opts' => NULL ),
+	'tiki_page_footnotes_page_idx' => array( 'table' => 'wiki_footnotes', 'cols' => 'page_id', 'opts' => NULL )
 );
 $gBitInstaller->registerSchemaIndexes( WIKI_PKG_NAME, $indices );
 
