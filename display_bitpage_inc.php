@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.13 2006/01/28 09:26:46 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.14 2006/01/31 10:08:02 wolff_borg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.1.1.1.2.13 2006/01/28 09:26:46 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.1.1.1.2.14 2006/01/31 10:08:02 wolff_borg Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -147,7 +147,7 @@ if ($gBitSystem->isFeatureActive( 'wiki_uses_slides' )) {
 }
 if(isset($_REQUEST['refresh'])) {
 
-  $wikilib->invalidate_cache($gContent->mInfo['title']);
+  $gContent->invalidateCache();
 }
 // Here's where the data is parsed
 // if using cache
@@ -164,7 +164,7 @@ if(isset($gContent->mInfo['wiki_cache']) && $gContent->mInfo['wiki_cache']>0) {
 	$wiki_cache=$gContent->mInfo['wiki_cache'];
 }
 if($wiki_cache>0) {
-	$cache_info = $wikilib->get_cache_info($gContent->mInfo['title']);
+	$cache_info = $gContent->get_cache_info();
 	$now = $gBitSystem->getUTCTime();
 	if($cache_info['cache_timestamp']+$wiki_cache > $now) {
 		$pdata = $cache_info['cache'];

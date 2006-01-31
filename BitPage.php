@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.48 2006/01/28 09:19:48 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.49 2006/01/31 10:08:02 wolff_borg Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.48 $ $Date: 2006/01/28 09:19:48 $ $Author: squareing $
+ * @version $Revision: 1.2.2.49 $ $Date: 2006/01/31 10:08:02 $ $Author: wolff_borg $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.48 2006/01/28 09:19:48 squareing Exp $
+ * $Id: BitPage.php,v 1.2.2.49 2006/01/31 10:08:02 wolff_borg Exp $
  */
 
 /**
@@ -703,7 +703,7 @@ class BitPage extends LibertyAttachable {
    	 * Get cached version of page from store
    	 * @param page ? Not used
 	 */
-	function get_cache_info($page) {
+	function get_cache_info() {
 		if( $this->verifyId( $this->mPageId ) ) {
 			$query = "select `cache`,`cache_timestamp` from `".BIT_DB_PREFIX."tiki_pages` where `page_id`=?";
 			$result = $this->mDb->query( $query, array( $this->mPageId ) );
