@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.22 2006/02/01 18:34:17 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.23 2006/02/01 18:44:07 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.22 $ $Date: 2006/02/01 18:34:17 $ $Author: spiderr $
+ * @version $Revision: 1.23 $ $Date: 2006/02/01 18:44:07 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.22 2006/02/01 18:34:17 spiderr Exp $
+ * $Id: BitPage.php,v 1.23 2006/02/01 18:44:07 squareing Exp $
  */
 
 /**
@@ -52,10 +52,10 @@ class BitPage extends LibertyAttachable {
 		$userWhere = '';
 		$bindVars = array( $pPageName, $this->mContentTypeGuid );
 		if( @BitBase::verifyId( $pUserId ) ) {
-			$userWhere = " AND tc.`user_id`=?";
+			$userWhere = " AND lc.`user_id`=?";
 			array_push( $bindVars, $pUserId );
 		}
-		$ret = $this->mDb->getOne("select `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) where tc.`title`=? AND tc.`content_type_guid`=? $userWhere", $bindVars );
+		$ret = $this->mDb->getOne("select `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`) where lc.`title`=? AND lc.`content_type_guid`=? $userWhere", $bindVars );
 		return $ret;
 	}
 
@@ -68,13 +68,13 @@ class BitPage extends LibertyAttachable {
 			$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 			array_push( $bindVars, $lookupId = @BitBase::verifyId( $this->mPageId )? $this->mPageId : $this->mContentId );
-			$query = "select tp.*, tc.*,
+			$query = "select tp.*, lc.*,
 					  uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
 					  uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name $selectSql
 					  FROM `".BIT_DB_PREFIX."wiki_pages` tp
-						INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) $joinSql
-						LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = tc.`modifier_user_id`)
-						LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = tc.`user_id`)
+						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`) $joinSql
+						LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = lc.`modifier_user_id`)
+						LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
 					  WHERE tp.`$lookupColumn`=? $whereSql";
 			$result = $this->mDb->query( $query, $bindVars );
 
@@ -504,8 +504,8 @@ class BitPage extends LibertyAttachable {
 	*/
 	function getBacklinks() {
 		if( $this->isValid() ) {
-			$query = "SELECT tl.`from_content_id`, tc.`title`
-					  FROM `".BIT_DB_PREFIX."liberty_content_links` tl INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tl.`from_content_id`=tc.`content_id`)
+			$query = "SELECT tl.`from_content_id`, lc.`title`
+					  FROM `".BIT_DB_PREFIX."liberty_content_links` tl INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (tl.`from_content_id`=lc.`content_id`)
 					  WHERE tl.`to_content_id` = ?";
 			$ret = $this->mDb->getAssoc( $query, array( $this->mContentId ) );
 			return $ret;
@@ -551,12 +551,12 @@ class BitPage extends LibertyAttachable {
 				array_push( $bindVars, $pVersion );
 				$versionSql = ' AND th.`version`=? ';
 			}
-			$query = "SELECT tc.`title`, th.*,
+			$query = "SELECT lc.`title`, th.*,
 				uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
 				uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name
-				FROM `".BIT_DB_PREFIX."liberty_content_history` th INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (tp.`page_id` = th.`page_id`) INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
+				FROM `".BIT_DB_PREFIX."liberty_content_history` th INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (tp.`page_id` = th.`page_id`) INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`)
 				LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = th.`user_id`)
-				LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = tc.`user_id`)
+				LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
 				WHERE $whereSql $versionSql order by th.`version` desc";
 
 			$result = $this->mDb->query( $query, $bindVars, $maxRecords, $pOffset );
@@ -649,8 +649,8 @@ class BitPage extends LibertyAttachable {
 /*
 	// Returns information about a specific version of a page
 	function get_version($page_id, $version) {
-		$query = "SELECT th.*, tc.`title`
-				  FROM `".BIT_DB_PREFIX."liberty_content_history` th INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (tp.`page_id` = th.`page_id`) INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
+		$query = "SELECT th.*, lc.`title`
+				  FROM `".BIT_DB_PREFIX."liberty_content_history` th INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (tp.`page_id` = th.`page_id`) INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`)
 				  WHERE th.`page_id`=? and th.`version`=? ";
 		$result = $this->mDb->query($query,array($page_id,$version));
 		$res = $result->fetchRow();
@@ -660,13 +660,13 @@ class BitPage extends LibertyAttachable {
 	// without the data itself
 	function get_page_history($pageId) {
 		global $gBitSystem;
-		$query = "SELECT tc.`title`, th.*,
+		$query = "SELECT lc.`title`, th.*,
 					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uue.`user_id` AS modifier_user_id,
 					uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name, uuc.`user_id` AS creator_user_id
 
-				  FROM `".BIT_DB_PREFIX."liberty_content_history` th INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (tp.`page_id` = th.`page_id`) INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
+				  FROM `".BIT_DB_PREFIX."liberty_content_history` th INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (tp.`page_id` = th.`page_id`) INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`)
 					INNER JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = th.`user_id`)
-					INNER JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = tc.`user_id`)
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
 				  WHERE th.`page_id` = ?
 				  ORDER BY th.`version` desc";
 
@@ -779,18 +779,18 @@ class BitPage extends LibertyAttachable {
 		$bindVars = array();
 		array_push( $bindVars, $this->mContentTypeGuid );
 		if (is_array($find)) { // you can use an array of pages
-			$mid = " AND tc.`title` IN (".implode(',',array_fill(0,count($find),'?')).")";
+			$mid = " AND lc.`title` IN (".implode(',',array_fill(0,count($find),'?')).")";
 			$bindVars = array_merge($bindVars,$find);
 		} elseif ( is_string($find) and $find != '' ) { // or a string
-			$mid = " AND UPPER(tc.`title`) LIKE ? ";
+			$mid = " AND UPPER(lc.`title`) LIKE ? ";
 			$bindVars = array_merge($bindVars,array('%' . strtoupper( $find ) . '%'));
 		} elseif( @BitBase::verifyId( $pUserId ) ) { // or a string
-			$mid = " AND tc.`user_id` = ? ";
+			$mid = " AND lc.`user_id` = ? ";
 			$bindVars = array_merge($bindVars, array( $pUserId ));
 		}
 
 		if( $pGetData ) {
-			$get_data = 'tc.`data`,';
+			$get_data = 'lc.`data`,';
 		} else {
 			$get_data = '';
 		}
@@ -803,11 +803,11 @@ class BitPage extends LibertyAttachable {
 			`page_id`,
 			`hits`,
 			`page_size` as `len`,
-			tc.`title`,
-			tc.`format_guid`,
+			lc.`title`,
+			lc.`format_guid`,
 			tp.`description`,
-			tc.`last_modified`,
-			tc.`created`,
+			lc.`last_modified`,
+			lc.`created`,
 			$get_data
 			`ip`,
 			`comment`,
@@ -815,17 +815,17 @@ class BitPage extends LibertyAttachable {
 			`flag`,
 			tp.`content_id`
 				FROM `".BIT_DB_PREFIX."wiki_pages` tp
-				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`),
+				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`),
 				`".BIT_DB_PREFIX."users_users` uue,
 				`".BIT_DB_PREFIX."users_users` uuc
-				  WHERE tc.`content_type_guid`=?
-				  AND tc.`modifier_user_id`=uue.`user_id`
-				  AND tc.`user_id`=uuc.`user_id` $mid
+				  WHERE lc.`content_type_guid`=?
+				  AND lc.`modifier_user_id`=uue.`user_id`
+				  AND lc.`user_id`=uuc.`user_id` $mid
 				  ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
 		$query_cant = "SELECT COUNT(*)
 			FROM `".BIT_DB_PREFIX."wiki_pages` tp
-			INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
-			WHERE tc.`content_type_guid`=? $mid";
+			INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`)
+			WHERE lc.`content_type_guid`=? $mid";
 
 		if( $pOrphansOnly ) {
 			$query = "SELECT
@@ -836,11 +836,11 @@ class BitPage extends LibertyAttachable {
 			`page_id`,
 			`hits`,
 			`page_size` as `len`,
-			tc.`title`,
-			tc.`format_guid`,
+			lc.`title`,
+			lc.`format_guid`,
 			tp.`description`,
-			tc.`last_modified`,
-			tc.`created`,
+			lc.`last_modified`,
+			lc.`created`,
 			$get_data
 			`ip`,
 			`comment`,
@@ -849,19 +849,19 @@ class BitPage extends LibertyAttachable {
 			tp.`content_id`
 			FROM `".BIT_DB_PREFIX."wiki_pages` tp
 				LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` tl ON (tp.`content_id` = tl.`to_content_id`)
-				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`),
+				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`),
 				`".BIT_DB_PREFIX."users_users` uue,
 				`".BIT_DB_PREFIX."users_users` uuc
-				  WHERE tc.`content_type_guid`=?
-				  AND tc.`modifier_user_id`=uue.`user_id`
-				  AND tc.`user_id`=uuc.`user_id` $mid
+				  WHERE lc.`content_type_guid`=?
+				  AND lc.`modifier_user_id`=uue.`user_id`
+				  AND lc.`user_id`=uuc.`user_id` $mid
 				  AND tl.`to_content_id` is NULL
 				  ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
 			$query_cant = "SELECT COUNT(*)
 				FROM `".BIT_DB_PREFIX."wiki_pages` tp
 				LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` tl ON (tp.`content_id` = tl.`to_content_id`)
-				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
-				  WHERE tc.`content_type_guid`=? $mid
+				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`)
+				  WHERE lc.`content_type_guid`=? $mid
 				  AND tl.`to_content_id` IS NULL";
 		}
 
@@ -1031,7 +1031,7 @@ class WikiLib extends BitPage {
 				$bindvars[] = "%$word%";
 			}
 			$exp = implode(" or ", $exps);
-			$query = "SELECT tc.`title` FROM `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) WHERE $exp";
+			$query = "SELECT lc.`title` FROM `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`) WHERE $exp";
 			$result = $this->mDb->query($query,$bindvars);
 			while ($res = $result->fetchRow()) {
 				$ret[] = $res["title"];
@@ -1045,8 +1045,8 @@ class WikiLib extends BitPage {
 
 	function get_user_pages( $pUserId, $max, $who='user_id') {
 		if( $pUserId ) {
-			$query = "SELECT tc.`title` as `title`
-					  FROM `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
+			$query = "SELECT lc.`title` as `title`
+					  FROM `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`)
 					  WHERE `$who`=?";
 
 			$result = $this->mDb->query($query,array($pUserId),$max);
@@ -1067,7 +1067,7 @@ class WikiLib extends BitPage {
 	// More about this on version 1.3 when we add the page_rank
 	// column to wiki_pages
 	function page_rank($loops = 16) {
-		$query = "select `content_id`, tc.`title`  from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON( tp.`content_id`=tc.`content_id` ";
+		$query = "select `content_id`, lc.`title`  from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( tp.`content_id`=lc.`content_id` ";
 		$result = $this->mDb->query($query,array());
 		$ret = array();
 
@@ -1177,7 +1177,7 @@ class WikiLib extends BitPage {
 	// Returns the name of "n" random pages
 	function get_random_pages( $pNumPages=10 ) {
 		$ret = NULL;
-		$query = "select `content_id`, `title`  from `".BIT_DB_PREFIX."tiki_content` WHERE `content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' ORDER BY ".$this->mDb->convert_sortmode( 'random' );
+		$query = "select `content_id`, `title`  from `".BIT_DB_PREFIX."liberty_content` WHERE `content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' ORDER BY ".$this->mDb->convert_sortmode( 'random' );
 		$rs = $this->mDb->query( $query, array(), $pNumPages );
 		while( $rs && !$rs->EOF ) {
 			$ret[$rs->fields['content_id']]['title'] = $rs->fields['title'];
@@ -1198,8 +1198,8 @@ class WikiLib extends BitPage {
 
 	function wiki_get_link_structure($page, $level) {
 		$query = "select tc2.`title` from `".BIT_DB_PREFIX."liberty_content_links` tl
-			INNER JOIN tiki_content tc1 ON tc1.`content_id` = tl.`from_content_id`
-			INNER JOIN tiki_content tc2 ON tc2.`content_id` = tl.`to_content_id`
+			INNER JOIN liberty_content tc1 ON tc1.`content_id` = tl.`from_content_id`
+			INNER JOIN liberty_content tc2 ON tc2.`content_id` = tl.`to_content_id`
 			WHERE tc1.`title`=?";
 		$result = $this->mDb->query($query,array($page));
 		$aux['pages'] = array();
@@ -1288,9 +1288,9 @@ class WikiLib extends BitPage {
 			$this->mDb->StartTrans();
 
 			//Delete structure references before we delete the page
-			$query  = "SELECT ts.`structure_id`, tc.`title`
-					   FROM `".BIT_DB_PREFIX."tiki_structures` ts INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (tp.`page_id` = ts.`content_id`) INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`)
-					   WHERE ts.`content_id`=?";
+			$query  = "SELECT ls.`structure_id`, lc.`title`
+					   FROM `".BIT_DB_PREFIX."liberty_structures` ls INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (tp.`page_id` = ls.`content_id`) INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`)
+					   WHERE ls.`content_id`=?";
 			$result = $this->mDb->query($query, array( $pPageId ) );
 			if ( $result ) $delPageName = $result['title'];
 			else $delPageName = '';
@@ -1452,8 +1452,8 @@ class WikiLib extends BitPage {
 		}
 		$bindvars = array();
 		if ($find) {
-			$mid = " AND UPPER(tc.`title`) like ? ";
-			$mid_cant = " WHERE UPPER(tc.`title`) like ? ";
+			$mid = " AND UPPER(lc.`title`) like ? ";
+			$mid_cant = " WHERE UPPER(lc.`title`) like ? ";
 			$bindvars[] = '%'.strtoupper( $find ).'%';
 		} else {
 			$mid = "";
@@ -1463,10 +1463,10 @@ class WikiLib extends BitPage {
 		// If sort mode is versions then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 		// If sort mode is links then offset is 0, maxRecords is -1 (again) and sort_mode is nil
 		// If sort mode is backlinks then offset is 0, maxRecords is -1 (again) and sort_mode is nil
-		$query = "SELECT tc.`title`, tc.`hits`, tp.`page_size` as `len` ,tc.`last_modified`, tc.`user_id`, tc.`ip`, tp.`comment`, tp.`version`, tp.`flag`, tc.`content_id`, tp.`page_id`
-				  FROM `".BIT_DB_PREFIX."tiki_content` tc INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp on (tp.`content_id` = tc.`content_id` )
-				  WHERE tc.`content_type_guid`='bitpage' $mid order by ".$this->mDb->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_content` tc $mid_cant";
+		$query = "SELECT lc.`title`, lc.`hits`, tp.`page_size` as `len` ,lc.`last_modified`, lc.`user_id`, lc.`ip`, tp.`comment`, tp.`version`, tp.`flag`, lc.`content_id`, tp.`page_id`
+				  FROM `".BIT_DB_PREFIX."liberty_content` lc INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp on (tp.`content_id` = lc.`content_id` )
+				  WHERE lc.`content_type_guid`='bitpage' $mid order by ".$this->mDb->convert_sortmode($sort_mode);
+		$query_cant = "select count(*) from `".BIT_DB_PREFIX."liberty_content` lc $mid_cant";
 		$result = $this->mDb->query($query,$bindvars,-1,0);
 		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
@@ -1477,7 +1477,7 @@ class WikiLib extends BitPage {
 			$page_ci = $res["content_id"];
 			$queryc = "select count(*) from `".BIT_DB_PREFIX."liberty_content_links` where `to_content_id`=?";
 			$cant = $this->mDb->getOne($queryc,array($page_ci));
-			$queryc = "select count(*) from `".BIT_DB_PREFIX."tiki_structures` ts, `".BIT_DB_PREFIX."wiki_pages` tp where ts.`content_id`=tp.`page_id` and tp.`content_id`=?";
+			$queryc = "select count(*) from `".BIT_DB_PREFIX."liberty_structures` ls, `".BIT_DB_PREFIX."wiki_pages` tp where ls.`content_id`=tp.`page_id` and tp.`content_id`=?";
 			$cant += $this->mDb->getOne($queryc,array($page_ci));
 
 			if ($cant == 0) {
@@ -1610,7 +1610,7 @@ class WikiLib extends BitPage {
 			$bindvars=array();
 		} else {
 			$findstr='%' . strtoupper( $findwhat ) . '%';
-			$where = "WHERE UPPER(tc.`title`) like ? OR UPPER(tc.`comment`) like ? ";
+			$where = "WHERE UPPER(lc.`title`) like ? OR UPPER(lc.`comment`) like ? ";
 			$bindvars=array($findstr,$findstr);
 		}
 		// section added by ramiro_v on 11/03/2002 ends here
@@ -1627,11 +1627,11 @@ class WikiLib extends BitPage {
 			$where.="WHERE a.`last_modified` = th.`last_modified`";
 		}
 * /
-		$query = "SELECT 'Update' as `action`, th.`last_modified`, uu.`login`, uu.`real_name` as `user`, tc.`ip`, " .
-				"th.`description`, tc.`title`, th.`comment`, th.`version`, th.`page_id` " .
+		$query = "SELECT 'Update' as `action`, th.`last_modified`, uu.`login`, uu.`real_name` as `user`, lc.`ip`, " .
+				"th.`description`, lc.`title`, th.`comment`, th.`version`, th.`page_id` " .
 				"FROM `".BIT_DB_PREFIX."liberty_content_history` th " .
 				"INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (th.`page_id`= tp.`page_id`) " .
-				"INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) " .
+				"INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`) " .
 				"INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id`= th.`user_id`) " .
 				"$where " .
 				"order by th.".$this->mDb->convert_sortmode($sort_mode);
@@ -1824,7 +1824,7 @@ class WikiLib extends BitPage {
 		$result = $this->mDb->query($query,array($tagname));
 		$action = "removed tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
-		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
+		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(tp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wikiHomePage ) );
 		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log` (`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values ( ?,?,?,?,?,?,? )";
 		$result = $this->mDb->query($query,array($homePageId, $action,$wikiHomePage,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
 		$this->mDb->CompleteTrans();
@@ -1850,7 +1850,7 @@ class WikiLib extends BitPage {
 		global $wikiHomePage, $gBitUser, $gBitSystem;
 
 		$this->mDb->StartTrans();
-		$query = "select * from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON( tp.`content_id`=tc.`content_id` )";
+		$query = "select * from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( tp.`content_id`=lc.`content_id` )";
 		$result = $this->mDb->query($query,array());
 
 		while ($res = $result->fetchRow()) {
@@ -1863,7 +1863,7 @@ class WikiLib extends BitPage {
 			$result2 = $this->mDb->query($query,array($res["page_id"],$tagname,$res["title"],$res["hits"],$data,$res["last_modified"],$res["comment"],$res["version"],$res["user_id"],$res["ip"],$res["flag"],$description));
 		}
 
-		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
+		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(tp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wikiHomePage ) );
 		$action = "created tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
 		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`page_id`,`action`,`page_name`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?,?)";
@@ -1889,7 +1889,7 @@ class WikiLib extends BitPage {
 			$tagPage->store( $res );
 		}
 
-		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
+		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(tp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wikiHomePage ) );
 		$action = "recovered tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
 		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values (?,?,?,?,?,?,?)";
