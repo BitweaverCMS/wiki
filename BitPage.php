@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.20 2006/02/01 17:04:58 bitweaver Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.21 2006/02/01 18:23:50 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.20 $ $Date: 2006/02/01 17:04:58 $ $Author: bitweaver $
+ * @version $Revision: 1.21 $ $Date: 2006/02/01 18:23:50 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.20 2006/02/01 17:04:58 bitweaver Exp $
+ * $Id: BitPage.php,v 1.21 2006/02/01 18:23:50 spiderr Exp $
  */
 
 /**
@@ -1559,16 +1559,16 @@ class WikiLib extends BitPage {
 		$mid = "";
 		}
 
-		$query = "select `name` ,`created`,tcts.`template_id` from `".BIT_DB_PREFIX."tiki_content_templates` tct, `".BIT_DB_PREFIX."tiki_content_templates_sections` tcts ";
+		$query = "select `name` ,`created`,tcts.`template_id` from `".BIT_DB_PREFIX."themes_content_templates` tct, `".BIT_DB_PREFIX."themes_content_templates_sections` tcts ";
 		$query.= " where tcts.`template_id`=tct.`template_id` and tcts.`section`=? $mid order by ".$this->mDb->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_content_templates` tct, `".BIT_DB_PREFIX."tiki_content_templates_sections` tcts ";
+		$query_cant = "select count(*) from `".BIT_DB_PREFIX."themes_content_templates` tct, `".BIT_DB_PREFIX."themes_content_templates_sections` tcts ";
 		$query_cant.= "where tcts.`template_id`=tct.`template_id` and tcts.`section`=? $mid";
 		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
 		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
-		$query2 = "select `section`  from `".BIT_DB_PREFIX."tiki_content_templates_sections` where `template_id`=?";
+		$query2 = "select `section`  from `".BIT_DB_PREFIX."themes_content_templates_sections` where `template_id`=?";
 
 		$result2 = $this->mDb->query($query2,array((int)$res["template_id"]));
 		$sections = array();
@@ -1589,7 +1589,7 @@ class WikiLib extends BitPage {
 
 	/*shared*/
 	function get_template($template_id) {
-		$query = "select * from `".BIT_DB_PREFIX."tiki_content_templates` where `template_id`=?";
+		$query = "select * from `".BIT_DB_PREFIX."themes_content_templates` where `template_id`=?";
 		$result = $this->mDb->query($query,array((int)$template_id));
 		if (!$result->numRows()) return false;
 		$res = $result->fetchRow();
