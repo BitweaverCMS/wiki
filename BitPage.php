@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.24 2006/02/01 19:01:49 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.25 2006/02/01 20:15:53 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.24 $ $Date: 2006/02/01 19:01:49 $ $Author: squareing $
+ * @version $Revision: 1.25 $ $Date: 2006/02/01 20:15:53 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.24 2006/02/01 19:01:49 squareing Exp $
+ * $Id: BitPage.php,v 1.25 2006/02/01 20:15:53 spiderr Exp $
  */
 
 /**
@@ -138,7 +138,7 @@ class BitPage extends LibertyAttachable {
 					// if pParamHash['page_id'] is set, some is requesting a particular page_id. Use with caution!
 					$pParamHash['page_store']['page_id'] = $pParamHash['page_id'];
 				} else {
-					$pParamHash['page_store']['page_id'] = $this->mDb->GenID( 'tiki_pages_page_id_seq');
+					$pParamHash['page_store']['page_id'] = $this->mDb->GenID( 'wiki_pages_page_id_seq');
 				}
 				$this->mPageId = $pParamHash['page_store']['page_id'];
 
