@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.23 2006/02/01 18:44:07 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.24 2006/02/01 19:01:49 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.23 $ $Date: 2006/02/01 18:44:07 $ $Author: squareing $
+ * @version $Revision: 1.24 $ $Date: 2006/02/01 19:01:49 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.23 2006/02/01 18:44:07 squareing Exp $
+ * $Id: BitPage.php,v 1.24 2006/02/01 19:01:49 squareing Exp $
  */
 
 /**
@@ -504,9 +504,9 @@ class BitPage extends LibertyAttachable {
 	*/
 	function getBacklinks() {
 		if( $this->isValid() ) {
-			$query = "SELECT tl.`from_content_id`, lc.`title`
-					  FROM `".BIT_DB_PREFIX."liberty_content_links` tl INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (tl.`from_content_id`=lc.`content_id`)
-					  WHERE tl.`to_content_id` = ?";
+			$query = "SELECT lcl.`from_content_id`, lc.`title`
+					  FROM `".BIT_DB_PREFIX."liberty_content_links` lcl INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lcl.`from_content_id`=lc.`content_id`)
+					  WHERE lcl.`to_content_id` = ?";
 			$ret = $this->mDb->getAssoc( $query, array( $this->mContentId ) );
 			return $ret;
 		}
@@ -848,21 +848,21 @@ class BitPage extends LibertyAttachable {
 			`flag`,
 			tp.`content_id`
 			FROM `".BIT_DB_PREFIX."wiki_pages` tp
-				LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` tl ON (tp.`content_id` = tl.`to_content_id`)
+				LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (tp.`content_id` = lcl.`to_content_id`)
 				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`),
 				`".BIT_DB_PREFIX."users_users` uue,
 				`".BIT_DB_PREFIX."users_users` uuc
 				  WHERE lc.`content_type_guid`=?
 				  AND lc.`modifier_user_id`=uue.`user_id`
 				  AND lc.`user_id`=uuc.`user_id` $mid
-				  AND tl.`to_content_id` is NULL
+				  AND lcl.`to_content_id` is NULL
 				  ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
 			$query_cant = "SELECT COUNT(*)
 				FROM `".BIT_DB_PREFIX."wiki_pages` tp
-				LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` tl ON (tp.`content_id` = tl.`to_content_id`)
+				LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (tp.`content_id` = lcl.`to_content_id`)
 				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`)
 				  WHERE lc.`content_type_guid`=? $mid
-				  AND tl.`to_content_id` IS NULL";
+				  AND lcl.`to_content_id` IS NULL";
 		}
 
 		// If sort mode is versions then offset is 0, maxRecords is -1 (again) and sort_mode is nil
@@ -1197,10 +1197,10 @@ class WikiLib extends BitPage {
 	}
 
 	function wiki_get_link_structure($page, $level) {
-		$query = "select tc2.`title` from `".BIT_DB_PREFIX."liberty_content_links` tl
-			INNER JOIN liberty_content tc1 ON tc1.`content_id` = tl.`from_content_id`
-			INNER JOIN liberty_content tc2 ON tc2.`content_id` = tl.`to_content_id`
-			WHERE tc1.`title`=?";
+		$query = "select lc2.`title` from `".BIT_DB_PREFIX."liberty_content_links` lcl
+			INNER JOIN liberty_content lc1 ON lc1.`content_id` = lcl.`from_content_id`
+			INNER JOIN liberty_content lc2 ON lc2.`content_id` = lcl.`to_content_id`
+			WHERE lc1.`title`=?";
 		$result = $this->mDb->query($query,array($page));
 		$aux['pages'] = array();
 		$aux['name'] = $page;
