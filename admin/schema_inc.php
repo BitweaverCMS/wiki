@@ -12,34 +12,6 @@ $tables = array(
 	comment C(200)
 ",
 
-'liberty_copyrights' => "
-	copyright_id I4 AUTO PRIMARY,
-	page_id I4 NOTNULL,
-	title C(200),
-	year I8,
-	authors C(200),
-	copyright_order I8,
-	user_id I4
-",
-
-'liberty_content_history' => "
-	page_id I4 PRIMARY,
-	version I4 PRIMARY,
-	last_modified I8 NOTNULL,
-	format_guid C(16) NOTNULL,
-	description C(200),
-	user_id C(40),
-	ip C(15),
-	comment C(200),
-	data X
-	CONSTRAINTS ', CONSTRAINT `tiki_history_page_ref` FOREIGN KEY (`page_id`) REFERENCES `".BIT_DB_PREFIX."wiki_pages`( `page_id` )'
-",
-
-'liberty_content_links' => "
-	from_content_id I4 PRIMARY,
-	to_content_id I4 PRIMARY
-",
-
 'wiki_footnotes' => "
 	user_id C(40) PRIMARY,
 	page_id I4 NOTNULL,
@@ -122,7 +94,7 @@ $gBitInstaller->registerSchemaIndexes( WIKI_PKG_NAME, $indices );
 
 // ### Sequences
 $sequences = array (
-	'pages_page_id_seq' => array( 'start' => 1 )
+	'wiki_pages_page_id_seq' => array( 'start' => 1 )
 );
 $gBitInstaller->registerSchemaSequences( WIKI_PKG_NAME, $sequences );
 
