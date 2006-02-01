@@ -114,15 +114,15 @@ $gBitInstaller->registerPackageInfo( WIKI_PKG_NAME, array(
 
 // ### Indexes
 $indices = array (
-	'tiki_pages_content_idx' => array( 'table' => 'wiki_pages', 'cols' => 'content_id', 'opts' => 'UNIQUE' ),
-	'tiki_pages_page_rank_idx' => array( 'table' => 'wiki_pages', 'cols' => 'page_rank', 'opts' => NULL ),
-	'tiki_page_footnotes_page_idx' => array( 'table' => 'wiki_footnotes', 'cols' => 'page_id', 'opts' => NULL )
+	'pages_content_idx' => array( 'table' => 'wiki_pages', 'cols' => 'content_id', 'opts' => 'UNIQUE' ),
+	'pages_page_rank_idx' => array( 'table' => 'wiki_pages', 'cols' => 'page_rank', 'opts' => NULL ),
+	'page_footnotes_page_idx' => array( 'table' => 'wiki_footnotes', 'cols' => 'page_id', 'opts' => NULL )
 );
 $gBitInstaller->registerSchemaIndexes( WIKI_PKG_NAME, $indices );
 
 // ### Sequences
 $sequences = array (
-	'tiki_pages_page_id_seq' => array( 'start' => 1 )
+	'pages_page_id_seq' => array( 'start' => 1 )
 );
 $gBitInstaller->registerSchemaSequences( WIKI_PKG_NAME, $sequences );
 
