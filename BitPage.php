@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.19 2006/01/31 20:21:36 bitweaver Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.20 2006/02/01 17:04:58 bitweaver Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.19 $ $Date: 2006/01/31 20:21:36 $ $Author: bitweaver $
+ * @version $Revision: 1.20 $ $Date: 2006/02/01 17:04:58 $ $Author: bitweaver $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.19 2006/01/31 20:21:36 bitweaver Exp $
+ * $Id: BitPage.php,v 1.20 2006/02/01 17:04:58 bitweaver Exp $
  */
 
 /**
@@ -1189,6 +1189,7 @@ class WikiLib extends BitPage {
 	}
 
 	function get_graph_map($page, $level, $garg) {
+		include_once( UTIL_PKG_PATH.'GraphViz.php' );
 		$str = $this->wiki_get_link_structure($page, $level);
 		$graph = new Image_GraphViz();
 		$this->wiki_page_graph($str, $graph, $garg);
