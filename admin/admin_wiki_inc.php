@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.9 2006/01/20 11:11:52 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.10 2006/02/02 10:32:23 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -332,13 +332,6 @@ if (isset($_REQUEST["wikidiscussprefs"])) {
 		$gBitSystem->storePreference("feature_wiki_discuss", 'n');
 		$gBitSmarty->assign('feature_wiki_discuss', 'n');
 	}
-	if (isset($_REQUEST["wiki_forum"])) {
-		$gBitSystem->storePreference('wiki_forum', $_REQUEST["wiki_forum"]);
-		$gBitSmarty->assign('wiki_forum', $_REQUEST["wiki_forum"]);
-		$wiki_forum_id = $gBitSystem->mDb->getOne("select `forumID` from `tiki_forums` where `name`='" . $_REQUEST["wiki_forum"] . "'");
-		$gBitSystem->storePreference('wiki_forum_id', $wiki_forum_id);
-		$gBitSmarty->assign('wiki_forum_id', $wiki_forum_id);
-	}
 }
 if (isset($_REQUEST["setwikiregex"])) {
 
@@ -368,11 +361,6 @@ if (isset($_REQUEST["wikisetcopyright"])) {
 		$gBitSystem->storePreference("wikiSubmitNotice", $_REQUEST["wikiSubmitNotice"]);
 		$gBitSmarty->assign('wikiSubmitNotice', $_REQUEST["wikiSubmitNotice"]);
 	}
-}
-if ( $gBitSystem->isPackageActive( 'tiki_forums' ) ) {
-	$commentslib = new Comments();
-	$all_forums = $commentslib->list_forums(0, -1, 'name_asc', '');
-	$gBitSmarty->assign_by_ref("all_forums", $all_forums["data"]);
 }
 $tags = $adminlib->get_tags();
 $gBitSmarty->assign_by_ref("tags", $tags);

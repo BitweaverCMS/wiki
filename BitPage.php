@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.25 2006/02/01 20:15:53 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.26 2006/02/02 10:32:23 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.25 $ $Date: 2006/02/01 20:15:53 $ $Author: spiderr $
+ * @version $Revision: 1.26 $ $Date: 2006/02/02 10:32:23 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.25 2006/02/01 20:15:53 spiderr Exp $
+ * $Id: BitPage.php,v 1.26 2006/02/02 10:32:23 squareing Exp $
  */
 
 /**
@@ -1216,110 +1216,6 @@ class WikiLib extends BitPage {
 		return $aux;
 	}
 
-	/* *********  UNUSED FUNCTIONS - will delete soon - spiderr 2005-10-07 **********
-	function add_wiki_attachment_hit($id) {
-		global $count_admin_pvs, $user;
-		if ($count_admin_pvs == 'y' || !$gBitUser->isAdmin()) {
-		$query = "update `".BIT_DB_PREFIX."tiki_wiki_attachments` set `downloads`=`downloads`+1 where `att_id`=?";
-		$result = $this->mDb->query($query,array((int)$id));
-		}
-		return true;
-	}
-	function get_wiki_attachment($att_id) {
-		$query = "select * from `".BIT_DB_PREFIX."tiki_wiki_attachments` where `att_id`=?";
-		$result = $this->mDb->query($query,array((int)$att_id));
-		if (!$result->numRows()) return false;
-		$res = $result->fetchRow();
-		return $res;
-	}
-
-	function remove_wiki_attachment($att_id) {
-		global $w_use_dir;
-		$path = $this->mDb->getOne("select `path` from `".BIT_DB_PREFIX."tiki_wiki_attachments` where `att_id`=$att_id");
-		if ($path) {
-			@unlink ($w_use_dir . $path);
-		}
-		$query = "delete from `".BIT_DB_PREFIX."tiki_wiki_attachments` where `att_id`='$att_id'";
-		$result = $this->mDb->query($query);
-	}
-
-	function wiki_attach_file($page, $name, $type, $size, $data, $comment, $pUserId, $fhash) {
-		global $gBitSystem;
-		$comment = strip_tags($comment);
-		$now = $gBitSystem->getUTCTime();
-		$query = "insert into `".BIT_DB_PREFIX."tiki_wiki_attachments` (`page`,`filename`,`filesize`,`filetype`,`data`,`created`,`downloads`,`user_id`,`comment`,`path`) values(?,?,?,?,?,?,0,?,?,?)";
-		$result = $this->mDb->query($query,array($page,$name, (int) $size,$type,$data, (int) $now, $pUserId, $comment,$fhash));
-	}
-	function list_plugins() {
-		$files = array();
-		if (is_dir(PLUGINS_DIR)) {
-			if ($dh = opendir(PLUGINS_DIR)) {
-			while (($file = readdir($dh)) !== false) {
-				if (preg_match("/^wikiplugin_.*\.php$/", $file))
-				array_push($files, $file);
-			}
-			closedir ($dh);
-			}
-		}
-		return $files;
-	}
-	//
-	// Call 'wikiplugin_.*_description()' from given file
-	//
-	function get_plugin_description($file) {
-		global $gBitSystem;
-		include_once (PLUGINS_DIR . '/' . $file);
-		$func_name = str_replace(".php", "", $file). '_help';
-		return function_exists($func_name) ? $func_name() : "";
-	}
-	//
-	// Call 'wikiplugin_.*_extended_description()' from given file
-	//
-	function get_plugin_extended_description($file) {
-		global $gBitSystem;
-		include_once (PLUGINS_DIR . '/' . $file);
-		$func_name = str_replace(".php", "", $file). '_extended_help';
-		return function_exists($func_name) ? $func_name() : "";
-	}
-	// Removes all the versions of a page and the page itself
-	function remove_all_versions( $pPageId, $comment = '') {
-		if( $this->verifyId( $pPageId ) ) {
-			global $gBitUser,$gBitSystem;
-			$this->mDb->StartTrans();
-
-			//Delete structure references before we delete the page
-			$query  = "SELECT ls.`structure_id`, lc.`title`
-					   FROM `".BIT_DB_PREFIX."liberty_structures` ls INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (tp.`page_id` = ls.`content_id`) INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`)
-					   WHERE ls.`content_id`=?";
-			$result = $this->mDb->query($query, array( $pPageId ) );
-			if ( $result ) $delPageName = $result['title'];
-			else $delPageName = '';
-			while ($res = $result->fetchRow()) {
-				$this->remove_from_structure($res["structure_id"]);
-			}
-			$query = "DELETE FROM `".BIT_DB_PREFIX."liberty_content_history` where `page_id` = ?";
-			$result = $this->mDb->query( $query, array( $pPageId ) );
-			$query = "DELETE FROM `".BIT_DB_PREFIX."liberty_content_links` where `from_content_id` = ?";
-			$result = $this->mDb->query( $query, array( $pPageId ) );
-			$query = "DELETE FROM `".BIT_DB_PREFIX."wiki_pages` where `page_id` = ?";
-			$result = $this->mDb->query( $query, array( $pPageId ) );
-			$action = "Removed";
-			$t = $gBitSystem->getUTCTime();
-			$query = "INSERT INTO `".BIT_DB_PREFIX."wiki_action_log`(`action`,`page_id`, `title`, `last_modified`, `user_id`, `ip`, `comment`) VALUES (?,?,?,?,?,?,?)";
-			$result = $this->mDb->query( $query, array( $action, $pPageId, $delPageName, (int)$t, $gBitUser->mUserId, $_SERVER["REMOTE_ADDR"], $comment ) );
-			$query = "UPDATE `".BIT_DB_PREFIX."users_groups` SET `group_home`=? WHERE `group_home`=?";
-			$this->mDb->query($query, array(NULL, $delPageName));
-
-			#$this->remove_object('wiki page', $delPageName);
-
-			$this->mDb->CompleteTrans();
-
-			return true;
-		}
-	}
-*/
-
-
 	function wiki_link_structure() {
 		$query = "select `title` from `".BIT_DB_PREFIX."wiki_pages` order by ".$this->mDb->convert_sortmode("title_asc");
 		$result = $this->mDb->query($query);
@@ -1420,244 +1316,6 @@ class WikiLib extends BitPage {
 		$result = $this->mDb->query($query,array($action,1,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
 	}
 
-/* using BitPage::getList() now - xing
-	// Scan pages and find orphaned ones
-	function list_orphan_pages($offset = 0, $maxRecords = -1, $sort_mode = 'title_desc', $find = '') {
-
-		if ($sort_mode == 'size_desc') {
-			$sort_mode = 'page_size_desc';
-		}
-
-		if ($sort_mode == 'size_asc') {
-			$sort_mode = 'page_size_asc';
-		}
-
-		$old_sort_mode = '';
-
-		if (in_array($sort_mode, array(
-			'versions_desc',
-			'versions_asc',
-			'links_asc',
-			'links_desc',
-			'backlinks_asc',
-			'backlinks_desc'
-		))) {
-			$old_offset = $offset;
-
-			$old_maxRecords = $maxRecords;
-			$old_sort_mode = $sort_mode;
-			$sort_mode = 'user_id_desc';
-			$offset = 0;
-			$maxRecords = -1;
-		}
-		$bindvars = array();
-		if ($find) {
-			$mid = " AND UPPER(lc.`title`) like ? ";
-			$mid_cant = " WHERE UPPER(lc.`title`) like ? ";
-			$bindvars[] = '%'.strtoupper( $find ).'%';
-		} else {
-			$mid = "";
-			$mid_cant = "";
-		}
-
-		// If sort mode is versions then offset is 0, maxRecords is -1 (again) and sort_mode is nil
-		// If sort mode is links then offset is 0, maxRecords is -1 (again) and sort_mode is nil
-		// If sort mode is backlinks then offset is 0, maxRecords is -1 (again) and sort_mode is nil
-		$query = "SELECT lc.`title`, lc.`hits`, tp.`page_size` as `len` ,lc.`last_modified`, lc.`user_id`, lc.`ip`, tp.`comment`, tp.`version`, tp.`flag`, lc.`content_id`, tp.`page_id`
-				  FROM `".BIT_DB_PREFIX."liberty_content` lc INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp on (tp.`content_id` = lc.`content_id` )
-				  WHERE lc.`content_type_guid`='bitpage' $mid order by ".$this->mDb->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."liberty_content` lc $mid_cant";
-		$result = $this->mDb->query($query,$bindvars,-1,0);
-		$cant = $this->mDb->getOne($query_cant,$bindvars);
-		$ret = array();
-		$num_or = 0;
-
-		while ($res = $result->fetchRow()) {
-
-			$page_ci = $res["content_id"];
-			$queryc = "select count(*) from `".BIT_DB_PREFIX."liberty_content_links` where `to_content_id`=?";
-			$cant = $this->mDb->getOne($queryc,array($page_ci));
-			$queryc = "select count(*) from `".BIT_DB_PREFIX."liberty_structures` ls, `".BIT_DB_PREFIX."wiki_pages` tp where ls.`content_id`=tp.`page_id` and tp.`content_id`=?";
-			$cant += $this->mDb->getOne($queryc,array($page_ci));
-
-			if ($cant == 0) {
-				$num_or++;
-				$aux = array();
-				$title = $res["title"];
-				$aux["title"] = $title;
-				$page_id = $res["page_id"];
-				$page = $aux["title"];
-				$page_as = addslashes($page);
-				$aux["page_id"] = $res["page_id"];
-				$aux['display_url'] = $this->getDisplayUrl( $aux['title'], $aux );
-				$aux["hits"] = $res["hits"];
-				$aux["last_modified"] = $res["last_modified"];
-				$aux["user"] = $res["user_id"];
-				$aux["ip"] = $res["ip"];
-				$aux["len"] = $res["len"];
-				$aux["comment"] = $res["comment"];
-				$aux["version"] = $res["version"];
-				$aux["flag"] = $res["flag"] == 'y' ? tra('locked') : tra('unlocked');
-				$aux["versions"] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."liberty_content_history` where `page_id`=?",array($page_id));
-				$aux["links"] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."liberty_content_links` where `from_content_id`=?",array($page_ci));
-				$aux["backlinks"] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."liberty_content_links` where `to_content_id`=?",array($page_ci));
-				$ret[] = $aux;
-			}
-		}
-
-		// If sortmode is versions, links or backlinks sort using the ad-hoc function and reduce using old_offse and old_maxRecords
-		if ($old_sort_mode == 'versions_asc') {
-			usort($ret, 'compare_versions');
-		}
-
-		if ($old_sort_mode == 'versions_desc') {
-			usort($ret, 'r_compare_versions');
-		}
-
-		if ($old_sort_mode == 'links_desc') {
-			usort($ret, 'compare_links');
-		}
-
-		if ($old_sort_mode == 'links_asc') {
-			usort($ret, 'r_compare_links');
-		}
-
-		if ($old_sort_mode == 'backlinks_desc') {
-			usort($ret, 'compare_backlinks');
-		}
-
-		if ($old_sort_mode == 'backlinks_asc') {
-			usort($ret, 'r_compare_backlinks');
-		}
-
-		if (in_array($old_sort_mode, array(
-			'versions_desc',
-			'versions_asc',
-			'links_asc',
-			'links_desc',
-			'backlinks_asc',
-			'backlinks_desc'
-		))) {
-			$ret = array_slice($ret, $old_offset, $old_maxRecords);
-		}
-
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $num_or;
-		return $retval;
-	}
-*/
-	// Templates ////
-	/*shared*/
-	function list_templates($section, $offset, $maxRecords, $sort_mode, $find) {
-		$bindvars = array($section);
-		if ($find) {
-		$findesc = '%'.strtoupper( $find ).'%';
-		$mid = " and (UPPER(`content`) like ?)";
-		$bindvars[] = $findesc;
-		} else {
-		$mid = "";
-		}
-
-		$query = "select `name` ,`created`,tcts.`template_id` from `".BIT_DB_PREFIX."themes_content_templates` tct, `".BIT_DB_PREFIX."themes_content_templates_sections` tcts ";
-		$query.= " where tcts.`template_id`=tct.`template_id` and tcts.`section`=? $mid order by ".$this->mDb->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."themes_content_templates` tct, `".BIT_DB_PREFIX."themes_content_templates_sections` tcts ";
-		$query_cant.= "where tcts.`template_id`=tct.`template_id` and tcts.`section`=? $mid";
-		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->mDb->getOne($query_cant,$bindvars);
-		$ret = array();
-
-		while ($res = $result->fetchRow()) {
-		$query2 = "select `section`  from `".BIT_DB_PREFIX."themes_content_templates_sections` where `template_id`=?";
-
-		$result2 = $this->mDb->query($query2,array((int)$res["template_id"]));
-		$sections = array();
-
-		while ($res2 = $result2->fetchRow()) {
-			$sections[] = $res2["section"];
-		}
-
-		$res["sections"] = $sections;
-		$ret[] = $res;
-		}
-
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		return $retval;
-	}
-
-	/*shared*/
-	function get_template($template_id) {
-		$query = "select * from `".BIT_DB_PREFIX."themes_content_templates` where `template_id`=?";
-		$result = $this->mDb->query($query,array((int)$template_id));
-		if (!$result->numRows()) return false;
-		$res = $result->fetchRow();
-		return $res;
-	}
-	// templates ////
-/*
-
-	pulled from the now nuked hist_lib during bitweaver conversion. I think this function is deprecated. XOXO spiderr
-
-	// This function get the last changes from pages from the last $days days
-	// if days is 0 this gets all the registers
-	// function parameters modified by ramiro_v on 11/03/2002
-	function get_last_changes($days, $offset = 0, $limit = -1, $sort_mode = 'last_modified_desc', $findwhat = '') {
-		// section added by ramiro_v on 11/03/2002 begins here
-		$where = '';
-		if ($findwhat == '') {
-			$bindvars=array();
-		} else {
-			$findstr='%' . strtoupper( $findwhat ) . '%';
-			$where = "WHERE UPPER(lc.`title`) like ? OR UPPER(lc.`comment`) like ? ";
-			$bindvars=array($findstr,$findstr);
-		}
-		// section added by ramiro_v on 11/03/2002 ends here
-		if ($days) {
-			$toTime = mktime(23, 59, 59, date("m"), date("d"), date("Y"));
-			$fromTime = $toTime - (24 * 60 * 60 * $days);
-			$where .= "WHERE th.`last_modified` BETWEEN ? AND ? ";
-			$bindvars[]=$fromTime;
-			$bindvars[]=$toTime;
-		}
-/ *		if (empty($where)) {
-			$where=" a.`last_modified` = th.`last_modified` ";
-		} else {
-			$where.="WHERE a.`last_modified` = th.`last_modified`";
-		}
-* /
-		$query = "SELECT 'Update' as `action`, th.`last_modified`, uu.`login`, uu.`real_name` as `user`, lc.`ip`, " .
-				"th.`description`, lc.`title`, th.`comment`, th.`version`, th.`page_id` " .
-				"FROM `".BIT_DB_PREFIX."liberty_content_history` th " .
-				"INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (th.`page_id`= tp.`page_id`) " .
-				"INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`) " .
-				"INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id`= th.`user_id`) " .
-				"$where " .
-				"order by th.".$this->mDb->convert_sortmode($sort_mode);
-		$query_cant = "SELECT COUNT(*) FROM `".BIT_DB_PREFIX."liberty_content_history` th " . $where;
-		$result = $this->mDb->query($query,$bindvars,$limit,$offset);
-		$cant = $this->mDb->getOne($query_cant,$bindvars);
-		$ret = array();
-		$r = array();
-		while ($res = $result->fetchRow()) {
-			$r["action"] = $res["action"];
-			$r["last_modified"] = $res["last_modified"];
-			$r["user"] = $res["user"];
-			$r["ip"] = $res["ip"];
-			$r["page_id"] = $res["page_id"];
-			$r["title"] = $res["title"];
-			$r["comment"] = $res["comment"];
-			$r["version"] = $res["version"];
-			$ret[] = $r;
-		}
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		return $retval;
-	}
-*/
-
 	function list_extwiki($offset, $maxRecords, $sort_mode, $find) {
 		$bindvars=array();
 		if ($find) {
@@ -1732,6 +1390,7 @@ class WikiLib extends BitPage {
 		return $res;
 	}
 
+/* ================== UNUSED FUNCTIONS --- will remove soon ============== xing
 	function remove_orphan_images() {
 		$merge = array();
 
@@ -1808,7 +1467,9 @@ class WikiLib extends BitPage {
 			}
 		}
 	}
+*/
 
+/* ================== WIKI TAG FUNCTIONS ============== */
 	function tag_exists($tag) {
 		$query = "select distinct `tag_name` from `".BIT_DB_PREFIX."wiki_tags` where `tag_name` = ?";
 

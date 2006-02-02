@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.13 2006/02/01 20:38:42 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.14 2006/02/02 10:32:23 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.13 2006/02/01 20:38:42 squareing Exp $
+ * $Id: edit.php,v 1.14 2006/02/02 10:32:23 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -384,10 +384,6 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 	$formInfo = $_REQUEST;
 	$formInfo['data'] = &$_REQUEST['edit'];
 }
-if( $gBitSystem->isFeatureActive( 'feature_wiki_templates' ) && $gBitUser->hasPermission( 'bit_p_use_content_templates' ) ) {
-	$templates = $wikilib->list_templates( 'wiki', 0, -1, 'name_asc', '' );
-}
-$gBitSmarty->assign_by_ref( 'templates', $templates["data"] );
 
 if( isset( $_REQUEST["preview"] ) ) {
 	$gBitSmarty->assign( 'preview',1 );
