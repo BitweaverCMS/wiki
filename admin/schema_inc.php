@@ -86,9 +86,9 @@ $gBitInstaller->registerPackageInfo( WIKI_PKG_NAME, array(
 
 // ### Indexes
 $indices = array (
-	'pages_content_idx' => array( 'table' => 'wiki_pages', 'cols' => 'content_id', 'opts' => 'UNIQUE' ),
-	'pages_page_rank_idx' => array( 'table' => 'wiki_pages', 'cols' => 'page_rank', 'opts' => NULL ),
-	'page_footnotes_page_idx' => array( 'table' => 'wiki_footnotes', 'cols' => 'page_id', 'opts' => NULL )
+	'wiki_pages_content_idx' => array( 'table' => 'wiki_pages', 'cols' => 'content_id', 'opts' => 'UNIQUE' ),
+	'wiki_pages_page_rank_idx' => array( 'table' => 'wiki_pages', 'cols' => 'page_rank', 'opts' => NULL ),
+	'wiki_page_footnotes_page_idx' => array( 'table' => 'wiki_footnotes', 'cols' => 'page_id', 'opts' => NULL )
 );
 $gBitInstaller->registerSchemaIndexes( WIKI_PKG_NAME, $indices );
 
@@ -113,7 +113,6 @@ $gBitInstaller->registerUserPermissions( WIKI_PKG_NAME, array(
 	array('bit_p_minor', 'Can save as minor edit', 'registered', WIKI_PKG_NAME),
 	array('bit_p_rename', 'Can rename pages', 'editors', WIKI_PKG_NAME),
 	array('bit_p_lock', 'Can lock pages', 'editors', WIKI_PKG_NAME),
-
 	array('bit_p_edit_books', 'Can create and edit books', 'registered', WIKI_PKG_NAME),
 	array('bit_p_admin_books', 'Can administer books', 'editors', WIKI_PKG_NAME),
 	array('bit_p_edit_copyrights', 'Can edit copyright notices', 'registered', WIKI_PKG_NAME)
