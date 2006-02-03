@@ -38,7 +38,7 @@
 			{/if}
 
 			{if $cached_page eq 'y'}
-				<a title="{tr}refresh{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;refresh=1">{biticon ipackage=liberty iname="refresh" iexplain="refresh"}</a>
+				<a title="{tr}refresh cache{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;refresh=1">{biticon ipackage=liberty iname="refresh" iexplain="refresh cache"}</a>
 			{/if}
 			{if $gBitUser->hasPermission( 'bit_p_print' )}
 				<a title="{tr}print{/tr}" style="display:none;" href="{$smarty.const.WIKI_PKG_URL}print.php?{if $structureInfo.root_structure_id}structure_id={$structureInfo.root_structure_id}{else}page_id={$pageInfo.page_id}{/if}">{biticon ipackage=liberty iname="print" iexplain="print"}</a>
