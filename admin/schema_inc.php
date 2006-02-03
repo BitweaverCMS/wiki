@@ -186,7 +186,12 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	array( WIKI_PKG_NAME, 'wikiHomePage','Welcome'),
 	array( WIKI_PKG_NAME, 'wikiLicensePage',''),
 	array( WIKI_PKG_NAME, 'wikiSubmitNotice',''),
-	array( RSS_PKG_NAME, 'rss_'.WIKI_PKG_NAME, 'y'),
 ) );
+
+if( defined( 'RSS_PKG_NAME' ) ) {
+	$gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
+		array( RSS_PKG_NAME, 'rss_'.WIKI_PKG_NAME, 'y'),
+	) );
+}
 
 ?>

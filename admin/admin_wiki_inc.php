@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.10 2006/02/02 10:32:23 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.11 2006/02/03 14:56:53 spiderr Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -150,6 +150,7 @@ if (isset($_REQUEST["wikifeatures"])) {
 		$gBitSystem->storePreference("feature_warn_on_edit", 'n');
 		$gBitSmarty->assign("feature_warn_on_edit", 'n');
 	}
+	$gBitSystem->storePreference("wiki_link_type", $_REQUEST["link_type"]);
 	$gBitSystem->storePreference("warn_on_edit_time", $_REQUEST["warn_on_edit_time"]);
 	$gBitSmarty->assign('warn_on_edit_time', $_REQUEST["warn_on_edit_time"]);
 	$gBitSystem->storePreference('wiki_cache', $_REQUEST["wiki_cache"]);
@@ -362,7 +363,7 @@ if (isset($_REQUEST["wikisetcopyright"])) {
 		$gBitSmarty->assign('wikiSubmitNotice', $_REQUEST["wikiSubmitNotice"]);
 	}
 }
-$tags = $adminlib->get_tags();
+$tags = $wikilib->get_tags();
 $gBitSmarty->assign_by_ref("tags", $tags);
 $gBitSmarty->assign("maxVersions", $gBitSystem->getPreference("maxVersions", 0));
 $gBitSmarty->assign("keep_versions", $gBitSystem->getPreference("keep_versions", 1));
