@@ -1,5 +1,5 @@
 <?php
-global $modlib, $gQueryUserId, $gBitSmarty, $fHomepage, $gBitSystem, $module_params, $module_rows;
+global $gBitThemes, $gQueryUserId, $gBitSmarty, $fHomepage, $gBitSystem, $module_params, $module_rows;
 
 $errors = array();
 $success = array();
@@ -12,13 +12,13 @@ if (!empty($_REQUEST['fSubmitCenterWikiPageSettings'])) {
 		break 2;
 	}
 	$storeParams = array('page' => $_REQUEST['page_name'], 'display_title' => (!empty($_REQUEST['display_title']) ? $_REQUEST['display_title'] : NULL));
-	$modlib->store_module_params('bitpackage:wiki/center_wiki_page.tpl', $gBitUser->mUserId, $storeParams);
+	$gBitThemes->storeModuleParameters('bitpackage:wiki/center_wiki_page.tpl', $gBitUser->mUserId, $storeParams);
 	$success[] = "Center wiki page settings successfully saved";
 }
 
 // Get Parameters Assigned to this module
 if( !empty( $gQueryUserId ) ) {
-	$module_params = $modlib->get_module_params('bitpackage:wiki/center_wiki_page.tpl', $gQueryUserId);
+	$module_params = $gBitThemes->getModuleParameters('bitpackage:wiki/center_wiki_page.tpl', $gQueryUserId);
 } else {
 }
 $gBitSmarty->assign_by_ref('modParams', $module_params);
