@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.1.2.6 2006/01/15 15:49:54 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.1.2.7 2006/02/03 12:57:10 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -41,7 +41,7 @@ if( !$gBitUser->hasPermission( 'bit_p_view' ) ) {
 		$item->description = $wiki->parseData( $feed['data'], $feed['format_guid'] );
 
 		$item->date = ( int )$feed['last_modified'];
-		$item->source = 'http://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL;
+		$item->source = 'http://'.$_SERVER['HTTP_HOST'].WIKI_PKG_URL;
 		$item->author = $gBitUser->getDisplayName( FALSE, array( 'real_name' => $feed['modifier_real_name'], 'login' => $feed['modifier_user'] ) );
 
 		$item->descriptionTruncSize = $gBitSystem->getPreference( 'rssfeed_truncate', 5000 );
