@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.27 2006/02/04 10:10:51 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.28 2006/02/04 18:40:01 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.27 $ $Date: 2006/02/04 10:10:51 $ $Author: squareing $
+ * @version $Revision: 1.28 $ $Date: 2006/02/04 18:40:01 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.27 2006/02/04 10:10:51 squareing Exp $
+ * $Id: BitPage.php,v 1.28 2006/02/04 18:40:01 squareing Exp $
  */
 
 /**
@@ -1391,85 +1391,6 @@ class WikiLib extends BitPage {
 		$res = $result->fetchRow();
 		return $res;
 	}
-
-/* ================== UNUSED FUNCTIONS --- will remove soon ============== xing
-	function remove_orphan_images() {
-		$merge = array();
-
-		// Find images in wiki_pages
-		$query = "select `data` from `".BIT_DB_PREFIX."wiki_pages`";
-		$result = $this->mDb->query($query,array());
-
-		while ($res = $result->fetchRow()) {
-			preg_match_all("/src=\"([^\"]+)\"/", $res["data"], $reqs1);
-
-			preg_match_all("/src=\'([^\']+)\'/", $res["data"], $reqs2);
-			preg_match_all("/src=([A-Za-z0-9:\?\=\/\.\-\_]+)\}/", $res["data"], $reqs3);
-			$merge = array_merge($merge, $reqs1[1], $reqs2[1], $reqs3[1]);
-			$merge = array_unique($merge);
-		}
-
-		// Find images in Tiki articles
-		$query = "select `body` from `".BIT_DB_PREFIX."articles`";
-		$result = $this->mDb->query($query,array());
-
-		while ($res = $result->fetchRow()) {
-			preg_match_all("/src=\"([^\"]+)\"/", $res["body"], $reqs1);
-
-			preg_match_all("/src=\'([^\']+)\'/", $res["body"], $reqs2);
-			preg_match_all("/src=([A-Za-z0-9:\?\=\/\.\-\_]+)\}/", $res["body"], $reqs3);
-			$merge = array_merge($merge, $reqs1[1], $reqs2[1], $reqs3[1]);
-			$merge = array_unique($merge);
-		}
-
-		// Find images in tiki_submissions
-		$query = "select `body` from `".BIT_DB_PREFIX."tiki_submissions`";
-		$result = $this->mDb->query($query,array());
-
-		while ($res = $result->fetchRow()) {
-			preg_match_all("/src=\"([^\"]+)\"/", $res["body"], $reqs1);
-
-			preg_match_all("/src=\'([^\']+)\'/", $res["body"], $reqs2);
-			preg_match_all("/src=([A-Za-z0-9:\?\=\/\.\-\_]+)\}/", $res["body"], $reqs3);
-			$merge = array_merge($merge, $reqs1[1], $reqs2[1], $reqs3[1]);
-			$merge = array_unique($merge);
-		}
-
-		// Find images in blog_posts
-		$query = "select `data` from `".BIT_DB_PREFIX."blog_posts`";
-		$result = $this->mDb->query($query,array());
-
-		while ($res = $result->fetchRow()) {
-			preg_match_all("/src=\"([^\"]+)\"/", $res["data"], $reqs1);
-
-			preg_match_all("/src=\'([^\']+)\'/", $res["data"], $reqs2);
-			preg_match_all("/src=([A-Za-z0-9:\?\=\/\.\-\_]+)\}/", $res["data"], $reqs3);
-			$merge = array_merge($merge, $reqs1[1], $reqs2[1], $reqs3[1]);
-			$merge = array_unique($merge);
-		}
-
-		$positives = array();
-
-		foreach ($merge as $img) {
-			if (strstr($img, 'show_image')) {
-				preg_match("/id=([0-9]+)/", $img, $rq);
-
-				$positives[] = $rq[1];
-			}
-		}
-
-		$query = "select `image_id` from `".BIT_DB_PREFIX."tiki_images` where `gallery_id`=0";
-		$result = $this->mDb->query($query,array());
-
-		while ($res = $result->fetchRow()) {
-			$id = $res["image_id"];
-
-			if (!in_array($id, $positives)) {
-				$this->remove_image($id);
-			}
-		}
-	}
-*/
 
 /* ================== WIKI TAG FUNCTIONS ============== */
 	function tag_exists($tag) {
