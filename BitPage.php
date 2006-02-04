@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.26 2006/02/02 10:32:23 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.27 2006/02/04 10:10:51 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.26 $ $Date: 2006/02/02 10:32:23 $ $Author: squareing $
+ * @version $Revision: 1.27 $ $Date: 2006/02/04 10:10:51 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.26 2006/02/02 10:32:23 squareing Exp $
+ * $Id: BitPage.php,v 1.27 2006/02/04 10:10:51 squareing Exp $
  */
 
 /**
@@ -1060,6 +1060,8 @@ class WikiLib extends BitPage {
 		}
 	}
 */
+
+/* ======================================== NOT USED ANYWHERE - not sure how to calculate a ranking of wiki pages anyway. what are the criteria and what does it say about a page? - xing
 	// This function calculates the page_ranks for the wiki_pages
 	// it can be used to compute the most relevant pages
 	// according to the number of links they have
@@ -1120,7 +1122,7 @@ class WikiLib extends BitPage {
 		arsort ($pages);
 		return $pages;
 	}
-
+*/
 
 	function wiki_page_graph(&$str, &$graph, $garg) {
 		$page = $str['name'];

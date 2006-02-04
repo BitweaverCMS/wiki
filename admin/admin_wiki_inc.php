@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.11 2006/02/03 14:56:53 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.12 2006/02/04 10:10:51 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -156,15 +156,6 @@ if (isset($_REQUEST["wikifeatures"])) {
 	$gBitSystem->storePreference('wiki_cache', $_REQUEST["wiki_cache"]);
 	$gBitSmarty->assign('wiki_cache', $_REQUEST["wiki_cache"]);
 
-	/*
-	  if(isset($_REQUEST["feature_wiki_notepad"]) && $_REQUEST["feature_wiki_notepad"]=="y") {
-		$gBitSystem->storePreference("feature_wiki_notepad",'y');
-		$gBitSmarty->assign("feature_wiki_notepad",'y');
-	  } else {
-		$gBitSystem->storePreference("feature_wiki_notepad",'n');
-		$gBitSmarty->assign("feature_wiki_notepad",'n');
-	  }
-	*/
 	/* not sure if the following are still required */
 	$gBitSystem->storePreference('feature_wiki_tables', $_REQUEST['feature_wiki_tables']);
 	$gBitSmarty->assign('feature_wiki_tables', $_REQUEST['feature_wiki_tables']);
