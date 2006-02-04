@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page.php,v 1.5 2006/02/04 19:04:34 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
+ * $Id: page.php,v 1.5 2006/02/04 19:04:34 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -33,7 +33,6 @@ $gBitSmarty->assign('refresh', $page_data["refresh"]);
 $gBitSmarty->assign('title', $_REQUEST["title"]);
 $parsed = $htmlpageslib->parse_html_page($_REQUEST["title"], $page_data["content"]);
 $gBitSmarty->assign_by_ref('parsed', $parsed);
-$section = 'html_pages';
 
 // Display the template
 $gBitSystem->display( 'bitpackage:wiki/page.tpl');

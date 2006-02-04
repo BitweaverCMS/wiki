@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.13 2006/02/03 12:40:22 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.14 2006/02/04 19:04:34 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.13 2006/02/03 12:40:22 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.14 2006/02/04 19:04:34 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -217,52 +217,51 @@ if( $gBitSystem->isFeatureActive( 'feature_wiki_comments' ) ) {
 	include_once( LIBERTY_PKG_PATH.'comments_inc.php' );
 }
 
-$section='wiki';
 if( $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) ) {
-  if(isset($_REQUEST["removeattach"])) {
+	if(isset($_REQUEST["removeattach"])) {
 
-    $owner = $wikilib->get_attachment_owner($_REQUEST["removeattach"]);
-    if( ($user && ($owner == $user) ) || ($gBitUser->hasPermission( 'bit_p_wiki_admin_attachments' )) ) {
-      $wikilib->remove_wiki_attachment($_REQUEST["removeattach"]);
-    }
-  }
-  if(isset($_REQUEST["attach"]) && ($gBitUser->hasPermission( 'bit_p_wiki_admin_attachments' ) || $gBitUser->hasPermission( 'bit_p_wiki_attach_files' ))) {
+		$owner = $wikilib->get_attachment_owner($_REQUEST["removeattach"]);
+		if( ($user && ($owner == $user) ) || ($gBitUser->hasPermission( 'bit_p_wiki_admin_attachments' )) ) {
+			$wikilib->remove_wiki_attachment($_REQUEST["removeattach"]);
+		}
+	}
+	if(isset($_REQUEST["attach"]) && ($gBitUser->hasPermission( 'bit_p_wiki_admin_attachments' ) || $gBitUser->hasPermission( 'bit_p_wiki_attach_files' ))) {
 
-    // Process an attachment here
-    if(isset($_FILES['userfile1'])&&is_uploaded_file($_FILES['userfile1']['tmp_name'])) {
-      $fp = fopen($_FILES['userfile1']['tmp_name'],"rb");
-      $data = '';
-      $fhash='';
-      if($w_use_db == 'n') {
-        $fhash = md5($name = $_FILES['userfile1']['name']);
-        $fw = fopen($w_use_dir.$fhash,"wb");
-        if(!$fw) {
-          $gBitSmarty->assign('msg',tra('Cannot write to this file:').$fhash);
-          $gBitSystem->display( 'error.tpl' );
-          die;
-        }
-      }
-      while(!feof($fp)) {
-        if($w_use_db == 'y') {
-          $data .= fread($fp,8192*16);
-        } else {
-          $data = fread($fp,8192*16);
-          fwrite($fw,$data);
-        }
-      }
-      fclose($fp);
-      if($w_use_db == 'n') {
-        fclose($fw);
-        $data='';
-      }
-      $size = $_FILES['userfile1']['size'];
-      $name = $_FILES['userfile1']['name'];
-      $type = $_FILES['userfile1']['type'];
-      $wikilib->wiki_attach_file($gContent->mInfo['title'],$name,$type,$size, $data, $_REQUEST["attach_comment"], $user,$fhash);
-    }
-  }
-  $gBitSmarty->assign('atts',$gContent->mStorage);
-  $gBitSmarty->assign('atts_count',count($gContent->mStorage));
+		// Process an attachment here
+		if(isset($_FILES['userfile1'])&&is_uploaded_file($_FILES['userfile1']['tmp_name'])) {
+			$fp = fopen($_FILES['userfile1']['tmp_name'],"rb");
+			$data = '';
+			$fhash='';
+			if($w_use_db == 'n') {
+				$fhash = md5($name = $_FILES['userfile1']['name']);
+				$fw = fopen($w_use_dir.$fhash,"wb");
+				if(!$fw) {
+					$gBitSmarty->assign('msg',tra('Cannot write to this file:').$fhash);
+					$gBitSystem->display( 'error.tpl' );
+					die;
+				}
+			}
+			while(!feof($fp)) {
+				if($w_use_db == 'y') {
+					$data .= fread($fp,8192*16);
+				} else {
+					$data = fread($fp,8192*16);
+					fwrite($fw,$data);
+				}
+			}
+			fclose($fp);
+			if($w_use_db == 'n') {
+				fclose($fw);
+				$data='';
+			}
+			$size = $_FILES['userfile1']['size'];
+			$name = $_FILES['userfile1']['name'];
+			$type = $_FILES['userfile1']['type'];
+			$wikilib->wiki_attach_file($gContent->mInfo['title'],$name,$type,$size, $data, $_REQUEST["attach_comment"], $user,$fhash);
+		}
+	}
+	$gBitSmarty->assign('atts',$gContent->mStorage);
+	$gBitSmarty->assign('atts_count',count($gContent->mStorage));
 }
 
 if( $gBitSystem->isFeatureActive( 'feature_wiki_footnotes' ) && $gBitUser->isValid() ) {
@@ -277,7 +276,6 @@ if( $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) ) {
 	$gBitSmarty->assign('pageCopyrights', $copyrights["data"]);
 }
 
-$gBitSmarty->assign('wiki_extras','y');
 // Watches
 if( $gBitSystem->isFeatureActive( 'feature_user_watches' ) ) {
 	if( isset( $_REQUEST['watch_event'] ) ) {
@@ -299,35 +297,8 @@ if( $gBitSystem->isFeatureActive( 'feature_user_watches' ) ) {
 	}
 }
 $sameurl_elements=Array('title','page');
-//echo $gContent->mInfo["data"];
-if(isset($_REQUEST['mode']) && $_REQUEST['mode']=='mobile') {
-/*
-	require_once(HAWHAW_PKG_PATH."hawhaw.inc");
-	require_once(HAWHAW_PKG_PATH."hawiki_cfg.inc");
-	require_once(HAWHAW_PKG_PATH."hawiki_parser.inc");
-	require_once(HAWHAW_PKG_PATH."hawiki.inc");
-	error_reporting(E_ALL & ~E_NOTICE);
-	$myWiki = new HAWIKI_page($gContent->mInfo["data"], WIKI_PKG_URL."index.php?mode=mobile&page=");
-	$myWiki->set_navlink(tra("Home Page"), WIKI_PKG_URL."index.php?mode=mobile", HAWIKI_NAVLINK_TOP | HAWIKI_NAVLINK_BOTTOM);
-	$myWiki->set_navlink(tra("Menu"), HAWHAW_PKG_URL."mobile.php", HAWIKI_NAVLINK_TOP | HAWIKI_NAVLINK_BOTTOM);
-	$myWiki->set_smiley_dir("img/smiles");
-	$myWiki->set_link_jingle(HAWHAW_PKG_PATH."link.wav");
-	$myWiki->set_hawimconv(HAWHAW_PKG_PATH."hawimconv.php");
-	$myWiki->display();
-	die;
-  */
-  include_once( HAWHAW_PKG_PATH."hawtiki_lib.php" );
-  HAWBIT_index($gContent->mInfo);
-}
-
-// Flag for 'page bar' that currently 'Page view' mode active
-// so it is needed to show comments & attachments panels
-$gBitSmarty->assign('show_page','y');
 
 // Display the Index Template
-$gBitSmarty->assign('dblclickedit','y');
-$gBitSmarty->assign('print_page','n');
-$gBitSmarty->assign('show_page_bar','y');
 $gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
 
 if( isset( $_REQUEST['s5'] ) ) {

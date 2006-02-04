@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/rename_page.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/rename_page.php,v 1.4 2006/02/04 19:04:35 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: rename_page.php,v 1.3 2005/08/01 18:42:04 squareing Exp $
+ * $Id: rename_page.php,v 1.4 2006/02/04 19:04:35 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -43,7 +43,7 @@ if (!$wikilib->pageExists($page,true)) { // true: casesensitive check here
 	die;
 }
 if (isset($_REQUEST["rename"])) {
-	
+
 	if (!$wikilib->wiki_rename_page($_REQUEST['oldpage'], $_REQUEST['newpage'])) {
 		$gBitSmarty->assign('msg', tra("Cannot rename page maybe new page already exists"));
 		$gBitSystem->display( 'error.tpl' );
@@ -54,5 +54,4 @@ if (isset($_REQUEST["rename"])) {
 }
 
 $gBitSystem->display( 'bitpackage:wiki/rename_page.tpl');
-$gBitSmarty->assign('show_page_bar', 'y');
 ?>

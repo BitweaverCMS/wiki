@@ -3,13 +3,13 @@
  * assigned_modules
  *
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.4 $
+ * @version  $Revision: 1.5 $
  * @package  wiki
  * @subpackage  functions
  * @copyright Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * @license Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
  */
-// $Header: /cvsroot/bitweaver/_bit_wiki/backlinks.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/backlinks.php,v 1.5 2006/02/04 19:04:34 squareing Exp $
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 
 /**
@@ -49,5 +49,4 @@ $gBitSmarty->assign_by_ref('backlinks', $backlinks);
 
 // Display the template
 $gBitSystem->display( 'bitpackage:wiki/backlinks.tpl');
-$gBitSmarty->assign('show_page_bar', 'y');
 ?>

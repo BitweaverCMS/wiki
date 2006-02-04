@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_permissions.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_permissions.php,v 1.5 2006/02/04 19:04:35 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_permissions.php,v 1.4 2006/01/27 21:57:53 squareing Exp $
+ * $Id: page_permissions.php,v 1.5 2006/02/04 19:04:35 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -97,6 +97,5 @@ $gBitSmarty->assign_by_ref('perms', $perms);
 
 $gBitSmarty->assign( (!empty( $_REQUEST['tab'] ) ? $_REQUEST['tab'] : 'permissions').'TabSelect', 'tdefault' );
 
-$gBitSmarty->assign('show_page_bar', 'y');
 $gBitSystem->display( 'bitpackage:wiki/page_permissions.tpl');
 ?>
