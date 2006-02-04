@@ -132,7 +132,7 @@
 				<div class="row">
 					{formlabel label="Wiki Home Page" for="wikiHomePage"}
 					{forminput}
-						<input type="text" name="wikiHomePage" id="wikiHomePage" size="25" value="{$wikiHomePage|escape}" />
+						<input type="text" name="wikiHomePage" id="wikiHomePage" size="25" value="{$gBitSystemPrefs.wikiHomePage|escape}" />
 						{formhelp note="When the wiki is accessed, this is the page that will be displayed as the first page."}
 					{/forminput}
 				</div>

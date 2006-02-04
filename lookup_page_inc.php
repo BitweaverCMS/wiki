@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.6 2006/01/10 21:19:20 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.7 2006/02/04 10:32:44 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.6 2006/01/10 21:19:20 squareing Exp $
+ * $Id: lookup_page_inc.php,v 1.7 2006/02/04 10:32:44 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -93,7 +93,7 @@
 			parse_str($purl["query"], $purlquery);
 
 			if (!isset($purlquery["page"])) {
-				$purlquery["page"] = $wikiHomePage;
+				$purlquery["page"] = $gBitSystem->getPreference( 'wikiHomePage' );
 			}
 
 			if (isset($_SESSION["edit_lock"])) {
