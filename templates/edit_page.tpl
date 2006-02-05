@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.24 2006/02/03 12:38:07 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.25 2006/02/05 11:04:06 jht001 Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="edit wiki">
@@ -27,7 +27,13 @@
 {strip}
 	<div class="body">
 		{if $preview}
-			<h2>{tr}Preview {$title}{/tr}</h2>
+
+			{if $pageInfo.edit_section == 1 }
+					<h2>{tr}Preview Section {$pageInfo.section} of: {$title}{/tr}</h2>
+			{else}
+					<h2>{tr}Preview {$title}{/tr}</h2>
+			{/if}
+
 			<div class="preview">
 				{include file="bitpackage:wiki/page_header.tpl"}
 				{include file="bitpackage:wiki/page_display.tpl"}
@@ -89,6 +95,12 @@
 						{if $gBitSystem->isPackageActive( 'quicktags' )}
 							{include file="bitpackage:quicktags/quicktags_full.tpl"}
 						{/if}
+
+						{if $pageInfo.edit_section == 1 }
+						<input type="hidden" name="section" value="{$pageInfo.section}" />
+						{/if}
+
+
 
 						<div class="row">
 							{formlabel label="Body" for="body"}

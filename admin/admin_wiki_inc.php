@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.14 2006/01/20 09:44:58 wolff_borg Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.1.1.1.2.15 2006/02/05 11:04:06 jht001 Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -134,6 +134,14 @@ $formWikiFeatures = array(
 	"feature_wiki_icache" => array(
 		'label' => 'Individual WikiPage Cache',
 		'note' => 'Allow individual cache settings for wikipages.',
+	),
+	"feature_wiki_section_edit" => array(
+		'label' => 'Edit Page Sections',
+		'note' => 'Allow Edit of Page Sections.',
+	),
+	"feature_wiki_preserve_leading_blanks" => array(
+		'label' => 'Preserve leading blanks',
+		'note' => 'Preserve leading blanks on Wiki Pages, provided for compatiblity with sites migrated from Tikiwiki.',
 	),
 );
 
