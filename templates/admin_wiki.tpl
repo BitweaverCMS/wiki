@@ -130,9 +130,9 @@
 			{legend legend="Wiki Home Page"}
 				<input type="hidden" name="page" value="{$page}" />
 				<div class="row">
-					{formlabel label="Wiki Home Page" for="wikiHomePage"}
+					{formlabel label="Wiki Home Page" for="wiki_home_page"}
 					{forminput}
-						<input type="text" name="wikiHomePage" id="wikiHomePage" size="25" value="{$gBitSystemPrefs.wikiHomePage|escape}" />
+						<input type="text" name="wiki_home_page" id="wiki_home_page" size="25" value="{$gBitSystemPrefs.wiki_home_page|escape}" />
 						{formhelp note="When the wiki is accessed, this is the page that will be displayed as the first page."}
 					{/forminput}
 				</div>
@@ -213,9 +213,9 @@
 
 			{legend legend="Wiki History"}
 				<div class="row">
-					{formlabel label="Maximum number of versions in history" for="maxVersions"}
+					{formlabel label="Maximum number of versions in history" for="max_versions"}
 					{forminput}
-						<input size="5" type="text" name="maxVersions" id="maxVersions" value="{$maxVersions|escape}" />
+						<input size="5" type="text" name="max_versions" id="max_versions" value="{$max_versions|escape}" />
 					{/forminput}
 				</div>
 
@@ -240,16 +240,16 @@
 				</div>
 
 				<div class="row">
-					{formlabel label="License Page" for="wikiLicensePage"}
+					{formlabel label="License Page" for="wiki_license_page"}
 					{forminput}
-						<input type="text" name="wikiLicensePage" id="wikiLicensePage" value="{$wikiLicensePage|escape}" />
+						<input type="text" name="wiki_license_page" id="wiki_license_page" value="{$wiki_license_page|escape}" />
 					{/forminput}
 				</div>
 
 				<div class="row">
-					{formlabel label="Submit Notice" for="wikiSubmitNotice"}
+					{formlabel label="Submit Notice" for="wiki_submit_notice"}
 					{forminput}
-						<input type="text" name="wikiSubmitNotice" id="wikiSubmitNotice" value="{$wikiSubmitNotice|escape}" />
+						<input type="text" name="wiki_submit_notice" id="wiki_submit_notice" value="{$wiki_submit_notice|escape}" />
 					{/forminput}
 				</div>
 

@@ -3,7 +3,7 @@
 	{if $gBitUser->hasPermission( 'bit_p_view' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}index.php">{biticon ipackage=liberty iname=home iexplain="Wiki Home" iforce="icon"} {tr}Wiki Home{/tr}</a></li>
 	{/if}
-	{if $gBitSystem->isFeatureActive( 'feature_listPages' ) and $gBitUser->hasPermission( 'bit_p_view' )}
+	{if $gBitSystem->isFeatureActive( 'feature_list_pages' ) and $gBitUser->hasPermission( 'bit_p_view' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}list_pages.php">{biticon ipackage=liberty iname=list iexplain="List pages" iforce="icon"} {tr}List pages{/tr}</a></li>
 	{/if}
 	{if $gBitUser->hasPermission( 'bit_p_edit' )}
@@ -15,7 +15,7 @@
 	{if $gBitSystem->isFeatureActive( 'feature_wiki_books' ) && $gBitUser->hasPermission( 'bit_p_edit_books' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}edit_book.php">{biticon ipackage=liberty iname=new iexplain="Create a new book" iforce="icon"} {tr}Create book{/tr}</a></li>
 	{/if}
-	{if $gBitSystem->isFeatureActive( 'feature_listPages' ) and $gBitUser->hasPermission( 'bit_p_view' )}
+	{if $gBitSystem->isFeatureActive( 'feature_list_pages' ) and $gBitUser->hasPermission( 'bit_p_view' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}orphan_pages.php">{biticon ipackage=liberty iname=spacer iexplain="Orphan pages" iforce="icon"} {tr}Orphan pages{/tr}</a></li>
 	{/if}
 	{if $gBitSystem->isFeatureActive( 'feature_wiki_multiprint' ) and $gBitUser->hasPermission( 'bit_p_view' )}
