@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.8 2006/02/06 00:12:23 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.9 2006/02/06 22:56:52 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.8 2006/02/06 00:12:23 squareing Exp $
+ * $Id: lookup_page_inc.php,v 1.9 2006/02/06 22:56:52 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -78,7 +78,7 @@
 	}
 
 	// if we are looking up a page
-	if( $gBitSystem->isFeatureActive( 'feature_warn_on_edit' ) && $gContent->isValid() ) {
+	if( $gBitSystem->isFeatureActive( 'warn_on_edit' ) && $gContent->isValid() ) {
 		// Notice if a page is being edited or if it was being edited and not anymore
 		// print($GLOBALS["HTTP_REFERER"]);
 		// IF isset the referer and if the referer is editpage then unset taking the pagename from the

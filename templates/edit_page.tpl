@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.16 2006/02/06 00:12:23 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.17 2006/02/06 22:56:52 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="edit wiki">
@@ -56,7 +56,7 @@
 							{/forminput}
 						</div>
 
-						{if $gBitSystem->isFeatureActive( 'feature_wiki_templates' ) and $gBitUser->hasPermission( 'bit_p_use_content_templates' )}
+						{if $gBitSystem->isFeatureActive( 'wiki_templates' ) and $gBitUser->hasPermission( 'bit_p_use_content_templates' )}
 							<div class="row">
 								{formlabel label="Apply template" for="template_id"}
 								{forminput}
@@ -70,7 +70,7 @@
 							</div>
 						{/if}
 
-						{if $gBitSystem->isFeatureActive( 'feature_wiki_description' )}
+						{if $gBitSystem->isFeatureActive( 'wiki_description' )}
 							<div class="row">
 								{formlabel label="Description" for="description"}
 								{forminput}
@@ -135,7 +135,7 @@
 							<input type="submit" name="fSavePage" value="{tr}Save{/tr}" />
 						</div>
 
-						{if $gBitSystem->isFeatureActive( 'feature_wiki_attachments' )}
+						{if $gBitSystem->isFeatureActive( 'wiki_attachments' )}
 							{include file="bitpackage:liberty/edit_storage_list.tpl"}
 						{/if}
 					{/legend}
@@ -143,7 +143,7 @@
 
 				{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_tab_tpl}
 
-				{if $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) && $show_attachments eq 'y' && $gBitUser->hasPermission('bit_p_content_attachments')}
+				{if $gBitSystem->isFeatureActive( 'wiki_attachments' ) && $show_attachments eq 'y' && $gBitUser->hasPermission('bit_p_content_attachments')}
 					{jstab title="Attachments"}
 						{legend legend="Attachments"}
 							{include file="bitpackage:liberty/edit_storage.tpl"}
@@ -151,7 +151,7 @@
 					{/jstab}
 				{/if}
 
-				{if $gBitSystem->isFeatureActive( 'feature_wiki_icache' ) or $gBitSystem->isFeatureActive( 'wiki_spellcheck' )}
+				{if $gBitSystem->isFeatureActive( 'wiki_icache' ) or $gBitSystem->isFeatureActive( 'wiki_spellcheck' )}
 					{jstab title="Advanced"}
 						{legend legend="Advanced Options"}
 							{if $gBitSystem->isFeatureActive( 'wiki_spellcheck' )}
@@ -164,7 +164,7 @@
 								</div>
 							{/if}
 
-							{if $gBitSystem->isFeatureActive( 'feature_wiki_icache' )}
+							{if $gBitSystem->isFeatureActive( 'wiki_icache' )}
 								<div class="row">
 									{formlabel label="Cache" for="wiki_cache"}
 									{forminput}
@@ -186,7 +186,7 @@
 					{/jstab}
 				{/if}
 
-				{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )}
+				{if $gBitSystem->isFeatureActive( 'wiki_copyrights' )}
 					{jstab title="Copyright"}
 						<div class="row">
 							{legend legend="Copyright Settings" for="copyrightTitle"}

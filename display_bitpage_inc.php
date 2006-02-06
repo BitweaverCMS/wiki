@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.14 2006/02/04 19:04:34 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.15 2006/02/06 22:56:52 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.14 2006/02/04 19:04:34 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.15 2006/02/06 22:56:52 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -52,7 +52,7 @@ if($gBitSystem->isFeatureActive( 'wiki_creator_admin' )) {
 if(isset($_REQUEST["copyrightpage"])) {
 	$gBitSmarty->assign_by_ref('copyrightpage',$_REQUEST["copyrightpage"]);
 }
-if( $gBitSystem->isFeatureActive( 'feature_backlinks' ) ) {
+if( $gBitSystem->isFeatureActive( 'backlinks' ) ) {
 	// Get the backlinks for the page "page"
 	$backlinks = $gContent->getBacklinks();
 	$gBitSmarty->assign_by_ref('backlinks', $backlinks);
@@ -96,7 +96,7 @@ if( $gBitSystem->isFeatureActive( 'count_admin_pvs' ) || !$gBitUser->isAdmin() )
 // Check if we have to perform an action for this page
 // for example lock/unlock
 if( isset( $_REQUEST["action"] ) && (($_REQUEST["action"] == 'lock' || $_REQUEST["action"]=='unlock' ) &&
-	($gBitUser->hasPermission( 'bit_p_admin_wiki' )) || ($user and ($gBitUser->hasPermission( 'bit_p_lock' )) and ($gBitSystem->isFeatureActive( 'feature_wiki_usrlock' )))) ) {
+	($gBitUser->hasPermission( 'bit_p_admin_wiki' )) || ($user and ($gBitUser->hasPermission( 'bit_p_lock' )) and ($gBitSystem->isFeatureActive( 'wiki_usrlock' )))) ) {
 	$gContent->setLock( ($_REQUEST["action"] == 'lock' ? 'L' : NULL ) );
 	$gBitSmarty->assign('lock', ($_REQUEST["action"] == 'lock') );
 }
@@ -208,7 +208,7 @@ $gBitSmarty->assign_by_ref('lastUser',$gContent->mInfo["user"]);
 $gBitSmarty->assign_by_ref('description',$gContent->mInfo["description"]);
 
 // Comments engine!
-if( $gBitSystem->isFeatureActive( 'feature_wiki_comments' ) ) {
+if( $gBitSystem->isFeatureActive( 'wiki_comments' ) ) {
 	$comments_vars = Array('page');
 	$comments_prefix_var='wiki page:';
 	$comments_object_var='page';
@@ -217,7 +217,7 @@ if( $gBitSystem->isFeatureActive( 'feature_wiki_comments' ) ) {
 	include_once( LIBERTY_PKG_PATH.'comments_inc.php' );
 }
 
-if( $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) ) {
+if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
 	if(isset($_REQUEST["removeattach"])) {
 
 		$owner = $wikilib->get_attachment_owner($_REQUEST["removeattach"]);
@@ -264,20 +264,20 @@ if( $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) ) {
 	$gBitSmarty->assign('atts_count',count($gContent->mStorage));
 }
 
-if( $gBitSystem->isFeatureActive( 'feature_wiki_footnotes' ) && $gBitUser->isValid() ) {
+if( $gBitSystem->isFeatureActive( 'wiki_footnotes' ) && $gBitUser->isValid() ) {
 	if( $footnote = $gContent->getFootnote( $gBitUser->mUserId ) ) {
 		$gBitSmarty->assign( 'footnote', $gContent->parseData( $footnote ) );
 	}
 }
 
-if( $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) ) {
+if( $gBitSystem->isFeatureActive( 'wiki_copyrights' ) ) {
 	require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
 	$copyrights = $copyrightslib->list_copyrights( $gContent->mPageId );
 	$gBitSmarty->assign('pageCopyrights', $copyrights["data"]);
 }
 
 // Watches
-if( $gBitSystem->isFeatureActive( 'feature_user_watches' ) ) {
+if( $gBitSystem->isFeatureActive( 'user_watches' ) ) {
 	if( isset( $_REQUEST['watch_event'] ) ) {
 		if( $gBitUser->isRegistered() ) {
 			if($_REQUEST['watch_action']=='add') {
@@ -286,7 +286,7 @@ if( $gBitSystem->isFeatureActive( 'feature_user_watches' ) ) {
 				$gBitUser->expungeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'] );
 			}
 		} else {
-			$gBitSmarty->assign('msg', tra("This feature requires a registered user.").": feature_user_watches");
+			$gBitSmarty->assign('msg', tra("This feature requires a registered user.").": user_watches");
 			$gBitSystem->display( 'error.tpl' );
 			die;
 		}

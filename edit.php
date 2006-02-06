@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.15 2006/02/04 19:04:34 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.16 2006/02/06 22:56:52 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.15 2006/02/04 19:04:34 squareing Exp $
+ * $Id: edit.php,v 1.16 2006/02/06 22:56:52 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -40,7 +40,7 @@ if( ( !empty( $_REQUEST['page'] ) && $_REQUEST['page'] == 'SandBox' ) || ( !empt
 }
 
 
-if( $sandbox && !$gBitSystem->isFeatureActive( 'feature_sandbox' ) ) {
+if( $sandbox && !$gBitSystem->isFeatureActive( 'sandbox' ) ) {
 	$gBitSystem->fatalError( "The SandBox is disabled" );
 } elseif( !$sandbox && !$gContent->hasUserPermission( 'bit_p_edit' ) ) {
 	$gBitSystem->fatalError( 'Permission denied you cannot edit the page named "'.$gContent->getTitle().'"' );
@@ -236,7 +236,7 @@ if( !empty( $gContent->mInfo ) ) {
 
 $gBitSmarty->assign( 'footnote', '' );
 $gBitSmarty->assign( 'has_footnote', 'n' );
-if( $gBitSystem->isFeatureActive( 'feature_wiki_footnotes' ) ) {
+if( $gBitSystem->isFeatureActive( 'wiki_footnotes' ) ) {
 	if( $gBitUser->mUserId ) {
 		$footnote = $gContent->getFootnote( $gBitUser->mUserId );
 		$gBitSmarty->assign( 'footnote', $footnote );
@@ -279,7 +279,7 @@ if( isset( $_REQUEST["comment"] ) ) {
 
 $cat_obj_type = BITPAGE_CONTENT_TYPE_GUID;
 
-if( $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) ) {
+if( $gBitSystem->isFeatureActive( 'wiki_copyrights' ) ) {
 	if( isset( $_REQUEST['copyrightTitle'] ) ) {
 		$gBitSmarty->assign( 'copyrightTitle', $_REQUEST["copyrightTitle"] );
 	}
@@ -335,7 +335,7 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 	// to avoid error messages. This can happen if some features are
 	// disabled
 	// add permisions here otherwise return error!
-	if( $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )
+	if( $gBitSystem->isFeatureActive( 'wiki_copyrights' )
 		&& isset( $_REQUEST['copyrightAuthors'] )
 		&& !empty( $_REQUEST['copyrightYear'] )
 		&& !empty( $_REQUEST['copyrightTitle'] )

@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.29 2006/02/06 00:12:23 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.30 2006/02/06 22:56:52 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.29 $ $Date: 2006/02/06 00:12:23 $ $Author: squareing $
+ * @version $Revision: 1.30 $ $Date: 2006/02/06 22:56:52 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.29 2006/02/06 00:12:23 squareing Exp $
+ * $Id: BitPage.php,v 1.30 2006/02/06 22:56:52 squareing Exp $
  */
 
 /**
@@ -86,8 +86,8 @@ class BitPage extends LibertyAttachable {
 				$this->mInfo['creator'] = (isset( $this->mInfo['creator_real_name'] ) ? $this->mInfo['creator_real_name'] : $this->mInfo['creator_user'] );
 				$this->mInfo['editor'] = (isset( $this->mInfo['modifier_real_name'] ) ? $this->mInfo['modifier_real_name'] : $this->mInfo['modifier_user'] );
 				$this->mInfo['display_url'] = $this->getDisplayUrl();
-				// Save some work if feature_wiki_attachments are not active
-				if( $gBitSystem->isFeatureActive( 'feature_wiki_attachments' ) ) {
+				// Save some work if wiki_attachments are not active
+				if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
 					LibertyAttachable::load();
 				} else {
 					LibertyContent::load();
@@ -152,7 +152,7 @@ class BitPage extends LibertyAttachable {
 				include_once( KERNEL_PKG_PATH.'notification_lib.php' );
 				$notificationlib->post_content_event($this->mContentId, $this->mInfo['content_type_guid'], 'wiki', $this->mInfo['title'], $this->mInfo['modifier_user'], $this->mInfo['comment'], $this->mInfo['data']);
 
-				if( $gBitSystem->isFeatureActive( 'feature_user_watches') ) {
+				if( $gBitSystem->isFeatureActive( 'user_watches') ) {
 					$nots = $gBitUser->get_event_watches( 'wiki_page_changed', $this->mPageId );
 
 					foreach ($nots as $not) {
@@ -239,7 +239,7 @@ class BitPage extends LibertyAttachable {
 					$this->mErrors['title'] = 'You must enter a name for this page.';
 				} else {
 					$pParamHash['content_store']['title'] = substr( $pParamHash['title'], 0, 160 );
-					if ($gBitSystem->isFeatureActive( 'feature_allow_dup_wiki_page_names')) {
+					if ($gBitSystem->isFeatureActive( 'allow_dup_wiki_page_names')) {
 						# silently allow pages with duplicate names to be created
 					} else {
 						if( $this->pageExists( $pParamHash['title'] ) ) {
@@ -249,7 +249,7 @@ class BitPage extends LibertyAttachable {
 				}
 			} else {
 				$pParamHash['content_store']['title'] = ( isset( $pParamHash['title'] ) ) ? substr( $pParamHash['title'], 0, 160 ) : $this->mPageName;
-				if ($gBitSystem->isFeatureActive( 'feature_allow_dup_wiki_page_names')) {
+				if ($gBitSystem->isFeatureActive( 'allow_dup_wiki_page_names')) {
 					# silently allow pages with duplicate names to be created
 				} else {
 					if( $gBitUser->hasPermission( 'bit_p_rename' )

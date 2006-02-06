@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.13 2006/02/06 00:12:23 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.14 2006/02/06 22:56:52 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -71,7 +71,7 @@ if (isset($_REQUEST["wikilistconf"])) {
 }
 
 $formWikiFeatures = array(
-	"feature_backlinks" => array(
+	"backlinks" => array(
 		'label' => 'Backlinks',
 		'note' => 'Display a dropdown list of pages that link to a page.',
 	),
@@ -79,11 +79,11 @@ $formWikiFeatures = array(
 		'label' => 'Like Pages',
 		'note' => 'Display a list of pages that have a common word in the names.',
 	),
-	"feature_allow_dup_wiki_page_names" => array(
+	"allow_dup_wiki_page_names" => array(
 		'label' => 'Allow Duplicate Page Names',
 		'note' => 'Allow Wiki Pages with duplicate page names',
 	),
-	"feature_history" => array(
+	"wiki_history" => array(
 		'label' => 'History',
 		'note' => 'Allow access to the page\'s history.',
 	),
@@ -91,35 +91,35 @@ $formWikiFeatures = array(
 		'label' => 'List Pages',
 		'note' => 'Allow access to a listing of all wikipages.',
 	),
-	"feature_wiki_attachments" => array(
+	"wiki_attachments" => array(
 		'label' => 'Attachments',
 		'note' => 'Allow the attachment of files to a wikipage.',
 	),
-	"feature_wiki_comments" => array(
+	"wiki_comments" => array(
 		'label' => 'Comments',
 		'note' => 'Allow the addition of user comments at the end of every wikipage.',
 	),
-	"feature_dump" => array(
+	"wiki_dump" => array(
 		'label' => 'Dump',
 		'note' => 'Allow the creation of a dump of a page.',
 	),
-	"feature_sandbox" => array(
+	"sandbox" => array(
 		'label' => 'Sandbox',
 		'note' => 'The Sandbox is a wikipage that can be modified by any user to practise the wiki syntax. This page has no history nor is the contents searchable.',
 	),
-	"feature_wiki_undo" => array(
+	"wiki_undo" => array(
 		'label' => 'Undo',
 		'note' => 'Reverts a wikipage to the previous version held in its page history.',
 	),
-	"feature_wiki_templates" => array(
+	"wiki_templates" => array(
 		'label' => 'Use templates',
 		'note' => 'Allow the usage of templates.',
 	),
-	"feature_wiki_rankings" => array(
+	"wiki_rankings" => array(
 		'label' => 'Rankings',
 		'note' => 'Creates a ranking system based on the number of times a page is accessed.',
 	),
-	"feature_wiki_usrlock" => array(
+	"wiki_usrlock" => array(
 		'label' => 'Users can lock pages',
 		'note' => 'Users who have the right permissions can lock pages preventing changes by other users.',
 	),
@@ -131,7 +131,7 @@ $formWikiFeatures = array(
 		'label' => 'Allow URL Import',
 		'note' => 'Allow urls to be imported and saved to the wiki.',
 	),
-	"feature_wiki_icache" => array(
+	"wiki_icache" => array(
 		'label' => 'Individual WikiPage Cache',
 		'note' => 'Allow individual cache settings for wikipages.',
 	),
@@ -143,12 +143,12 @@ if (isset($_REQUEST["wikifeatures"])) {
 	foreach( $formWikiFeatures as $item => $data ) {
 		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
-	if (isset($_REQUEST["feature_warn_on_edit"]) && $_REQUEST["feature_warn_on_edit"][0] == "y") {
-		$gBitSystem->storePreference("feature_warn_on_edit", 'y');
-		$gBitSmarty->assign("feature_warn_on_edit", 'y');
+	if (isset($_REQUEST["warn_on_edit"]) && $_REQUEST["warn_on_edit"][0] == "y") {
+		$gBitSystem->storePreference("warn_on_edit", 'y');
+		$gBitSmarty->assign("warn_on_edit", 'y');
 	} else {
-		$gBitSystem->storePreference("feature_warn_on_edit", 'n');
-		$gBitSmarty->assign("feature_warn_on_edit", 'n');
+		$gBitSystem->storePreference("warn_on_edit", 'n');
+		$gBitSmarty->assign("warn_on_edit", 'n');
 	}
 	$gBitSystem->storePreference("wiki_link_type", $_REQUEST["link_type"]);
 	$gBitSystem->storePreference("warn_on_edit_time", $_REQUEST["warn_on_edit_time"]);
@@ -157,8 +157,8 @@ if (isset($_REQUEST["wikifeatures"])) {
 	$gBitSmarty->assign('wiki_cache', $_REQUEST["wiki_cache"]);
 
 	/* not sure if the following are still required */
-	$gBitSystem->storePreference('feature_wiki_tables', $_REQUEST['feature_wiki_tables']);
-	$gBitSmarty->assign('feature_wiki_tables', $_REQUEST['feature_wiki_tables']);
+	$gBitSystem->storePreference('wiki_tables', $_REQUEST['wiki_tables']);
+	$gBitSmarty->assign('wiki_tables', $_REQUEST['wiki_tables']);
 	if (isset($_REQUEST["feature_userVersions"]) && $_REQUEST["feature_userVersions"] == "y") {
 		$gBitSystem->storePreference("feature_userVersions", 'y');
 		$gBitSmarty->assign("feature_userVersions", 'y');
@@ -168,7 +168,7 @@ if (isset($_REQUEST["wikifeatures"])) {
 	}
 }
 $formWikiInOut = array(
-	"feature_wiki_monosp" => array(
+	"wiki_monosp" => array(
 		'label' => 'Automonospaced text',
 		'note' => 'When adding a space at the beginning of a line, the given line uses a monospace font.',
 	),
@@ -176,19 +176,19 @@ $formWikiInOut = array(
 		'label' => 'Spellchecking',
 		'note' => 'Allow the usage of a spellchecking facility.',
 	),
-	"feature_wikiwords" => array(
+	"wiki_words" => array(
 		'label' => 'WikiWords',
 		'note' => 'Automagically change words with CamelCaps or under_scores to links to internal wiki pages.',
 	),
-	"feature_wiki_plurals" => array(
+	"wiki_plurals" => array(
 		'label' => 'Link plural WikiWords to their singular form',
 		'note' => 'If you use WikiWords as page name in a text, it will be linked to WikiWord.',
 	),
-	"feature_page_title" => array(
+	"page_title" => array(
 		'label' => 'Page Title',
 		'note' => 'Display the page title at the top of every wikipage.',
 	),
-	"feature_wiki_description" => array(
+	"wiki_description" => array(
 		'label' => 'Description',
 		'note' => 'Display a brief page description just below the title of the page.',
 	),
@@ -196,7 +196,7 @@ $formWikiInOut = array(
 		'label' => 'Hide Date',
 		'note' => 'Hide the date and creation / modification information.',
 	),
-	"feature_wiki_footnotes" => array(
+	"wiki_footnotes" => array(
 		'label' => 'Footnotes',
 		'note' => 'Allow the addition of footnotes to wikipages.',
 	),
@@ -208,7 +208,7 @@ $formWikiInOut = array(
 		'label' => 'Use S5 Slideshows',
 		'note' => 'Any WikiPage can be turned into a full featured slideshow. Slides are separated at every H1 heading ( ! - wiki syntax ) and can be viewed using Firefox ( requires javascript ) or Opera ( need to press F11 to start the show ). Further information can be found at <a href="http://www.meyerweb.com/eric/tools/s5/">S5</a>',
 	),
-	"feature_wiki_multiprint" => array(
+	"wiki_multiprint" => array(
 		'label' => 'Print Multiple Pages',
 		'note' => 'Allow joining of pages for printing purposes.',
 	),
@@ -223,7 +223,7 @@ if (isset($_REQUEST["wikiinout"])) {
 }
 
 $formWikiBooks = array(
-	"feature_wiki_books" => array(
+	"wiki_books" => array(
 		'label' => 'WikiBooks',
 		'note' => 'Allow the creation and use of WikiBooks - hierarchial collections of wiki pages',
 	),
@@ -317,12 +317,12 @@ if (isset($_REQUEST["setwikihome"])) {
 }
 if (isset($_REQUEST["wikidiscussprefs"])) {
 
-	if (isset($_REQUEST["feature_wiki_discuss"])) {
-		$gBitSystem->storePreference('feature_wiki_discuss', 'y');
-		$gBitSmarty->assign('feature_wiki_discuss', 'y');
+	if (isset($_REQUEST["wiki_discuss"])) {
+		$gBitSystem->storePreference('wiki_discuss', 'y');
+		$gBitSmarty->assign('wiki_discuss', 'y');
 	} else {
-		$gBitSystem->storePreference("feature_wiki_discuss", 'n');
-		$gBitSmarty->assign('feature_wiki_discuss', 'n');
+		$gBitSystem->storePreference("wiki_discuss", 'n');
+		$gBitSmarty->assign('wiki_discuss', 'n');
 	}
 }
 if (isset($_REQUEST["setwikiregex"])) {
@@ -344,7 +344,7 @@ if (isset($_REQUEST["wikisetprefs"])) {
 }
 if (isset($_REQUEST["wikisetcopyright"])) {
 
-	simple_set_toggle( 'wiki_feature_copyrights','wiki' );
+	simple_set_toggle( 'wiki_copyrights','wiki' );
 	if (isset($_REQUEST["wiki_license_page"])) {
 		$gBitSystem->storePreference("wiki_license_page", $_REQUEST["wiki_license_page"]);
 		$gBitSmarty->assign('wiki_license_page', $_REQUEST["wiki_license_page"]);
@@ -359,7 +359,7 @@ $gBitSmarty->assign_by_ref("tags", $tags);
 $gBitSmarty->assign("max_versions", $gBitSystem->getPreference("max_versions", 0));
 $gBitSmarty->assign("keep_versions", $gBitSystem->getPreference("keep_versions", 1));
 
-$gBitSmarty->assign("wiki_feature_copyrights", $gBitSystem->getPreference("wiki_feature_copyrights"));
+$gBitSmarty->assign("wiki_copyrights", $gBitSystem->getPreference("wiki_copyrights"));
 $gBitSmarty->assign('wiki_license_page', $gBitSystem->getPreference("wiki_license_page"));
 $gBitSmarty->assign('wiki_submit_notice', $gBitSystem->getPreference("wiki_submit_notice"));
 

@@ -1,5 +1,5 @@
 <h2>{tr}Preview{/tr}: {$title}</h2>
-{if $gBitSystem->isFeatureActive( 'feature_wiki_description' )}
+{if $gBitSystem->isFeatureActive( 'wiki_description' )}
 <small>{$description}</small>
 {/if}
 <div  class="wikibody">{$parsed}</div>

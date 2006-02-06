@@ -1,4 +1,4 @@
-{if $gBitSystem->isFeatureActive( 'comments_at_top_of_page' ) and $print_page ne 'y' and $gBitSystem->isFeatureActive( 'feature_wiki_comments' )}
+{if $gBitSystem->isFeatureActive( 'comments_at_top_of_page' ) and $print_page ne 'y' and $gBitSystem->isFeatureActive( 'wiki_comments' )}
 	{include file="bitpackage:wiki/page_header.tpl"}
 	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
@@ -35,7 +35,7 @@
 	{/if}
 
 
-	{if $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' )}
+	{if $gBitSystem->isFeatureActive( 'wiki_copyrights' )}
 		<p class="copyright">
 			{if $pageCopyrights}
 				{section name=i loop=$pageCopyrights}
@@ -55,7 +55,7 @@
 	{/if}
 </div><!-- end .wiki -->
 
-{if !$gBitSystem->isFeatureActive( 'comments_at_top_of_page' ) and $print_page ne 'y' and $gBitSystem->isFeatureActive( 'feature_wiki_comments' )}
+{if !$gBitSystem->isFeatureActive( 'comments_at_top_of_page' ) and $print_page ne 'y' and $gBitSystem->isFeatureActive( 'wiki_comments' )}
 	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
 

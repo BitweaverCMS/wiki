@@ -33,9 +33,9 @@
 			</div>
 
 			<div class="row">
-				{formlabel label="Warn on edit" for="feature_warn_on_edit"}
+				{formlabel label="Warn on edit" for="warn_on_edit"}
 				{forminput}
-					{html_checkboxes name="feature_warn_on_edit" values="y" checked=`$gBitSystemPrefs.feature_warn_on_edit` labels=false id="feature_warn_on_edit"}
+					{html_checkboxes name="warn_on_edit" values="y" checked=`$gBitSystemPrefs.warn_on_edit` labels=false id="warn_on_edit"}
 				{/forminput}
 				{forminput}
 					<select name="warn_on_edit_time">
@@ -51,11 +51,11 @@
 			</div>
 
 			<div class="row">
-				{formlabel label="Tables syntax" for="feature_wiki_tables"}
+				{formlabel label="Tables syntax" for="wiki_tables"}
 				{forminput}
-					<select name="feature_wiki_tables" id="feature_wiki_tables">
-						<option value="old" {if $gBitSystem->mPrefs.feature_wiki_tables eq 'old'}selected="selected"{/if}>{tr}|| for rows{/tr}</option>
-						<option value="new" {if $gBitSystem->mPrefs.feature_wiki_tables eq 'new'}selected="selected"{/if}>{tr}\n for rows{/tr}</option>
+					<select name="wiki_tables" id="wiki_tables">
+						<option value="old" {if $gBitSystem->mPrefs.wiki_tables eq 'old'}selected="selected"{/if}>{tr}|| for rows{/tr}</option>
+						<option value="new" {if $gBitSystem->mPrefs.wiki_tables eq 'new'}selected="selected"{/if}>{tr}\n for rows{/tr}</option>
 					</select>
 					{formhelp note="Either use || to start a new row in a table, or start a new line (recommended)."}
 				{/forminput}
@@ -233,9 +233,9 @@
 
 			{legend legend="Copyright Management"}
 				<div class="row">
-					{formlabel label="Enable Feature" for="wiki_feature_copyrights"}
+					{formlabel label="Enable Feature" for="wiki_copyrights"}
 					{forminput}
-						{html_checkboxes name="wiki_feature_copyrights" values="y" checked=$gBitSystemPrefs.wiki_feature_copyrights labels=false id="wiki_feature_copyrights"}
+						{html_checkboxes name="wiki_copyrights" values="y" checked=$gBitSystemPrefs.wiki_copyrights labels=false id="wiki_copyrights"}
 					{/forminput}
 				</div>
 

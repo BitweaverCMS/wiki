@@ -48,7 +48,7 @@
 				<a title="{tr}Save{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;savenotepad=1">{biticon ipackage="wiki" iname="save" iexplain="save"}</a>
 			{/if}
 
-			{if $gBitUser->isRegistered() and $gBitUser->mUserId && $gBitSystem->isFeatureActive( 'feature_user_watches' ) }
+			{if $gBitUser->isRegistered() and $gBitUser->mUserId && $gBitSystem->isFeatureActive( 'user_watches' ) }
 				{if $user_watching_page eq 'y'}
 					<a title="{tr}stop monitoring this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;watch_event=wiki_page_changed&amp;watch_object={$pageInfo.page_id}&amp;watch_action=remove">{biticon ipackage="users" iname="unwatch" iexplain="stop monitoring"}</a>
 				{else}
@@ -60,7 +60,7 @@
 					<a title="{tr}remove this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}remove_page.php?page_id={$pageInfo.page_id}&amp;version=last">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
 				{/if}
 			{/if}
-			{if $gBitSystem->isFeatureActive( 'feature_backlinks' ) and $backlinks}
+			{if $gBitSystem->isFeatureActive( 'backlinks' ) and $backlinks}
 				<select name="page" onchange="go(this)">
 					<option value="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}">{tr}backlinks{/tr}...</option>
 					{foreach key=contentId item=backPage from=$backlinks}
