@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.8 2006/02/06 00:12:23 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.9 2006/02/06 16:20:09 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print.php,v 1.8 2006/02/06 00:12:23 squareing Exp $
+ * $Id: print.php,v 1.9 2006/02/06 16:20:09 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -36,7 +36,6 @@ require_once ( WIKI_PKG_PATH.'page_setup_inc.php' );
 // Check if we have to perform an action for this page
 // for example lock/unlock
 if (isset($_REQUEST["action"])) {
-	
 	if ($_REQUEST["action"] == 'lock') {
 		$gContent->lock();
 	} elseif ($_REQUEST["action"] == 'unlock') {
@@ -45,8 +44,8 @@ if (isset($_REQUEST["action"])) {
 }
 
 // Now increment page hits since we are visiting this page
-if ($count_admin_pvs == 'y' || !$gBitUser->isAdmin()) {
-  $gContent->addHit();
+if ($gBitSystem->isFeatureActive( 'count_admin_pvs' ) || !$gBitUser->isAdmin()) {
+	$gContent->addHit();
 }
 // Get page data
 $info = $gContent->mInfo;
@@ -92,7 +91,7 @@ if ($http_domain) {
 	$prefix = 'http://' . $http_domain;
 	if ($http_port != 80)
 		$prefix .= ':' . $http_port;
-	$prefix .= $https_prefix;
+	$prefix .= $gBitSystem->getPreference( 'https_prefix' );
 	$gBitSmarty->assign('urlprefix', $prefix);
 }
 
