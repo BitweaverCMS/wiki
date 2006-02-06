@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.7 2006/02/04 19:04:35 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.8 2006/02/06 00:12:23 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print.php,v 1.7 2006/02/04 19:04:35 squareing Exp $
+ * $Id: print.php,v 1.8 2006/02/06 00:12:23 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -50,10 +50,10 @@ if ($count_admin_pvs == 'y' || !$gBitUser->isAdmin()) {
 }
 // Get page data
 $info = $gContent->mInfo;
-if ($gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) && $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) && $gBitSystem->isFeatureActive( 'wikiLicensePage' )) {
+if ($gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) && $gBitSystem->isFeatureActive( 'wiki_feature_copyrights' ) && $gBitSystem->isFeatureActive( 'wiki_license_page' )) {
 	// insert license if wiki copyrights enabled
-//	$license_info = $wikilib->get_page_info($wikiLicensePage);
-//	$wikilib->add_hit($wikiLicensePage);
+//	$license_info = $wikilib->get_page_info($wiki_license_page);
+//	$wikilib->add_hit($wiki_license_page);
 	$info["data"] = $info["data"] . "\n<HR>\n" . $license_info["data"];
 	$_REQUEST['copyrightpage'] = $page;
 }

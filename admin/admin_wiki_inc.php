@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.12 2006/02/04 10:10:51 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.13 2006/02/06 00:12:23 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -75,7 +75,7 @@ $formWikiFeatures = array(
 		'label' => 'Backlinks',
 		'note' => 'Display a dropdown list of pages that link to a page.',
 	),
-	"feature_likePages" => array(
+	"feature_like_pages" => array(
 		'label' => 'Like Pages',
 		'note' => 'Display a list of pages that have a common word in the names.',
 	),
@@ -87,7 +87,7 @@ $formWikiFeatures = array(
 		'label' => 'History',
 		'note' => 'Allow access to the page\'s history.',
 	),
-	"feature_listPages" => array(
+	"feature_list_pages" => array(
 		'label' => 'List Pages',
 		'note' => 'Allow access to a listing of all wikipages.',
 	),
@@ -312,8 +312,8 @@ if (isset($_REQUEST["removetag"])) {
 }
 if (isset($_REQUEST["setwikihome"])) {
 
-	$gBitSystem->storePreference('wikiHomePage', $_REQUEST["wikiHomePage"]);
-	$gBitSmarty->assign('wikiHomePage', $_REQUEST["wikiHomePage"]);
+	$gBitSystem->storePreference('wiki_home_page', $_REQUEST["wiki_home_page"]);
+	$gBitSmarty->assign('wiki_home_page', $_REQUEST["wiki_home_page"]);
 }
 if (isset($_REQUEST["wikidiscussprefs"])) {
 
@@ -334,8 +334,8 @@ if (isset($_REQUEST["setwikiregex"])) {
 }
 if (isset($_REQUEST["wikisetprefs"])) {
 
-	if (isset($_REQUEST["maxVersions"])) {
-		$gBitSystem->storePreference("maxVersions", $_REQUEST["maxVersions"]);
+	if (isset($_REQUEST["max_versions"])) {
+		$gBitSystem->storePreference("max_versions", $_REQUEST["max_versions"]);
 	}
 	if (isset($_REQUEST["keep_versions"])) {
 		$gBitSystem->storePreference("keep_versions", $_REQUEST["keep_versions"]);
@@ -345,23 +345,23 @@ if (isset($_REQUEST["wikisetprefs"])) {
 if (isset($_REQUEST["wikisetcopyright"])) {
 
 	simple_set_toggle( 'wiki_feature_copyrights','wiki' );
-	if (isset($_REQUEST["wikiLicensePage"])) {
-		$gBitSystem->storePreference("wikiLicensePage", $_REQUEST["wikiLicensePage"]);
-		$gBitSmarty->assign('wikiLicensePage', $_REQUEST["wikiLicensePage"]);
+	if (isset($_REQUEST["wiki_license_page"])) {
+		$gBitSystem->storePreference("wiki_license_page", $_REQUEST["wiki_license_page"]);
+		$gBitSmarty->assign('wiki_license_page', $_REQUEST["wiki_license_page"]);
 	}
-	if (isset($_REQUEST["wikiSubmitNotice"])) {
-		$gBitSystem->storePreference("wikiSubmitNotice", $_REQUEST["wikiSubmitNotice"]);
-		$gBitSmarty->assign('wikiSubmitNotice', $_REQUEST["wikiSubmitNotice"]);
+	if (isset($_REQUEST["wiki_submit_notice"])) {
+		$gBitSystem->storePreference("wiki_submit_notice", $_REQUEST["wiki_submit_notice"]);
+		$gBitSmarty->assign('wiki_submit_notice', $_REQUEST["wiki_submit_notice"]);
 	}
 }
 $tags = $wikilib->get_tags();
 $gBitSmarty->assign_by_ref("tags", $tags);
-$gBitSmarty->assign("maxVersions", $gBitSystem->getPreference("maxVersions", 0));
+$gBitSmarty->assign("max_versions", $gBitSystem->getPreference("max_versions", 0));
 $gBitSmarty->assign("keep_versions", $gBitSystem->getPreference("keep_versions", 1));
 
 $gBitSmarty->assign("wiki_feature_copyrights", $gBitSystem->getPreference("wiki_feature_copyrights"));
-$gBitSmarty->assign('wikiLicensePage', $gBitSystem->getPreference("wikiLicensePage"));
-$gBitSmarty->assign('wikiSubmitNotice', $gBitSystem->getPreference("wikiSubmitNotice"));
+$gBitSmarty->assign('wiki_license_page', $gBitSystem->getPreference("wiki_license_page"));
+$gBitSmarty->assign('wiki_submit_notice', $gBitSystem->getPreference("wiki_submit_notice"));
 
 
 ?>

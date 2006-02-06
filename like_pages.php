@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/like_pages.php,v 1.5 2006/02/04 19:04:34 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/like_pages.php,v 1.6 2006/02/06 00:12:23 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: like_pages.php,v 1.5 2006/02/04 19:04:34 squareing Exp $
+ * $Id: like_pages.php,v 1.6 2006/02/06 00:12:23 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -20,7 +20,7 @@ require_once( '../bit_setup_inc.php' );
 include_once( WIKI_PKG_PATH.'BitPage.php');
 include_once( WIKI_PKG_PATH.'lookup_page_inc.php' );
 $gBitSystem->verifyPackage( 'wiki' );
-$gBitSystem->verifyFeature( 'feature_likePages' );
+$gBitSystem->verifyFeature( 'feature_like_pages' );
 $gBitSystem->verifyPermission( 'bit_p_view', tra( "Permission denied you cannot view pages like this page" ) );
 
 // Get the page from the request var or default it to HomePage

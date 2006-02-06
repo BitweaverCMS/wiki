@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.6 2006/02/04 19:04:35 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.7 2006/02/06 00:12:23 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: slideshow.php,v 1.6 2006/02/04 19:04:35 squareing Exp $
+ * $Id: slideshow.php,v 1.7 2006/02/06 00:12:23 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -32,10 +32,10 @@ if (!isset($_SESSION["thedate"])) {
 
 // Get the page from the request var or default it to HomePage
 if (!isset($_REQUEST["page"])) {
-	$_REQUEST["page"] = $wikiHomePage;
+	$_REQUEST["page"] = $wiki_home_page;
 
-	$page = $wikiHomePage;
-	$gBitSmarty->assign('page', $wikiHomePage);
+	$page = $wiki_home_page;
+	$gBitSmarty->assign('page', $wiki_home_page);
 } else {
 	$page = $_REQUEST["page"];
 

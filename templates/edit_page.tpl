@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.15 2006/01/30 17:34:24 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.16 2006/02/06 00:12:23 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="edit wiki">
@@ -214,16 +214,16 @@
 								<div class="row">
 									{formlabel label="License"}
 									{forminput}
-										<a href="{$smarty.const.WIKI_PKG_URL}index.php?page={$wikiLicensePage}">{tr}{$wikiLicensePage}{/tr}</a>
+										<a href="{$smarty.const.WIKI_PKG_URL}index.php?page={$wiki_license_page}">{tr}{$wiki_license_page}{/tr}</a>
 										{formhelp note=""}
 									{/forminput}
 								</div>
 
-								{if $wikiSubmitNotice neq ""}
+								{if $wiki_submit_notice neq ""}
 									<div class="row">
 										{formlabel label="Important"}
 										{forminput}
-											{$wikiSubmitNotice}
+											{$wiki_submit_notice}
 											{formhelp note=""}
 										{/forminput}
 									</div>

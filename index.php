@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/index.php,v 1.5 2006/02/05 17:39:37 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/index.php,v 1.6 2006/02/06 00:12:23 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: index.php,v 1.5 2006/02/05 17:39:37 squareing Exp $
+ * $Id: index.php,v 1.6 2006/02/06 00:12:23 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -23,16 +23,16 @@ require_once( WIKI_PKG_PATH.'BitPage.php' );
 		include( LIBERTY_PKG_PATH.'display_structure_inc.php' );
 	} else {
 		if ( !isset( $_REQUEST['page'] ) and !isset( $_REQUEST['page_id'] ) ) {
-			$_REQUEST['page'] = $gBitSystem->getPreference( 'wikiHomePage', 'HomePage' );
+			$_REQUEST['page'] = $gBitSystem->getPreference( 'wiki_home_page', 'HomePage' );
 		}
 		$gHome = new BitPage();
-		$wikiHome = $gBitSystem->getPreference("wikiHomePage", 'HomePage');
+		$wikiHome = $gBitSystem->getPreference("wiki_home_page", 'HomePage');
 		if( !($gHome->pageExists( $wikiHome )) ) {
 			$homeHash = array(
 				'title' => (isset( $wikiHome ) ? $wikiHome : 'HomePage'),
 				'creator_user_id' => ROOT_USER_ID,
 				'modifier_user_id' => ROOT_USER_ID,
-				'edit' => 'Welcome to '.( $gBitSystem->getPreference( 'siteTitle', 'our site' ) ) );
+				'edit' => 'Welcome to '.( $gBitSystem->getPreference( 'site_title', 'our site' ) ) );
 			$gHome->store( $homeHash );
 		}
 

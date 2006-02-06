@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.28 2006/02/04 18:40:01 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.29 2006/02/06 00:12:23 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.28 $ $Date: 2006/02/04 18:40:01 $ $Author: squareing $
+ * @version $Revision: 1.29 $ $Date: 2006/02/06 00:12:23 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.28 2006/02/04 18:40:01 squareing Exp $
+ * $Id: BitPage.php,v 1.29 2006/02/06 00:12:23 squareing Exp $
  */
 
 /**
@@ -535,7 +535,7 @@ class BitPage extends LibertyAttachable {
 	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
 	* @return array of mInfo data
 	*/
-	function getHistory( $pVersion=NULL, $pUserId=NULL, $pOffset = 0, $maxRecords = -1 ) {
+	function getHistory( $pVersion=NULL, $pUserId=NULL, $pOffset = 0, $max_records = -1 ) {
 		$ret = NULL;
 		if( $this->isValid() ) {
 			global $gBitSystem;
@@ -559,7 +559,7 @@ class BitPage extends LibertyAttachable {
 				LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
 				WHERE $whereSql $versionSql order by th.`version` desc";
 
-			$result = $this->mDb->query( $query, $bindVars, $maxRecords, $pOffset );
+			$result = $this->mDb->query( $query, $bindVars, $max_records, $pOffset );
 			$ret = array();
 			while( !$result->EOF ) {
 				$aux = $result->fields;
@@ -739,7 +739,7 @@ class BitPage extends LibertyAttachable {
    	/**
    	 * Generate list of pages
    	 * @param offset Number of the first record to list
-   	 * @param maxRecords Number of records to list
+   	 * @param max_records Number of records to list
    	 * @param sort_mode Order in which the records will be sorted
    	 * @param find Filter to be applied to the list
    	 * @param pUserId If set additionally filter on UserId
@@ -747,7 +747,7 @@ class BitPage extends LibertyAttachable {
    	 *	This can take some time to calculate, and so should not normally be enabled
    	 * @param pOrphansOnly If Set list only unattached pages ( ones not used in other content )
 	 */
-	function getList($offset = 0, $maxRecords = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE, $pGetData=FALSE ) {
+	function getList($offset = 0, $max_records = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE, $pGetData=FALSE ) {
 		global $gBitSystem;
 		if ($sort_mode == 'size_desc') {
 			$sort_mode = 'page_size_desc';
@@ -768,11 +768,11 @@ class BitPage extends LibertyAttachable {
 				))) {
 			$old_offset = $offset;
 
-			$old_maxRecords = $maxRecords;
+			$old_max_records = $max_records;
 			$old_sort_mode = $sort_mode;
 			$sort_mode = 'modifier_user_desc';
 			$offset = 0;
-			$maxRecords = -1;
+			$max_records = -1;
 		}
 
 		$mid = '';
@@ -865,12 +865,12 @@ class BitPage extends LibertyAttachable {
 				  AND lcl.`to_content_id` IS NULL";
 		}
 
-		// If sort mode is versions then offset is 0, maxRecords is -1 (again) and sort_mode is nil
-		// If sort mode is links then offset is 0, maxRecords is -1 (again) and sort_mode is nil
-		// If sort mode is backlinks then offset is 0, maxRecords is -1 (again) and sort_mode is nil
+		// If sort mode is versions then offset is 0, max_records is -1 (again) and sort_mode is nil
+		// If sort mode is links then offset is 0, max_records is -1 (again) and sort_mode is nil
+		// If sort mode is backlinks then offset is 0, max_records is -1 (again) and sort_mode is nil
 
 		$this->mDb->StartTrans();
-		$result = $this->mDb->query( $query, $bindVars, $maxRecords, $offset );
+		$result = $this->mDb->query( $query, $bindVars, $max_records, $offset );
 		$cant = $this->mDb->getOne( $query_cant, $bindVars );
 		$this->mDb->CompleteTrans();
 		$ret = array();
@@ -892,7 +892,7 @@ class BitPage extends LibertyAttachable {
 		}
 
 
-		// If sortmode is versions, links or backlinks sort using the ad-hoc function and reduce using old_offse and old_maxRecords
+		// If sortmode is versions, links or backlinks sort using the ad-hoc function and reduce using old_offse and old_max_records
 		if ($old_sort_mode == 'versions_asc' && !empty( $ret['versions'] ) ) {
 			usort($ret, 'compare_versions');
 		}
@@ -925,7 +925,7 @@ class BitPage extends LibertyAttachable {
 				'backlinks_asc',
 				'backlinks_desc'
 				))) {
-			$ret = array_slice($ret, $old_offset, $old_maxRecords);
+			$ret = array_slice($ret, $old_offset, $old_max_records);
 		}
 
 
@@ -1237,7 +1237,7 @@ class WikiLib extends BitPage {
 		}
 	}
 	/*shared*/
-	function list_received_pages($offset, $maxRecords, $sort_mode = 'title_asc', $find) {
+	function list_received_pages($offset, $max_records, $sort_mode = 'title_asc', $find) {
 		$bindvars = array();
 		if ($find) {
 		$findesc = '%'.strtoupper( $find ).'%';
@@ -1250,7 +1250,7 @@ class WikiLib extends BitPage {
 
 		$query = "select * from `".BIT_DB_PREFIX."wiki_received_pages` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."wiki_received_pages` $mid";
-		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+		$result = $this->mDb->query($query,$bindvars,$max_records,$offset);
 		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
 
@@ -1283,7 +1283,7 @@ class WikiLib extends BitPage {
 	// Dumps the database to dump/new.tar
 	// changed for virtualhost support
 	function dumpPages() {
-		global $wikiHomePage, $gBitSystem, $gBitUser;
+		global $wiki_home_page, $gBitSystem, $gBitUser;
 
 		$tar = new tar();
 		$tar->addFile( $gBitSystem->getStyleCss() );
@@ -1306,7 +1306,7 @@ class WikiLib extends BitPage {
 			$dat = preg_replace("/edit.php\?page=([^\'\"\$]+)/", "", $dat);
 			//preg_match_all("/index.php\?page=([^ ]+)/",$dat,$cosas);
 			//print_r($cosas);
-			$data = "<html><head><title>" . $res["title"] . "</title><link rel='StyleSheet' href='".$gBitSystem->getStyleCss()."' type='text/css'></head><body><a class='wiki' href='$wikiHomePage.html'>home</a><br/><h1>" . $res["title"] . "</h1><div class='wikitext'>" . $dat . '</div></body></html>';
+			$data = "<html><head><title>" . $res["title"] . "</title><link rel='StyleSheet' href='".$gBitSystem->getStyleCss()."' type='text/css'></head><body><a class='wiki' href='$wiki_home_page.html'>home</a><br/><h1>" . $res["title"] . "</h1><div class='wikitext'>" . $dat . '</div></body></html>';
 			$tar->addData($title, $data, $res["last_modified"]);
 		}
 
@@ -1318,7 +1318,7 @@ class WikiLib extends BitPage {
 		$result = $this->mDb->query($query,array($action,1,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
 	}
 
-	function list_extwiki($offset, $maxRecords, $sort_mode, $find) {
+	function list_extwiki($offset, $max_records, $sort_mode, $find) {
 		$bindvars=array();
 		if ($find) {
 			$findesc = '%' . $find . '%';
@@ -1331,7 +1331,7 @@ class WikiLib extends BitPage {
 
 		$query = "select * from `".BIT_DB_PREFIX."wiki_ext` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."wiki_ext` $mid";
-		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+		$result = $this->mDb->query($query,$bindvars,$max_records,$offset);
 		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
 
@@ -1401,16 +1401,16 @@ class WikiLib extends BitPage {
 	}
 
 	function remove_tag($tagname) {
-		global $wikiHomePage, $gBitUser, $gBitSystem;
+		global $wiki_home_page, $gBitUser, $gBitSystem;
 
 		$this->mDb->StartTrans();
 		$query = "delete from `".BIT_DB_PREFIX."wiki_tags` where `tag_name`=?";
 		$result = $this->mDb->query($query,array($tagname));
 		$action = "removed tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
-		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(tp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wikiHomePage ) );
+		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(tp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
 		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log` (`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values ( ?,?,?,?,?,?,? )";
-		$result = $this->mDb->query($query,array($homePageId, $action,$wikiHomePage,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
+		$result = $this->mDb->query($query,array($homePageId, $action,$wiki_home_page,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
 		$this->mDb->CompleteTrans();
 		return true;
 	}
@@ -1431,7 +1431,7 @@ class WikiLib extends BitPage {
 	// This function can be used to store the set of actual pages in the "tags"
 	// table preserving the state of the wiki under a tag name.
 	function create_tag($tagname, $comment = '') {
-		global $wikiHomePage, $gBitUser, $gBitSystem;
+		global $wiki_home_page, $gBitUser, $gBitSystem;
 
 		$this->mDb->StartTrans();
 		$query = "select * from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( tp.`content_id`=lc.`content_id` )";
@@ -1447,11 +1447,11 @@ class WikiLib extends BitPage {
 			$result2 = $this->mDb->query($query,array($res["page_id"],$tagname,$res["title"],$res["hits"],$data,$res["last_modified"],$res["comment"],$res["version"],$res["user_id"],$res["ip"],$res["flag"],$description));
 		}
 
-		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(tp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wikiHomePage ) );
+		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(tp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
 		$action = "created tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
 		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`page_id`,`action`,`page_name`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?,?)";
-		$result = $this->mDb->query($query,array($homePageId,$action,$wikiHomePage,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],$comment));
+		$result = $this->mDb->query($query,array($homePageId,$action,$wiki_home_page,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],$comment));
 		$this->mDb->CompleteTrans();
 		return true;
 	}
@@ -1459,7 +1459,7 @@ class WikiLib extends BitPage {
 	// This funcion recovers the state of the wiki using a tag_name from the
 	// tags table
 	function restore_tag($tagname) {
-		global $wikiHomePage, $gBitUser, $gBitSystem;
+		global $wiki_home_page, $gBitUser, $gBitSystem;
 		require_once( WIKI_PKG_PATH.'BitPage.php' );
 
 		$this->mDb->StartTrans();
@@ -1473,11 +1473,11 @@ class WikiLib extends BitPage {
 			$tagPage->store( $res );
 		}
 
-		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(tp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wikiHomePage ) );
+		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(tp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
 		$action = "recovered tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
 		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values (?,?,?,?,?,?,?)";
-		$result = $this->mDb->query($query,array($homePageId,$action,$wikiHomePage,$t, $gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
+		$result = $this->mDb->query($query,array($homePageId,$action,$wiki_home_page,$t, $gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
 		$this->mDb->CompleteTrans();
 		return true;
 	}

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/received_pages.php,v 1.5 2006/02/02 08:20:47 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/received_pages.php,v 1.6 2006/02/06 00:12:23 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: received_pages.php,v 1.5 2006/02/02 08:20:47 squareing Exp $
+ * $Id: received_pages.php,v 1.6 2006/02/06 00:12:23 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -84,7 +84,7 @@ if (!isset($_REQUEST["offset"])) {
 }
 if (isset($_REQUEST['page'])) {
 	$page = &$_REQUEST['page'];
-	$offset = ($page - 1) * $maxRecords;
+	$offset = ($page - 1) * $max_records;
 }
 $gBitSmarty->assign_by_ref('offset', $offset);
 if (isset($_REQUEST["find"])) {
@@ -94,18 +94,18 @@ if (isset($_REQUEST["find"])) {
 }
 $gBitSmarty->assign_by_ref('find', $find);
 
-$channels = $wikilib->list_received_pages($offset, $maxRecords, $sort_mode, $find);
-$cant_pages = ceil($channels["cant"] / $maxRecords);
+$channels = $wikilib->list_received_pages($offset, $max_records, $sort_mode, $find);
+$cant_pages = ceil($channels["cant"] / $max_records);
 $gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
-$gBitSmarty->assign('actual_page', 1 + ($offset / $maxRecords));
-if ($channels["cant"] > ($offset + $maxRecords)) {
-	$gBitSmarty->assign('next_offset', $offset + $maxRecords);
+$gBitSmarty->assign('actual_page', 1 + ($offset / $max_records));
+if ($channels["cant"] > ($offset + $max_records)) {
+	$gBitSmarty->assign('next_offset', $offset + $max_records);
 } else {
 	$gBitSmarty->assign('next_offset', -1);
 }
 // If offset is > 0 then prev_offset
 if ($offset > 0) {
-	$gBitSmarty->assign('prev_offset', $offset - $maxRecords);
+	$gBitSmarty->assign('prev_offset', $offset - $max_records);
 } else {
 	$gBitSmarty->assign('prev_offset', -1);
 }

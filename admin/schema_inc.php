@@ -120,15 +120,15 @@ $gBitInstaller->registerUserPermissions( WIKI_PKG_NAME, array(
 
 // ### Default Preferences
 $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
-	//array( WIKI_PKG_NAME, 'anonCanEdit','n'),
+	//array( WIKI_PKG_NAME, 'anon_can_edit','n'),
 	array( WIKI_PKG_NAME, 'feature_autolinks','y'),
 	array( WIKI_PKG_NAME, 'feature_backlinks','y'),
 	array( WIKI_PKG_NAME, 'feature_dump','y'),
 	array( WIKI_PKG_NAME, 'feature_history','y'),
-	array( WIKI_PKG_NAME, 'feature_lastChanges','y'),
-	array( WIKI_PKG_NAME, 'feature_likePages','y'),
+	array( WIKI_PKG_NAME, 'feature_last_changes','y'),
+	array( WIKI_PKG_NAME, 'feature_like_pages','y'),
 	array( WIKI_PKG_NAME, 'feature_allow_dup_wiki_page_names','y'),
-	array( WIKI_PKG_NAME, 'feature_listPages','y'),
+	array( WIKI_PKG_NAME, 'feature_list_pages','y'),
 	array( WIKI_PKG_NAME, 'feature_page_title','y'),
 	//array( WIKI_PKG_NAME, 'feature_ranking','n'),
 	array( WIKI_PKG_NAME, 'feature_sandbox','y'),
@@ -153,7 +153,7 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	//array( WIKI_PKG_NAME, 'feature_wiki_usrlock','n'),
 	array( WIKI_PKG_NAME, 'feature_wikiwords','y'),
 	array( WIKI_PKG_NAME, 'keep_versions','1'),
-	array( WIKI_PKG_NAME, 'maxVersions','0'),
+	array( WIKI_PKG_NAME, 'max_versions','0'),
 	array( WIKI_PKG_NAME, 'w_use_db','y'),
 	//array( WIKI_PKG_NAME, 'w_use_dir',''),
 	array( WIKI_PKG_NAME, 'warn_on_edit_time','2'),
@@ -183,9 +183,9 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	//array( WIKI_PKG_NAME, 'wiki_uses_slides','n'),
 	array( WIKI_PKG_NAME, 'wikibook_show_path','y'),
 	array( WIKI_PKG_NAME, 'wikibook_show_navigation','y'),
-	array( WIKI_PKG_NAME, 'wikiHomePage','Welcome'),
-	//array( WIKI_PKG_NAME, 'wikiLicensePage',''),
-	//array( WIKI_PKG_NAME, 'wikiSubmitNotice',''),
+	array( WIKI_PKG_NAME, 'wiki_home_page','Welcome'),
+	//array( WIKI_PKG_NAME, 'wiki_license_page',''),
+	//array( WIKI_PKG_NAME, 'wiki_submit_notice',''),
 ) );
 
 if( defined( 'RSS_PKG_NAME' ) ) {
