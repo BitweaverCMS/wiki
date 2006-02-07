@@ -21,7 +21,6 @@ $tables = array(
 'wiki_pages' => "
 	page_id I4 PRIMARY,
 	content_id I4 NOTNULL,
-	version I4 NOTNULL,
 	page_size I4 DEFAULT 0,
 	description C(200),
 	comment C(200),

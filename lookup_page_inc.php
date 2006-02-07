@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.9 2006/02/06 22:56:52 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.10 2006/02/07 01:19:19 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.9 2006/02/06 22:56:52 squareing Exp $
+ * $Id: lookup_page_inc.php,v 1.10 2006/02/07 01:19:19 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -22,7 +22,7 @@
 	include_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
 
 	// if we already have a gContent, we assume someone else created it for us, and has properly loaded everything up.
-// 	if( empty( $gContent ) || !is_object( $gContent ) || !$gContent->isValid() ) {
+ 	if( empty( $gContent ) || !is_object( $gContent ) ) {
 		$gContent = new BitPage( @BitBase::verifyId( $_REQUEST['page_id'] ) ? $_REQUEST['page_id'] : NULL, @BitBase::verifyId( $_REQUEST['content_id'] ) ? $_REQUEST['content_id'] : NULL );
 
 		$loadPage = (!empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL);
@@ -46,7 +46,7 @@
 		if( !$gContent->load() && $loadPage ) {
 			$gContent->mInfo['title'] = $loadPage;
 		}
-// 	}
+ 	}
 
 	// we weren't passed a structure, but maybe this page belongs to one. let's check...
 	if( empty( $gStructure ) ) {

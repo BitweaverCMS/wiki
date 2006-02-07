@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.30 2006/02/06 22:56:52 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.31 2006/02/07 01:19:19 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.30 $ $Date: 2006/02/06 22:56:52 $ $Author: squareing $
+ * @version $Revision: 1.31 $ $Date: 2006/02/07 01:19:19 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.30 2006/02/06 22:56:52 squareing Exp $
+ * $Id: BitPage.php,v 1.31 2006/02/07 01:19:19 spiderr Exp $
  */
 
 /**
@@ -120,15 +120,6 @@ class BitPage extends LibertyAttachable {
 			$table = BIT_DB_PREFIX."wiki_pages";
 			if( $this->verifyId( $this->mPageId ) ) {
 				$this->invalidateCache();
-				if( !empty( $pParamHash['force_history'] ) || ( empty( $pParamHash['minor'] ) && !empty( $this->mInfo['version'] ) && $pParamHash['field_changed'] )) {
-					if( $this->mPageName != 'SandBox' && empty( $pParamHash['has_no_history'] ) ) {
-						$query = "insert into `".BIT_DB_PREFIX."liberty_content_history`( `page_id`, `version`, `last_modified`, `user_id`, `ip`, `comment`, `data`, `description`, `format_guid`) values(?,?,?,?,?,?,?,?,?)";
- 						$result = $this->mDb->query( $query, array( $this->mPageId, (int)$this->mInfo['version'], (int)$this->mInfo['last_modified'] , $this->mInfo['modifier_user_id'], $this->mInfo['ip'], $this->mInfo['comment'], $this->mInfo['data'], $this->mInfo['description'], $this->mInfo['format_guid'] ) );
-					}
-					$action = "Created";
-					$mailEvents = 'wiki_page_changes';
-				}
-
 				$locId = array ( "name" => "page_id", "value" => $this->mPageId );
 				$result = $this->mDb->associateUpdate( $table, $pParamHash['page_store'], $locId );
 
@@ -284,12 +275,6 @@ class BitPage extends LibertyAttachable {
 			}
 		}
 
-		if( !$this->verifyId( $this->mPageId ) ) {
-			$pParamHash['page_store']['version'] = 1;
-		} else {
-			$pParamHash['page_store']['version'] = $this->mInfo['version'] + 1;
-		}
-
 		return( count( $this->mErrors ) == 0 );
 	}
 
@@ -359,31 +344,6 @@ class BitPage extends LibertyAttachable {
 
 	function unlock( $pModUserId=NULL ) {
 		return( $this->setLock( NULL, $pModUserId ) );
-	}
-
-	/**
-	 * Removes last version of the page (from pages) if theres some
-	 * version in the liberty_content_history then the last version becomes the actual version
-	 */
-	function removeLastVersion( $comment = '' ) {
-		if( $this->verifyId( $this->mPageId ) ) {
-			global $gBitSystem;
-			$this->invalidateCache();
-			$query = "select * from `".BIT_DB_PREFIX."liberty_content_history` where `page_id`=? order by ".$this->mDb->convert_sortmode("last_modified_desc");
-			$result = $this->mDb->query($query, array( $this->mPageId ) );
-			if ($result->numRows()) {
-				// We have a version
-				$res = $result->fetchRow();
-				$this->rollbackVersion( $res["version"] );
-				$this->expungeVersion( $res["version"] );
-			} else {
-				$this->remove_all_versions($page);
-			}
-			$action = "Removed last version";
-			$t = $gBitSystem->getUTCTime();
-			$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`( `action`, `page_id`, `last_modified`, `user_id`, `ip`, `comment`) values( ?, ?, ?, ?, ?, ?)";
-			$result = $this->mDb->query($query, array( $action, $this->mPageId, $t, ROOT_USER_ID, $_SERVER["REMOTE_ADDR"], $comment ) );
-		}
 	}
 
 	// *********  Footnote functions for the wiki ********** //
@@ -513,65 +473,6 @@ class BitPage extends LibertyAttachable {
 	}
 
 
-	// *********  History functions for the wiki ********** //
-	/**
-	* Get count of the number of historic records for the page
-	* @return count
-	*/
-	function getHistoryCount() {
-		$ret = NULL;
-		if( $this->isValid() ) {
-			$query = "SELECT COUNT(*) AS `count`
-					FROM `".BIT_DB_PREFIX."liberty_content_history`
-					WHERE `page_id` = ?";
-			$rs = $this->mDb->query($query, array($this->mPageId));
-			$ret = $rs->fields['count'];
-		}
-		return $ret;
-	}
-
-	/**
-	* Get complete set of historical data in order to display a given wiki page version
-	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
-	* @return array of mInfo data
-	*/
-	function getHistory( $pVersion=NULL, $pUserId=NULL, $pOffset = 0, $max_records = -1 ) {
-		$ret = NULL;
-		if( $this->isValid() ) {
-			global $gBitSystem;
-			$versionSql = '';
-			if( @BitBase::verifyId( $pUserId ) ) {
-				$bindVars = array( $pUserId );
-				$whereSql = ' th.`user_id`=? ';
-			} else {
-				$bindVars = array( $this->mPageId );
-				$whereSql = ' th.`page_id`=? ';
-			}
-			if( !empty( $pVersion ) ) {
-				array_push( $bindVars, $pVersion );
-				$versionSql = ' AND th.`version`=? ';
-			}
-			$query = "SELECT lc.`title`, th.*,
-				uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
-				uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name
-				FROM `".BIT_DB_PREFIX."liberty_content_history` th INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (tp.`page_id` = th.`page_id`) INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`)
-				LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = th.`user_id`)
-				LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
-				WHERE $whereSql $versionSql order by th.`version` desc";
-
-			$result = $this->mDb->query( $query, $bindVars, $max_records, $pOffset );
-			$ret = array();
-			while( !$result->EOF ) {
-				$aux = $result->fields;
-				$aux['creator'] = (isset( $aux['creator_real_name'] ) ? $aux['creator_real_name'] : $aux['creator_user'] );
-				$aux['editor'] = (isset( $aux['modifier_real_name'] ) ? $aux['modifier_real_name'] : $aux['modifier_user'] );
-				array_push( $ret, $aux );
-				$result->MoveNext();
-			}
-		}
-		return $ret;
-	}
-
 	/**
 	 * Roll back to a specific version of a page
 	 * @param pVersion Version number to roll back to
@@ -580,109 +481,15 @@ class BitPage extends LibertyAttachable {
 	 */
 	function rollbackVersion( $pVersion, $comment = '' ) {
 		$ret = FALSE;
-		if( $this->isValid() ) {
-			global $gBitUser,$gBitSystem;
-			$this->mDb->StartTrans();
-			// JHT - cache invalidation appears to be handled by store function - so don't need to do it here
-			$query = "select *, `user_id` AS modifier_user_id, `data` AS `edit` from `".BIT_DB_PREFIX."liberty_content_history` where `page_id`=? and `version`=?";
-			$result = $this->mDb->query($query,array( $this->mPageId, $pVersion ) );
-			if( $result->numRows() ) {
-				$res = $result->fetchRow();
-				$res['comment'] = 'Rollback to version '.$pVersion.' by '.$gBitUser->getDisplayName();
-				// JHT 2005-06-19_15:22:18
-				// set ['force_history'] to
-				// make sure we don't destory current content without leaving a copy in history
-				// if rollback can destroy the current page version, it can be used
-				// maliciously
-				$res['force_history'] = 1;
-				// JHT 2005-10-16_22:21:10
-				// title must be set or store fails
-				// we use current page name
-				$res['title'] = $this->mPageName;
-				if( $this->store( $res ) ) {
-					$action = "Changed actual version to $pVersion";
-					$t = $gBitSystem->getUTCTime();
-					$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`action`,`page_id`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?)";
-					$result = $this->mDb->query($query,array($action,$this->mPageId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
-					$ret = TRUE;
-				}
-				$this->mDb->CompleteTrans();
-			} else {
-				$this->mDb->RollbackTrans();
-			}
+		if( parent::rollbackVersion( $pVersion, $comment ) ) {
+			$action = "Changed actual version to $pVersion";
+			$t = $gBitSystem->getUTCTime();
+			$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`action`,`page_id`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?)";
+			$result = $this->mDb->query($query,array($action,$this->mPageId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
+			$ret = TRUE;
 		}
 		return $ret;
 	}
-
-	/**
-	 * Removes a specific version of a page
-	 * @param pVersion Version number to roll back to
-	 * @param comment Comment text to be added to the action log
-	 * @return TRUE if completed successfully
-	 */
-	function expungeVersion( $pVersion=NULL, $comment = '' ) {
-		$ret = FALSE;
-		if( $this->isValid() ) {
-			$this->mDb->StartTrans();
-			$bindVars = array( $this->mPageId );
-			$versionSql = '';
-			if( $pVersion ) {
-				$versionSql = " and `version`=? ";
-				array_push( $bindVars, $pVersion );
-			}
-			$hasRows = $this->mDb->getOne( "SELECT COUNT(`version`) FROM `".BIT_DB_PREFIX."liberty_content_history` WHERE `page_id`=? $versionSql ", $bindVars );
-			$query = "delete from `".BIT_DB_PREFIX."liberty_content_history` where `page_id`=? $versionSql ";
-			$result = $this->mDb->query( $query, $bindVars );
-			if( $hasRows ) {
-				global $gBitSystem;
-				$action = "Removed version $pVersion";
-				$t = $gBitSystem->getUTCTime();
-				$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`action`,`page_id`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?)";
-				$result = $this->mDb->query($query,array($action,$this->mPageId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
-				$ret = TRUE;
-			}
-			$this->mDb->CompleteTrans();
-		}
-		return $ret;
-	}
-
-/*
-	// Returns information about a specific version of a page
-	function get_version($page_id, $version) {
-		$query = "SELECT th.*, lc.`title`
-				  FROM `".BIT_DB_PREFIX."liberty_content_history` th INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (tp.`page_id` = th.`page_id`) INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`)
-				  WHERE th.`page_id`=? and th.`version`=? ";
-		$result = $this->mDb->query($query,array($page_id,$version));
-		$res = $result->fetchRow();
-		return $res;
-	}
-	// Returns all the versions for this page
-	// without the data itself
-	function get_page_history($pageId) {
-		global $gBitSystem;
-		$query = "SELECT lc.`title`, th.*,
-					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uue.`user_id` AS modifier_user_id,
-					uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name, uuc.`user_id` AS creator_user_id
-
-				  FROM `".BIT_DB_PREFIX."liberty_content_history` th INNER JOIN `".BIT_DB_PREFIX."wiki_pages` tp ON (tp.`page_id` = th.`page_id`) INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`)
-					INNER JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = th.`user_id`)
-					INNER JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
-				  WHERE th.`page_id` = ?
-				  ORDER BY th.`version` desc";
-
-		$result = $this->mDb->query($query,array($pageId));
-		$ret = array();
-		while ($res = $result->fetchRow()) {
-			$aux = $res;
-			$aux['creator'] = (isset( $res['creator_real_name'] ) ? $res['creator_real_name'] : $res['creator_user'] );
-			$aux['editor'] = (isset( $res['modifier_real_name'] ) ? $res['modifier_real_name'] : $res['modifier_user'] );
-			$aux["last_modified"] = $res["last_modified"];
-			//$aux["percent"] = levenshtein($res["data"],$actual);
-			$ret[] = $aux;
-		}
-		return $ret;
-	}
-*/
 
    	/**
    	 * Methods to cache and handle the cached version of wiki pages
