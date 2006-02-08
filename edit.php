@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.32 2006/02/05 11:04:06 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.33 2006/02/08 03:11:19 seannerd Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.32 2006/02/05 11:04:06 jht001 Exp $
+ * $Id: edit.php,v 1.1.1.1.2.33 2006/02/08 03:11:19 seannerd Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -412,11 +412,6 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 	if( $gContent->store( $_REQUEST ) ) {
 		if( $gBitSystem->isFeatureActive( 'wiki_watch_author' ) ) {
 			$gBitUser->storeWatch( "wiki_page_changed", $gContent->mPageId, $gContent->mContentTypeGuid, $_REQUEST['title'], $gContent->getDisplayUrl() );
-		}
-		// Add the content to the search index
-		if( $gBitSystem->isPackageActive( 'search' ) and $gBitSystem->isFeatureActive("search_index_on_submit")) {
-			require_once( SEARCH_PKG_PATH.'refresh_functions.php');
-			refresh_index_tiki_content($gContent->mContentId);
 		}
 		header( "Location: ".$gContent->getDisplayUrl() );
 	} else {
