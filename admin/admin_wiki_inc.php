@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.15 2006/02/07 08:53:14 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.16 2006/02/08 21:51:15 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -144,26 +144,26 @@ if (isset($_REQUEST["wikifeatures"])) {
 		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
 	if (isset($_REQUEST["warn_on_edit"]) && $_REQUEST["warn_on_edit"][0] == "y") {
-		$gBitSystem->storePreference("warn_on_edit", 'y');
+		$gBitSystem->storePreference("warn_on_edit", 'y', WIKI_PKG_NAME);
 		$gBitSmarty->assign("warn_on_edit", 'y');
 	} else {
-		$gBitSystem->storePreference("warn_on_edit", 'n');
+		$gBitSystem->storePreference("warn_on_edit", 'n', WIKI_PKG_NAME);
 		$gBitSmarty->assign("warn_on_edit", 'n');
 	}
-	//$gBitSystem->storePreference("wiki_link_type", $_REQUEST["link_type"]);
-	$gBitSystem->storePreference("warn_on_edit_time", $_REQUEST["warn_on_edit_time"]);
+	//$gBitSystem->storePreference("wiki_link_type", $_REQUEST["link_type"], WIKI_PKG_NAME);
+	$gBitSystem->storePreference("warn_on_edit_time", $_REQUEST["warn_on_edit_time"], WIKI_PKG_NAME);
 	$gBitSmarty->assign('warn_on_edit_time', $_REQUEST["warn_on_edit_time"]);
-	$gBitSystem->storePreference('wiki_cache', $_REQUEST["wiki_cache"]);
+	$gBitSystem->storePreference('wiki_cache', $_REQUEST["wiki_cache"], WIKI_PKG_NAME);
 	$gBitSmarty->assign('wiki_cache', $_REQUEST["wiki_cache"]);
 
 	/* not sure if the following are still required */
-	$gBitSystem->storePreference('wiki_tables', $_REQUEST['wiki_tables']);
+	$gBitSystem->storePreference('wiki_tables', $_REQUEST['wiki_tables'], WIKI_PKG_NAME);
 	$gBitSmarty->assign('wiki_tables', $_REQUEST['wiki_tables']);
 	if (isset($_REQUEST["feature_userVersions"]) && $_REQUEST["feature_userVersions"] == "y") {
-		$gBitSystem->storePreference("feature_userVersions", 'y');
+		$gBitSystem->storePreference("feature_userVersions", 'y', WIKI_PKG_NAME);
 		$gBitSmarty->assign("feature_userVersions", 'y');
 	} else {
-		$gBitSystem->storePreference("feature_userVersions", 'n');
+		$gBitSystem->storePreference("feature_userVersions", 'n', WIKI_PKG_NAME);
 		$gBitSmarty->assign("feature_userVersions", 'n');
 	}
 }
@@ -312,22 +312,22 @@ if (isset($_REQUEST["removetag"])) {
 }
 if (isset($_REQUEST["setwikihome"])) {
 
-	$gBitSystem->storePreference('wiki_home_page', $_REQUEST["wiki_home_page"]);
+	$gBitSystem->storePreference('wiki_home_page', $_REQUEST["wiki_home_page"], WIKI_PKG_NAME);
 	$gBitSmarty->assign('wiki_home_page', $_REQUEST["wiki_home_page"]);
 }
 if (isset($_REQUEST["wikidiscussprefs"])) {
 
 	if (isset($_REQUEST["wiki_discuss"])) {
-		$gBitSystem->storePreference('wiki_discuss', 'y');
+		$gBitSystem->storePreference('wiki_discuss', 'y', WIKI_PKG_NAME);
 		$gBitSmarty->assign('wiki_discuss', 'y');
 	} else {
-		$gBitSystem->storePreference("wiki_discuss", 'n');
+		$gBitSystem->storePreference("wiki_discuss", 'n', WIKI_PKG_NAME);
 		$gBitSmarty->assign('wiki_discuss', 'n');
 	}
 }
 if (isset($_REQUEST["setwikiregex"])) {
 
-	$gBitSystem->storePreference('wiki_page_regex', $_REQUEST["wiki_page_regex"]);
+	$gBitSystem->storePreference('wiki_page_regex', $_REQUEST["wiki_page_regex"], WIKI_PKG_NAME);
 	$gBitSmarty->assign( 'wiki_page_regex', $_REQUEST["wiki_page_regex"] );
 } else {
     $gBitSmarty->assign( 'wiki_page_regex', $gBitSystem->getPreference( 'wiki_page_regex', 'strict' ) );
@@ -335,22 +335,22 @@ if (isset($_REQUEST["setwikiregex"])) {
 if (isset($_REQUEST["wikisetprefs"])) {
 
 	if (isset($_REQUEST["max_versions"])) {
-		$gBitSystem->storePreference("max_versions", $_REQUEST["max_versions"]);
+		$gBitSystem->storePreference("max_versions", $_REQUEST["max_versions"], WIKI_PKG_NAME);
 	}
 	if (isset($_REQUEST["keep_versions"])) {
-		$gBitSystem->storePreference("keep_versions", $_REQUEST["keep_versions"]);
+		$gBitSystem->storePreference("keep_versions", $_REQUEST["keep_versions"], WIKI_PKG_NAME);
 		$gBitSmarty->assign('keep_versions', $_REQUEST["keep_versions"]);
 	}
 }
 if (isset($_REQUEST["wikisetcopyright"])) {
 
-	simple_set_toggle( 'wiki_copyrights','wiki' );
+	simple_set_toggle( 'wiki_copyrights',WIKI_PKG_NAME );
 	if (isset($_REQUEST["wiki_license_page"])) {
-		$gBitSystem->storePreference("wiki_license_page", $_REQUEST["wiki_license_page"]);
+		$gBitSystem->storePreference("wiki_license_page", $_REQUEST["wiki_license_page"], WIKI_PKG_NAME);
 		$gBitSmarty->assign('wiki_license_page', $_REQUEST["wiki_license_page"]);
 	}
 	if (isset($_REQUEST["wiki_submit_notice"])) {
-		$gBitSystem->storePreference("wiki_submit_notice", $_REQUEST["wiki_submit_notice"]);
+		$gBitSystem->storePreference("wiki_submit_notice", $_REQUEST["wiki_submit_notice"], WIKI_PKG_NAME);
 		$gBitSmarty->assign('wiki_submit_notice', $_REQUEST["wiki_submit_notice"]);
 	}
 }
