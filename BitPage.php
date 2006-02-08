@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.31 2006/02/07 01:19:19 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.32 2006/02/08 01:36:32 lphuberdeau Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.31 $ $Date: 2006/02/07 01:19:19 $ $Author: spiderr $
+ * @version $Revision: 1.32 $ $Date: 2006/02/08 01:36:32 $ $Author: lphuberdeau $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.31 2006/02/07 01:19:19 spiderr Exp $
+ * $Id: BitPage.php,v 1.32 2006/02/08 01:36:32 lphuberdeau Exp $
  */
 
 /**
@@ -198,7 +198,7 @@ class BitPage extends LibertyAttachable {
 			$this->load();
 		}
 
-		if( $this->verifyId( $this->mInfo['content_id'] ) ) {
+		if( isset( $this->mInfo['content_id'] ) && $this->verifyId( $this->mInfo['content_id'] ) ) {
 			$pParamHash['content_id'] = $this->mInfo['content_id'];
 		}
 
