@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.32 2006/02/08 01:36:32 lphuberdeau Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.33 2006/02/08 23:24:28 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.32 $ $Date: 2006/02/08 01:36:32 $ $Author: lphuberdeau $
+ * @version $Revision: 1.33 $ $Date: 2006/02/08 23:24:28 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.32 2006/02/08 01:36:32 lphuberdeau Exp $
+ * $Id: BitPage.php,v 1.33 2006/02/08 23:24:28 spiderr Exp $
  */
 
 /**
@@ -76,10 +76,7 @@ class BitPage extends LibertyAttachable {
 						LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = lc.`modifier_user_id`)
 						LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
 					  WHERE tp.`$lookupColumn`=? $whereSql";
-			$result = $this->mDb->query( $query, $bindVars );
-
-			if ( $row = $result->fetchRow() ) {
-				$this->mInfo = $row;
+			if( $this->mInfo = $this->mDb->getRow( $query, $bindVars ) ) {
 				$this->mContentId = $this->mInfo['content_id'];
 				$this->mPageId = $this->mInfo['page_id'];
 				$this->mPageName = $this->mInfo['title'];
@@ -120,8 +117,7 @@ class BitPage extends LibertyAttachable {
 			$table = BIT_DB_PREFIX."wiki_pages";
 			if( $this->verifyId( $this->mPageId ) ) {
 				$this->invalidateCache();
-				$locId = array ( "name" => "page_id", "value" => $this->mPageId );
-				$result = $this->mDb->associateUpdate( $table, $pParamHash['page_store'], $locId );
+				$result = $this->mDb->associateUpdate( $table, $pParamHash['page_store'], array( "page_id" => $this->mPageId ) );
 
 			} else {
 				$pParamHash['page_store']['content_id'] = $pParamHash['content_id'];
