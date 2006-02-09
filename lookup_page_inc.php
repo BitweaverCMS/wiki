@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.11 2006/02/08 20:17:25 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.12 2006/02/09 10:30:38 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.11 2006/02/08 20:17:25 spiderr Exp $
+ * $Id: lookup_page_inc.php,v 1.12 2006/02/09 10:30:38 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -22,7 +22,7 @@
 	include_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
 
 	// if we already have a gContent, we assume someone else created it for us, and has properly loaded everything up.
- 	if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gContent ) ) != 'bitpage' ) {
+	if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gContent ) ) != 'bitpage' ) {
 		$gContent = new BitPage( @BitBase::verifyId( $_REQUEST['page_id'] ) ? $_REQUEST['page_id'] : NULL, @BitBase::verifyId( $_REQUEST['content_id'] ) ? $_REQUEST['content_id'] : NULL );
 
 		$loadPage = (!empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL);
@@ -46,7 +46,7 @@
 		if( !$gContent->load() && $loadPage ) {
 			$gContent->mInfo['title'] = $loadPage;
 		}
- 	}
+	}
 
 	// we weren't passed a structure, but maybe this page belongs to one. let's check...
 	if( empty( $gStructure ) ) {
@@ -112,7 +112,7 @@
 			parse_str($purl["query"], $purlquery);
 
 			// When WIKI_PKG_URL.'edit.php' is loading, check to see if there is an editing conflict
-			if( $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->mPrefs['warn_on_edit_time'] * 60 ) ) {
+			if( $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->getPreference( 'warn_on_edit_time' ) * 60 ) ) {
 				$gBitSmarty->assign('editpageconflict', 'y');
 			} else {
 				if (!(isset($_REQUEST['save'])) && $gContent->isValid() ) {
@@ -122,7 +122,7 @@
 			}
 		}
 
-		if( $semUser = $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->mPrefs['warn_on_edit_time'] * 60 ) ) {
+		if( $semUser = $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->getPreference( 'warn_on_edit_time' ) * 60 ) ) {
 			$gContent->mErrors['edit_conflict'] = 'This page is being edited by '.$gBitUser->getDisplayName( TRUE, $semUser ).'. Proceed at your own peril';
 			$gBitSmarty->assign( 'semUser', $semUser );
 			$beingedited = 'y';
@@ -130,7 +130,7 @@
 			$beingedited = 'n';
 		}
 		$gBitSmarty->assign('beingEdited', $beingedited);
- 	}
+	}
 	$gBitSmarty->clear_assign( 'gContent' );
 	$gBitSmarty->assign( 'gContent', $gContent );
 	$gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );

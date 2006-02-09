@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.7 2006/02/06 00:12:23 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.8 2006/02/09 10:30:38 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -15,8 +15,8 @@ require_once( WIKI_PKG_PATH."BitPage.php" );
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyPackage( 'rss' );
 
-$rss->title = $gBitSystem->getPreference( 'title_rss_wiki', $gBitSystem->mPrefs['site_title'].' - '.tra( 'Wiki' ) );
-$rss->description = $gBitSystem->getPreference( 'desc_rss_wiki', $gBitSystem->mPrefs['site_title'].' - '.tra( 'RSS Feed' ) );
+$rss->title = $gBitSystem->getPreference( 'title_rss_wiki', $gBitSystem->getPreference( 'site_title' ).' - '.tra( 'Wiki' ) );
+$rss->description = $gBitSystem->getPreference( 'desc_rss_wiki', $gBitSystem->getPreference( 'site_title' ).' - '.tra( 'RSS Feed' ) );
 
 // check permission to view wiki pages
 if( !$gBitUser->hasPermission( 'bit_p_view' ) ) {

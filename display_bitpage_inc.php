@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.15 2006/02/06 22:56:52 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.16 2006/02/09 10:30:38 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.15 2006/02/06 22:56:52 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.16 2006/02/09 10:30:38 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -46,7 +46,7 @@ require_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 // Let creator set permissions
 if($gBitSystem->isFeatureActive( 'wiki_creator_admin' )) {
 	if( $gContent->isOwner() ) {
-		$gBitUser->mPrefs['bit_p_admin_wiki'] = TRUE;
+		$gBitUser->setPreference( 'bit_p_admin_wiki', TRUE );
 	}
 }
 if(isset($_REQUEST["copyrightpage"])) {
