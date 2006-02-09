@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.33 2006/02/08 23:24:28 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.34 2006/02/09 12:53:32 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.33 $ $Date: 2006/02/08 23:24:28 $ $Author: spiderr $
+ * @version $Revision: 1.34 $ $Date: 2006/02/09 12:53:32 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.33 2006/02/08 23:24:28 spiderr Exp $
+ * $Id: BitPage.php,v 1.34 2006/02/09 12:53:32 lsces Exp $
  */
 
 /**
@@ -551,7 +551,7 @@ class BitPage extends LibertyAttachable {
    	 * @param pOrphansOnly If Set list only unattached pages ( ones not used in other content )
 	 */
 	function getList($offset = 0, $max_records = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE, $pGetData=FALSE ) {
-		global $gBitSystem;
+		global $gBitSystem, $gBitUser;
 		if ($sort_mode == 'size_desc') {
 			$sort_mode = 'page_size_desc';
 		}
@@ -591,6 +591,11 @@ class BitPage extends LibertyAttachable {
 			$mid = " AND lc.`user_id` = ? ";
 			$bindVars = array_merge($bindVars, array( $pUserId ));
 		}
+		if( !$gBitSystem->isPackageActive( 'gatekeeper' ) ) { 
+			$groups = array_keys($gBitUser->mGroups);
+			$mid .= " AND lc.`group_id` IN ( ".implode( ',',array_fill ( 0, count( $groups ),'?' ) )." )";
+			$bindVars = array_merge( $bindVars, $groups );
+		}		
 
 		if( $pGetData ) {
 			$get_data = 'lc.`data`,';
