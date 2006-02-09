@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/s5.php,v 1.4 2006/02/09 11:53:28 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/s5.php,v 1.5 2006/02/09 14:52:47 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: s5.php,v 1.4 2006/02/09 11:53:28 squareing Exp $
+ * $Id: s5.php,v 1.5 2006/02/09 14:52:47 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -17,7 +17,7 @@
 	$slides = explode( '<h1>', $pdata );
 	//vd($slides);
 	// manually set the first slide to page title and description
-	$s5  = '<li class="slide"><h1>'.$gContent->mInfo['title'].'</h1>';
+	$s5 .= '<li class="slide"><h1>'.$gContent->mInfo['title'].'</h1>';
 	$s5 .= '<h3>'.$gContent->mInfo['description'].'</h3></li>';
 	foreach( $slides as $slide ) {
 		if( !empty( $slide ) ) {
