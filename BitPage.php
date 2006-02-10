@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.35 2006/02/09 14:41:23 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.36 2006/02/10 04:56:54 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.35 $ $Date: 2006/02/09 14:41:23 $ $Author: lsces $
+ * @version $Revision: 1.36 $ $Date: 2006/02/10 04:56:54 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.35 2006/02/09 14:41:23 lsces Exp $
+ * $Id: BitPage.php,v 1.36 2006/02/10 04:56:54 spiderr Exp $
  */
 
 /**
@@ -65,9 +65,9 @@ class BitPage extends LibertyAttachable {
 			$lookupColumn = @BitBase::verifyId( $this->mPageId ) ? 'page_id' : 'content_id';
 
 			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
+			array_push( $bindVars, $lookupId = @BitBase::verifyId( $this->mPageId )? $this->mPageId : $this->mContentId );
 			$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
-			array_push( $bindVars, $lookupId = @BitBase::verifyId( $this->mPageId )? $this->mPageId : $this->mContentId );
 			$query = "select wp.*, lc.*,
 					  uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
 					  uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name $selectSql
@@ -89,6 +89,8 @@ class BitPage extends LibertyAttachable {
 				} else {
 					LibertyContent::load();
 				}
+			} else {
+				$this->mPageId = NULL;
 			}
 		}
 		return( count( $this->mInfo ) );
@@ -578,93 +580,56 @@ class BitPage extends LibertyAttachable {
 			$max_records = -1;
 		}
 
-		$mid = '';
+		$whereSql = '';
+		$joinSql = '';
+		$selectSql = '';
 		$bindVars = array();
 		array_push( $bindVars, $this->mContentTypeGuid );
+		$this->getServicesSql( 'content_list_function', $selectSql, $joinSql, $whereSql, $bindVars );
 		if (is_array($find)) { // you can use an array of pages
-			$mid = " AND lc.`title` IN (".implode(',',array_fill(0,count($find),'?')).")";
+			$whereSql = " AND lc.`title` IN (".implode(',',array_fill(0,count($find),'?')).")";
 			$bindVars = array_merge($bindVars,$find);
 		} elseif ( is_string($find) and $find != '' ) { // or a string
-			$mid = " AND UPPER(lc.`title`) LIKE ? ";
+			$whereSql = " AND UPPER(lc.`title`) LIKE ? ";
 			$bindVars = array_merge($bindVars,array('%' . strtoupper( $find ) . '%'));
 		} elseif( @BitBase::verifyId( $pUserId ) ) { // or a string
-			$mid = " AND lc.`user_id` = ? ";
+			$whereSql = " AND lc.`user_id` = ? ";
 			$bindVars = array_merge($bindVars, array( $pUserId ));
 		}
-		if( !$gBitSystem->isPackageActive( 'gatekeeper' ) ) { 
-			$groups = array_keys($gBitUser->mGroups);
-			$mid .= " AND lc.`group_id` IN ( ".implode( ',',array_fill ( 0, count( $groups ),'?' ) )." )";
-			$bindVars = array_merge( $bindVars, $groups );
-		}		
 
 		if( $pGetData ) {
-			$get_data = 'lc.`data`,';
+			$get_data = ', lc.`data`';
 		} else {
 			$get_data = '';
 		}
 
-		$query = "SELECT
-			uue.`login` AS modifier_user,
-			uue.`real_name` AS modifier_real_name,
-			uuc.`login` AS creator_user,
-			uuc.`real_name` AS creator_real_name,
-			`page_id`,
-			`hits`,
-			`page_size` as `len`,
-			lc.`title`,
-			lc.`format_guid`,
-			wp.`description`,
-			lc.`last_modified`,
-			lc.`created`,
-			$get_data
-			`ip`,
-			`comment`,
-			`version`,
-			`flag`,
-			wp.`content_id`
-				FROM `".BIT_DB_PREFIX."wiki_pages` wp
-				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`),
-				`".BIT_DB_PREFIX."users_users` uue,
-				`".BIT_DB_PREFIX."users_users` uuc
+		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name, `page_id`, `hits`, `page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, 	lc.`created`, `ip`, `comment`, `version`, `flag`, wp.`content_id` $get_data $selectSql
+				  FROM `".BIT_DB_PREFIX."wiki_pages` wp
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
+					$joinSql ,
+					`".BIT_DB_PREFIX."users_users` uue, `".BIT_DB_PREFIX."users_users` uuc
 				  WHERE lc.`content_type_guid`=?
-				  AND lc.`modifier_user_id`=uue.`user_id`
-				  AND lc.`user_id`=uuc.`user_id` $mid
+					AND lc.`modifier_user_id`=uue.`user_id`
+					AND lc.`user_id`=uuc.`user_id` $whereSql
 				  ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
 		$query_cant = "SELECT COUNT(*)
-			FROM `".BIT_DB_PREFIX."wiki_pages` wp
-			INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
-			WHERE lc.`content_type_guid`=? $mid";
+				  FROM `".BIT_DB_PREFIX."wiki_pages` wp
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) $joinSql
+				  WHERE lc.`content_type_guid`=? $whereSql";
 
 		if( $pOrphansOnly ) {
-			$query = "SELECT
-			uue.`login` AS modifier_user,
-			uue.`real_name` AS modifier_real_name,
-			uuc.`login` AS creator_user,
-			uuc.`real_name` AS creator_real_name ,
-			`page_id`,
-			`hits`,
-			`page_size` as `len`,
-			lc.`title`,
-			lc.`format_guid`,
-			wp.`description`,
-			lc.`last_modified`,
-			lc.`created`,
-			$get_data
-			`ip`,
-			`comment`,
-			`version`,
-			`flag`,
-			wp.`content_id`
-			FROM `".BIT_DB_PREFIX."wiki_pages` wp
-				LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
-				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`),
-				`".BIT_DB_PREFIX."users_users` uue,
-				`".BIT_DB_PREFIX."users_users` uuc
-				  WHERE lc.`content_type_guid`=?
-				  AND lc.`modifier_user_id`=uue.`user_id`
-				  AND lc.`user_id`=uuc.`user_id` $mid
-				  AND lcl.`to_content_id` is NULL
-				  ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
+			$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name , `page_id`, `hits`, `page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, lc.`created`,
+			`ip`, `comment`, `version`, `flag`, wp.`content_id` $get_data
+					  FROM `".BIT_DB_PREFIX."wiki_pages` wp
+						LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
+						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`),
+						`".BIT_DB_PREFIX."users_users` uue,
+						`".BIT_DB_PREFIX."users_users` uuc
+					  WHERE lc.`content_type_guid`=?
+						AND lc.`modifier_user_id`=uue.`user_id`
+						AND lc.`user_id`=uuc.`user_id` $mid
+						AND lcl.`to_content_id` is NULL
+					  ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
 			$query_cant = "SELECT COUNT(*)
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
 				LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
