@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.37 2006/02/10 07:05:47 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.38 2006/02/10 13:54:48 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.37 $ $Date: 2006/02/10 07:05:47 $ $Author: lsces $
+ * @version $Revision: 1.38 $ $Date: 2006/02/10 13:54:48 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.37 2006/02/10 07:05:47 lsces Exp $
+ * $Id: BitPage.php,v 1.38 2006/02/10 13:54:48 lsces Exp $
  */
 
 /**
@@ -798,14 +798,19 @@ class WikiLib extends BitPage {
 			preg_match_all("/(([A-Za-z]|[\x80-\xFF])+)/", $page, $words2);
 			$words = array_unique(array_merge($words[0], $words2[0]));
 			$exps = array();
-			$bindvars=array();
+			$bindVars=array();
 			foreach ($words as $word) {
 				$exps[] = "`title` like ?";
-				$bindvars[] = "%$word%";
+				$bindVars[] = "%$word%";
 			}
-			$exp = implode(" or ", $exps);
-			$query = "SELECT lc.`title` FROM `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) WHERE $exp";
-			$result = $this->mDb->query($query,$bindvars);
+			$selectSql = '';
+			$joinSql = '';
+			$whereSql = implode(" or ", $exps);
+			array_push( $bindVars, $this->mContentTypeGuid );
+			$this->getServicesSql( 'content_list_function', $selectSql, $joinSql, $whereSql, $bindVars );
+
+			$query = "SELECT lc.`title` FROM `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) $join WHERE $whereSql";
+			$result = $this->mDb->query($query,$bindVars);
 			while ($res = $result->fetchRow()) {
 				$ret[] = $res["title"];
 			}
