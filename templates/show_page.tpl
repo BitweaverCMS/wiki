@@ -3,12 +3,7 @@
 	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
 
-{assign var=serviceNavTpls value=$gLibertySystem->getServiceValues('content_nav_tpl')}
-{assign var=serviceViewTpls value=$gLibertySystem->getServiceValues('content_view_tpl')}
-
-{foreach from=$serviceNavTpls item=tpl}
-	{include file=$tpl}
-{/foreach}
+{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav' serviceHash=$gContent->mInfo}
 
 <div class="display wiki {$pageInfo.title|lower|regex_replace:"[\s|_]":""}">
 	{include file="bitpackage:wiki/page_icons.tpl"}
@@ -59,6 +54,4 @@
 	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
 
-{foreach from=$serviceViewTpls item=tpl}
-	{include file=$tpl}
-{/foreach}
+{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='view' serviceHash=$gContent->mInfo}
