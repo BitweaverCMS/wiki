@@ -25,7 +25,7 @@
 					<li><a href="{$smarty.const.WIKI_PKG_URL}page_history.php?page_id={$pageInfo.page_id}">{tr}History{/tr}</a></li>
 				{/if}
 			{/if}
-			{if $gBitSystem->isFeatureActive( 'feature_like_pages' )}
+			{if $gBitSystem->isFeatureActive( 'wiki_like_pages' )}
 				<li><a href="{$smarty.const.WIKI_PKG_URL}like_pages.php?page_id={$pageInfo.page_id}">{tr}Similar{/tr}</a></li>
 			{/if}
 			{if $gBitSystem->isFeatureActive( 'wiki_undo' ) and $canundo eq 'y'}

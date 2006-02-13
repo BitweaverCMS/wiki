@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.38 2006/02/10 13:54:48 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.39 2006/02/13 10:06:26 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.38 $ $Date: 2006/02/10 13:54:48 $ $Author: lsces $
+ * @version $Revision: 1.39 $ $Date: 2006/02/13 10:06:26 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.38 2006/02/10 13:54:48 lsces Exp $
+ * $Id: BitPage.php,v 1.39 2006/02/13 10:06:26 squareing Exp $
  */
 
 /**
@@ -407,8 +407,8 @@ class BitPage extends LibertyAttachable {
 		if( empty( $pPageName ) ) {
 			$pPageName = $this->mPageName;
 		}
-		$rewrite_tag = $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ? 'view/':'';
-		if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ) {
+		$rewrite_tag = $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ? 'view/':'';
+		if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
 			$baseUrl = WIKI_PKG_URL . $rewrite_tag;
 			$baseUrl .= urlencode( $pPageName );
 		}

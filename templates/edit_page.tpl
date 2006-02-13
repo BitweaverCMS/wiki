@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.17 2006/02/06 22:56:52 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.18 2006/02/13 10:06:27 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="edit wiki">
@@ -233,7 +233,7 @@
 					{/jstab}
 				{/if}
 
-				{if $gBitSystem->isFeatureActive( 'feature_wiki_url_import' )}
+				{if $gBitSystem->isFeatureActive( 'wiki_url_import' )}
 					{jstab title="Import HMTL"}
 						{legend legend="Import HMTL"}
 							<div class="row">

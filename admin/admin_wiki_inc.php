@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.16 2006/02/08 21:51:15 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.17 2006/02/13 10:06:27 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -75,7 +75,7 @@ $formWikiFeatures = array(
 		'label' => 'Backlinks',
 		'note' => 'Display a dropdown list of pages that link to a page.',
 	),
-	"feature_like_pages" => array(
+	"wiki_like_pages" => array(
 		'label' => 'Like Pages',
 		'note' => 'Display a list of pages that have a common word in the names.',
 	),
@@ -87,7 +87,7 @@ $formWikiFeatures = array(
 		'label' => 'History',
 		'note' => 'Allow access to the page\'s history.',
 	),
-	"feature_list_pages" => array(
+	"wiki_list_pages" => array(
 		'label' => 'List Pages',
 		'note' => 'Allow access to a listing of all wikipages.',
 	),
@@ -127,7 +127,7 @@ $formWikiFeatures = array(
 		'label' => 'Page creators are admin of their pages',
 		'note' => 'Users who create a page, have all permissions regarding that particular page.',
 	),
-	"feature_wiki_url_import" => array(
+	"wiki_url_import" => array(
 		'label' => 'Allow URL Import',
 		'note' => 'Allow urls to be imported and saved to the wiki.',
 	),
@@ -159,12 +159,12 @@ if (isset($_REQUEST["wikifeatures"])) {
 	/* not sure if the following are still required */
 	$gBitSystem->storePreference('wiki_tables', $_REQUEST['wiki_tables'], WIKI_PKG_NAME);
 	$gBitSmarty->assign('wiki_tables', $_REQUEST['wiki_tables']);
-	if (isset($_REQUEST["feature_userVersions"]) && $_REQUEST["feature_userVersions"] == "y") {
-		$gBitSystem->storePreference("feature_userVersions", 'y', WIKI_PKG_NAME);
-		$gBitSmarty->assign("feature_userVersions", 'y');
+	if (isset($_REQUEST["wiki_user_versions"]) && $_REQUEST["wiki_user_versions"] == "y") {
+		$gBitSystem->storePreference("wiki_user_versions", 'y', WIKI_PKG_NAME);
+		$gBitSmarty->assign("wiki_user_versions", 'y');
 	} else {
-		$gBitSystem->storePreference("feature_userVersions", 'n', WIKI_PKG_NAME);
-		$gBitSmarty->assign("feature_userVersions", 'n');
+		$gBitSystem->storePreference("wiki_user_versions", 'n', WIKI_PKG_NAME);
+		$gBitSmarty->assign("wiki_user_versions", 'n');
 	}
 }
 $formWikiInOut = array(
