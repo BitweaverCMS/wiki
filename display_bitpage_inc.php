@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.16 2006/02/09 10:30:38 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.17 2006/02/14 19:04:44 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.16 2006/02/09 10:30:38 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.17 2006/02/14 19:04:44 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -232,7 +232,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
 			$fp = fopen($_FILES['userfile1']['tmp_name'],"rb");
 			$data = '';
 			$fhash='';
-			if($w_use_db == 'n') {
+			if($gBitSystem->isFeatureActive( 'w_use_db' )) {
 				$fhash = md5($name = $_FILES['userfile1']['name']);
 				$fw = fopen($w_use_dir.$fhash,"wb");
 				if(!$fw) {
@@ -242,7 +242,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
 				}
 			}
 			while(!feof($fp)) {
-				if($w_use_db == 'y') {
+				if($gBitSystem->isFeatureActive( 'w_use_db' )) {
 					$data .= fread($fp,8192*16);
 				} else {
 					$data = fread($fp,8192*16);
@@ -250,7 +250,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
 				}
 			}
 			fclose($fp);
-			if($w_use_db == 'n') {
+			if($gBitSystem->isFeatureActive( 'w_use_db' )) {
 				fclose($fw);
 				$data='';
 			}
