@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.39 2006/02/13 10:06:26 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.40 2006/02/14 21:53:26 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.39 $ $Date: 2006/02/13 10:06:26 $ $Author: squareing $
+ * @version $Revision: 1.40 $ $Date: 2006/02/14 21:53:26 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.39 2006/02/13 10:06:26 squareing Exp $
+ * $Id: BitPage.php,v 1.40 2006/02/14 21:53:26 squareing Exp $
  */
 
 /**
@@ -66,7 +66,7 @@ class BitPage extends LibertyAttachable {
 
 			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
 			array_push( $bindVars, $lookupId = @BitBase::verifyId( $this->mPageId )? $this->mPageId : $this->mContentId );
-			$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
+			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 			$query = "select wp.*, lc.*,
 					  uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
@@ -585,7 +585,7 @@ class BitPage extends LibertyAttachable {
 		$selectSql = '';
 		$bindVars = array();
 		array_push( $bindVars, $this->mContentTypeGuid );
-		$this->getServicesSql( 'content_list_function', $selectSql, $joinSql, $whereSql, $bindVars );
+		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 		if (is_array($find)) { // you can use an array of pages
 			$whereSql = " AND lc.`title` IN (".implode(',',array_fill(0,count($find),'?')).")";
 			$bindVars = array_merge($bindVars,$find);
@@ -807,7 +807,7 @@ class WikiLib extends BitPage {
 			$joinSql = '';
 			$whereSql = implode(" or ", $exps);
 			array_push( $bindVars, $this->mContentTypeGuid );
-			$this->getServicesSql( 'content_list_function', $selectSql, $joinSql, $whereSql, $bindVars );
+			$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 			$query = "SELECT lc.`title` FROM `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) $join WHERE $whereSql";
 			$result = $this->mDb->query($query,$bindVars);
