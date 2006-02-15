@@ -16,6 +16,18 @@
 			{/foreach}
 
 			<div class="row">
+				{formlabel label="Edit Page Sections" for="wiki_section_edit"}
+				{forminput}
+					<select name="wiki_section_edit" id="wiki_section_edit">
+						<option value="0" {if $gBitSystemPrefs.wiki_section_edit eq 0}selected="selected"{/if}>{tr}Disabled{/tr}</option>
+						<option value="1" {if $gBitSystemPrefs.wiki_section_edit eq 1}selected="selected"{/if}>h1</option>
+						<option value="2" {if $gBitSystemPrefs.wiki_section_edit eq 2}selected="selected"{/if}>h2</option>
+					</select>
+					{formhelp note="Using this feature, it is possible to edit only sections of your wiki pages ranging from one heading to another. specify what headings you want to use as boundaries."}
+				{/forminput}
+			</div>
+
+			<div class="row">
 				{formlabel label="Global WikiPage Cache" for="wiki_cache"}
 				{forminput}
 					<select name="wiki_cache" id="wiki_cache">

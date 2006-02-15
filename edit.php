@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.17 2006/02/15 07:14:47 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.18 2006/02/15 20:19:33 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.17 2006/02/15 07:14:47 jht001 Exp $
+ * $Id: edit.php,v 1.18 2006/02/15 20:19:33 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -58,21 +58,26 @@ foreach( $gLibertySystem->mPlugins as $plugin ) {
 }
 
 function  extract_section($data,$section) {
-	$section_data = preg_split("/\n(!![^!])/", "\n$data",-1,PREG_SPLIT_DELIM_CAPTURE);
-	$a = 1 + ($section - 1) * 2;
-	$b = $a + 1;
-	return $section_data[$a] . $section_data[$b];
+	global $gContent, $gBitSystem;
+	if( $gContent->mInfo['format_guid'] == PLUGIN_GUID_TIKIWIKI ) {
+		$section_data = preg_split( "/\n(".( str_repeat( "!", $gBitSystem->getPreference( "wiki_section_edit" ) ) )."[^!])/", "\n$data", -1, PREG_SPLIT_DELIM_CAPTURE );
+		$a = 1 + ($section - 1) * 2;
+		$b = $a + 1;
+		return $section_data[$a] . $section_data[$b];
 	}
+}
 
 function  replace_section($data,$section,$new_section_data) {
-	$section_data = preg_split("/(\n!![^!])/", "\n$data" ,-1,PREG_SPLIT_DELIM_CAPTURE);
-	$a = 1 + ($section - 1) * 2;
-	$b = $a + 1;
-	$section_data[$a] = "\n";
-	$section_data[$b] = $new_section_data;
-	return substr(implode('',$section_data),1);
+	global $gContent, $gBitSystem;
+	if( $gContent->mInfo['format_guid'] == PLUGIN_GUID_TIKIWIKI ) {
+		$section_data = preg_split("/(\n".( str_repeat( "!", $gBitSystem->getPreference( "wiki_section_edit" ) ) )."[^!])/", "\n$data" ,-1,PREG_SPLIT_DELIM_CAPTURE);
+		$a = 1 + ($section - 1) * 2;
+		$b = $a + 1;
+		$section_data[$a] = "\n";
+		$section_data[$b] = $new_section_data;
+		return substr(implode('',$section_data),1);
 	}
-	
+}
 
 function compare_import_versions( $a1, $a2 ) {
 	return $a1["version"] - $a2["version"];
@@ -254,7 +259,7 @@ if( !empty( $gContent->mInfo ) ) {
 		$formInfo['data'] = $data_to_edit;
 		$formInfo['edit_section'] = 1;
 		$formInfo['section'] = $_REQUEST['section'];
-		}
+	}
 
 	$formInfo['edit'] = $data_to_edit;
 	$formInfo['comment'] = '';
@@ -429,13 +434,13 @@ if( isset( $_REQUEST["preview"] ) ) {
 
 	if (!empty($formInfo['section'])) {
 		$formInfo['edit_section'] = 1;
-		}
+	}
 
 	$data_to_parse = $formInfo['edit'];
 	if (!empty($formInfo['section'])
 	&& !empty($gContent->mInfo['data']) ) {
 		$full_page_data = $gContent->mInfo['data'];
-		}
+	}
 
 
 	$parsed = $gContent->parseData($data_to_parse, (!empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] :

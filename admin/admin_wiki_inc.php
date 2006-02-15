@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.18 2006/02/15 07:14:48 jht001 Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.19 2006/02/15 20:19:34 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -135,10 +135,6 @@ $formWikiFeatures = array(
 		'label' => 'Individual WikiPage Cache',
 		'note' => 'Allow individual cache settings for wikipages.',
 	),
-	"wiki_section_edit" => array(
-		'label' => 'Edit Page Sections',
-		'note' => 'Allow Edit of Page Sections.',
-	),
 	"wiki_preserve_leading_blanks" => array(
 		'label' => 'Preserve leading blanks',
 		'note' => 'Preserve leading blanks on Wiki Pages, provided for compatiblity with sites migrated from Tikiwiki.',
@@ -151,6 +147,8 @@ if (isset($_REQUEST["wikifeatures"])) {
 	foreach( $formWikiFeatures as $item => $data ) {
 		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
+	simple_set_int( 'wiki_section_edit', WIKI_PKG_NAME );
+
 	if (isset($_REQUEST["warn_on_edit"]) && $_REQUEST["warn_on_edit"][0] == "y") {
 		$gBitSystem->storePreference("warn_on_edit", 'y', WIKI_PKG_NAME);
 		$gBitSmarty->assign("warn_on_edit", 'y');
