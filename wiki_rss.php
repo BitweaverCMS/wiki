@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.8 2006/02/09 10:30:38 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.9 2006/02/16 13:48:13 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -38,7 +38,7 @@ if( !$gBitUser->hasPermission( 'bit_p_view' ) ) {
 		$item = new FeedItem();
 		$item->title = $feed['title'];
 		$item->link = BIT_BASE_URI.$wiki->getDisplayUrl( $feed['title'] );
-		$item->description = $wiki->parseData( $feed['data'], $feed['format_guid'] );
+		$item->description = $wiki->parseData( $feed );
 
 		$item->date = ( int )$feed['last_modified'];
 		$item->source = 'http://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL;

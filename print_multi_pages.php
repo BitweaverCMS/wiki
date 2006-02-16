@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print_multi_pages.php,v 1.5 2006/02/06 22:56:52 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print_multi_pages.php,v 1.6 2006/02/16 13:48:13 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print_multi_pages.php,v 1.5 2006/02/06 22:56:52 squareing Exp $
+ * $Id: print_multi_pages.php,v 1.6 2006/02/16 13:48:13 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -36,7 +36,7 @@ if (isset($_REQUEST["print"])) {
 		$page = new BitPage( NULL, $contentId );
 		if( $page->load() && $page->hasUserPermission( 'bit_p_view', TRUE )) {
 			$page_info = $page->mInfo;
-			$page_info["parsed"] = $page->parseData( $page_info["data"] );
+			$page_info["parsed"] = $page->parseData( $page_info );
 			$pages[] = $page_info;
 		}
 	}

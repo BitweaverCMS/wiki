@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.8 2006/02/07 01:19:19 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.9 2006/02/16 13:48:13 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.8 2006/02/07 01:19:19 spiderr Exp $
+ * $Id: page_history.php,v 1.9 2006/02/16 13:48:13 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -51,7 +51,7 @@ if (isset($_REQUEST["delete"]) && isset($_REQUEST["hist"])) {
 	}
 } elseif (isset($_REQUEST["preview"])) {
 	if( $version = $gContent->getHistory( $_REQUEST["preview"] ) ) {
-		$gBitSmarty->assign_by_ref('parsed', $gContent->parseData( $version[0]["data"], $version[0]["format_guid"] ) );
+		$gBitSmarty->assign_by_ref('parsed', $gContent->parseData( $version[0] ) );
 		$gBitSmarty->assign_by_ref('version', $_REQUEST["preview"]);
 	}
 } elseif( isset( $_REQUEST["diff2"] ) ) {
@@ -74,12 +74,12 @@ if (isset($_REQUEST["delete"]) && isset($_REQUEST["hist"])) {
 	$from_version = $_REQUEST["compare"];
 	$from_page = $gContent->getHistory($from_version);
 	$gBitSmarty->assign('compare', 'y');
-	$gBitSmarty->assign_by_ref('diff_from', $gContent->parseData( $from_page[0]["data"], $from_page[0]["format_guid"] ) );
+	$gBitSmarty->assign_by_ref('diff_from', $gContent->parseData( $from_page[0] ) );
 	$gBitSmarty->assign_by_ref('diff_to', $gContent->parseData() );
 	$gBitSmarty->assign_by_ref('version_from', $from_version);
 } elseif (isset($_REQUEST["rollback"])) {
 	if( $version = $gContent->getHistory( $_REQUEST["preview"] ) ) {
-		$gBitSmarty->assign_by_ref('parsed', $gContent->parseData( $version[0]["data"], $version[0]["format_guid"] ) );
+		$gBitSmarty->assign_by_ref('parsed', $gContent->parseData( $version[0] ) );
 		$gBitSmarty->assign_by_ref('version', $_REQUEST["preview"]);
 	}
 }
