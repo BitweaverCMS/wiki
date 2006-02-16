@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.6 2006/02/01 18:44:07 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.7 2006/02/16 11:10:26 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: export_lib.php,v 1.6 2006/02/01 18:44:07 squareing Exp $
+ * $Id: export_lib.php,v 1.7 2006/02/16 11:10:26 squareing Exp $
  * @package wiki
  */
 
@@ -30,7 +30,7 @@ class ExportLib extends BitBase {
 		global $gBitUser,$gBitSystem;
 		include_once (UTIL_PKG_PATH."tar.class.php");
 		$tar = new tar();
-		$query = "SELECT tp.`page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`) 
+		$query = "SELECT wp.`page_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) 
 				  ORDER BY lc.".$this->mDb->convert_sortmode("title_asc");
 		$result = $this->mDb->query($query,array());
 		while ($res = $result->fetchRow()) {
@@ -70,11 +70,11 @@ class ExportLib extends BitBase {
 	// without the data itself
 	function get_page_history($page_id) {
 		$query = "SELECT lc.`title`, th.`description`, th.`version`, th.`last_modified`, th.`user_id`, th.`ip`, th.`data`, th.`comment`, uu.`login` as `user`, uu.`real_name` " .
-				 "FROM `".BIT_DB_PREFIX."wiki_pages` tp " .
-				 "INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`) " .
+				 "FROM `".BIT_DB_PREFIX."wiki_pages` wp " .
+				 "INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) " .
 				 "INNER JOIN `".BIT_DB_PREFIX."liberty_content_history` th ON (th.`page_id` = th.`page_id`) " .
 				 "INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = th.`user_id`) " .
-				 "WHERE tp.`page_id`=? order by th.".$this->mDb->convert_sortmode("version_desc");
+				 "WHERE wp.`page_id`=? order by th.".$this->mDb->convert_sortmode("version_desc");
 		$result = $this->mDb->query($query,array($page_id));
 		$ret = array();
 		while ($res = $result->fetchRow()) {
