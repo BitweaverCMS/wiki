@@ -2,6 +2,16 @@
 
 $tables = array(
 
+'wiki_action_log' => "
+	page_id I4 NOTNULL,
+	user_id I4 NOTNULL,
+	action C(255) NOTNULL,
+	last_modified I8,
+	title C(160),
+	ip C(15),
+	comment C(200)
+",
+
 'wiki_footnotes' => "
 	user_id C(40) PRIMARY,
 	page_id I4 NOTNULL,
@@ -13,7 +23,7 @@ $tables = array(
 	content_id I4 NOTNULL,
 	page_size I4 DEFAULT 0,
 	description C(200),
-	comment C(200),
+	edit_comment C(200),
 	flag C(1),
 	points I4,
 	votes I4,
@@ -28,7 +38,7 @@ $tables = array(
 	title C(160) NOTNULL,
 	data X,
 	description C(200),
-	comment C(200),
+	received_comment C(200),
 	received_from_site C(200),
 	received_from_user C(200),
 	received_date I8
@@ -43,7 +53,7 @@ $tables = array(
 	description C(200),
 	data X,
 	last_modified I8,
-	comment C(200),
+	tag_comment C(200),
 	version I4 NOTNULL,
 	ip C(15),
 	flag C(1)

@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.42 2006/02/17 21:20:13 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.43 2006/02/17 22:06:23 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.42 $ $Date: 2006/02/17 21:20:13 $ $Author: spiderr $
+ * @version $Revision: 1.43 $ $Date: 2006/02/17 22:06:23 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.42 2006/02/17 21:20:13 spiderr Exp $
+ * $Id: BitPage.php,v 1.43 2006/02/17 22:06:23 spiderr Exp $
  */
 
 /**
@@ -139,7 +139,7 @@ class BitPage extends LibertyAttachable {
 			if( isset( $mailEvents ) ) {
 				global $notificationlib, $gBitUser, $gBitSystem, $gBitSmarty;
 				include_once( KERNEL_PKG_PATH.'notification_lib.php' );
-				$notificationlib->post_content_event($this->mContentId, $this->mInfo['content_type_guid'], 'wiki', $this->mInfo['title'], $this->mInfo['modifier_user'], $this->mInfo['comment'], $this->mInfo['data']);
+				$notificationlib->post_content_event($this->mContentId, $this->mInfo['content_type_guid'], 'wiki', $this->mInfo['title'], $this->mInfo['modifier_user'], $this->mInfo['edit_comment'], $this->mInfo['data']);
 
 				if( $gBitSystem->isFeatureActive( 'user_watches') ) {
 					$nots = $gBitUser->get_event_watches( 'wiki_page_changed', $this->mPageId );
@@ -152,7 +152,7 @@ class BitPage extends LibertyAttachable {
 						$gBitSmarty->assign('mail_page', $this->mInfo['title']);
 						$gBitSmarty->assign('mail_date', $gBitSystem->getUTCTime());
 						$gBitSmarty->assign('mail_user', $this->mInfo['modifier_user']);
-						$gBitSmarty->assign('mail_comment', $this->mInfo['comment']);
+						$gBitSmarty->assign('mail_comment', $this->mInfo['edit_comment']);
 						$gBitSmarty->assign('mail_last_version', $this->mInfo['version'] - 1);
 						$gBitSmarty->assign('mail_data', $this->mInfo['data']);
 						$gBitSmarty->assign('mail_hash', $not['hash']);
@@ -260,12 +260,17 @@ class BitPage extends LibertyAttachable {
 			}
 */		}
 
-		if( empty( $pParamHash['comment'] ) ) {
-			$pParamHash['page_store']['comment'] = NULL;
+		if( empty( $pParamHash['edit_comment'] ) ) {
+			$pParamHash['page_store']['edit_comment'] = NULL;
 		} else {
-			$pParamHash['page_store']['comment'] = substr( $pParamHash['comment'], 0, 200 );
+			$pParamHash['page_store']['edit_comment'] = substr( $pParamHash['edit_comment'], 0, 200 );
 		}
 
+		if( $this->getField( 'edit_comment' ) ) {
+			// used in LibertyContent when storing the history
+			$this->mInfo['history_comment'] = $this->getField( 'edit_comment' );
+		}
+		
 		if( !empty( $pParamHash['minor'] ) && $this->isValid() ) {
 			// we can only minor save over our own versions
 			if( !$gBitUser->isRegistered() || ($this->mInfo['modifier_user_id'] != $gBitUser->mUserId && !$gBitUser->isAdmin()) ) {
@@ -1142,7 +1147,7 @@ class WikiLib extends BitPage {
 		$perm_name = 'bit_p_extwiki_' . $name;
 		$query = "delete from `".BIT_DB_PREFIX."users_permissions`where `perm_name`=?";
 		$this->mDb->query($query,array($perm_name));
-		$query = "insert into `".BIT_DB_PREFIX."users_permissions`(`perm_name`,`perm_desc`,`type`,`level`) values
+		$query = "insert into `".BIT_DB_PREFIX."users_permissions`(`perm_name`,`perm_desc`,`type`,`perm_level`) values
     			(?,?,?,?)";
 		$this->mDb->query($query,array($perm_name,'Can use extwiki $extwiki','extwiki','editor'));
 		return true;
@@ -1223,7 +1228,7 @@ class WikiLib extends BitPage {
 			$this->mDb->query($query,array($tagname,$res["page_id"]));
 			$query = "insert into `".BIT_DB_PREFIX."wiki_tags`(`page_id`,`tag_name`,`page_name`,`hits`,`data`,`last_modified`,`action_comment`,`version`,`user_id`,`ip`,`flag`,`description`)
                 		values(?,?,?,?,?,?,?,?,?,?,?,?)";
-			$result2 = $this->mDb->query($query,array($res["page_id"],$tagname,$res["title"],$res["hits"],$data,$res["last_modified"],$res["comment"],$res["version"],$res["user_id"],$res["ip"],$res["flag"],$description));
+			$result2 = $this->mDb->query($query,array($res["page_id"],$tagname,$res["title"],$res["hits"],$data,$res["last_modified"],$res["edit_comment"],$res["version"],$res["user_id"],$res["ip"],$res["flag"],$description));
 		}
 
 		$homeContentId = $this->mDb->getOne( "SELECT `content_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(wp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );

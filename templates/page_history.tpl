@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.3 2005/06/28 07:46:29 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.4 2006/02/17 22:06:24 spiderr Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
@@ -53,7 +53,7 @@
 				</tr>
 
 				<tr class="odd">
-					<td>{$pageInfo.last_modified|bit_short_datetime}<br />{$pageInfo.comment}</td>
+					<td>{$pageInfo.last_modified|bit_short_datetime}<br />{$pageInfo.edit_comment}</td>
 
 					<td>{displayname user=$pageInfo.modifier_user user_id=$pageInfo.modifier_user_id real_name=$pageInfo.modifier_real_name} </td>
 					<td style="text-align:right;">{$pageInfo.ip}</td>
@@ -69,7 +69,7 @@
 
 				{foreach from=$history item=item}
 					<tr class="{cycle values='even,odd' advance=false}">
-						<td><label for="hist_{$item.version}">{$item.last_modified|bit_short_datetime}<br />{$item.comment}</label></td>
+						<td><label for="hist_{$item.version}">{$item.last_modified|bit_short_datetime}<br />{$item.history_comment}</label></td>
 						<td>{displayname hash=$item}</td>
 						<td style="text-align:right;">{$item.ip}</td>
 						<td style="text-align:right;">{$item.version}</td>
