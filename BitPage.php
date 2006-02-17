@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.41 2006/02/16 13:48:13 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.42 2006/02/17 21:20:13 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.41 $ $Date: 2006/02/16 13:48:13 $ $Author: squareing $
+ * @version $Revision: 1.42 $ $Date: 2006/02/17 21:20:13 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.41 2006/02/16 13:48:13 squareing Exp $
+ * $Id: BitPage.php,v 1.42 2006/02/17 21:20:13 spiderr Exp $
  */
 
 /**
@@ -478,12 +478,13 @@ class BitPage extends LibertyAttachable {
 	 * @return TRUE if completed successfully
 	 */
 	function rollbackVersion( $pVersion, $comment = '' ) {
+		global $gBitSystem;
 		$ret = FALSE;
 		if( parent::rollbackVersion( $pVersion, $comment ) ) {
 			$action = "Changed actual version to $pVersion";
 			$t = $gBitSystem->getUTCTime();
-			$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`action`,`page_id`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?)";
-			$result = $this->mDb->query($query,array($action,$this->mPageId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
+			$query = "insert into `".BIT_DB_PREFIX."content_action_log`(`action`,`content_id`,`last_modified`,`user_id`,`ip`,`action_comment`) values(?,?,?,?,?,?)";
+			$result = $this->mDb->query($query,array($action,$this->mContentId,$t,ROOT_USER_ID,$_SERVER["REMOTE_ADDR"],$comment));
 			$ret = TRUE;
 		}
 		return $ret;
@@ -603,7 +604,7 @@ class BitPage extends LibertyAttachable {
 			$get_data = '';
 		}
 
-		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name, `page_id`, `hits`, `page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, 	lc.`created`, `ip`, `comment`, `version`, `flag`, wp.`content_id` $get_data $selectSql
+		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name, `page_id`, `hits`, `page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, 	lc.`created`, `ip`, `edit_comment`, `version`, `flag`, wp.`content_id` $get_data $selectSql
 				  FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
 					$joinSql ,
@@ -619,7 +620,7 @@ class BitPage extends LibertyAttachable {
 
 		if( $pOrphansOnly ) {
 			$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name , `page_id`, `hits`, `page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, lc.`created`,
-			`ip`, `comment`, `version`, `flag`, wp.`content_id` $get_data $selectSql
+			`ip`, `edit_comment`, `version`, `flag`, wp.`content_id` $get_data $selectSql
 					  FROM `".BIT_DB_PREFIX."wiki_pages` wp
 						LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`) $joinSql
 						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`),
@@ -1092,8 +1093,8 @@ class WikiLib extends BitPage {
 		unset ($tar);
 		$action = "dump created";
 		$t = $gBitSystem->getUTCTime();
-		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`action`,`page_id`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?)";
-		$result = $this->mDb->query($query,array($action,1,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
+		$query = "insert into `".BIT_DB_PREFIX."content_action_log`(`action`,`content_id`,`last_modified`,`user_id`,`ip`,`action_comment`) values(?,?,?,?,?,?)";
+		$result = $this->mDb->query($query,array($action,1,$t,$gBitUser->mContentId,$_SERVER["REMOTE_ADDR"],''));
 	}
 
 	function list_extwiki($offset, $max_records, $sort_mode, $find) {
@@ -1186,9 +1187,9 @@ class WikiLib extends BitPage {
 		$result = $this->mDb->query($query,array($tagname));
 		$action = "removed tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
-		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(wp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
-		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log` (`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values ( ?,?,?,?,?,?,? )";
-		$result = $this->mDb->query($query,array($homePageId, $action,$wiki_home_page,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
+		$homeContentId = $this->mDb->getOne( "SELECT `content_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(wp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
+		$query = "insert into `".BIT_DB_PREFIX."content_action_log` (`content_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `action_comment`) values ( ?,?,?,?,?,?,? )";
+		$result = $this->mDb->query($query,array($homeContentId, $action,$wiki_home_page,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
 		$this->mDb->CompleteTrans();
 		return true;
 	}
@@ -1220,16 +1221,16 @@ class WikiLib extends BitPage {
 			$description = $res["description"];
 			$query = "delete from `".BIT_DB_PREFIX."wiki_tags`where `tag_name`=? and `page_id`=?";
 			$this->mDb->query($query,array($tagname,$res["page_id"]));
-			$query = "insert into `".BIT_DB_PREFIX."wiki_tags`(`page_id`,`tag_name`,`page_name`,`hits`,`data`,`last_modified`,`comment`,`version`,`user_id`,`ip`,`flag`,`description`)
+			$query = "insert into `".BIT_DB_PREFIX."wiki_tags`(`page_id`,`tag_name`,`page_name`,`hits`,`data`,`last_modified`,`action_comment`,`version`,`user_id`,`ip`,`flag`,`description`)
                 		values(?,?,?,?,?,?,?,?,?,?,?,?)";
 			$result2 = $this->mDb->query($query,array($res["page_id"],$tagname,$res["title"],$res["hits"],$data,$res["last_modified"],$res["comment"],$res["version"],$res["user_id"],$res["ip"],$res["flag"],$description));
 		}
 
-		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(wp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
+		$homeContentId = $this->mDb->getOne( "SELECT `content_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(wp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
 		$action = "created tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
-		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`page_id`,`action`,`page_name`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?,?)";
-		$result = $this->mDb->query($query,array($homePageId,$action,$wiki_home_page,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],$comment));
+		$query = "insert into `".BIT_DB_PREFIX."content_action_log`(`content_id`,`action`,`page_name`,`last_modified`,`user_id`,`ip`,`action_comment`) values(?,?,?,?,?,?,?)";
+		$result = $this->mDb->query($query,array($homeContentId,$action,$wiki_home_page,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],$comment));
 		$this->mDb->CompleteTrans();
 		return true;
 	}
@@ -1254,11 +1255,7 @@ class WikiLib extends BitPage {
 		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(wp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
 		$action = "recovered tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
-		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values (?,?,?,?,?,?,?)";
-		$result = $this->mDb->query($query,array($homePageId,$action,$wiki_home_page,$t, $gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
-		$this->mDb->CompleteTrans();
-		return true;
-	}
+			}
 }
 
 /**

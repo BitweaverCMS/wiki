@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.7 2006/02/16 11:10:26 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.8 2006/02/17 21:20:13 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: export_lib.php,v 1.7 2006/02/16 11:10:26 squareing Exp $
+ * $Id: export_lib.php,v 1.8 2006/02/17 21:20:13 spiderr Exp $
  * @package wiki
  */
 
@@ -69,7 +69,7 @@ class ExportLib extends BitBase {
 	// Returns all the versions for this page
 	// without the data itself
 	function get_page_history($page_id) {
-		$query = "SELECT lc.`title`, th.`description`, th.`version`, th.`last_modified`, th.`user_id`, th.`ip`, th.`data`, th.`comment`, uu.`login` as `user`, uu.`real_name` " .
+		$query = "SELECT lc.`title`, th.`description`, th.`version`, th.`last_modified`, th.`user_id`, th.`ip`, th.`data`, th.`history_comment`, uu.`login` as `user`, uu.`real_name` " .
 				 "FROM `".BIT_DB_PREFIX."wiki_pages` wp " .
 				 "INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) " .
 				 "INNER JOIN `".BIT_DB_PREFIX."liberty_content_history` th ON (th.`page_id` = th.`page_id`) " .
