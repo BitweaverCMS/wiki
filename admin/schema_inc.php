@@ -2,16 +2,6 @@
 
 $tables = array(
 
-'wiki_action_log' => "
-	page_id I4 NOTNULL,
-	user_id I4 NOTNULL,
-	action C(255) NOTNULL,
-	last_modified I8,
-	title C(160),
-	ip C(15),
-	comment C(200)
-",
-
 'wiki_footnotes' => "
 	user_id C(40) PRIMARY,
 	page_id I4 NOTNULL,
