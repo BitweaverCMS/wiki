@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights_lib.php,v 1.4 2006/01/31 20:21:36 bitweaver Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights_lib.php,v 1.5 2006/02/18 09:24:54 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: copyrights_lib.php,v 1.4 2006/01/31 20:21:36 bitweaver Exp $
+ * $Id: copyrights_lib.php,v 1.5 2006/02/18 09:24:54 lsces Exp $
  * @package wiki
  */
 
@@ -51,12 +51,12 @@ class CopyrightsLib extends BitBase {
 		//}
 		$top = $this->top_copyright_order( $pPageId );
 		$order = $top + 1;
-		$query = "insert into `".BIT_DB_PREFIX."liberty_copyrights` (`page_id`, `title`, `year`, `authors`, `copyright_order`, `user_id`) values (?,?,?,?,?,?)";
+		$query = "insert into `".BIT_DB_PREFIX."liberty_copyrights` (`page_id`, `title`, `copyright_year`, `authors`, `copyright_order`, `user_id`) values (?,?,?,?,?,?)";
 		$this->mDb->query($query,array( $pPageId ,$title,$year,$authors,$order,$pUserId));
 		return true;
 	}
 	function edit_copyright($id, $title, $year, $authors, $pUserId) {
-		$query = "update `".BIT_DB_PREFIX."liberty_copyrights` SET `year`=?, `title`=?, `authors`=?, `user_id`=? where `copyright_id`=?";
+		$query = "update `".BIT_DB_PREFIX."liberty_copyrights` SET `copyright_year`=?, `title`=?, `authors`=?, `user_id`=? where `copyright_id`=?";
 		$this->mDb->query($query,array($year,$title,$authors,$pUserId,(int)$id));
 		return true;
 	}
