@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.17 2006/02/14 19:04:44 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.18 2006/02/19 00:18:11 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.17 2006/02/14 19:04:44 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.18 2006/02/19 00:18:11 lsces Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -167,7 +167,7 @@ if($wiki_cache>0) {
 	$cache_info = $gContent->get_cache_info($gContent->mInfo['title']);
 	$now = $gBitSystem->getUTCTime();
 	if($cache_info['cache_timestamp']+$wiki_cache > $now) {
-		$pdata = $cache_info['cache'];
+		$pdata = $cache_info['page_cache'];
 		$gBitSmarty->assign('cached_page','y');
 	} else {
 		$pdata = $gContent->parseData();

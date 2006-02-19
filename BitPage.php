@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.43 2006/02/17 22:06:23 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.44 2006/02/19 00:18:11 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.43 $ $Date: 2006/02/17 22:06:23 $ $Author: spiderr $
+ * @version $Revision: 1.44 $ $Date: 2006/02/19 00:18:11 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.43 2006/02/17 22:06:23 spiderr Exp $
+ * $Id: BitPage.php,v 1.44 2006/02/19 00:18:11 lsces Exp $
  */
 
 /**
@@ -114,7 +114,7 @@ class BitPage extends LibertyAttachable {
 				$this->setPageCache( $pParamHash['wiki_cache'] );
 			}
 
-			$pParamHash['page_store']['page_size'] = !empty( $pParamHash['edit'] ) ? strlen( $pParamHash['edit'] ) : 0;
+			$pParamHash['page_store']['wiki_page_size'] = !empty( $pParamHash['edit'] ) ? strlen( $pParamHash['edit'] ) : 0;
 
 			$table = BIT_DB_PREFIX."wiki_pages";
 			if( $this->verifyId( $this->mPageId ) ) {
@@ -516,7 +516,7 @@ class BitPage extends LibertyAttachable {
 	 */
 	function get_cache_info($page) {
 		if( $this->verifyId( $this->mPageId ) ) {
-			$query = "select `cache`,`cache_timestamp` from `".BIT_DB_PREFIX."wiki_pages` where `page_id`=?";
+			$query = "select `page_cache`,`cache_timestamp` from `".BIT_DB_PREFIX."wiki_pages` where `page_id`=?";
 			$result = $this->mDb->query( $query, array( $this->mPageId ) );
 			return $result->fetchRow();
 		}
@@ -530,7 +530,7 @@ class BitPage extends LibertyAttachable {
 		if( $this->verifyId( $this->mPageId ) ) {
 			global $gBitSystem;
 			$now = $gBitSystem->getUTCTime();
-			$query = "update `".BIT_DB_PREFIX."wiki_pages` set `cache`=?, `cache_timestamp`=$now where `page_id`=?";
+			$query = "update `".BIT_DB_PREFIX."wiki_pages` set `page_cache`=?, `cache_timestamp`=$now where `page_id`=?";
 			$result = $this->mDb->query( $query, array( $data, $this->mPageId ) );
 			return true;
 		}
@@ -561,11 +561,11 @@ class BitPage extends LibertyAttachable {
 	function getList($offset = 0, $max_records = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE, $pGetData=FALSE ) {
 		global $gBitSystem, $gBitUser;
 		if ($sort_mode == 'size_desc') {
-			$sort_mode = 'page_size_desc';
+			$sort_mode = 'wiki_page_size_desc';
 		}
 
 		if ($sort_mode == 'size_asc') {
-			$sort_mode = 'page_size_asc';
+			$sort_mode = 'wiki_page_size_asc';
 		}
 
 		$old_sort_mode = '';
@@ -609,7 +609,7 @@ class BitPage extends LibertyAttachable {
 			$get_data = '';
 		}
 
-		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name, `page_id`, `hits`, `page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, 	lc.`created`, `ip`, `edit_comment`, `version`, `flag`, wp.`content_id` $get_data $selectSql
+		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name, `page_id`, `hits`, `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, 	lc.`created`, `ip`, `edit_comment`, `version`, `flag`, wp.`content_id` $get_data $selectSql
 				  FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
 					$joinSql ,
@@ -624,7 +624,7 @@ class BitPage extends LibertyAttachable {
 				  WHERE lc.`content_type_guid`=? $whereSql";
 
 		if( $pOrphansOnly ) {
-			$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name , `page_id`, `hits`, `page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, lc.`created`,
+			$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name , `page_id`, `hits`, `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, lc.`created`,
 			`ip`, `edit_comment`, `version`, `flag`, wp.`content_id` $get_data $selectSql
 					  FROM `".BIT_DB_PREFIX."wiki_pages` wp
 						LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`) $joinSql

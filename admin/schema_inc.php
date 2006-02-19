@@ -11,13 +11,13 @@ $tables = array(
 'wiki_pages' => "
 	page_id I4 PRIMARY,
 	content_id I4 NOTNULL,
-	page_size I4 DEFAULT 0,
+	wiki_page_size I4 DEFAULT 0,
 	description C(200),
 	edit_comment C(200),
 	flag C(1),
 	points I4,
 	votes I4,
-	cache X,
+	page_cache X,
 	wiki_cache I8,
 	cache_timestamp I8,
 	page_rank N(4,3)
