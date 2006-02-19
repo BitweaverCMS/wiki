@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page.php,v 1.6 2006/02/13 10:06:26 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page.php,v 1.7 2006/02/19 15:11:41 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page.php,v 1.6 2006/02/13 10:06:26 squareing Exp $
+ * $Id: page.php,v 1.7 2006/02/19 15:11:41 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -16,6 +16,9 @@
 /**
  * required setup
  */
+
+
+// ===================== looks like this page isn't in use at all =====================
 require_once( '../bit_setup_inc.php' );
 include_once (HTML_PKG_PATH.'htmlpages_lib.php');
 
