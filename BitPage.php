@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.49 2006/01/31 10:08:02 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.50 2006/02/19 00:30:15 wolff_borg Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.49 $ $Date: 2006/01/31 10:08:02 $ $Author: wolff_borg $
+ * @version $Revision: 1.2.2.50 $ $Date: 2006/02/19 00:30:15 $ $Author: wolff_borg $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.49 2006/01/31 10:08:02 wolff_borg Exp $
+ * $Id: BitPage.php,v 1.2.2.50 2006/02/19 00:30:15 wolff_borg Exp $
  */
 
 /**
@@ -1017,12 +1017,12 @@ class WikiLib extends BitPage {
 	}
 
 	// Like pages are pages that share a word in common with the current page
-	function get_like_pages($page) {
+	function get_like_pages($pPageName) {
 		$ret = array();
 		if( !empty( $pPageName ) ) {
-			preg_match_all("/([A-Z])([a-z]+)/", $page, $words);
+			preg_match_all("/([A-Z])([a-z]+)/", $pPageName, $words);
 			// Add support to ((x)) in either strict or full modes
-			preg_match_all("/(([A-Za-z]|[\x80-\xFF])+)/", $page, $words2);
+			preg_match_all("/(([A-Za-z]|[\x80-\xFF])+)/", $pPageName, $words2);
 			$words = array_unique(array_merge($words[0], $words2[0]));
 			$exps = array();
 			$bindvars=array();
