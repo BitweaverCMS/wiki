@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.8 2006/02/19 13:07:25 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.9 2006/02/19 13:10:57 bitweaver Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -44,7 +44,7 @@
 					{else}
 						{assign var='checkboxes_on' value='n'}
 					{/if}
-					{counter name=cols start=-1 print=false}
+					{counter name=cols start=0 print=false}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_hits' )}
 						<th>{smartlink ititle="Hits" isort="hits" offset=$offset}</th>
 						{counter name=cols assign=cols print=false}
