@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.9 2006/02/19 13:10:57 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.10 2006/02/19 19:35:57 bitweaver Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -54,7 +54,7 @@
 						{counter name=cols assign=cols print=false}
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_comment' )}
-						<th>{smartlink ititle="Comment" isort="comment" offset=$offset}</th>
+						<th>{smartlink ititle="Comment" isort="edit_comment" offset=$offset}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_status' )}
