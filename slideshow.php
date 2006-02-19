@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.7 2006/02/06 00:12:23 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.8 2006/02/19 02:58:36 bitweaver Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: slideshow.php,v 1.7 2006/02/06 00:12:23 squareing Exp $
+ * $Id: slideshow.php,v 1.8 2006/02/19 02:58:36 bitweaver Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -30,34 +30,10 @@ if (!isset($_SESSION["thedate"])) {
 	$thedate = $_SESSION["thedate"];
 }
 
-// Get the page from the request var or default it to HomePage
-if (!isset($_REQUEST["page"])) {
-	$_REQUEST["page"] = $wiki_home_page;
-
-	$page = $wiki_home_page;
-	$gBitSmarty->assign('page', $wiki_home_page);
-} else {
-	$page = $_REQUEST["page"];
-
-	$gBitSmarty->assign_by_ref('page', $_REQUEST["page"]);
-}
-
+require_once ( WIKI_PKG_PATH.'lookup_page_inc.php' );
 require_once ( WIKI_PKG_PATH.'page_setup_inc.php' );
-
-// Check if we have to perform an action for this page
-// for example lock/unlock
-if ($gBitUser->hasPermission( 'bit_p_admin_wiki' )) {
-	if (isset($_REQUEST["action"])) {
-		if ($_REQUEST["action"] == 'lock') {
-			$wikilib->lock_page($page);
-		} elseif ($_REQUEST["action"] == 'unlock') {
-			$wikilib->unlock_page($page);
-		}
-	}
-}
-
 // If the page doesn't exist then display an error
-if (!$wikilib->pageExists($page)) {
+if (!$gContent->isValid()) {
 	$gBitSmarty->assign('msg', tra("Page cannot be found"));
 
 	$gBitSystem->display( 'error.tpl' );
