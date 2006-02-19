@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.20 2006/02/17 22:06:24 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.22 2006/02/20 19:04:33 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="edit wiki">
@@ -26,6 +26,13 @@
 
 {strip}
 	<div class="body">
+		{if $translateFrom}
+			<div class="translate">
+				{include file="bitpackage:wiki/page_header.tpl" pageInfo=$translateFrom->mInfo}
+				{include file="bitpackage:wiki/page_display.tpl" pageInfo=$translateFrom->mInfo}
+			</div>
+		{/if}
+
 		{if $preview}
 			{if $pageInfo.edit_section == 1 }
 					<h2>{tr}Preview Section {$pageInfo.section} of: {$title}{/tr}</h2>
@@ -95,11 +102,11 @@
 						{/if}
 
 						{if $pageInfo.edit_section == 1 }
-						<input type="hidden" name="section" value="{$pageInfo.section}" />
+							<input type="hidden" name="section" value="{$pageInfo.section}" />
 						{/if}
 
 						<div class="row">
-							{formlabel label="Body" for="body"}
+							{formlabel label="Body" for=$textarea_id}
 							{forminput}
 								<textarea id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:20}" cols="50">{$pageInfo.data|escape:html}</textarea>
 							{/forminput}

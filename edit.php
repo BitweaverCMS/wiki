@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.18 2006/02/15 20:19:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.19 2006/02/19 15:36:09 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.18 2006/02/15 20:19:33 squareing Exp $
+ * $Id: edit.php,v 1.19 2006/02/19 15:36:09 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -246,8 +246,8 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 // Now check permissions to access this page
 
 if( isset( $gContent->mInfo['wiki_cache'] ) && $gContent->mInfo['wiki_cache']!=0 ) {
-  $wiki_cache = $gContent->mInfo['wiki_cache'];
-  $gBitSmarty->assign( 'wiki_cache',$wiki_cache );
+	$wiki_cache = $gContent->mInfo['wiki_cache'];
+	$gBitSmarty->assign( 'wiki_cache',$wiki_cache );
 }
 
 if( !empty( $gContent->mInfo ) ) {
@@ -443,20 +443,18 @@ if( isset( $_REQUEST["preview"] ) ) {
 	}
 
 
-	$parsed = $gContent->parseData($data_to_parse, (!empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] :
+	$formInfo['parsed_data'] = $gContent->parseData( $data_to_parse, ( !empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] :
 		( isset( $gContent->mInfo['format_guid'] ) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ) ) );
 	/* SPELLCHECKING INITIAL ATTEMPT */
 	//This nice function does all the job!
 	if( $gBitSystem->isFeatureActive( 'wiki_spellcheck' )) {
 		if( isset( $_REQUEST["spellcheck"] ) && $_REQUEST["spellcheck"] == 'on' ) {
-			$parsed = $gBitSystem->spellcheckreplace( $edit_data, $parsed, $gBitLanguage->mLanguage, 'editwiki' );
+			$formInfo['parsed_data'] = $gBitSystem->spellcheckreplace( $edit_data, $gContent->mInfo['parsed_data'], $gBitLanguage->mLanguage, 'editwiki' );
 			$gBitSmarty->assign( 'spellcheck', 'y' );
 		} else {
 			$gBitSmarty->assign( 'spellcheck', 'n' );
 		}
 	}
-	$gBitSmarty->assign_by_ref( 'parsed', $parsed );
-
 	$gContent->invokeServices( 'content_preview_function' );
 } else {
 	$gContent->invokeServices( 'content_edit_function' );

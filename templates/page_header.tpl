@@ -1,7 +1,7 @@
 <div class="header">
 	{if $gBitSystem->isFeatureActive( 'page_title' )}
 		<h1>{$pageInfo.title}</h1>
-		{if $cached_page eq 'y'}<span class="cached">(cached)</span>{/if}
+		{if $pageInfo.page_is_cached}<span class="cached">(cached)</span>{/if}
 	{/if}
 
 	{if $gBitSystem->isFeatureActive( 'wiki_description' ) and $description}

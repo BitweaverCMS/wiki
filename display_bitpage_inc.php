@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.18 2006/02/19 00:18:11 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.19 2006/02/19 15:36:08 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.18 2006/02/19 00:18:11 lsces Exp $
+ * $Id: display_bitpage_inc.php,v 1.19 2006/02/19 15:36:08 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -158,30 +158,13 @@ if(isset($_REQUEST['refresh'])) {
 // pdata is parse_data
 //   if using cache then update the cache
 // assign_by_ref
-$gBitSmarty->assign('cached_page','n');
-$wiki_cache=$gBitSystem->getPreference( 'wiki_cache' );
-if(isset($gContent->mInfo['wiki_cache']) && $gContent->mInfo['wiki_cache']>0) {
-	$wiki_cache=$gContent->mInfo['wiki_cache'];
-}
-if($wiki_cache>0) {
-	$cache_info = $gContent->get_cache_info($gContent->mInfo['title']);
-	$now = $gBitSystem->getUTCTime();
-	if($cache_info['cache_timestamp']+$wiki_cache > $now) {
-		$pdata = $cache_info['page_cache'];
-		$gBitSmarty->assign('cached_page','y');
-	} else {
-		$pdata = $gContent->parseData();
-		$gContent->updateCache( $pdata );
-	}
-} else {
-	$pdata = $gContent->parseData();
-}
-$pages = $wikilib->countPages($pdata);
+
+$pages = $wikilib->countPages($gContent->mInfo['parsed_data']);
 if( $pages > 1 ) {
 	if(!isset($_REQUEST['pagenum'])) {
 		$_REQUEST['pagenum']=1;
 	}
-	$pdata=$wikilib->get_page($pdata,$_REQUEST['pagenum']);
+	$gContent->mInfo['parsed_data']=$wikilib->get_page($gContent->mInfo['parsed_data'],$_REQUEST['pagenum']);
 	$gBitSmarty->assign('pages',$pages);
 	if($pages>$_REQUEST['pagenum']) {
 		$gBitSmarty->assign('next_page',$_REQUEST['pagenum']+1);
@@ -197,12 +180,10 @@ if( $pages > 1 ) {
 	$gBitSmarty->assign('last_page',$pages);
 	$gBitSmarty->assign('pagenum',$_REQUEST['pagenum']);
 }
-
-$gBitSmarty->assign_by_ref('parsed',$pdata);
 //$gBitSmarty->assign_by_ref('last_modified',date("l d of F, Y  [H:i:s]",$gContent->mInfo["last_modified"]));
 $gBitSmarty->assign_by_ref('last_modified',$gContent->mInfo["last_modified"]);
 if(empty($gContent->mInfo["user"])) {
-  $gContent->mInfo["user"]='anonymous';
+	$gContent->mInfo["user"]='anonymous';
 }
 $gBitSmarty->assign_by_ref('lastUser',$gContent->mInfo["user"]);
 $gBitSmarty->assign_by_ref('description',$gContent->mInfo["description"]);

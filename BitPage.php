@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.44 2006/02/19 00:18:11 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.45 2006/02/19 15:36:08 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.44 $ $Date: 2006/02/19 00:18:11 $ $Author: lsces $
+ * @version $Revision: 1.45 $ $Date: 2006/02/19 15:36:08 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.44 2006/02/19 00:18:11 lsces Exp $
+ * $Id: BitPage.php,v 1.45 2006/02/19 15:36:08 squareing Exp $
  */
 
 /**
@@ -83,6 +83,24 @@ class BitPage extends LibertyAttachable {
 				$this->mInfo['creator'] = (isset( $this->mInfo['creator_real_name'] ) ? $this->mInfo['creator_real_name'] : $this->mInfo['creator_user'] );
 				$this->mInfo['editor'] = (isset( $this->mInfo['modifier_real_name'] ) ? $this->mInfo['modifier_real_name'] : $this->mInfo['modifier_user'] );
 				$this->mInfo['display_url'] = $this->getDisplayUrl();
+
+				// parse the data respecting caching options
+				$cache = $gBitSystem->getPreference( 'wiki_cache' );
+				if( @BitBase::verifyId( $this->mInfo['wiki_cache'] ) && $this->mInfo['wiki_cache'] > 0 ) {
+					$cache = $this->mInfo['wiki_cache'];
+				}
+				if( $cache > 0 ) {
+					if( ( $this->mInfo['cache_timestamp'] + $cache ) > $this->getUTCTime() ) {
+						$this->mInfo['parsed_data'] = $this->mInfo['page_cache'];
+						$this->mInfo['page_is_cached'] = TRUE;
+					} else {
+						$this->mInfo['parsed_data'] = $this->parseData();
+						$this->updateCache( $this->mInfo['parsed_data'] );
+					}
+				} else {
+					$this->mInfo['parsed_data'] = $this->parseData();
+				}
+
 				// Save some work if wiki_attachments are not active
 				if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
 					LibertyAttachable::load();

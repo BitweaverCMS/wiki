@@ -37,7 +37,7 @@
 				<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;s5=1" onclick="return confirm('this works best in gecko based browsers (mozilla, firefox) or opera (press F11)')">{biticon ipackage=wiki iname="s5" iexplain="s5 slideshow"}</a>
 			{/if}
 
-			{if $cached_page eq 'y'}
+			{if $pageInfo.page_is_cached}
 				<a title="{tr}refresh cache{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;refresh=1">{biticon ipackage=liberty iname="refresh" iexplain="refresh cache"}</a>
 			{/if}
 			{if $gBitUser->hasPermission( 'bit_p_print' )}

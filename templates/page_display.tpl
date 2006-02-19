@@ -5,7 +5,7 @@
 		{if $gBitSystem->isFeatureActive( 'liberty_auto_display_attachment_thumbs' )}
 			{include file="bitpackage:liberty/storage_thumbs.tpl"}
 		{/if}
-		{$parsed}
+		{$pageInfo.parsed_data}
 		<div class="clear"></div>
 	</div> <!-- end .content -->
 </div> <!-- end .body -->
