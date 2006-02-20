@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.47 2006/02/20 16:56:48 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.48 2006/02/20 17:11:46 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.47 $ $Date: 2006/02/20 16:56:48 $ $Author: squareing $
+ * @version $Revision: 1.48 $ $Date: 2006/02/20 17:11:46 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.47 2006/02/20 16:56:48 squareing Exp $
+ * $Id: BitPage.php,v 1.48 2006/02/20 17:11:46 squareing Exp $
  */
 
 /**
@@ -296,8 +296,8 @@ class BitPage extends LibertyAttachable {
 			}
 		}
 
-		//override default index words because wiki pages have data in non-liberty tables (description in this case_)
-		$this->mInfo['index_data'] = $pParamHash['content_store']["title"].' '.$pParamHash["edit"].' '.$pParamHash["page_store"]["description"];
+		//override default index words because wiki pages have data in non-liberty tables (description in this case)
+		$this->mInfo['index_data'] = $pParamHash['content_store']["title"].' '.$pParamHash["edit"].' '.( !empty( $pParamHash["page_store"]["description"] ) ? $pParamHash["page_store"]["description"] : '' );
 
 		return( count( $this->mErrors ) == 0 );
 	}
