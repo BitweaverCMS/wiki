@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.48 2006/02/20 17:11:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.49 2006/02/21 10:39:24 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.48 $ $Date: 2006/02/20 17:11:46 $ $Author: squareing $
+ * @version $Revision: 1.49 $ $Date: 2006/02/21 10:39:24 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.48 2006/02/20 17:11:46 squareing Exp $
+ * $Id: BitPage.php,v 1.49 2006/02/21 10:39:24 jht001 Exp $
  */
 
 /**
@@ -488,10 +488,11 @@ class BitPage extends LibertyAttachable {
 	*/
 	function getBacklinks() {
 		if( $this->isValid() ) {
+			$to_title = $this->mInfo['title'];
 			$query = "SELECT lcl.`from_content_id`, lc.`title`
 					  FROM `".BIT_DB_PREFIX."liberty_content_links` lcl INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lcl.`from_content_id`=lc.`content_id`)
-					  WHERE lcl.`to_content_id` = ?";
-			$ret = $this->mDb->getAssoc( $query, array( $this->mContentId ) );
+					  WHERE lcl.`to_title` = ?";
+			$ret = $this->mDb->getAssoc( $query, array( $to_title ) );
 			return $ret;
 		}
 	}
@@ -686,7 +687,7 @@ class BitPage extends LibertyAttachable {
 				// USE SPARINGLY!!! This gets expensive fast
 //				$aux['versions"] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."liberty_content_history` where `page_id`=?", array( $res["page_id"] ) );
 				$aux['links'] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."liberty_content_links` where `from_content_id`=?", array( $res["content_id"] ) );
-				$aux['backlinks'] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."liberty_content_links` where `to_content_id`=?", array( $res["content_id"] ) );
+				$aux['backlinks'] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."liberty_content_links` where `to_title`=?", array( $aux['title'] ) );
 			}
 			$ret[] = $aux;
 		}
