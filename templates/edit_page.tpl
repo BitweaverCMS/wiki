@@ -1,4 +1,5 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.22 2006/02/20 19:04:33 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.23 2006/02/21 12:56:59 squareing Exp $ *}
+{strip}
 <div class="floaticon">{bithelp}</div>
 
 <div class="edit wiki">
@@ -18,13 +19,12 @@
 
 	{* Check to see if there is an editing conflict *}
 	{if $errors.edit_conflict}
-		<script type="text/javascript">//<![CDATA[
+		<script type="text/javascript">/* <![CDATA[ */
 			alert( "{$errors.edit_conflict|strip_tags}" );
-		//]]></script>
+		/* ]]> */</script>
 		{formfeedback warning=`$errors.edit_conflict`}
 	{/if}
 
-{strip}
 	<div class="body">
 		{if $translateFrom}
 			<div class="translate">
@@ -291,5 +291,4 @@
 
 	</div><!-- end .body -->
 </div><!-- end .admin -->
-
 {/strip}

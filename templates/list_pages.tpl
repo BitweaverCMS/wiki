@@ -1,4 +1,5 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.10 2006/02/19 19:35:57 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.11 2006/02/21 12:56:59 squareing Exp $ *}
+{strip}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
@@ -12,7 +13,6 @@
 		{minifind sort_mode=$sort_mode}
 
 		{form id="checkform"}
-		{strip}
 			<div class="navbar">
 				<ul>
 					<li>{biticon ipackage=liberty iname=sort iexplain="sort by"}</li>
@@ -167,28 +167,20 @@
 					</td></tr>
 				{/section}
 			</table>
-		{/strip}
 
 			{if $checkboxes_on eq 'y'}
 				<div style="text-align:right;">
-					<script type="text/javascript">//<![CDATA[
-						// check / uncheck all.
+					<script type="text/javascript">/* <![CDATA[ check / uncheck all */
 						document.write("<label for=\"switcher\">{tr}Select All{/tr}</label> ");
 						document.write("<input name=\"switcher\" id=\"switcher\" type=\"checkbox\" onclick=\"switchCheckboxes(this.form.id,'checked[]','switcher')\" />");
-					//]]></script>
-
+					/* ]]> */</script>
 					<br />
-
 					<select name="submit_mult" onchange="this.form.submit();">
 						<option value="" selected="selected">{tr}with checked{/tr}:</option>
 						{if $gBitUser->hasPermission( 'bit_p_remove' )}
 							<option value="remove_pages">{tr}remove{/tr}</option>
 						{/if}
 					</select>
-
-					<script type="text/javascript">//<![CDATA[
-					// Fake js to allow the use of the <noscript> tag (so non-js-users kenn still submit)
-					//]]></script>
 
 					<noscript>
 						<div><input type="submit" value="{tr}Submit{/tr}" /></div>
@@ -200,3 +192,4 @@
 		{pagination}
 	</div><!-- end .body -->
 </div><!-- end .wiki -->
+{/strip}
