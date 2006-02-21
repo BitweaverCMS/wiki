@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.11 2006/02/21 12:56:59 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.12 2006/02/21 18:41:08 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -28,6 +28,7 @@
 					{if $gBitSystem->isFeatureActive( 'wiki_list_user' )}
 						<li>{smartlink ititle="Last Editor" isort="modifier_user" offset=$offset}</li>
 					{/if}
+					{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='list_sort' serviceHash=$gContent->mInfo}
 				</ul>
 			</div>
 
@@ -44,7 +45,7 @@
 					{else}
 						{assign var='checkboxes_on' value='n'}
 					{/if}
-					{counter name=cols start=0 print=false}
+					{counter name=cols start=-1 print=false}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_hits' )}
 						<th>{smartlink ititle="Hits" isort="hits" offset=$offset}</th>
 						{counter name=cols assign=cols print=false}
@@ -108,6 +109,9 @@
 								{/if}
 								, {$listpages[changes].last_modified|bit_short_datetime}
 							{/if}
+						</td>
+						<td style="text-align:right; vertical-algin:top;">
+							{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='list' serviceHash=$listpages[changes]}
 						</td>
 					</tr>
 					<tr class="{cycle}">
