@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.8 2006/02/22 19:53:55 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.9 2006/02/23 15:44:38 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: list_pages.php,v 1.8 2006/02/22 19:53:55 squareing Exp $
+ * $Id: list_pages.php,v 1.9 2006/02/23 15:44:38 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -93,6 +93,7 @@ if (isset($_REQUEST["find"])) {
 $gBitSmarty->assign_by_ref('find', $find);
 // Get a list of last changes to the Wiki database
 $gContent = new BitPage();
+$gBitSmarty->assign_by_ref( "gContent", $gContent );
 $sort_mode = preg_replace( '/^user_/', 'creator_user_', $sort_mode );
 $listpages = $gContent->getList( $offset, $max_records, $sort_mode, $find, NULL, TRUE );
 // If there're more records then assign next_offset
