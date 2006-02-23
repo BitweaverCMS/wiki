@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.9 2006/02/23 14:47:29 bitweaver Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.10 2006/02/23 14:52:03 bitweaver Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: slideshow.php,v 1.9 2006/02/23 14:47:29 bitweaver Exp $
+ * $Id: slideshow.php,v 1.10 2006/02/23 14:52:03 bitweaver Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -59,11 +59,11 @@ if( $gBitUser->isRegistered() ) {
 	$userbreadCrumb = $anonpref;
 }
 
-if (!isset($_SESSION["breadCrumb"])) {
+if( empty( $_SESSION["breadCrumb"] ) ) {
 	$_SESSION["breadCrumb"] = array();
 }
 
-if( !empty( $_SESSION["breadCrumb"] ) && !in_array($page, $_SESSION["breadCrumb"])) {
+if( !in_array($page, $_SESSION["breadCrumb"])) {
 	if (count($_SESSION["breadCrumb"]) > $userbreadCrumb) {
 		array_shift ($_SESSION["breadCrumb"]);
 	}
