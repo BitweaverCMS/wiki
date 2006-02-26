@@ -145,7 +145,7 @@ $gBitInstaller->registerUserPermissions( WIKI_PKG_NAME, array(
 ) );
 
 // ### Default Preferences
-$gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
+$preferences = array(
 	array( WIKI_PKG_NAME, 'anonCanEdit','n'),
 	array( WIKI_PKG_NAME, 'feature_autolinks','y'),
 	array( WIKI_PKG_NAME, 'feature_backlinks','y'),
@@ -212,7 +212,10 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	array( WIKI_PKG_NAME, 'wikiHomePage','Welcome'),
 	array( WIKI_PKG_NAME, 'wikiLicensePage',''),
 	array( WIKI_PKG_NAME, 'wikiSubmitNotice',''),
-	array( RSS_PKG_NAME, 'rss_'.WIKI_PKG_NAME, 'y'),
-) );
+);
 
+if ($gBitInstaller->isPackageActive( 'rss' ))
+	$preferences[] = array( RSS_PKG_NAME, 'rss_'.WIKI_PKG_NAME, 'y');
+
+$gBitInstaller->registerPreferences( WIKI_PKG_NAME, $preferences );
 ?>
