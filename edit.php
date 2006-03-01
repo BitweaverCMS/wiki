@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.33 2006/02/08 03:11:19 seannerd Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.34 2006/03/01 17:18:41 starrrider Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.33 2006/02/08 03:11:19 seannerd Exp $
+ * $Id: edit.php,v 1.1.1.1.2.34 2006/03/01 17:18:41 starrrider Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -73,7 +73,7 @@ function  replace_section($data,$section,$new_section_data) {
 	$section_data[$b] = $new_section_data;
 	return substr(implode('',$section_data),1);
 	}
-	
+
 
 function compare_import_versions( $a1, $a2 ) {
 	return $a1["version"] - $a2["version"];
@@ -437,7 +437,7 @@ if (!empty($formInfo['section'])) {
 	$formInfo['edit_section'] = 1;
 	}
 if (!empty($gContent->mInfo['data'])) {
-	}	
+	}
 
 	$data_to_parse = $formInfo['edit'];
 	if (!empty($formInfo['section'])
@@ -484,7 +484,7 @@ if( $gContent->isInStructure() ) {
 $gBitSmarty->assign( 'edit_page', 'y' );
 
 // WYSIWYG and Quicktag variable
-$gBitSmarty->assign( 'textarea_id', 'editwiki' );
+$gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
 
 // formInfo might be set due to a error on submit
 if( empty( $formInfo ) ) {
