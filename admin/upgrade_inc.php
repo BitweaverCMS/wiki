@@ -97,7 +97,7 @@ array( 'PHP' => '
 			$rs->fields["format_guid"] = PLUGIN_GUID_TIKIWIKI;
 			$gBitSystem->mDb->associateInsert( "tiki_content", $rs->fields );
 			$gBitSystem->mDb->query( "UPDATE `'.BIT_DB_PREFIX.'tiki_pages` SET `content_id`=? WHERE `pageName`=?", array( $conId, $rs->fields["title"] ) );
-			if( $w_use_dir = $gBitSystem->getPreference("w_use_dir") ) {
+			if( $w_use_dir = $gBitSystem->getConfig("w_use_dir") ) {
 				$page = new BitPage( NULL, $conId );
 				if( $page->load() && $rs2 = $gBitSystem->mDb->query( "SELECT * FROM `'.BIT_DB_PREFIX.'tiki_wiki_attachments` twa  INNER JOIN `'.BIT_DB_PREFIX.'users_users` uu ON( twa.`user`=uu.`login` ) WHERE twa.`page`=?", array( $rs->fields["title"] ) ) ) {
 					while( !$rs2->EOF ) {

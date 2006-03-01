@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.51 2006/02/26 16:09:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.52 2006/03/01 20:16:36 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.51 $ $Date: 2006/02/26 16:09:51 $ $Author: spiderr $
+ * @version $Revision: 1.52 $ $Date: 2006/03/01 20:16:36 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.51 2006/02/26 16:09:51 spiderr Exp $
+ * $Id: BitPage.php,v 1.52 2006/03/01 20:16:36 spiderr Exp $
  */
 
 /**
@@ -85,7 +85,7 @@ class BitPage extends LibertyAttachable {
 				$this->mInfo['display_url'] = $this->getDisplayUrl();
 
 				// parse the data respecting caching options
-				$cache = $gBitSystem->getPreference( 'wiki_cache' );
+				$cache = $gBitSystem->getConfig( 'wiki_cache' );
 				if( @BitBase::verifyId( $this->mInfo['wiki_cache'] ) && $this->mInfo['wiki_cache'] > 0 ) {
 					$cache = $this->mInfo['wiki_cache'];
 				}
@@ -186,7 +186,7 @@ class BitPage extends LibertyAttachable {
 						$gBitSmarty->assign('mail_pagedata', $this->mInfo['data']);
 						$mail_data = $gBitSmarty->fetch('bitpackage:wiki/user_watch_wiki_page_changed.tpl');
 						$email_to = $not['email'];
-						@mail($email_to, tra('Wiki page'). ' ' . $this->mInfo['title'] . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
+						@mail($email_to, tra('Wiki page'). ' ' . $this->mInfo['title'] . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getConfig( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
 					}
 				}
 			}
@@ -1078,12 +1078,12 @@ class WikiLib extends BitPage {
 
 	function getDumpFile() {
 		global $gBitSystem;
-		return( $this->getStoragePath( $gBitSystem->getPreference( 'bitdomain' ), NULL, WIKI_PKG_NAME ).'dump.tar' );
+		return( $this->getStoragePath( $gBitSystem->getConfig( 'bitdomain' ), NULL, WIKI_PKG_NAME ).'dump.tar' );
 	}
 
 	function getDumpUrl() {
 		global $gBitSystem;
-		return( $this->getStorageUrl( $gBitSystem->getPreference( 'bitdomain' ), NULL, WIKI_PKG_NAME ).'dump.tar' );
+		return( $this->getStorageUrl( $gBitSystem->getConfig( 'bitdomain' ), NULL, WIKI_PKG_NAME ).'dump.tar' );
 	}
 
 	// Dumps the database to dump/new.tar

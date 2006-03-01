@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.11 2006/02/17 22:06:24 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.12 2006/03/01 20:16:36 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.11 2006/02/17 22:06:24 spiderr Exp $
+ * $Id: page_history.php,v 1.12 2006/03/01 20:16:36 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -86,14 +86,14 @@ if (isset($_REQUEST["delete"]) && isset($_REQUEST["hist"])) {
 
 // pagination stuff
 $gBitSmarty->assign( 'page', $page = !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : 1 );
-$offset = ( $page - 1 ) * $gBitSystem->getPreference( 'max_records' );
-$history = $gContent->getHistory( NULL, NULL, $offset, $gBitSystem->getPreference( 'max_records' ) );
+$offset = ( $page - 1 ) * $gBitSystem->getConfig( 'max_records' );
+$history = $gContent->getHistory( NULL, NULL, $offset, $gBitSystem->getConfig( 'max_records' ) );
 $gBitSmarty->assign_by_ref( 'history', $history );
 
 //vd($gContent->getHistoryCount());
 
 // calculate page number
-$numPages = ceil( $gContent->getHistoryCount() / $gBitSystem->getPreference('max_records', 20) );
+$numPages = ceil( $gContent->getHistoryCount() / $gBitSystem->getConfig('max_records', 20) );
 $gBitSmarty->assign( 'numPages', $numPages );
 
 

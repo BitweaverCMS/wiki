@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.13 2006/02/19 15:36:09 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.14 2006/03/01 20:16:36 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.13 2006/02/19 15:36:09 squareing Exp $
+ * $Id: lookup_page_inc.php,v 1.14 2006/03/01 20:16:36 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -93,7 +93,7 @@
 			parse_str($purl["query"], $purlquery);
 
 			if (!isset($purlquery["page"])) {
-				$purlquery["page"] = $gBitSystem->getPreference( 'wiki_home_page' );
+				$purlquery["page"] = $gBitSystem->getConfig( 'wiki_home_page' );
 			}
 
 			if (isset($_SESSION["edit_lock"])) {
@@ -112,7 +112,7 @@
 			parse_str($purl["query"], $purlquery);
 
 			// When WIKI_PKG_URL.'edit.php' is loading, check to see if there is an editing conflict
-			if( $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->getPreference( 'warn_on_edit_time' ) * 60 ) ) {
+			if( $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->getConfig( 'warn_on_edit_time' ) * 60 ) ) {
 				$gBitSmarty->assign('editpageconflict', 'y');
 			} else {
 				if (!(isset($_REQUEST['save'])) && $gContent->isValid() ) {
@@ -122,7 +122,7 @@
 			}
 		}
 
-		if( $semUser = $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->getPreference( 'warn_on_edit_time' ) * 60 ) ) {
+		if( $semUser = $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->getConfig( 'warn_on_edit_time' ) * 60 ) ) {
 			$gContent->mErrors['edit_conflict'] = 'This page is being edited by '.$gBitUser->getDisplayName( TRUE, $semUser ).'. Proceed at your own peril';
 			$gBitSmarty->assign( 'semUser', $semUser );
 			$beingedited = 'y';

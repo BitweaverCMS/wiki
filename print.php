@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.11 2006/02/19 15:36:09 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.12 2006/03/01 20:16:36 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print.php,v 1.11 2006/02/19 15:36:09 squareing Exp $
+ * $Id: print.php,v 1.12 2006/03/01 20:16:36 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -75,7 +75,7 @@ if ($http_domain) {
 	$prefix = 'http://' . $http_domain;
 	if ($http_port != 80)
 		$prefix .= ':' . $http_port;
-	$prefix .= $gBitSystem->getPreference( 'https_prefix' );
+	$prefix .= $gBitSystem->getConfig( 'https_prefix' );
 	$gBitSmarty->assign('urlprefix', $prefix);
 }
 

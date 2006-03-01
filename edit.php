@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.20 2006/03/01 20:13:52 starrrider Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.21 2006/03/01 20:16:36 spiderr Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.20 2006/03/01 20:13:52 starrrider Exp $
+ * $Id: edit.php,v 1.21 2006/03/01 20:16:36 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -60,7 +60,7 @@ foreach( $gLibertySystem->mPlugins as $plugin ) {
 function  extract_section($data,$section) {
 	global $gContent, $gBitSystem;
 	if( $gContent->mInfo['format_guid'] == PLUGIN_GUID_TIKIWIKI ) {
-		$section_data = preg_split( "/\n(".( str_repeat( "!", $gBitSystem->getPreference( "wiki_section_edit" ) ) )."[^!])/", "\n$data", -1, PREG_SPLIT_DELIM_CAPTURE );
+		$section_data = preg_split( "/\n(".( str_repeat( "!", $gBitSystem->getConfig( "wiki_section_edit" ) ) )."[^!])/", "\n$data", -1, PREG_SPLIT_DELIM_CAPTURE );
 		$a = 1 + ($section - 1) * 2;
 		$b = $a + 1;
 		return $section_data[$a] . $section_data[$b];
@@ -70,7 +70,7 @@ function  extract_section($data,$section) {
 function  replace_section($data,$section,$new_section_data) {
 	global $gContent, $gBitSystem;
 	if( $gContent->mInfo['format_guid'] == PLUGIN_GUID_TIKIWIKI ) {
-		$section_data = preg_split("/(\n".( str_repeat( "!", $gBitSystem->getPreference( "wiki_section_edit" ) ) )."[^!])/", "\n$data" ,-1,PREG_SPLIT_DELIM_CAPTURE);
+		$section_data = preg_split("/(\n".( str_repeat( "!", $gBitSystem->getConfig( "wiki_section_edit" ) ) )."[^!])/", "\n$data" ,-1,PREG_SPLIT_DELIM_CAPTURE);
 		$a = 1 + ($section - 1) * 2;
 		$b = $a + 1;
 		$section_data[$a] = "\n";

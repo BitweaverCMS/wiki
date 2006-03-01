@@ -9,7 +9,7 @@
 				<div class="row">
 					{formlabel label=`$output.label` for=$item}
 					{forminput}
-						{html_checkboxes name="$item" values="y" checked=`$gBitSystemPrefs.$item` labels=false id=$item}
+						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
 						{formhelp note=`$output.note` page=`$output.page`}
 					{/forminput}
 				</div>
@@ -19,9 +19,9 @@
 				{formlabel label="Edit Page Sections" for="wiki_section_edit"}
 				{forminput}
 					<select name="wiki_section_edit" id="wiki_section_edit">
-						<option value="0" {if $gBitSystemPrefs.wiki_section_edit eq 0}selected="selected"{/if}>{tr}Disabled{/tr}</option>
-						<option value="1" {if $gBitSystemPrefs.wiki_section_edit eq 1}selected="selected"{/if}>h1</option>
-						<option value="2" {if $gBitSystemPrefs.wiki_section_edit eq 2}selected="selected"{/if}>h2</option>
+						<option value="0" {if $gBitSystem->getConfig('wiki_section_edit') eq 0}selected="selected"{/if}>{tr}Disabled{/tr}</option>
+						<option value="1" {if $gBitSystem->getConfig('wiki_section_edit') eq 1}selected="selected"{/if}>h1</option>
+						<option value="2" {if $gBitSystem->getConfig('wiki_section_edit') eq 2}selected="selected"{/if}>h2</option>
 					</select>
 					{formhelp note="Using this feature, it is possible to edit only sections of your wiki pages ranging from one heading to another. specify what headings you want to use as boundaries."}
 				{/forminput}
@@ -31,14 +31,14 @@
 				{formlabel label="Global WikiPage Cache" for="wiki_cache"}
 				{forminput}
 					<select name="wiki_cache" id="wiki_cache">
-						<option value="0"    {if $gBitSystemPrefs.wiki_cache eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
-						<option value="60"   {if $gBitSystemPrefs.wiki_cache eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
-						<option value="300"  {if $gBitSystemPrefs.wiki_cache eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
-						<option value="600"  {if $gBitSystemPrefs.wiki_cache eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
-						<option value="900"  {if $gBitSystemPrefs.wiki_cache eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
-						<option value="1800" {if $gBitSystemPrefs.wiki_cache eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
-						<option value="3600" {if $gBitSystemPrefs.wiki_cache eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
-						<option value="7200" {if $gBitSystemPrefs.wiki_cache eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
+						<option value="0"    {if $gBitSystem->getConfig('wiki_cache') eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
+						<option value="60"   {if $gBitSystem->getConfig('wiki_cache') eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
+						<option value="300"  {if $gBitSystem->getConfig('wiki_cache') eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
+						<option value="600"  {if $gBitSystem->getConfig('wiki_cache') eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
+						<option value="900"  {if $gBitSystem->getConfig('wiki_cache') eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
+						<option value="1800" {if $gBitSystem->getConfig('wiki_cache') eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
+						<option value="3600" {if $gBitSystem->getConfig('wiki_cache') eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
+						<option value="7200" {if $gBitSystem->getConfig('wiki_cache') eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
 					</select>
 					{formhelp note="Cache wikipages for the given amount of time."}
 				{/forminput}
@@ -47,16 +47,16 @@
 			<div class="row">
 				{formlabel label="Warn on edit" for="warn_on_edit"}
 				{forminput}
-					{html_checkboxes name="warn_on_edit" values="y" checked=`$gBitSystemPrefs.warn_on_edit` labels=false id="warn_on_edit"}
+					{html_checkboxes name="warn_on_edit" values="y" checked=`$gBitSystem->getConfig('warn_on_edit')` labels=false id="warn_on_edit"}
 				{/forminput}
 				{forminput}
 					<select name="warn_on_edit_time">
-						<option value="1"  {if $gBitSystemPrefs.warn_on_edit_time eq 1}selected="selected"{/if}>{tr}1{/tr}</option>
-						<option value="2"  {if $gBitSystemPrefs.warn_on_edit_time eq 2}selected="selected"{/if}>{tr}2{/tr}</option>
-						<option value="5"  {if $gBitSystemPrefs.warn_on_edit_time eq 5}selected="selected"{/if}>{tr}5{/tr}</option>
-						<option value="10" {if $gBitSystemPrefs.warn_on_edit_time eq 10}selected="selected"{/if}>{tr}10{/tr}</option>
-						<option value="15" {if $gBitSystemPrefs.warn_on_edit_time eq 15}selected="selected"{/if}>{tr}15{/tr}</option>
-						<option value="30" {if $gBitSystemPrefs.warn_on_edit_time eq 30}selected="selected"{/if}>{tr}30{/tr}</option>
+						<option value="1"  {if $gBitSystem->getConfig('warn_on_edit_time') eq 1}selected="selected"{/if}>{tr}1{/tr}</option>
+						<option value="2"  {if $gBitSystem->getConfig('warn_on_edit_time') eq 2}selected="selected"{/if}>{tr}2{/tr}</option>
+						<option value="5"  {if $gBitSystem->getConfig('warn_on_edit_time') eq 5}selected="selected"{/if}>{tr}5{/tr}</option>
+						<option value="10" {if $gBitSystem->getConfig('warn_on_edit_time') eq 10}selected="selected"{/if}>{tr}10{/tr}</option>
+						<option value="15" {if $gBitSystem->getConfig('warn_on_edit_time') eq 15}selected="selected"{/if}>{tr}15{/tr}</option>
+						<option value="30" {if $gBitSystem->getConfig('warn_on_edit_time') eq 30}selected="selected"{/if}>{tr}30{/tr}</option>
 					</select> {tr}minutes{/tr}
 					{formhelp note="Display a warning if someone has started editing a page within this time range and somebody else starts editing the same page."}
 				{/forminput}
@@ -87,7 +87,7 @@
 				<div class="row">
 					{formlabel label=`$output.label` for=$item}
 					{forminput}
-						{html_checkboxes name="$item" values="y" checked=`$gBitSystemPrefs.$item` labels=false id=$item}
+						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
 						{formhelp note=`$output.note` page=`$output.page`}
 					{/forminput}
 				</div>
@@ -106,7 +106,7 @@
 				<div class="row">
 					{formlabel label=`$output.label` for=$item}
 					{forminput}
-						{html_checkboxes name="$item" values="y" checked=`$gBitSystemPrefs.$item` labels=false id=$item}
+						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
 						{formhelp note=`$output.note` page=`$output.page`}
 					{/forminput}
 				</div>
@@ -125,7 +125,7 @@
 				<div class="row">
 					{formlabel label=`$output.label` for=$item}
 					{forminput}
-						{html_checkboxes name="$item" values="y" checked=`$gBitSystemPrefs.$item` labels=false id=$item}
+						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
 						{formhelp note=`$output.note` page=`$output.page`}
 					{/forminput}
 				</div>
@@ -144,7 +144,7 @@
 				<div class="row">
 					{formlabel label="Wiki Home Page" for="wiki_home_page"}
 					{forminput}
-						<input type="text" name="wiki_home_page" id="wiki_home_page" size="25" value="{$gBitSystemPrefs.wiki_home_page|escape}" />
+						<input type="text" name="wiki_home_page" id="wiki_home_page" size="25" value="{$gBitSystem->getConfig('wiki_home_page')|escape}" />
 						{formhelp note="When the wiki is accessed, this is the page that will be displayed as the first page."}
 					{/forminput}
 				</div>
@@ -210,9 +210,9 @@
 					{formlabel label="Wiki Link Format" for="wiki_page_regex"}
 					{forminput}
 						<select name="wiki_page_regex" id="wiki_page_regex">
-							<option value="complete" {if $gBitSystemPrefs.wiki_page_regex eq 'complete'}selected="selected"{/if}>{tr}complete{/tr}</option>
-							<option value="full"     {if $gBitSystemPrefs.wiki_page_regex eq 'full'}selected="selected"{/if}>{tr}latin{/tr}</option>
-							<option value="strict"   {if $gBitSystemPrefs.wiki_page_regex eq 'strict'}selected="selected"{/if}>{tr}english{/tr}</option>
+							<option value="complete" {if $gBitSystem->getConfig('wiki_page_regex') eq 'complete'}selected="selected"{/if}>{tr}complete{/tr}</option>
+							<option value="full"     {if $gBitSystem->getConfig('wiki_page_regex') eq 'full'}selected="selected"{/if}>{tr}latin{/tr}</option>
+							<option value="strict"   {if $gBitSystem->getConfig('wiki_page_regex') eq 'strict'}selected="selected"{/if}>{tr}english{/tr}</option>
 						</select>
 						{formhelp note="Controls recognition of Wiki links using the two parenthesis Wiki link syntax <i>((page name))</i>."}
 					{/forminput}
@@ -247,7 +247,7 @@
 				<div class="row">
 					{formlabel label="Enable Feature" for="wiki_copyrights"}
 					{forminput}
-						{html_checkboxes name="wiki_copyrights" values="y" checked=$gBitSystemPrefs.wiki_copyrights labels=false id="wiki_copyrights"}
+						{html_checkboxes name="wiki_copyrights" values="y" checked=$gBitSystem->getConfig('wiki_copyrights') labels=false id="wiki_copyrights"}
 					{/forminput}
 				</div>
 
@@ -277,7 +277,7 @@
 					<div class="row">
 						{formlabel label=`$output.label` for=$item}
 						{forminput}
-							{html_checkboxes name="$item" values="y" checked=`$gBitSystemPrefs.$item` labels=false id=$item}
+							{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
 							{formhelp note=`$output.note` page=`$output.page`}
 						{/forminput}
 					</div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/download_wiki_attachment.php,v 1.3 2006/02/14 19:04:44 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/download_wiki_attachment.php,v 1.4 2006/03/01 20:16:36 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: download_wiki_attachment.php,v 1.3 2006/02/14 19:04:44 squareing Exp $
+ * $Id: download_wiki_attachment.php,v 1.4 2006/03/01 20:16:36 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -24,7 +24,7 @@ if (!isset($_REQUEST["att_id"])) {
 	die;
 }
 $info = $gBitSystem->get_wiki_attachment($_REQUEST["att_id"]);
-$w_use_dir = $gBitSystem->getPreference('w_use_dir', '');
+$w_use_dir = $gBitSystem->getConfig('w_use_dir', '');
 $gBitSystem->add_wiki_attachment_hit($_REQUEST["att_id"]);
 $type = &$info["filetype"];
 $file = &$info["filename"];

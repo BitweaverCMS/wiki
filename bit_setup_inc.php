@@ -19,6 +19,6 @@ if($gBitSystem->isPackageActive( 'wiki' ) ) {
 	// Stuff found in kernel that is package dependent - wolff_borg
 	include_once( WIKI_PKG_PATH.'diff.php' );
 
-	$wiki_home_page = $gBitSystem->getPreference("wiki_home_page", 'HomePage');
+	$wiki_home_page = $gBitSystem->getConfig("wiki_home_page", 'HomePage');
 }
 ?>

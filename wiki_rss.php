@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.9 2006/02/16 13:48:13 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.10 2006/03/01 20:16:36 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -15,8 +15,8 @@ require_once( WIKI_PKG_PATH."BitPage.php" );
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyPackage( 'rss' );
 
-$rss->title = $gBitSystem->getPreference( 'title_rss_wiki', $gBitSystem->getPreference( 'site_title' ).' - '.tra( 'Wiki' ) );
-$rss->description = $gBitSystem->getPreference( 'desc_rss_wiki', $gBitSystem->getPreference( 'site_title' ).' - '.tra( 'RSS Feed' ) );
+$rss->title = $gBitSystem->getConfig( 'title_rss_wiki', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'Wiki' ) );
+$rss->description = $gBitSystem->getConfig( 'desc_rss_wiki', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'RSS Feed' ) );
 
 // check permission to view wiki pages
 if( !$gBitUser->hasPermission( 'bit_p_view' ) ) {
@@ -27,7 +27,7 @@ if( !$gBitUser->hasPermission( 'bit_p_view' ) ) {
 	$rss->useCached( $cacheFile ); // use cached version if age < 1 hour
 
 	$wiki = new BitPage();
-	$feeds = $wiki->getList( 0, $gBitSystem->getPreference( 'max_rss_wiki', 10 ), 'last_modified_desc', NULL, NULL, FALSE, FALSE, TRUE );
+	$feeds = $wiki->getList( 0, $gBitSystem->getConfig( 'max_rss_wiki', 10 ), 'last_modified_desc', NULL, NULL, FALSE, FALSE, TRUE );
 	$feeds = $feeds['data'];
 
 	// set the rss link
@@ -44,7 +44,7 @@ if( !$gBitUser->hasPermission( 'bit_p_view' ) ) {
 		$item->source = 'http://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL;
 		$item->author = $gBitUser->getDisplayName( FALSE, array( 'real_name' => $feed['modifier_real_name'], 'login' => $feed['modifier_user'] ) );
 
-		$item->descriptionTruncSize = $gBitSystem->getPreference( 'rssfeed_truncate', 5000 );
+		$item->descriptionTruncSize = $gBitSystem->getConfig( 'rssfeed_truncate', 5000 );
 		$item->descriptionHtmlSyndicated = FALSE;
 
 		// pass the item on to the rss feed creator
