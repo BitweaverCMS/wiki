@@ -42,7 +42,7 @@
 					&copy; {$pageCopyrights[i].year} {$pageCopyrights[i].authors} {if $pageCopyrights[i].title} under {$pageCopyrights[i].title}{/if}
 				{/section}
 			{elseif $wikiLicensePage != '' }
-				{tr}The content on this page is licensed under the terms of the{/tr} <a href="{$wikiLicensePage}"><b>{tr}{$wikiSubmitNotice}{/tr}</b></a>.
+				{tr}The content on this page is licensed under the terms of the{/tr} <a href="{$gContent->getDisplayUrl($wikiLicensePage)}"><b>{tr}{$wikiSubmitNotice}{/tr}</b></a>.
 			{/if}
 			{if $gBitUser->hasPermission( 'bit_p_edit_copyrights' )}
 				<br />{tr}To edit the copyright notices{/tr} <a href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}">{tr}click here{/tr}</a>.
