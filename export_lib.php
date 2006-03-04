@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.1.1.1.2.5 2005/08/25 23:58:25 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.1.1.1.2.6 2006/03/04 02:41:53 wolff_borg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: export_lib.php,v 1.1.1.1.2.5 2005/08/25 23:58:25 lsces Exp $
+ * $Id: export_lib.php,v 1.1.1.1.2.6 2006/03/04 02:41:53 wolff_borg Exp $
  * @package wiki
  */
 
@@ -26,7 +26,7 @@ class ExportLib extends BitBase {
 		BitBase::BitBase();
 	}
 
-	function MakeWikiZip( $pExportFile ) {
+	function MakeWikiTarGz( $pExportFile ) {
 		global $gBitUser,$gBitSystem;
 		include_once (UTIL_PKG_PATH."tar.class.php");
 		$tar = new tar();
@@ -36,9 +36,9 @@ class ExportLib extends BitBase {
 		while ($res = $result->fetchRow()) {
 			$page_id = $res["page_id"];
 			$content = $this->export_wiki_page($page_id, 0);
-			$tar->addData($page_id, $content, $gBitSystem->getUTCTime());
+			$tar->addData($page_id.'.txt', $content, $gBitSystem->getUTCTime());
 		}
-		$tar->toTar( $pExportFile, FALSE); 
+		$tar->toTar( $pExportFile, TRUE); 
 		return '';
 	}
 
@@ -46,7 +46,7 @@ class ExportLib extends BitBase {
 		global $gBitSystem;
 		$head = '';
 		$head .= "Date: " . $gBitSystem->mServerTimestamp->get_rfc2822_datetime(). "\r\n";
-		$head .= sprintf("Mime-Version: 1.0 (Produced by Tiki)\r\n");
+		$head .= sprintf("Mime-Version: 1.0 (Produced by Bitweaver)\r\n");
 		$iter = $this->get_page_history($page_id);
 		$gWikiPage = new BitPage( $page_id );
 		$gWikiPage->load();
