@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.53 2006/02/20 02:14:26 seannerd Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.54 2006/03/04 06:18:51 wolff_borg Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.53 $ $Date: 2006/02/20 02:14:26 $ $Author: seannerd $
+ * @version $Revision: 1.2.2.54 $ $Date: 2006/03/04 06:18:51 $ $Author: wolff_borg $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.53 2006/02/20 02:14:26 seannerd Exp $
+ * $Id: BitPage.php,v 1.2.2.54 2006/03/04 06:18:51 wolff_borg Exp $
  */
 
 /**
@@ -476,7 +476,7 @@ class BitPage extends LibertyAttachable {
 			if( is_array( $pExistsHash ) ) {
 				if( is_array( current( $pExistsHash ) ) ) {
 					$exists = $pExistsHash[0];
-					$multiple = TRUE;
+					$multiple = count($pExistsHash) > 1 ? TRUE : FALSE;
 				} else {
 					$exists = $pExistsHash;
 					$multiple = FALSE;
