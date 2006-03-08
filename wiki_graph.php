@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/wiki_graph.php,v 1.1.1.1.2.1 2005/06/27 17:47:42 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/wiki_graph.php,v 1.1.1.1.2.2 2006/03/08 11:53:47 wolff_borg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: wiki_graph.php,v 1.1.1.1.2.1 2005/06/27 17:47:42 lsces Exp $
+ * $Id: wiki_graph.php,v 1.1.1.1.2.2 2006/03/08 11:53:47 wolff_borg Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -20,7 +20,7 @@ include_once( '../bit_setup_inc.php' );
 include_once( UTIL_PKG_PATH.'GraphViz.php' );
 include_once( WIKI_PKG_PATH.'BitPage.php');
 if(!isset($_REQUEST['level'])) $_REQUEST['level'] = 0;
-if(!isset($_REQUEST['nodesep'])) $_REQUEST['nodesep'] = ".1";
+if(!isset($_REQUEST['nodesep'])) $_REQUEST['nodesep'] = "0.1";
 if(!isset($_REQUEST['rankdir'])) $_REQUEST['rankdir'] = "LR";
 if(!isset($_REQUEST['bgcolor'])) $_REQUEST['bgcolor'] = "transparent";   # general background color #rrvvbb or 'transparent'
 if(!isset($_REQUEST['size'])) $_REQUEST['size'] = "";                    # "x,y" in inches
