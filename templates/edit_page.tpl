@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.25 2006/02/05 11:04:06 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.26 2006/03/12 11:45:38 wolff_borg Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="edit wiki">
@@ -141,12 +141,6 @@
 
 						{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_mini_tpl}
 
-						<div class="row submit">
-							<input type="submit" name="fCancel" value="{tr}Cancel{/tr}" />&nbsp;
-							<input type="submit" name="preview" value="{tr}Preview{/tr}" />&nbsp;
-							<input type="submit" name="fSavePage" value="{tr}Save{/tr}" />
-						</div>
-
 						{if $gBitSystem->isFeatureActive( 'feature_wiki_attachments' )}
 							{include file="bitpackage:liberty/edit_storage_list.tpl"}
 						{/if}
@@ -281,6 +275,13 @@
 					{/jstab}
 				{/if}
 			{/jstabs}
+
+			<div class="row submit">
+				<input type="submit" name="fCancel" value="{tr}Cancel{/tr}" />&nbsp;
+				<input type="submit" name="preview" value="{tr}Preview{/tr}" />&nbsp;
+				<input type="submit" name="fSavePage" value="{tr}Save{/tr}" />
+			</div>
+
 		{/form}
 
 		<br /><br />
