@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.54 2006/03/04 06:18:51 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.55 2006/03/12 09:34:07 wolff_borg Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.54 $ $Date: 2006/03/04 06:18:51 $ $Author: wolff_borg $
+ * @version $Revision: 1.2.2.55 $ $Date: 2006/03/12 09:34:07 $ $Author: wolff_borg $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.54 2006/03/04 06:18:51 wolff_borg Exp $
+ * $Id: BitPage.php,v 1.2.2.55 2006/03/12 09:34:07 wolff_borg Exp $
  */
 
 /**
@@ -291,6 +291,7 @@ class BitPage extends LibertyAttachable {
 		}
 
 		//override default index words because wiki pages have data in non-liberty tables (description in this case_)
+		$pParamHash["description"]  = isset($pParamHash["description"]) ? $pParamHash["description"] : '';
 		$this->mInfo['index_data'] = $pParamHash["title"] . ' ' . $pParamHash["edit"] . ' ' . $pParamHash["description"];
 
 		return( count( $this->mErrors ) == 0 );
