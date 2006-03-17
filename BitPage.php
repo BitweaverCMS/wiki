@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.55 2006/03/12 09:34:07 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.2.2.56 2006/03/17 05:38:00 seannerd Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.2.2.55 $ $Date: 2006/03/12 09:34:07 $ $Author: wolff_borg $
+ * @version $Revision: 1.2.2.56 $ $Date: 2006/03/17 05:38:00 $ $Author: seannerd $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.2.2.55 2006/03/12 09:34:07 wolff_borg Exp $
+ * $Id: BitPage.php,v 1.2.2.56 2006/03/17 05:38:00 seannerd Exp $
  */
 
 /**
@@ -938,6 +938,22 @@ class BitPage extends LibertyAttachable {
 		$retval["cant"] = $cant;
 		return $retval;
 	}
+
+	// Overriding the LibertyContet function to include decriptions from tiki_pages table.
+	function setIndexData( $pContentId = 0 ) {
+		global $gBitSystem ;
+		if ( $pContentId == 0 ) $pContentId = $this->mContentId;
+		$sql = "SELECT tc.`title`, tc.`data`, uu.`login`, uu.`real_name`, tp.`description` " .
+				"FROM `" . BIT_DB_PREFIX . "tiki_content` tc " .  
+				"INNER JOIN `" . BIT_DB_PREFIX . "users_users` uu ON uu.`user_id`    = tc.`user_id` " . 
+				"INNER JOIN `" . BIT_DB_PREFIX . "tiki_pages`  tp ON tc.`content_id` = tp.`content_id` " .
+				"WHERE tc.`content_id` = ?" ;
+		$res = $gBitSystem->mDb->getRow($sql, array($pContentId));
+		if (!(isset($this->mInfo['no_index']) and $this->mInfo['no_index'] == true)) {
+			$this->mInfo['index_data'] = $res["title"] . " " . $res["data"] . " " . $res["login"] . " " . $res["real_name"] . ' ' . $res["description"] ;
+		}
+	}
+
 }
 
 define('PLUGINS_DIR', WIKI_PKG_PATH.'plugins');
@@ -1588,21 +1604,6 @@ class WikiLib extends BitPage {
 		$retval["data"] = $ret;
 		$retval["cant"] = $cant;
 		return $retval;
-	}
-
-	// Overriding the LibertyContet function to include decriptions from tiki_pages table.
-	function setIndexData( $pContentId = 0 ) {
-		global $gBitSystem ;
-		if ( $pContentId == 0 ) $pContentId = $this->mContentId;
-		$sql = "SELECT tc.`title`, tc.`data`, uu.`login`, uu.`real_name`, tp.`description` " .
-				"FROM `" . BIT_DB_PREFIX . "tiki_content` tc " .  
-				"INNER JOIN `" . BIT_DB_PREFIX . "users_users` uu ON uu.`user_id`    = tc.`user_id` " . 
-				"INNER JOIN `" . BIT_DB_PREFIX . "tiki_pages`  tp ON tc.`content_id` = tp.`content_id` " .
-				"WHERE tc.`content_id` = ?" ;
-		$res = $gBitSystem->mDb->getRow($sql, array($pContentId));
-		if (!(isset($this->mInfo['no_index']) and $this->mInfo['no_index'] == true)) {
-			$this->mInfo['index_data'] = $res["title"] . " " . $res["data"] . " " . $res["login"] . " " . $res["real_name"] . ' ' . $res["description"] ;
-		}
 	}
 
 	/*shared*/
