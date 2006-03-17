@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.52 2006/03/01 20:16:36 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.53 2006/03/17 05:44:52 seannerd Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.52 $ $Date: 2006/03/01 20:16:36 $ $Author: spiderr $
+ * @version $Revision: 1.53 $ $Date: 2006/03/17 05:44:52 $ $Author: seannerd $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.52 2006/03/01 20:16:36 spiderr Exp $
+ * $Id: BitPage.php,v 1.53 2006/03/17 05:44:52 seannerd Exp $
  */
 
 /**
@@ -735,6 +735,21 @@ class BitPage extends LibertyAttachable {
 		$retval["cant"] = $cant;
 		return $retval;
 	}
+
+	// Overriding the LibertyContet function to include decriptions from wiki_pages table.
+	function setIndexData( $pContentId = 0 ) {
+		global $gBitSystem ;
+		if ( $pContentId == 0 ) $pContentId = $this->mContentId;
+		$sql = "SELECT lc.`title`, lc.`data`, uu.`login`, uu.`real_name`, wp.`description` " .
+				"FROM `" . BIT_DB_PREFIX . "liberty_content` lc " .  
+				"INNER JOIN `" . BIT_DB_PREFIX . "users_users` uu ON uu.`user_id`    = lc.`user_id` " . 
+				"INNER JOIN `" . BIT_DB_PREFIX . "wiki_pages`  wp ON lc.`content_id` = wp.`content_id` " .
+				"WHERE lc.`content_id` = ?" ;
+		$res = $gBitSystem->mDb->getRow($sql, array($pContentId));
+		if (!(isset($this->mInfo['no_index']) and $this->mInfo['no_index'] == true)) {
+			$this->mInfo['index_data'] = $res["title"] . " " . $res["data"] . " " . $res["login"] . " " . $res["real_name"] . ' ' . $res["description"] ;
+		}
+	}
 }
 
 define('PLUGINS_DIR', WIKI_PKG_PATH.'plugins');
@@ -1232,21 +1247,6 @@ class WikiLib extends BitPage {
 		}
 
 		return $ret;
-	}
-
-	// Overriding the LibertyContet function to include decriptions from wiki_pages table.
-	function setIndexData( $pContentId = 0 ) {
-		global $gBitSystem ;
-		if ( $pContentId == 0 ) $pContentId = $this->mContentId;
-		$sql = "SELECT lc.`title`, lc.`data`, uu.`login`, uu.`real_name`, wp.`description` " .
-				"FROM `" . BIT_DB_PREFIX . "liberty_content` lc " .  
-				"INNER JOIN `" . BIT_DB_PREFIX . "users_users` uu ON uu.`user_id`    = lc.`user_id` " . 
-				"INNER JOIN `" . BIT_DB_PREFIX . "wiki_pages`  wp ON lc.`content_id` = wp.`content_id` " .
-				"WHERE lc.`content_id` = ?" ;
-		$res = $gBitSystem->mDb->getRow($sql, array($pContentId));
-		if (!(isset($this->mInfo['no_index']) and $this->mInfo['no_index'] == true)) {
-			$this->mInfo['index_data'] = $res["title"] . " " . $res["data"] . " " . $res["login"] . " " . $res["real_name"] . ' ' . $res["description"] ;
-		}
 	}
 
 	// This function can be used to store the set of actual pages in the "tags"
