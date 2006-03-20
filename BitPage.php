@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.53 2006/03/17 05:44:52 seannerd Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.54 2006/03/20 15:58:37 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.53 $ $Date: 2006/03/17 05:44:52 $ $Author: seannerd $
+ * @version $Revision: 1.54 $ $Date: 2006/03/20 15:58:37 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.53 2006/03/17 05:44:52 seannerd Exp $
+ * $Id: BitPage.php,v 1.54 2006/03/20 15:58:37 squareing Exp $
  */
 
 /**
@@ -948,31 +948,31 @@ class WikiLib extends BitPage {
 	function wiki_page_graph(&$str, &$graph, $garg) {
 		$page = $str['name'];
 		$graph->addAttributes(array(
-				'nodesep' => (isset($garg['att']['nodesep']))?$garg['att']['nodesep']:".1",
-				'rankdir' => (isset($garg['att']['rankdir']))?$garg['att']['rankdir']:'LR',
-				'size' => (isset($garg['att']['size']))?$garg['att']['size']:'6',
-				'bgcolor' => (isset($garg['att']['bgcolor']))?$garg['att']['bgcolor']:'transparent',
-				'URL' => WIKI_PKG_URL.'index.php'
-				));
+			'nodesep' => (isset($garg['att']['nodesep']))?$garg['att']['nodesep']:".1",
+			'rankdir' => (isset($garg['att']['rankdir']))?$garg['att']['rankdir']:'LR',
+			'size' => (isset($garg['att']['size']))?$garg['att']['size']:'6',
+			'bgcolor' => (isset($garg['att']['bgcolor']))?$garg['att']['bgcolor']:'transparent',
+			'URL' => WIKI_PKG_URL.'index.php'
+		));
 		$graph->addNode("$page", array(
-				'URL' => WIKI_PKG_URL."index.php?page=" . urlencode(addslashes($page)),
-				'label' => "$page",
-				'fontname' => (isset($garg['node']['fontname']))?$garg['node']['fontname']:"Arial",
-				'fontsize' => (isset($garg['node']['fontsize']))?$garg['node']['fontsize']:'9',
-				'shape' => (isset($garg['node']['shape']))?$garg['node']['shape']:'ellipse',
-				'color' => (isset($garg['node']['color']))?$garg['node']['color']:'#AAAAAA',
-				'style' => (isset($garg['node']['style']))?$garg['node']['style']:'filled',
-				'fillcolor' => (isset($garg['node']['fillcolor']))?$garg['node']['fillcolor']:'#FFFFFF',
-				'width' => (isset($garg['node']['width']))?$garg['node']['width']:'.5',
-				'height' => (isset($garg['node']['height']))?$garg['node']['height']:'.25'
-				));
+			'URL' => WIKI_PKG_URL."index.php?page=" . urlencode(addslashes($page)),
+			'label' => "$page",
+			'fontname' => (isset($garg['node']['fontname']))?$garg['node']['fontname']:"Verdana",
+			'fontsize' => (isset($garg['node']['fontsize']))?$garg['node']['fontsize']:'10',
+			'shape' => (isset($garg['node']['shape']))?$garg['node']['shape']:'ellipse',
+			'color' => (isset($garg['node']['color']))?$garg['node']['color']:'#AAAAAA',
+			'style' => (isset($garg['node']['style']))?$garg['node']['style']:'filled',
+			'fillcolor' => (isset($garg['node']['fillcolor']))?$garg['node']['fillcolor']:'#FFFFFF',
+			'width' => (isset($garg['node']['width']))?$garg['node']['width']:'.5',
+			'height' => (isset($garg['node']['height']))?$garg['node']['height']:'.25'
+		));
 		//print("add node $page<br/>");
 		foreach ($str['pages'] as $neig) {
 			$this->wiki_page_graph($neig, $graph, $garg);
 			$graph->addEdge(array("$page" => $neig['name']), array(
-				'color' => '#998877',
-				'style' => 'solid'
-				));
+				'color' => (isset($garg['edge']['color']))?$garg['edge']['color']:'#998877',
+				'style' => (isset($garg['edge']['style']))?$garg['edge']['style']:'solid',
+			));
 			//print("add edge $page to ".$neig['name']."<br/>");
 		}
 	}
@@ -1016,7 +1016,7 @@ class WikiLib extends BitPage {
 		$str = $this->wiki_get_link_structure($page, $level);
 		$graph = new Image_GraphViz();
 		$this->wiki_page_graph($str, $graph, $garg);
-		return $graph->map();
+		return $graph->fetch( 'cmap' );
 	}
 
 	function wiki_get_link_structure($page, $level) {
