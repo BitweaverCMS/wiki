@@ -280,15 +280,15 @@ array( 'CREATEINDEX' => array(
 // de-tikify tables
 array( 'DATADICT' => array(
 	array( 'RENAMETABLE' => array(
-		'tiki_actionlog' => 'wiki_action_log',
-		'tiki_copyrights' => 'liberty_copyrights',
-		'tiki_history' => 'liberty_content_history',
-		'tiki_links' => 'liberty_content_links',
+		'tiki_actionlog'      => 'wiki_action_log',
+		'tiki_copyrights'     => 'liberty_copyrights',
+		'tiki_history'        => 'liberty_content_history',
+		'tiki_links'          => 'liberty_content_links',
 		'tiki_page_footnotes' => 'wiki_footnotes',
-		'tiki_pages' => 'wiki_pages',
+		'tiki_pages'          => 'wiki_pages',
 		'tiki_received_pages' => 'wiki_received_pages',
-		'tiki_tags' => 'wiki_tags',
-		'tiki_extwiki' => 'wiki_ext',
+		'tiki_tags'           => 'wiki_tags',
+		'tiki_extwiki'        => 'wiki_ext',
 	)),
 )),
 		)
