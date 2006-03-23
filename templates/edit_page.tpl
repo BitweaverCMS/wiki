@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.24 2006/03/01 20:16:37 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.25 2006/03/23 16:40:41 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -66,20 +66,6 @@
 								{/if}
 							{/forminput}
 						</div>
-
-						{if $gBitSystem->isFeatureActive( 'wiki_templates' ) and $gBitUser->hasPermission( 'bit_p_use_content_templates' )}
-							<div class="row">
-								{formlabel label="Apply template" for="template_id"}
-								{forminput}
-									<select name="template_id" id="template_id" onchange="javascript:document.getElementById('editpageform').submit();">
-										<option value="0">{tr}none{/tr}</option>
-										{section name=ix loop=$templates}
-											<option value="{$templates[ix].template_id|escape}">{tr}{$templates[ix].name}{/tr}</option>
-										{/section}
-									</select>
-								{/forminput}
-							</div>
-						{/if}
 
 						{if $gBitSystem->isFeatureActive( 'wiki_description' )}
 							<div class="row">

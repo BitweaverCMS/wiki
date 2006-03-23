@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.20 2006/03/01 20:16:36 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.21 2006/03/23 16:40:40 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -110,10 +110,6 @@ $formWikiFeatures = array(
 	"wiki_undo" => array(
 		'label' => 'Undo',
 		'note' => 'Reverts a wikipage to the previous version held in its page history.',
-	),
-	"wiki_templates" => array(
-		'label' => 'Use templates',
-		'note' => 'Allow the usage of templates.',
 	),
 	"wiki_rankings" => array(
 		'label' => 'Rankings',
