@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.54 2006/03/20 15:58:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.55 2006/03/25 20:55:08 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.54 $ $Date: 2006/03/20 15:58:37 $ $Author: squareing $
+ * @version $Revision: 1.55 $ $Date: 2006/03/25 20:55:08 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.54 2006/03/20 15:58:37 squareing Exp $
+ * $Id: BitPage.php,v 1.55 2006/03/25 20:55:08 squareing Exp $
  */
 
 /**
@@ -466,11 +466,10 @@ class BitPage extends LibertyAttachable {
 				// we have a multi-demensional array (likely returned from LibertyContent::pageExists() ) - meaning we potentially have multiple pages with the same name
 				if( $multiple ) {
 					$desc = tra( 'Multiple pages with this name' );
-					$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrl( $exists['title'] ).'">'.htmlspecialchars( $pPageName ).'</a>';
 				} else {
 					$desc = empty( $exists['description'] ) ? $exists['title'] : $exists['description'];
-					$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrl( $exists['title'] ).'">'.htmlspecialchars( $pPageName ).'</a>';
 				}
+				$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrl( $exists['title'] ).'">'.htmlspecialchars( $pPageName ).'</a>';
 			} else {
 				if( $gBitUser->hasPermission( 'bit_p_edit' ) ) {
 					$ret = '<a title="'.tra( "Create the page" ).': '.htmlspecialchars( $pPageName ).'" href="'.WIKI_PKG_URL.'edit.php?page='.urlencode( $pPageName ).'" class="create">'.htmlspecialchars( $pPageName ).'</a>';

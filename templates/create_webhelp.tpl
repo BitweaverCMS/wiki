@@ -11,17 +11,17 @@ Here you can generate static HTML files from Wiki Book.
 <table class="panel">
   <tr>
   	<td>{tr}Structure{/tr}</td>
-  	<td>{$struct_info.title}</td>
+  	<td>{$struct_info.title|escape}</td>
   </tr>
-  <input type="hidden" name="name" value="{$struct_info.title}" />
+  <input type="hidden" name="name" value="{$struct_info.title|escape}" />
   <input type="hidden" name="struct" value="{$struct_info.structure_id}" />
   <tr>
   	<td>{tr}Directory{/tr}</td>
-  	<td><input type="text" name="dir" value="{$struct_info.title}" /></td>
+  	<td><input type="text" name="dir" value="{$struct_info.title|escape}" /></td>
   </tr>
   <tr>
   	<td>{tr}Top page{/tr}</td>
-  	<td><input type="text" name="top" value="{$struct_info.title}" /></td>
+  	<td><input type="text" name="top" value="{$struct_info.title|escape}" /></td>
   </tr>
   <tr>
   	<td colspan="2"><input type="submit" name="create" value="{tr}Create{/tr}" /></td>

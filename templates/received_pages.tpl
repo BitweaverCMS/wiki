@@ -59,9 +59,9 @@
 <tr class="{cycle}">
 <td>{$channels[user].received_page_id}</td>
 {if $channels[user].exists eq 'y'}
-<td><span class="highlight">{$channels[user].title}</span></td>
+<td><span class="highlight">{$channels[user].title|escape}</span></td>
 {else}
-<td>{$channels[user].title}</td>
+<td>{$channels[user].title|escape}</td>
 {/if}
 <td>{$channels[user].received_date|bit_short_date}</td>
 <td>{$channels[user].received_from_site}</td>

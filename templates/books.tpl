@@ -8,7 +8,7 @@
 			<div id="showstructs" style="display:none;">
 				<div style="float:left;padding:5px 5px 5px 0;">
 					{foreach from=$showstructs item=struct }
-						{$struct.title}<br />
+						{$struct.title|escape}<br />
 					{/foreach}
 				</div>
 			</div>

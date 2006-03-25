@@ -5,7 +5,7 @@
 
 {include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav' serviceHash=$gContent->mInfo}
 
-<div class="display wiki {$pageInfo.title|lower|regex_replace:"[\s|_]":""}">
+<div class="display wiki {$pageInfo.title|escape|lower|regex_replace:"[\s|_]":""}">
 	{include file="bitpackage:wiki/page_icons.tpl"}
 	{include file="bitpackage:wiki/page_header.tpl"}
 
@@ -34,7 +34,7 @@
 		<p class="copyright">
 			{if $pageCopyrights}
 				{section name=i loop=$pageCopyrights}
-					&copy; {$pageCopyrights[i].year} {$pageCopyrights[i].authors} {if $pageCopyrights[i].title} under {$pageCopyrights[i].title}{/if}
+					&copy; {$pageCopyrights[i].year} {$pageCopyrights[i].authors} {if $pageCopyrights[i].title} under {$pageCopyrights[i].title|escape}{/if}
 				{/section}
 			{elseif $wiki_license_page != '' }
 				{tr}The content on this page is licensed under the terms of the{/tr} <a href="{$wiki_license_page}"><b>{tr}{$wiki_submit_notice}{/tr}</b></a>.

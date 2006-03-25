@@ -14,7 +14,7 @@
 		<div class="row">
 			{formlabel label="Wiki Page" for="page_name"}
 			{forminput}
-				<input type="text" size="40" name="page_name" id="page_name" value="{$gContent->mInfo.title}"/>
+				<input type="text" size="40" name="page_name" id="page_name" value="{$gContent->mInfo.title|escape}"/>
 				{formhelp note=""}
 			{/forminput}
 		</div>
@@ -35,7 +35,7 @@
 
 <div class="display wikipage">
 	{if $gContent->mInfo.title}
-		<div class="header"><h1>{$gContent->mInfo.title}</h1></div>
+		<div class="header"><h1>{$gContent->mInfo.title|escape}</h1></div>
 	{/if}
 	<div class="content">
 		{if $gBitSystem->isFeatureActive( 'liberty_auto_display_attachment_thumbs' )}

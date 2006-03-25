@@ -14,7 +14,7 @@
 					{forminput}
 						<select name="title" id="pages">
 							{section name=ix loop=$pages}
-								<option value="{$pages[ix].content_id}">{$pages[ix].title}</option>
+								<option value="{$pages[ix].content_id}">{$pages[ix].title|escape}</option>
 							{/section}
 						</select>
 						{formhelp note="Add the pages you want to print as one."}
@@ -75,7 +75,7 @@
 		<input type="hidden" name="find" value="{$find|escape}" />
 		<select name="title">
 		{section name=ix loop=$pages}
-		  <option value="{$pages[ix].content_id}">{$pages[ix].title}</option>
+		  <option value="{$pages[ix].content_id}">{$pages[ix].title|escape}</option>
 		{/section}
 		</select>
 		<input type="submit" name="addpage" value="{tr}add page{/tr}" />

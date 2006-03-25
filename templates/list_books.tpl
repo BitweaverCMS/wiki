@@ -19,7 +19,7 @@
 		<tr class="{cycle}">
 			<td>
 				<a href="{$smarty.const.WIKI_PKG_URL}index.php?structure_id={$channels[ix].structure_id}">
-					{$channels[ix].title}
+					{$channels[ix].title|escape}
 				</a>
 			</td>
 			<td class="actionicon">
@@ -37,7 +37,7 @@
 					<a href="{$smarty.const.WIKI_PKG_URL}create_webhelp.php?structure_id={$channels[ix].structure_id}">{biticon ipackage="wiki" iname="webhelp" iexplain="create webhelp"}</a>
 				{/if}
 				{if $channels[ix].webhelp eq 'y'}
-					<a href="{$smarty.const.BITHELP_PKG_URL}/{$channels[ix].title}/index.html">{biticon ipackage="wiki" iname="webhelp_toc" iexplain="view webhelp"}</a>
+					<a href="{$smarty.const.BITHELP_PKG_URL}/{$channels[ix].title|escape}/index.html">{biticon ipackage="wiki" iname="webhelp_toc" iexplain="view webhelp"}</a>
 				{/if}
 				{if ($channels[ix].creator_user_id == $gBitUser->mUserId) || $gBitUser->hasPermission( 'bit_p_admin_books' )}
 					<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?action=remove&structure_id={$channels[ix].structure_id}">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>

@@ -1,10 +1,10 @@
 <div class="display copyrights">
 	<div class="header">
-		<h1>{tr}Copyrights{/tr}</h1>
+		<h1>{tr}Copyrights for {$pageInfo.title|escape}{/tr}</h1>
 	</div>
 
 	<div class="body">
-	{legend legend="Copyright settings for page `$pageInfo.title`"}
+	{legend legend="Copyright settings"}
 		{section name=i loop=$copyrights}
 			{form}
 				<div class="row">
@@ -44,7 +44,7 @@
 		{/section}
 		{/legend}
 
-		{form legend="Add a new copyright setting for `$pageInfo.title`"}
+		{form legend="Add a new copyright setting"}
 			<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
 			<div class="row">
 				{formlabel label="Title" for="copyleft-tit"}

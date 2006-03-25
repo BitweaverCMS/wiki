@@ -1,6 +1,6 @@
 <div class="listing wiki">
 	<div class="header">
-		<h1>{tr}Pages like{/tr}: <a href="{$pageInfo.display_url}">{$pageInfo.title}</a></h1>
+		<h1>{tr}Pages like{/tr}: <a href="{$pageInfo.display_url}">{$pageInfo.title|escape}</a></h1>
 	</div>
 
 	<div class="body">

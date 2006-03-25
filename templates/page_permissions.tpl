@@ -1,16 +1,16 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_permissions.tpl,v 1.2 2005/08/07 17:46:51 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_permissions.tpl,v 1.3 2006/03/25 20:55:09 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
 	<div class="header">
-		<h1>{tr}Permissions for{/tr} <a href="{$pageInfo.display_url}">{$pageInfo.title}</a></h1>
+		<h1>{tr}Permissions for{/tr} <a href="{$pageInfo.display_url}">{$pageInfo.title|escape}</a></h1>
 	</div>
 
 	<div class="body">
 		{jstabs}
 			{jstab title="Permissions"}
-				{form legend="Assign permissions for `$pageInfo.title`"}
+				{form legend="Assign permissions"}
 					<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
 
 					<div class="row">
@@ -42,8 +42,8 @@
 					</div>
 				{/form}
 
-				<h2>{tr}Current permissions for{/tr} {$pageInfo.title}</h2>
-				<table class="data" summary="{tr}Table describing permissions for the page {$pageInfo.title}{/tr}">
+				<h2>{tr}Current permissions for{/tr} {$pageInfo.title|escape}</h2>
+				<table class="data" summary="{tr}Table describing permissions for the page {$pageInfo.title|escape}{/tr}">
 					<tr>
 						<th scope="col">{tr}Group{/tr}</th>
 						<th scope="col">{tr}Permissions{/tr}</th>

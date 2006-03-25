@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.25 2006/03/23 16:40:41 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.26 2006/03/25 20:55:09 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -60,9 +60,9 @@
 							{formlabel label="$conDescr Title" for="title"}
 							{forminput}
 								{if $gBitUser->hasPermission( 'bit_p_rename' ) || !$pageInfo.page_id}
-									<input type="text" size="50" maxlength="200" name="title" id="title" value="{$pageInfo.title}" />
+									<input type="text" size="50" maxlength="200" name="title" id="title" value="{$pageInfo.title|escape}" />
 								{else}
-									{$page} {$pageInfo.title}
+									{$page} {$pageInfo.title|escape}
 								{/if}
 							{/forminput}
 						</div>

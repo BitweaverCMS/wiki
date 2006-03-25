@@ -3,7 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>{$gContent->mInfo.title}</title>
+	<title>{$gContent->mInfo.title|escape}</title>
 	<meta name="generator" content="S5" />
 	<meta name="version" content="S5 1.0" />
 	<meta name="author" content="{displayname user_id=`$gContent->mInfo.user_id` nolink='yes'}" />
@@ -34,8 +34,8 @@
 		<div id="currentSlide"><!-- DO NOT EDIT --></div>
 		<div id="header"></div>
 		<div id="footer">
-			<h1>{$gContent->mInfo.title}</h1>
-			<h2>{$gContent->mInfo.description}</h2>
+			<h1>{$gContent->mInfo.title|escape}</h1>
+			<h2>{$gContent->mInfo.description|escape}</h2>
 		</div>
 	</div>
 

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.12 2006/02/21 18:41:08 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.13 2006/03/25 20:55:09 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -93,7 +93,7 @@
 					<tr class="{cycle advance=false}">
 						<td colspan="{$cols}">
 							{if $gBitSystem->isFeatureActive( 'wiki_list_name' )}
-								<h3><a href="{$listpages[changes].display_url}" title="{$listpages[changes].description}">{$listpages[changes].title}</a></h3>
+								<h3><a href="{$listpages[changes].display_url}" title="{$listpages[changes].description}">{$listpages[changes].title|escape}</a></h3>
 							{else}
 								<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$listpages[changes].page_id}" title="{$listpages[changes].page_id}">Page #{$listpages[changes].page_id}</a>
 							{/if}
