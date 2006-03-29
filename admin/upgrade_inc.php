@@ -292,6 +292,8 @@ array( 'DATADICT' => array(
 	)),
 	array( 'RENAMECOLUMN' => array(
 		'wiki_pages' => array(
+			'`page_size`' => 'wiki_page_size'
+			'`cache`' => 'page_cache'
 			'`comment`' => 'edit_comment'
 		),
 	)),
