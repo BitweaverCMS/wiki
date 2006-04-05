@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.10 2006/03/01 20:16:36 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.11 2006/04/05 06:31:58 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -23,8 +23,8 @@ if( !$gBitUser->hasPermission( 'bit_p_view' ) ) {
 	require_once( RSS_PKG_PATH."rss_error.php" );
 } else {
 	// check if we want to use the cache file
-	$cacheFile = TEMP_PKG_PATH.RSS_PKG_NAME.'/'.WIKI_PKG_NAME.'_'.$version.'.xml';
-	$rss->useCached( $cacheFile ); // use cached version if age < 1 hour
+	$cacheFile = TEMP_PKG_PATH.RSS_PKG_NAME.'/'.WIKI_PKG_NAME.'_'.$rss_version_name.'.xml';
+	$rss->useCached( $rss_version_name, $cacheFile ); // use cached version if age < 1 hour
 
 	$wiki = new BitPage();
 	$feeds = $wiki->getList( 0, $gBitSystem->getConfig( 'max_rss_wiki', 10 ), 'last_modified_desc', NULL, NULL, FALSE, FALSE, TRUE );
