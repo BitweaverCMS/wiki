@@ -280,10 +280,6 @@ array( 'CREATEINDEX' => array(
 // de-tikify tables
 array( 'DATADICT' => array(
 	array( 'RENAMETABLE' => array(
-		'tiki_actionlog'      => 'liberty_action_log',
-		'tiki_copyrights'     => 'liberty_copyrights',
-		'tiki_history'        => 'liberty_content_history',
-		'tiki_links'          => 'liberty_content_links',
 		'tiki_page_footnotes' => 'wiki_footnotes',
 		'tiki_pages'          => 'wiki_pages',
 		'tiki_received_pages' => 'wiki_received_pages',
@@ -292,9 +288,9 @@ array( 'DATADICT' => array(
 	)),
 	array( 'RENAMECOLUMN' => array(
 		'wiki_pages' => array(
-			'`page_size`' => 'wiki_page_size',
-			'`cache`' => 'page_cache',
-			'`comment`' => 'edit_comment',
+			'`page_size`' => '`wiki_page_size` I4 DEFAULT 0',
+			'`cache`' => '`page_cache` X',
+			'`comment`' => '`edit_comment` C(200)',
 		),
 	)),
 )),
