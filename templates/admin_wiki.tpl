@@ -66,8 +66,8 @@
 				{formlabel label="Tables syntax" for="wiki_tables"}
 				{forminput}
 					<select name="wiki_tables" id="wiki_tables">
-						<option value="old" {if $gBitSystem->mPrefs.wiki_tables eq 'old'}selected="selected"{/if}>{tr}|| for rows{/tr}</option>
-						<option value="new" {if $gBitSystem->mPrefs.wiki_tables eq 'new'}selected="selected"{/if}>{tr}\n for rows{/tr}</option>
+						<option value="old" {if $gBitSystem->getConfig('wiki_tables') eq 'old'}selected="selected"{/if}>{tr}|| for rows{/tr}</option>
+						<option value="new" {if $gBitSystem->getConfig('wiki_tables') eq 'new'}selected="selected"{/if}>{tr}\n for rows{/tr}</option>
 					</select>
 					{formhelp note="Either use || to start a new row in a table, or start a new line (recommended)."}
 				{/forminput}
