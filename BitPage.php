@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.55 2006/03/25 20:55:08 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.56 2006/04/11 13:10:33 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.55 $ $Date: 2006/03/25 20:55:08 $ $Author: squareing $
+ * @version $Revision: 1.56 $ $Date: 2006/04/11 13:10:33 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.55 2006/03/25 20:55:08 squareing Exp $
+ * $Id: BitPage.php,v 1.56 2006/04/11 13:10:33 squareing Exp $
  */
 
 /**
@@ -259,7 +259,7 @@ class BitPage extends LibertyAttachable {
 				if ($gBitSystem->isFeatureActive( 'allow_dup_wiki_page_names')) {
 					# silently allow pages with duplicate names to be created
 				} else {
-					if( $gBitUser->hasPermission( 'bit_p_rename' )
+					if( $gBitUser->hasPermission( 'p_wiki_rename_page' )
 					&& (isset( $this->mInfo['title'] )
 					&& ($pParamHash['title'] != $this->mInfo['title'])) ) {
 						if( $this->pageExists( $pParamHash['title'] ) ) {
@@ -471,7 +471,7 @@ class BitPage extends LibertyAttachable {
 				}
 				$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrl( $exists['title'] ).'">'.htmlspecialchars( $pPageName ).'</a>';
 			} else {
-				if( $gBitUser->hasPermission( 'bit_p_edit' ) ) {
+				if( $gBitUser->hasPermission( 'p_wiki_edit_page' ) ) {
 					$ret = '<a title="'.tra( "Create the page" ).': '.htmlspecialchars( $pPageName ).'" href="'.WIKI_PKG_URL.'edit.php?page='.urlencode( $pPageName ).'" class="create">'.htmlspecialchars( $pPageName ).'</a>';
 				} else {
 					$ret = $pPageName;

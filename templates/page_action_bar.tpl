@@ -1,24 +1,24 @@
 {if $print_page ne 'y'}
 <div class="navbar">
 	<ul>
-		{if $gBitUser->hasPermission( 'bit_p_view_tabs_and_tools' )}
+		{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
 			{if !$lock}
 				{assign var=format_guid value=$pageInfo.format_guid}
 				{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y'}
-					{if $gBitUser->hasPermission( 'bit_p_edit' ) or $page eq 'SandBox'}
+					{if $gBitUser->hasPermission( 'p_wiki_edit_page' ) or $page eq 'SandBox'}
 						<li><a {if $beingEdited eq 'y'}class="highlight" title="{$semUser}"{/if} href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$pageInfo.page_id}">{tr}Edit{/tr}</a></li>
 					{/if}
 				{/if}
 			{/if}
 			{if $page ne 'SandBox'}
-				{if $gBitUser->hasPermission( 'bit_p_admin_wiki' ) or ($gBitUser->mUserId and ($gBitUser->mUserId eq $pageInfo.modifier_user_id) and ($gBitUser->hasPermission( 'bit_p_lock' )) and ($gBitSystem->isFeatureActive( 'wiki_usrlock' )))}
+				{if $gBitUser->hasPermission( 'p_wiki_admin' ) or ($gBitUser->mUserId and ($gBitUser->mUserId eq $pageInfo.modifier_user_id) and ($gBitUser->hasPermission( 'p_wiki_lock_page' )) and ($gBitSystem->isFeatureActive( 'wiki_usrlock' )))}
 					{if $lock}
 						<li><a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;action=unlock">{tr}Unlock{/tr}</a></li>
 					{else}
 						<li><a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;action=lock">{tr}Lock{/tr}</a></li>
 					{/if}
 				{/if}
-				{if $gBitUser->hasPermission( 'bit_p_admin_wiki' )}
+				{if $gBitUser->hasPermission( 'p_wiki_admin' )}
 					<li><a href="{$smarty.const.WIKI_PKG_URL}page_permissions.php?page_id={$pageInfo.page_id}">{tr}Permissions{/tr}</a></li>
 				{/if}
 				{if $gBitSystem->isFeatureActive( 'wiki_history' )}
@@ -38,7 +38,7 @@
 					<li><a href="slideshow2.php?structure_id={$page_info.structure_id}">{tr}Slides{/tr}</a></li>
 				{/if}
 			{/if}
-			{if $gBitUser->hasPermission( 'bit_p_admin_wiki' )}
+			{if $gBitUser->hasPermission( 'p_wiki_admin' )}
 				<li><a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php?page_id={$pageInfo.page_id}">{tr}Export{/tr}</a></li>
 			{/if}
 			{if $gBitSystem->isFeatureActive( 'wiki_discuss' )}

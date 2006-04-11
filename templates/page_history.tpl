@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.5 2006/03/25 20:55:09 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.6 2006/04/11 13:10:33 squareing Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
@@ -80,12 +80,12 @@
 							&nbsp;&bull;&nbsp;{smartlink ititle="Compare" page_id=`$gContent->mPageId` compare=`$item.version`}
 							&nbsp;&bull;&nbsp;{smartlink ititle="Difference" page_id=`$gContent->mPageId` diff2=`$item.version`}
 							&nbsp;&bull;&nbsp;{smartlink ititle="Source" page_id=`$gContent->mPageId` source=`$item.version`}
-							{if $gBitUser->hasPermission( 'bit_p_rollback' )}
+							{if $gBitUser->hasPermission( 'p_wiki_rollback' )}
 								&nbsp;&bull;&nbsp;{smartlink iurl="rollback.php" ititle="Rollback" page_id=`$gContent->mPageId` version=`$item.version`}
 							{/if}
 						</td>
 						<td style="text-align:right;">
-							{if $gBitUser->hasPermission( 'bit_p_remove' )}
+							{if $gBitUser->hasPermission( 'p_wiki_remove_page' )}
 								<input type="checkbox" name="hist[{$item.version}]" id="hist_{$item.version}" />
 							{/if}
 						</td>
@@ -99,7 +99,7 @@
 				{/foreach}
 			</table>
 
-			{if $gBitUser->hasPermission( 'bit_p_remove' )}
+			{if $gBitUser->hasPermission( 'p_wiki_remove_page' )}
 				<div style="text-align:right;">
 					<input type="submit" name="delete" value="{tr}Delete selected versions{/tr}" />
 				</div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.21 2006/03/01 20:16:36 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.22 2006/04/11 13:10:33 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.21 2006/03/01 20:16:36 spiderr Exp $
+ * $Id: edit.php,v 1.22 2006/04/11 13:10:33 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -42,7 +42,7 @@ if( ( !empty( $_REQUEST['page'] ) && $_REQUEST['page'] == 'SandBox' ) || ( !empt
 
 if( $sandbox && !$gBitSystem->isFeatureActive( 'sandbox' ) ) {
 	$gBitSystem->fatalError( "The SandBox is disabled" );
-} elseif( !$sandbox && !$gContent->hasUserPermission( 'bit_p_edit' ) ) {
+} elseif( !$sandbox && !$gContent->hasUserPermission( 'p_wiki_edit_page' ) ) {
 	$gBitSystem->fatalError( 'Permission denied you cannot edit the page named "'.$gContent->getTitle().'"' );
 }
 

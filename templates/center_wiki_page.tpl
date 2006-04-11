@@ -45,13 +45,13 @@
 	</div>
 
 	<div class="actionicon"> <!-- Actions -->
-		{if $gBitUser->hasPermission( 'bit_p_edit' )}
+		{if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
 			<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$gContent->mInfo.page_id}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
 		{/if}
 		{if $userOwnsPage}
 			<a href="{$smarty.server.PHP_SELF}?fHomepage={$fHomepage}&fEditCenterWikiPageSettings=1">{biticon ipackage=liberty iname="config" iexplain="configure"}</a>
 		{/if}
-		{if $gBitSystem->isPackageActive( 'pdf' ) && $gContent->hasUserPermission( 'bit_p_pdf_generation' )}
+		{if $gBitSystem->isPackageActive( 'pdf' ) && $gContent->hasUserPermission( 'p_pdf_generation' )}
 			<a title="{tr}create PDF{/tr}" href="{$smarty.const.PDF_PKG_URL}?page_id={$gContent->mInfo.page_id}">{biticon ipackage="pdf" iname="pdf" iexplain="PDF"}</a>
 		{/if}
 	</div> <!-- End Actions -->

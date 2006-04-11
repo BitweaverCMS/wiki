@@ -1,5 +1,5 @@
 {strip}
-{if $gBitUser->hasPermission( 'bit_p_view_tabs_and_tools' )}
+{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
 	<div class="floaticon">
 		{if $print_page ne 'y' && count($showstructs) ne 0}
 			<select name="page" onchange="go(this)">
@@ -17,19 +17,19 @@
 			{else}
 				{assign var=format_guid value=$pageInfo.format_guid}
 				{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y'}
-					{if $gBitUser->hasPermission( 'bit_p_edit' ) or $page eq 'SandBox'}
+					{if $gBitUser->hasPermission( 'p_wiki_edit_page' ) or $page eq 'SandBox'}
 						<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$pageInfo.page_id}" {if $beingEdited eq 'y'}class="highlight" title="$semUser"{/if}>{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
 					{/if}
 				{/if}
 			{/if}
 
-			{if $gBitSystem->isPackageActive( 'stickies' ) && $gBitUser->hasPermission('bit_p_stickies_edit') }
+			{if $gBitSystem->isPackageActive( 'stickies' ) && $gBitUser->hasPermission('p_stickies_edit') }
 				{if ($structureInfo.structure_id)}{assign var='stickyRequest' value="structure_id=`$structureInfo.structure_id`"}
 				{else}{assign var='stickyRequest' value="notated_content_id=`$pageInfo.content_id`"}{/if}
 				<a href="{$smarty.const.STICKIES_PKG_URL}edit.php?{$stickyRequest}">{biticon ipackage=stickies iname="sticky_note" iexplain="add sticky note"}</a>
 			{/if}
 
-			{if ($structureInfo.structure_id) && (($gStructure->mInfo.creator_user_id == $gBitUser->mUserId) || $gBitUser->hasPermission( 'bit_p_admin_books' )) }
+			{if ($structureInfo.structure_id) && (($gStructure->mInfo.creator_user_id == $gBitUser->mUserId) || $gBitUser->hasPermission( 'p_wiki_admin_book' )) }
 				<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$structureInfo.structure_id}">{biticon ipackage=liberty iname="settings" iexplain="edit book"}</a>
 			{/if}
 
@@ -40,7 +40,7 @@
 			{if $pageInfo.page_is_cached}
 				<a title="{tr}refresh cache{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;refresh=1">{biticon ipackage=liberty iname="refresh" iexplain="refresh cache"}</a>
 			{/if}
-			{if $gBitUser->hasPermission( 'bit_p_print' )}
+			{if $gBitUser->hasPermission( 'p_liberty_print' )}
 				<a title="{tr}print{/tr}" style="display:none;" href="{$smarty.const.WIKI_PKG_URL}print.php?{if $structureInfo.root_structure_id}structure_id={$structureInfo.root_structure_id}{else}page_id={$pageInfo.page_id}{/if}">{biticon ipackage=liberty iname="print" iexplain="print"}</a>
 			{/if}
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$gContent->mInfo}
@@ -56,7 +56,7 @@
 				{/if}
 			{/if}
 			{if $pageInfo.title ne 'SandBox'}
-				{if $gBitUser->hasPermission( 'bit_p_remove' )}
+				{if $gBitUser->hasPermission( 'p_wiki_remove_page' )}
 					<a title="{tr}remove this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}remove_page.php?page_id={$pageInfo.page_id}&amp;version=last">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
 				{/if}
 			{/if}

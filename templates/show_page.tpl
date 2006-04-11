@@ -39,7 +39,7 @@
 			{elseif $wiki_license_page != '' }
 				{tr}The content on this page is licensed under the terms of the{/tr} <a href="{$wiki_license_page}"><b>{tr}{$wiki_submit_notice}{/tr}</b></a>.
 			{/if}
-			{if $gBitUser->hasPermission( 'bit_p_edit_copyrights' )}
+			{if $gBitUser->hasPermission( 'p_wiki_edit_copyright' )}
 				<br />{tr}To edit the copyright notices{/tr} <a href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}">{tr}click here{/tr}</a>.
 			{/if}
 		</p>

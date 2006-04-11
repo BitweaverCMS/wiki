@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights.php,v 1.6 2006/02/06 22:56:52 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: copyrights.php,v 1.6 2006/02/06 22:56:52 squareing Exp $
+ * $Id: copyrights.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -19,7 +19,7 @@
 require_once( '../bit_setup_inc.php' );
 $gBitSystem->isFeatureActive( 'wiki_copyrights', tra("The copyright management feature is not enabled.") );
 
-$gBitUser->hasPermission( 'bit_p_edit_copyrights' );
+$gBitUser->hasPermission( 'p_wiki_edit_copyright' );
 require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
 require_once( WIKI_PKG_PATH.'lookup_page_inc.php' );
 

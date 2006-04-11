@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.13 2006/03/25 20:55:09 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.14 2006/04/11 13:10:33 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -38,9 +38,9 @@
 			<table class="clear data">
 				<caption>{tr}WikiPages Listing{/tr} <span class="total">[ {$pagecount} ]</span></caption>
 				<tr>
-					{*  at the moment, the only working option to use the checkboxes for is deleting pages. so for now the checkboxes are visible iff $bit_p_remove is set. Other applications make sense as well (categorize, convert to pdf, etc). Add necessary corresponding permission here: *}
+					{*  at the moment, the only working option to use the checkboxes for is deleting pages. so for now the checkboxes are visible iff $p_wiki_remove_page is set. Other applications make sense as well (categorize, convert to pdf, etc). Add necessary corresponding permission here: *}
 
-					{if $gBitUser->hasPermission( 'bit_p_remove' )}              {* ... "or $gBitUser->hasPermission( 'bit_p_other_sufficient_condition_for_checkboxes' )"  *}
+					{if $gBitUser->hasPermission( 'p_wiki_remove_page' )}              {* ... "or $gBitUser->hasPermission( 'bit_p_other_sufficient_condition_for_checkboxes' )"  *}
 						{assign var='checkboxes_on' value='y'}
 					{else}
 						{assign var='checkboxes_on' value='n'}
@@ -82,7 +82,7 @@
 						<th>{smartlink ititle="Size" isort="size" offset=$offset}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
-					{if $gBitUser->hasPermission( 'bit_p_edit' )}
+					{if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
 						<th style="width:1px;">{tr}Actions{/tr}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
@@ -156,7 +156,7 @@
 						{if $gBitSystem->isFeatureActive( 'wiki_list_size' )}
 							<td style="text-align:right;">{$listpages[changes].len|kbsize}</td>
 						{/if}
-						{if $gBitUser->hasPermission( 'bit_p_edit' )}
+						{if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
 							<td class="actionicon">
 								<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$listpages[changes].page_id}">{biticon ipackage="liberty" iname="edit" iexplain="edit"}</a>
 								{if $checkboxes_on eq 'y'}
@@ -181,7 +181,7 @@
 					<br />
 					<select name="submit_mult" onchange="this.form.submit();">
 						<option value="" selected="selected">{tr}with checked{/tr}:</option>
-						{if $gBitUser->hasPermission( 'bit_p_remove' )}
+						{if $gBitUser->hasPermission( 'p_wiki_remove_page' )}
 							<option value="remove_pages">{tr}remove{/tr}</option>
 						{/if}
 					</select>

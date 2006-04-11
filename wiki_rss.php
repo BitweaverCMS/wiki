@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.11 2006/04/05 06:31:58 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.12 2006/04/11 13:10:33 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -19,7 +19,7 @@ $rss->title = $gBitSystem->getConfig( 'title_rss_wiki', $gBitSystem->getConfig( 
 $rss->description = $gBitSystem->getConfig( 'desc_rss_wiki', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'RSS Feed' ) );
 
 // check permission to view wiki pages
-if( !$gBitUser->hasPermission( 'bit_p_view' ) ) {
+if( !$gBitUser->hasPermission( 'p_wiki_view_page' ) ) {
 	require_once( RSS_PKG_PATH."rss_error.php" );
 } else {
 	// check if we want to use the cache file

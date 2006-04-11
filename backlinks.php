@@ -3,13 +3,13 @@
  * assigned_modules
  *
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.6 $
+ * @version  $Revision: 1.7 $
  * @package  wiki
  * @subpackage  functions
  * @copyright Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * @license Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
  */
-// $Header: /cvsroot/bitweaver/_bit_wiki/backlinks.php,v 1.6 2006/02/06 22:56:52 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/backlinks.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 
 /**
@@ -32,7 +32,7 @@ if (!isset($_REQUEST["page"])) {
 }
 include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 // Now check permissions to access this page
-if (!$gBitUser->hasPermission( 'bit_p_view' )) {
+if (!$gBitUser->hasPermission( 'p_wiki_view_page' )) {
 	$gBitSmarty->assign('msg', tra("Permission denied you cannot view backlinks for this page"));
 	$gBitSystem->display( 'error.tpl' );
 	die;

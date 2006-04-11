@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print_pages.php,v 1.4 2006/02/06 22:56:52 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print_pages.php,v 1.5 2006/04/11 13:10:33 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print_pages.php,v 1.4 2006/02/06 22:56:52 squareing Exp $
+ * $Id: print_pages.php,v 1.5 2006/04/11 13:10:33 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -22,7 +22,7 @@ if( !$gBitSystem->isFeatureActive( 'wiki_multiprint' ) ) {
 	$gBitSystem->fatalError( tra("This feature is disabled").": wiki_multiprint" );
 }
 // Now check permissions if user can view wiki pages
-$gBitSystem->verifyPermission( 'bit_p_view' );
+$gBitSystem->verifyPermission( 'p_wiki_view_page' );
 
 if (!isset($_REQUEST["printpages"])) {
 	$printpages = array();

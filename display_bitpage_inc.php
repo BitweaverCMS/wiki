@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.19 2006/02/19 15:36:08 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.20 2006/04/11 13:10:33 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.19 2006/02/19 15:36:08 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.20 2006/04/11 13:10:33 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -20,14 +20,14 @@ include_once( WIKI_PKG_PATH.'BitBook.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
 
-$gBitSystem->verifyPermission( 'bit_p_view' );
+$gBitSystem->verifyPermission( 'p_wiki_view_page' );
 
 // Check permissions to access this page
 if( !$gContent->isValid() ) {
 	$gBitSystem->fatalError( 'Page cannot be found' );
 }
 
-$displayHash = array( 'perm_name' => 'bit_p_view' );
+$displayHash = array( 'perm_name' => 'p_wiki_view_page' );
 $gContent->invokeServices( 'content_display_function', $displayHash );
 
 /*
@@ -46,7 +46,7 @@ require_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 // Let creator set permissions
 if($gBitSystem->isFeatureActive( 'wiki_creator_admin' )) {
 	if( $gContent->isOwner() ) {
-		$gBitUser->setPreference( 'bit_p_admin_wiki', TRUE );
+		$gBitUser->setPreference( 'p_wiki_admin', TRUE );
 	}
 }
 if(isset($_REQUEST["copyrightpage"])) {
@@ -96,7 +96,7 @@ if( $gBitSystem->isFeatureActive( 'count_admin_pvs' ) || !$gBitUser->isAdmin() )
 // Check if we have to perform an action for this page
 // for example lock/unlock
 if( isset( $_REQUEST["action"] ) && (($_REQUEST["action"] == 'lock' || $_REQUEST["action"]=='unlock' ) &&
-	($gBitUser->hasPermission( 'bit_p_admin_wiki' )) || ($user and ($gBitUser->hasPermission( 'bit_p_lock' )) and ($gBitSystem->isFeatureActive( 'wiki_usrlock' )))) ) {
+	($gBitUser->hasPermission( 'p_wiki_admin' )) || ($user and ($gBitUser->hasPermission( 'p_wiki_lock_page' )) and ($gBitSystem->isFeatureActive( 'wiki_usrlock' )))) ) {
 	$gContent->setLock( ($_REQUEST["action"] == 'lock' ? 'L' : NULL ) );
 	$gBitSmarty->assign('lock', ($_REQUEST["action"] == 'lock') );
 }
@@ -112,16 +112,16 @@ if( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->isValid() && $gBitUs
 $gBitSmarty->assign('lock', $gContent->isLocked() );
 // If not locked and last version is user version then can undo
 $gBitSmarty->assign('canundo','n');
-if( !$gContent->isLocked() && ( ($gBitUser->hasPermission( 'bit_p_edit' ) == 'y' && $gContent->mInfo["modifier_user_id"]==$gBitUser->mUserId) || $gBitUser->hasPermission( 'bit_p_remove' ) ) ) {
+if( !$gContent->isLocked() && ( ($gBitUser->hasPermission( 'p_wiki_edit_page' ) == 'y' && $gContent->mInfo["modifier_user_id"]==$gBitUser->mUserId) || $gBitUser->hasPermission( 'p_wiki_remove_page' ) ) ) {
    $gBitSmarty->assign('canundo','y');
 }
-if($gBitUser->hasPermission( 'bit_p_admin_wiki' )) {
+if($gBitUser->hasPermission( 'p_wiki_admin' )) {
   $gBitSmarty->assign('canundo','y');
 }
 // Process an undo here
 if(isset($_REQUEST["undo"])) {
 
-	if($gBitUser->hasPermission( 'bit_p_admin_wiki' ) || ($gContent->mInfo["flag"]!='L' && ( ($gBitUser->hasPermission( 'bit_p_edit' ) && $gContent->mInfo["user"]==$user)||($gBitUser->hasPermission( 'bit_p_remove' ))) )) {
+	if($gBitUser->hasPermission( 'p_wiki_admin' ) || ($gContent->mInfo["flag"]!='L' && ( ($gBitUser->hasPermission( 'p_wiki_edit_page' ) && $gContent->mInfo["user"]==$user)||($gBitUser->hasPermission( 'p_wiki_remove_page' ))) )) {
 		// Remove the last version
 		$gContent->removeLastVersion();
 		// If page was deleted then re-create
@@ -202,11 +202,11 @@ if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
 	if(isset($_REQUEST["removeattach"])) {
 
 		$owner = $wikilib->get_attachment_owner($_REQUEST["removeattach"]);
-		if( ($user && ($owner == $user) ) || ($gBitUser->hasPermission( 'bit_p_wiki_admin_attachments' )) ) {
+		if( ($user && ($owner == $user) ) || ($gBitUser->hasPermission( 'p_wiki_admin_attachments' )) ) {
 			$wikilib->remove_wiki_attachment($_REQUEST["removeattach"]);
 		}
 	}
-	if(isset($_REQUEST["attach"]) && ($gBitUser->hasPermission( 'bit_p_wiki_admin_attachments' ) || $gBitUser->hasPermission( 'bit_p_wiki_attach_files' ))) {
+	if(isset($_REQUEST["attach"]) && ($gBitUser->hasPermission( 'p_wiki_admin_attachments' ) || $gBitUser->hasPermission( 'bit_p_wiki_attach_files' ))) {
 
 		// Process an attachment here
 		if(isset($_FILES['userfile1'])&&is_uploaded_file($_FILES['userfile1']['tmp_name'])) {

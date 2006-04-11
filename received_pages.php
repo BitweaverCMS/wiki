@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/received_pages.php,v 1.7 2006/02/16 13:48:13 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/received_pages.php,v 1.8 2006/04/11 13:10:33 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: received_pages.php,v 1.7 2006/02/16 13:48:13 squareing Exp $
+ * $Id: received_pages.php,v 1.8 2006/04/11 13:10:33 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -24,7 +24,7 @@ include_once( XMLRPC_PKG_PATH.'comm_lib.php' );
 include_once( WIKI_PKG_PATH.'BitPage.php');
 
 $gBitSystem->verifyFeature( 'feature_comm' );
-$gBitSystem->verifyPermission( 'bit_p_admin_received_pages' );
+$gBitSystem->verifyPermission( 'p_xmlrpc_admin_content' );
 
 if (!isset($_REQUEST["received_page_id"])) {
 	$_REQUEST["received_page_id"] = 0;

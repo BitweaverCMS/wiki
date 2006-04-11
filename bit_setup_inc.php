@@ -10,7 +10,7 @@ $gBitSystem->registerPackage( $registerHash );
 define('BITPAGE_CONTENT_TYPE_GUID', 'bitpage' );
 
 if($gBitSystem->isPackageActive( 'wiki' ) ) {
-	if ($gBitUser->hasPermission( 'bit_p_view' )) {
+	if ($gBitUser->hasPermission( 'p_wiki_view_page' )) {
 		$gBitSystem->registerAppMenu( WIKI_PKG_NAME, ucfirst( WIKI_PKG_DIR ), WIKI_PKG_URL.'index.php', 'bitpackage:wiki/menu_wiki.tpl', 'wiki');
 	}
 

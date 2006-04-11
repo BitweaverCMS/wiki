@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_permissions.php,v 1.6 2006/02/09 10:30:38 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_permissions.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_permissions.php,v 1.6 2006/02/09 10:30:38 squareing Exp $
+ * $Id: page_permissions.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -33,11 +33,11 @@ include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 	
 	// Let creator set permissions
 	if( $gBitSystem->isFeatureActive( 'wiki_creator_admin' ) && $gContent->isOwner() ) {
-		$gBitUser->setPreference( 'bit_p_admin_wiki', TRUE );
+		$gBitUser->setPreference( 'p_wiki_admin', TRUE );
 	}
 
 	// Now check permissions to access this page
-	if (!$gBitUser->hasPermission( 'bit_p_admin_wiki' )) {
+	if (!$gBitUser->hasPermission( 'p_wiki_admin' )) {
 		$gBitSmarty->assign('msg', tra("Permission denied you cannot assign permissions for this page"));
 		$gBitSystem->display( 'error.tpl' );
 		die;

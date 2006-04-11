@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/export_wiki_pages.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/export_wiki_pages.php,v 1.3 2006/04/11 13:10:33 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: export_wiki_pages.php,v 1.2 2005/06/28 07:46:27 spiderr Exp $
+ * $Id: export_wiki_pages.php,v 1.3 2006/04/11 13:10:33 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -19,7 +19,7 @@
 require_once( '../bit_setup_inc.php' );
 include_once( UTIL_PKG_PATH.'zip_lib.php' );
 include_once( WIKI_PKG_PATH.'export_lib.php' );
-if (!$gBitUser->hasPermission( 'bit_p_admin_wiki' ))
+if (!$gBitUser->hasPermission( 'p_wiki_admin' ))
 	die;
 if (!isset($_REQUEST["page_id"])) {
 	$exportName = 'export_'.date( 'Y-m-d_H:i' ).'.tar';

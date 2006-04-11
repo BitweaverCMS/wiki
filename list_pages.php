@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.9 2006/02/23 15:44:38 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.10 2006/04/11 13:10:33 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: list_pages.php,v 1.9 2006/02/23 15:44:38 squareing Exp $
+ * $Id: list_pages.php,v 1.10 2006/04/11 13:10:33 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -24,7 +24,7 @@ $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyFeature( 'wiki_list_pages' );
 
 // Now check permissions to access this page
-$gBitSystem->verifyPermission( 'bit_p_view' );
+$gBitSystem->verifyPermission( 'p_wiki_view_page' );
 
 /* mass-remove:
    the checkboxes are sent as the array $_REQUEST["checked[]"], values are the wiki-PageNames,
@@ -39,7 +39,7 @@ if (isset($_REQUEST["submit_mult"]) && isset($_REQUEST["checked"]) && $_REQUEST[
 	include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 
 	// Now check permissions to remove the selected pages
-	$gBitSystem->verifyPermission( 'bit_p_remove' );
+	$gBitSystem->verifyPermission( 'p_wiki_remove_page' );
 
 	if( !empty( $_REQUEST['cancel'] ) ) {
 		// user cancelled - just continue on, doing nothing
