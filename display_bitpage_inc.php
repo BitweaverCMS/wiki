@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.20 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.21 2006/04/11 17:52:11 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.20 2006/04/11 13:10:33 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.21 2006/04/11 17:52:11 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -206,7 +206,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
 			$wikilib->remove_wiki_attachment($_REQUEST["removeattach"]);
 		}
 	}
-	if(isset($_REQUEST["attach"]) && ($gBitUser->hasPermission( 'p_wiki_admin_attachments' ) || $gBitUser->hasPermission( 'bit_p_wiki_attach_files' ))) {
+	if(isset($_REQUEST["attach"]) && ($gBitUser->hasPermission( 'p_wiki_admin_attachments' ))) {
 
 		// Process an attachment here
 		if(isset($_FILES['userfile1'])&&is_uploaded_file($_FILES['userfile1']['tmp_name'])) {

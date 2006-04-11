@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_setup_inc.php,v 1.4 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_setup_inc.php,v 1.5 2006/04/11 17:52:11 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_setup_inc.php,v 1.4 2006/04/11 13:10:33 squareing Exp $
+ * $Id: page_setup_inc.php,v 1.5 2006/04/11 17:52:11 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -26,7 +26,7 @@ if( !empty( $gContent ) && $gContent->isValid() ) {
 			'p_wiki_rename_page',
 			'p_wiki_lock_page',
 			'p_wiki_admin',
-			'bit_p_view_attachments'
+			'p_wiki_view_attachments'
 		);
 		// If we are in a page then get individual permissions
 		foreach( array_keys( $gBitUser->mPerms ) as $perm ) {
