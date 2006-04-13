@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.28 2006/04/11 13:10:33 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.29 2006/04/13 10:34:34 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -128,6 +128,25 @@
 							</div>
 						{/if}
 
+						{if $gBitSystem->isFeatureActive( 'wiki_icache' )}
+							<div class="row">
+								{formlabel label="Cache" for="wiki_cache"}
+								{forminput}
+									<select name="wiki_cache" id="wiki_cache">
+										<option value="0"    {if $gBitSystem->getConfig('wiki_cache') eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
+										<option value="60"   {if $gBitSystem->getConfig('wiki_cache') eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
+										<option value="300"  {if $gBitSystem->getConfig('wiki_cache') eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
+										<option value="600"  {if $gBitSystem->getConfig('wiki_cache') eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
+										<option value="900"  {if $gBitSystem->getConfig('wiki_cache') eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
+										<option value="1800" {if $gBitSystem->getConfig('wiki_cache') eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
+										<option value="3600" {if $gBitSystem->getConfig('wiki_cache') eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
+										<option value="7200" {if $gBitSystem->getConfig('wiki_cache') eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
+									</select>
+									{formhelp note=""}
+								{/forminput}
+							</div>
+						{/if}
+
 						{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_mini_tpl}
 
 						<div class="row submit">
@@ -148,41 +167,6 @@
 					{jstab title="Attachments"}
 						{legend legend="Attachments"}
 							{include file="bitpackage:liberty/edit_storage.tpl"}
-						{/legend}
-					{/jstab}
-				{/if}
-
-				{if $gBitSystem->isFeatureActive( 'wiki_icache' ) or $gBitSystem->isFeatureActive( 'wiki_spellcheck' )}
-					{jstab title="Advanced"}
-						{legend legend="Advanced Options"}
-							{if $gBitSystem->isFeatureActive( 'wiki_spellcheck' )}
-								<div class="row">
-									{formlabel label="Spellcheck" for="spellcheck"}
-									{forminput}
-										<input type="checkbox" name="spellcheck" id="spellcheck" {if $spellcheck eq 'y'}checked="checked"{/if} />
-										{formhelp note=""}
-									{/forminput}
-								</div>
-							{/if}
-
-							{if $gBitSystem->isFeatureActive( 'wiki_icache' )}
-								<div class="row">
-									{formlabel label="Cache" for="wiki_cache"}
-									{forminput}
-										<select name="wiki_cache" id="wiki_cache">
-											<option value="0"    {if $gBitSystem->getConfig('wiki_cache') eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
-											<option value="60"   {if $gBitSystem->getConfig('wiki_cache') eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
-											<option value="300"  {if $gBitSystem->getConfig('wiki_cache') eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
-											<option value="600"  {if $gBitSystem->getConfig('wiki_cache') eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
-											<option value="900"  {if $gBitSystem->getConfig('wiki_cache') eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
-											<option value="1800" {if $gBitSystem->getConfig('wiki_cache') eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
-											<option value="3600" {if $gBitSystem->getConfig('wiki_cache') eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
-											<option value="7200" {if $gBitSystem->getConfig('wiki_cache') eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
-										</select>
-										{formhelp note=""}
-									{/forminput}
-								</div>
-							{/if}
 						{/legend}
 					{/jstab}
 				{/if}

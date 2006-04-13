@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.22 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.23 2006/04/13 10:34:34 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.22 2006/04/11 13:10:33 squareing Exp $
+ * $Id: edit.php,v 1.23 2006/04/13 10:34:34 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -445,16 +445,6 @@ if( isset( $_REQUEST["preview"] ) ) {
 
 	$formInfo['parsed_data'] = $gContent->parseData( $data_to_parse, ( !empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] :
 		( isset( $gContent->mInfo['format_guid'] ) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ) ) );
-	/* SPELLCHECKING INITIAL ATTEMPT */
-	//This nice function does all the job!
-	if( $gBitSystem->isFeatureActive( 'wiki_spellcheck' )) {
-		if( isset( $_REQUEST["spellcheck"] ) && $_REQUEST["spellcheck"] == 'on' ) {
-			$formInfo['parsed_data'] = $gBitSystem->spellcheckreplace( $edit_data, $gContent->mInfo['parsed_data'], $gBitLanguage->mLanguage, 'editwiki' );
-			$gBitSmarty->assign( 'spellcheck', 'y' );
-		} else {
-			$gBitSmarty->assign( 'spellcheck', 'n' );
-		}
-	}
 	$gContent->invokeServices( 'content_preview_function' );
 } else {
 	$gContent->invokeServices( 'content_edit_function' );
