@@ -33,7 +33,7 @@
 	{if $gBitSystem->isFeatureActive( 'wiki_dump' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
 		<li><a class="item" href="{$smarty.const.STORAGE_PKG_URL}dump/{$bitdomain}new.tar">{biticon ipackage=liberty iname=save iexplain="Backup" iforce="icon"} {tr}Backup{/tr}</a></li>
 	{/if}
-	{if $gBitSystem->isFeatureActive( 'sandbox' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
+	{if $gBitSystem->isFeatureActive( 'wiki_sandbox' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}edit.php?page=SandBox">{biticon ipackage=liberty iname=spacer iexplain="Sandbox" iforce="icon"} {tr}Sandbox{/tr}</a></li>
 	{/if}
 </ul>

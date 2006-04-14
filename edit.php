@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.23 2006/04/13 10:34:34 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.24 2006/04/14 19:36:19 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.23 2006/04/13 10:34:34 squareing Exp $
+ * $Id: edit.php,v 1.24 2006/04/14 19:36:19 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -33,16 +33,16 @@ if( !isset( $_REQUEST['title'] ) && isset( $gContent->mInfo['title'] ) ) {
 	$_REQUEST['title'] = $gContent->mInfo['title'];
 }
 
-$sandbox = FALSE;
+$wiki_sandbox = FALSE;
 if( ( !empty( $_REQUEST['page'] ) && $_REQUEST['page'] == 'SandBox' ) || ( !empty( $_REQUEST['title'] ) && $_REQUEST['title'] == 'SandBox' ) ) {
 	$gContent->mInfo['title'] = 'SandBox';
-	$sandbox = TRUE;
+	$wiki_sandbox = TRUE;
 }
 
 
-if( $sandbox && !$gBitSystem->isFeatureActive( 'sandbox' ) ) {
+if( $wiki_sandbox && !$gBitSystem->isFeatureActive( 'wiki_sandbox' ) ) {
 	$gBitSystem->fatalError( "The SandBox is disabled" );
-} elseif( !$sandbox && !$gContent->hasUserPermission( 'p_wiki_edit_page' ) ) {
+} elseif( !$wiki_sandbox && !$gContent->hasUserPermission( 'p_wiki_edit_page' ) ) {
 	$gBitSystem->fatalError( 'Permission denied you cannot edit the page named "'.$gContent->getTitle().'"' );
 }
 

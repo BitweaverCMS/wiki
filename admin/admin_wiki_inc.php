@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.22 2006/04/13 10:34:34 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.23 2006/04/14 19:36:19 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -71,7 +71,7 @@ if (isset($_REQUEST["wikilistconf"])) {
 }
 
 $formWikiFeatures = array(
-	"backlinks" => array(
+	"wiki_backlinks" => array(
 		'label' => 'Backlinks',
 		'note' => 'Display a dropdown list of pages that link to a page.',
 	),
@@ -79,7 +79,7 @@ $formWikiFeatures = array(
 		'label' => 'Like Pages',
 		'note' => 'Display a list of pages that have a common word in the names.',
 	),
-	"allow_dup_wiki_page_names" => array(
+	"wiki_allow_dup_page_names" => array(
 		'label' => 'Allow Duplicate Page Names',
 		'note' => 'Allow Wiki Pages with duplicate page names',
 	),
@@ -103,7 +103,7 @@ $formWikiFeatures = array(
 		'label' => 'Dump',
 		'note' => 'Allow the creation of a dump of a page.',
 	),
-	"sandbox" => array(
+	"wiki_sandbox" => array(
 		'label' => 'Sandbox',
 		'note' => 'The Sandbox is a wikipage that can be modified by any user to practise the wiki syntax. This page has no history nor is the contents searchable.',
 	),
@@ -153,8 +153,8 @@ if (isset($_REQUEST["wikifeatures"])) {
 		$gBitSmarty->assign("warn_on_edit", 'n');
 	}
 	//$gBitSystem->storeConfig("wiki_link_type", $_REQUEST["link_type"], WIKI_PKG_NAME);
-	$gBitSystem->storeConfig("warn_on_edit_time", $_REQUEST["warn_on_edit_time"], WIKI_PKG_NAME);
-	$gBitSmarty->assign('warn_on_edit_time', $_REQUEST["warn_on_edit_time"]);
+	$gBitSystem->storeConfig("wiki_warn_on_edit_time", $_REQUEST["wiki_warn_on_edit_time"], WIKI_PKG_NAME);
+	$gBitSmarty->assign('wiki_warn_on_edit_time', $_REQUEST["wiki_warn_on_edit_time"]);
 	$gBitSystem->storeConfig('wiki_cache', $_REQUEST["wiki_cache"], WIKI_PKG_NAME);
 	$gBitSmarty->assign('wiki_cache', $_REQUEST["wiki_cache"]);
 
@@ -182,7 +182,7 @@ $formWikiInOut = array(
 		'label' => 'Link plural WikiWords to their singular form',
 		'note' => 'If you use WikiWords as page name in a text, it will be linked to WikiWord.',
 	),
-	"page_title" => array(
+	"wiki_page_title" => array(
 		'label' => 'Page Title',
 		'note' => 'Display the page title at the top of every wikipage.',
 	),
@@ -225,11 +225,11 @@ $formWikiBooks = array(
 		'label' => 'WikiBooks',
 		'note' => 'Allow the creation and use of WikiBooks - hierarchial collections of wiki pages',
 	),
-	"wikibook_show_path" => array(
+	"wiki_book_show_path" => array(
 		'label' => 'Show book path',
 		'note' => 'If this settings is enabled, the path pointing to the currently viewed page will be displayed at the top of the page.<br />Alternatively, you can turn on the module "<a href="'.KERNEL_PKG_URL.'admin/index.php?page=layout">liberty -&gt; structure navigation</a>".',
 	),
-	"wikibook_show_navigation" => array(
+	"wiki_book_show_navigation" => array(
 		'label' => 'Show book navigation links',
 		'note' => 'Book navigation links allow you to navigate books more easily providing the following links:<br /><strong>previous | parent page | next</strong>.<br />Alternatively, you can turn on the module "<a href="'.KERNEL_PKG_URL.'admin/index.php?page=layout">liberty -&gt; structure navigation</a>".',
 	),
@@ -332,12 +332,12 @@ if (isset($_REQUEST["setwikiregex"])) {
 }
 if (isset($_REQUEST["wikisetprefs"])) {
 
-	if (isset($_REQUEST["max_versions"])) {
-		$gBitSystem->storeConfig("max_versions", $_REQUEST["max_versions"], WIKI_PKG_NAME);
+	if (isset($_REQUEST["wiki_max_versions"])) {
+		$gBitSystem->storeConfig("wiki_max_versions", $_REQUEST["wiki_max_versions"], WIKI_PKG_NAME);
 	}
-	if (isset($_REQUEST["keep_versions"])) {
-		$gBitSystem->storeConfig("keep_versions", $_REQUEST["keep_versions"], WIKI_PKG_NAME);
-		$gBitSmarty->assign('keep_versions', $_REQUEST["keep_versions"]);
+	if (isset($_REQUEST["wiki_min_versions"])) {
+		$gBitSystem->storeConfig("wiki_min_versions", $_REQUEST["wiki_min_versions"], WIKI_PKG_NAME);
+		$gBitSmarty->assign('wiki_min_versions', $_REQUEST["wiki_min_versions"]);
 	}
 }
 if (isset($_REQUEST["wikisetcopyright"])) {
@@ -354,8 +354,8 @@ if (isset($_REQUEST["wikisetcopyright"])) {
 }
 $tags = $wikilib->get_tags();
 $gBitSmarty->assign_by_ref("tags", $tags);
-$gBitSmarty->assign("max_versions", $gBitSystem->getConfig("max_versions", 0));
-$gBitSmarty->assign("keep_versions", $gBitSystem->getConfig("keep_versions", 1));
+$gBitSmarty->assign("wiki_max_versions", $gBitSystem->getConfig("wiki_max_versions", 0));
+$gBitSmarty->assign("wiki_min_versions", $gBitSystem->getConfig("wiki_min_versions", 1));
 
 $gBitSmarty->assign("wiki_copyrights", $gBitSystem->getConfig("wiki_copyrights"));
 $gBitSmarty->assign('wiki_license_page', $gBitSystem->getConfig("wiki_license_page"));
