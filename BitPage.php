@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.56 2006/04/11 13:10:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.57 2006/04/14 19:13:36 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.56 $ $Date: 2006/04/11 13:10:33 $ $Author: squareing $
+ * @version $Revision: 1.57 $ $Date: 2006/04/14 19:13:36 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.56 2006/04/11 13:10:33 squareing Exp $
+ * $Id: BitPage.php,v 1.57 2006/04/14 19:13:36 squareing Exp $
  */
 
 /**
@@ -246,7 +246,7 @@ class BitPage extends LibertyAttachable {
 					$this->mErrors['title'] = 'You must enter a name for this page.';
 				} else {
 					$pParamHash['content_store']['title'] = substr( $pParamHash['title'], 0, 160 );
-					if ($gBitSystem->isFeatureActive( 'allow_dup_wiki_page_names')) {
+					if ($gBitSystem->isFeatureActive( 'wiki_allow_dup_page_names')) {
 						# silently allow pages with duplicate names to be created
 					} else {
 						if( $this->pageExists( $pParamHash['title'] ) ) {
@@ -256,7 +256,7 @@ class BitPage extends LibertyAttachable {
 				}
 			} else {
 				$pParamHash['content_store']['title'] = ( isset( $pParamHash['title'] ) ) ? substr( $pParamHash['title'], 0, 160 ) : $this->mPageName;
-				if ($gBitSystem->isFeatureActive( 'allow_dup_wiki_page_names')) {
+				if ($gBitSystem->isFeatureActive( 'wiki_allow_dup_page_names')) {
 					# silently allow pages with duplicate names to be created
 				} else {
 					if( $gBitUser->hasPermission( 'p_wiki_rename_page' )
@@ -646,23 +646,25 @@ class BitPage extends LibertyAttachable {
 
 		if( $pOrphansOnly ) {
 			$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name , `page_id`, `hits`, `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, lc.`created`,
-			`ip`, `edit_comment`, `version`, `flag`, wp.`content_id` $get_data $selectSql
-					  FROM `".BIT_DB_PREFIX."wiki_pages` wp
-						LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`) $joinSql
-						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`),
-						`".BIT_DB_PREFIX."users_users` uue,
-						`".BIT_DB_PREFIX."users_users` uuc
-					  WHERE lc.`content_type_guid`=?
-						AND lc.`modifier_user_id`=uue.`user_id`
-						AND lc.`user_id`=uuc.`user_id` $whereSql
-						AND lcl.`to_content_id` is NULL
-					  ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
+				`ip`, `edit_comment`, `version`, `flag`, wp.`content_id` $get_data $selectSql
+				FROM `".BIT_DB_PREFIX."wiki_pages` wp
+					LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) $joinSql,
+					`".BIT_DB_PREFIX."users_users` uue,
+					`".BIT_DB_PREFIX."users_users` uuc
+				WHERE lc.`content_type_guid`=?
+					AND lc.`modifier_user_id`=uue.`user_id`
+					AND lc.`user_id`=uuc.`user_id`
+					AND lcl.`to_content_id` is NULL
+					$whereSql
+				ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
 			$query_cant = "SELECT COUNT(*)
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
-				LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`) $joinSql
-				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
-				  WHERE lc.`content_type_guid`=? $whereSql
-				  AND lcl.`to_content_id` IS NULL";
+					LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
+					$joinSql
+				WHERE lc.`content_type_guid`=? $whereSql
+					AND lcl.`to_content_id` IS NULL";
 		}
 
 		// If sort mode is versions then offset is 0, max_records is -1 (again) and sort_mode is nil
