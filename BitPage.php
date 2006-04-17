@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.57 2006/04/14 19:13:36 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.58 2006/04/17 07:47:59 qldrob Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.57 $ $Date: 2006/04/14 19:13:36 $ $Author: squareing $
+ * @version $Revision: 1.58 $ $Date: 2006/04/17 07:47:59 $ $Author: qldrob $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.57 2006/04/14 19:13:36 squareing Exp $
+ * $Id: BitPage.php,v 1.58 2006/04/17 07:47:59 qldrob Exp $
  */
 
 /**
@@ -90,7 +90,7 @@ class BitPage extends LibertyAttachable {
 					$cache = $this->mInfo['wiki_cache'];
 				}
 				if( $cache > 0 ) {
-					if( ( $this->mInfo['cache_timestamp'] + $cache ) > $this->getUTCTime() ) {
+					if( ( $this->mInfo['cache_timestamp'] + $cache ) > $gBitSystem->getUTCTime() ) {
 						$this->mInfo['parsed_data'] = $this->mInfo['page_cache'];
 						$this->mInfo['page_is_cached'] = TRUE;
 					} else {
