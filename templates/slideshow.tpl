@@ -6,8 +6,8 @@
 <style type="text/css">
 <!--
 	@import url({$smarty.const.THEMES_PKG_URL}base.css);
-	@import url({$smarty.const.THEMES_PKG_URL}styles/{$slide_style}/{$slide_style}.css);
-	@import url({$smarty.const.THEMES_PKG_URL}styles/{$slide_style}/slideshow.css);
+	@import url({$smarty.const.THEMES_PKG_URL}styles/{$site_slide_style}/{$site_slide_style}.css);
+	@import url({$smarty.const.THEMES_PKG_URL}styles/{$site_slide_style}/slideshow.css);
 -->
 </style>
 	<title>{$page_info.pageName}</title>
