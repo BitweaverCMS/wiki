@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.13 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.14 2006/04/19 13:48:40 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print.php,v 1.13 2006/04/11 13:10:33 squareing Exp $
+ * $Id: print.php,v 1.14 2006/04/19 13:48:40 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -68,14 +68,14 @@ if (empty($info["user"])) {
 }
 $gBitSmarty->assign_by_ref('lastUser', $info["user"]);
 //Store the page URL to be displayed on print page
-$http_domain = $wikilib->getPreference('http_domain', false);
-$http_port = $wikilib->getPreference('http_port', 80);
-$http_prefix = $wikilib->getPreference('http_prefix', '/');
-if ($http_domain) {
-	$prefix = 'http://' . $http_domain;
-	if ($http_port != 80)
-		$prefix .= ':' . $http_port;
-	$prefix .= $gBitSystem->getConfig( 'https_prefix' );
+$site_http_domain = $wikilib->getPreference('site_http_domain', false);
+$site_http_port = $wikilib->getPreference('site_http_port', 80);
+$site_http_prefix = $wikilib->getPreference('site_http_prefix', '/');
+if ($site_http_domain) {
+	$prefix = 'http://' . $site_http_domain;
+	if ($site_http_port != 80)
+		$prefix .= ':' . $site_http_port;
+	$prefix .= $gBitSystem->getConfig( 'site_https_prefix' );
 	$gBitSmarty->assign('urlprefix', $prefix);
 }
 
