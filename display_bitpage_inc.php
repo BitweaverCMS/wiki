@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.24 2006/04/14 19:36:19 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.25 2006/04/19 17:05:55 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.24 2006/04/14 19:36:19 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.25 2006/04/19 17:05:55 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -90,7 +90,7 @@ if(!in_array($gContent->mInfo['title'],$_SESSION["breadCrumb"])) {
 }
 //print_r($_SESSION["breadCrumb"]);
 // Now increment page hits since we are visiting this page
-if( $gBitSystem->isFeatureActive( 'count_admin_pvs' ) || !$gBitUser->isAdmin() ) {
+if( $gBitSystem->isFeatureActive( 'users_count_admin_pageviews' ) || !$gBitUser->isAdmin() ) {
   $gContent->addHit();
 }
 // Check if we have to perform an action for this page
@@ -216,7 +216,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_copyrights' ) ) {
 }
 
 // Watches
-if( $gBitSystem->isFeatureActive( 'user_watches' ) ) {
+if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 	if( isset( $_REQUEST['watch_event'] ) ) {
 		if( $gBitUser->isRegistered() ) {
 			if($_REQUEST['watch_action']=='add') {
@@ -225,7 +225,7 @@ if( $gBitSystem->isFeatureActive( 'user_watches' ) ) {
 				$gBitUser->expungeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'] );
 			}
 		} else {
-			$gBitSmarty->assign('msg', tra("This feature requires a registered user.").": user_watches");
+			$gBitSmarty->assign('msg', tra("This feature requires a registered user.").": users_watches");
 			$gBitSystem->display( 'error.tpl' );
 			die;
 		}

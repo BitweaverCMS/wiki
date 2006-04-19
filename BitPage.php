@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.59 2006/04/19 13:48:40 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.60 2006/04/19 17:05:55 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.59 $ $Date: 2006/04/19 13:48:40 $ $Author: squareing $
+ * @version $Revision: 1.60 $ $Date: 2006/04/19 17:05:55 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.59 2006/04/19 13:48:40 squareing Exp $
+ * $Id: BitPage.php,v 1.60 2006/04/19 17:05:55 spiderr Exp $
  */
 
 /**
@@ -159,7 +159,7 @@ class BitPage extends LibertyAttachable {
 				include_once( KERNEL_PKG_PATH.'notification_lib.php' );
 				$notificationlib->post_content_event($this->mContentId, $this->mInfo['content_type_guid'], 'wiki', $this->mInfo['title'], $this->mInfo['modifier_user'], $this->mInfo['edit_comment'], $this->mInfo['data']);
 
-				if( $gBitSystem->isFeatureActive( 'user_watches') ) {
+				if( $gBitSystem->isFeatureActive( 'users_watches') ) {
 					$nots = $gBitUser->get_event_watches( 'wiki_page_changed', $this->mPageId );
 
 					foreach ($nots as $not) {

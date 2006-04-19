@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.14 2006/04/19 13:48:40 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.15 2006/04/19 17:05:55 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print.php,v 1.14 2006/04/19 13:48:40 squareing Exp $
+ * $Id: print.php,v 1.15 2006/04/19 17:05:55 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -44,7 +44,7 @@ if (isset($_REQUEST["action"])) {
 }
 
 // Now increment page hits since we are visiting this page
-if ($gBitSystem->isFeatureActive( 'count_admin_pvs' ) || !$gBitUser->isAdmin()) {
+if ($gBitSystem->isFeatureActive( 'users_count_admin_pageviews' ) || !$gBitUser->isAdmin()) {
 	$gContent->addHit();
 }
 // Get page data
