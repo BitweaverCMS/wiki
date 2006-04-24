@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.15 2006/04/14 19:36:19 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.16 2006/04/24 11:02:32 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -110,7 +110,7 @@
 								, {$listpages[changes].last_modified|bit_short_datetime}
 							{/if}
 						</td>
-						<td style="text-align:right; vertical-algin:top;">
+						<td style="text-align:right; vertical-align:top;">
 							{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='list' serviceHash=$listpages[changes]}
 						</td>
 					</tr>
