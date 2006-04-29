@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.24 2006/04/14 19:36:19 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.25 2006/04/29 16:01:18 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.24 2006/04/14 19:36:19 squareing Exp $
+ * $Id: edit.php,v 1.25 2006/04/29 16:01:18 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -405,12 +405,11 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 	}
 
 	$data_to_parse = $formInfo['edit'];
-	if (!empty($formInfo['section'])
-	&& !empty($gContent->mInfo['data']) ) {
+	if (!empty($formInfo['section']) && !empty($gContent->mInfo['data']) ) {
 		$full_page_data = $gContent->mInfo['data'];
 		$data_to_parse = replace_section($full_page_data,$formInfo['section'],$formInfo['edit']);
 		$_REQUEST["edit"] = $data_to_parse;
-		}
+	}
 
 	if( $gContent->store( $_REQUEST ) ) {
 		if( $gBitSystem->isFeatureActive( 'wiki_watch_author' ) ) {
