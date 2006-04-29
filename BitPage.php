@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.60 2006/04/19 17:05:55 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.61 2006/04/29 16:02:18 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.60 $ $Date: 2006/04/19 17:05:55 $ $Author: spiderr $
+ * @version $Revision: 1.61 $ $Date: 2006/04/29 16:02:18 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.60 2006/04/19 17:05:55 spiderr Exp $
+ * $Id: BitPage.php,v 1.61 2006/04/29 16:02:18 squareing Exp $
  */
 
 /**
@@ -89,6 +89,15 @@ class BitPage extends LibertyAttachable {
 				if( @BitBase::verifyId( $this->mInfo['wiki_cache'] ) && $this->mInfo['wiki_cache'] > 0 ) {
 					$cache = $this->mInfo['wiki_cache'];
 				}
+
+				// Save some work if wiki_attachments are not active
+				// get prefs before we parse the data that we know how to parse the data
+				if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
+					LibertyAttachable::load();
+				} else {
+					LibertyContent::load();
+				}
+
 				if( $cache > 0 ) {
 					if( ( $this->mInfo['cache_timestamp'] + $cache ) > $gBitSystem->getUTCTime() ) {
 						$this->mInfo['parsed_data'] = $this->mInfo['page_cache'];
@@ -101,12 +110,6 @@ class BitPage extends LibertyAttachable {
 					$this->mInfo['parsed_data'] = $this->parseData();
 				}
 
-				// Save some work if wiki_attachments are not active
-				if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
-					LibertyAttachable::load();
-				} else {
-					LibertyContent::load();
-				}
 			} else {
 				$this->mPageId = NULL;
 			}
@@ -293,6 +296,20 @@ class BitPage extends LibertyAttachable {
 			// we can only minor save over our own versions
 			if( !$gBitUser->isRegistered() || ($this->mInfo['modifier_user_id'] != $gBitUser->mUserId && !$gBitUser->isAdmin()) ) {
 				unset( $pParamHash['minor'] );
+			}
+		}
+
+		// content preferences
+		$prefs = array();
+		if( $gBitUser->hasPermission( 'p_liberty_enter_html' ) ) {
+			$prefs[] = 'content_enter_html';
+		}
+
+		foreach( $prefs as $pref ) {
+			if( !empty( $pParamHash['preferences'][$pref] ) ) {
+				$pParamHash['preferences_store'][$pref] = $pParamHash['preferences'][$pref];
+			} else {
+				$pParamHash['preferences_store'][$pref] = NULL;
 			}
 		}
 
