@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.25 2006/04/19 17:05:55 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.26 2006/04/30 17:43:38 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.25 2006/04/19 17:05:55 spiderr Exp $
+ * $Id: display_bitpage_inc.php,v 1.26 2006/04/30 17:43:38 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -68,17 +68,17 @@ $gBitSystem->setBrowserTitle( $gContent->mInfo['title'] );
 // BreadCrumbNavigation here
 // Get the number of pages from the default or userPreferences
 // Remember to reverse the array when posting the array
-$anonpref = $wikilib->getPreference('userbreadCrumb',4);
+$anonpref = $wikilib->getPreference('users_bread_crumb',4);
 if(!empty($user)) {
-  $userbreadCrumb = $gBitUser->getPreference( 'userbreadCrumb', $anonpref );
+  $users_bread_crumb = $gBitUser->getPreference( 'users_bread_crumb', $anonpref );
 } else {
-  $userbreadCrumb = $anonpref;
+  $users_bread_crumb = $anonpref;
 }
 if(!isset($_SESSION["breadCrumb"])) {
   $_SESSION["breadCrumb"]=Array();
 }
 if(!in_array($gContent->mInfo['title'],$_SESSION["breadCrumb"])) {
-  if(count($_SESSION["breadCrumb"])>$userbreadCrumb) {
+  if(count($_SESSION["breadCrumb"])>$users_bread_crumb) {
     array_shift($_SESSION["breadCrumb"]);
   }
   array_push($_SESSION["breadCrumb"],$gContent->mInfo['title']);
