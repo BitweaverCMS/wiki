@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.12 2006/04/11 13:10:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.13 2006/05/04 18:43:23 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -14,9 +14,10 @@ require_once( WIKI_PKG_PATH."BitPage.php" );
 
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyPackage( 'rss' );
+$gBitSystem->verifyFeature( 'wiki_rss' );
 
-$rss->title = $gBitSystem->getConfig( 'title_rss_wiki', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'Wiki' ) );
-$rss->description = $gBitSystem->getConfig( 'desc_rss_wiki', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'RSS Feed' ) );
+$rss->title = $gBitSystem->getConfig( 'wiki_rss_title', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'Wiki' ) );
+$rss->description = $gBitSystem->getConfig( 'wiki_rss_description', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'RSS Feed' ) );
 
 // check permission to view wiki pages
 if( !$gBitUser->hasPermission( 'p_wiki_view_page' ) ) {
@@ -27,7 +28,7 @@ if( !$gBitUser->hasPermission( 'p_wiki_view_page' ) ) {
 	$rss->useCached( $rss_version_name, $cacheFile ); // use cached version if age < 1 hour
 
 	$wiki = new BitPage();
-	$feeds = $wiki->getList( 0, $gBitSystem->getConfig( 'max_rss_wiki', 10 ), 'last_modified_desc', NULL, NULL, FALSE, FALSE, TRUE );
+	$feeds = $wiki->getList( 0, $gBitSystem->getConfig( 'wiki_rss_max_records', 10 ), 'last_modified_desc', NULL, NULL, FALSE, FALSE, TRUE );
 	$feeds = $feeds['data'];
 
 	// set the rss link
