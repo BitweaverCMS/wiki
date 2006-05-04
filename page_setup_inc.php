@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_setup_inc.php,v 1.1.1.1.2.2 2005/07/26 15:50:32 drewslater Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_setup_inc.php,v 1.1.1.1.2.3 2006/05/04 15:48:55 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_setup_inc.php,v 1.1.1.1.2.2 2005/07/26 15:50:32 drewslater Exp $
+ * $Id: page_setup_inc.php,v 1.1.1.1.2.3 2006/05/04 15:48:55 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -36,14 +36,17 @@ if( !empty( $gContent ) && $gContent->isValid() ) {
 					if ($gBitUser->object_has_permission($gBitUser->mUserId, $gContent->mContentId, BITPAGE_CONTENT_TYPE_GUID, $perm)) {
 						$$perm = 'y';
 						$gBitSmarty->assign("$perm", 'y');
+						$gBitUser->setPermission( $perm, 'y' );
 					} else {
 						$$perm = 'n';
 						$gBitSmarty->assign("$perm", 'n');
+						$gBitUser->setPermission( $perm, FALSE );
 					}
 				}
 			} else {
 				$$perm = 'y';
 				$gBitSmarty->assign("$perm", 'y');
+				$gBitUser->setPermission( $perm, 'y' );
 			}
 		}
 	}
