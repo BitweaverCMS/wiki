@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.62 2006/05/05 13:41:13 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.63 2006/05/05 13:46:20 sylvieg Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.62 $ $Date: 2006/05/05 13:41:13 $ $Author: sylvieg $
+ * @version $Revision: 1.63 $ $Date: 2006/05/05 13:46:20 $ $Author: sylvieg $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.62 2006/05/05 13:41:13 sylvieg Exp $
+ * $Id: BitPage.php,v 1.63 2006/05/05 13:46:20 sylvieg Exp $
  */
 
 /**
@@ -243,7 +243,7 @@ class BitPage extends LibertyAttachable {
 
 		// check for name issues, first truncate length if too long
 		if( empty( $pParamHash['title'] ) ) {
-			$this->mErrors['title'] = 'You must specify a name';
+			$this->mErrors['title'] = 'You must specify a title';
 		} elseif( !empty( $pParamHash['title']) || !empty($this->mPageName))  {
 			if( !$this->verifyId( $this->mPageId ) ) {
 				if( empty( $pParamHash['title'] ) ) {
