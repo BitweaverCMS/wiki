@@ -28,7 +28,7 @@
 			{if $gBitSystem->isFeatureActive( 'wiki_like_pages' )}
 				<li><a href="{$smarty.const.WIKI_PKG_URL}like_pages.php?page_id={$pageInfo.page_id}">{tr}Similar{/tr}</a></li>
 			{/if}
-			{if $gBitSystem->isFeatureActive( 'wiki_undo' ) and $gBitUser->hasPermission('p_loc_rollback')}
+			{if $gBitSystem->isFeatureActive( 'wiki_undo' ) and !$gContent->isLocked() and $gContent->hasUserPermission('p_wiki_rollback')}
 				<li><a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;undo=1">{tr}Undo{/tr}</a></li>
 			{/if}
 			{if $gBitSystem->isFeatureActive( 'wiki_uses_slides' )}

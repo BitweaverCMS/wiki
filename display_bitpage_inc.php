@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.26 2006/04/30 17:43:38 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.27 2006/05/07 16:23:33 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.26 2006/04/30 17:43:38 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.27 2006/05/07 16:23:33 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -110,24 +110,12 @@ if( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->isValid() && $gBitUs
 }
 // Assign lock status
 $gBitSmarty->assign('lock', $gContent->isLocked() );
-// If not locked and last version is user version then can undo
-$gBitSmarty->assign('canundo','n');
-if( !$gContent->isLocked() && ( ($gBitUser->hasPermission( 'p_wiki_edit_page' ) == 'y' && $gContent->mInfo["modifier_user_id"]==$gBitUser->mUserId) || $gBitUser->hasPermission( 'p_wiki_remove_page' ) ) ) {
-   $gBitSmarty->assign('canundo','y');
-}
-if($gBitUser->hasPermission( 'p_wiki_admin' )) {
-  $gBitSmarty->assign('canundo','y');
-}
 // Process an undo here
 if(isset($_REQUEST["undo"])) {
 
-	if($gBitUser->hasPermission( 'p_wiki_admin' ) || ($gContent->mInfo["flag"]!='L' && ( ($gBitUser->hasPermission( 'p_wiki_edit_page' ) && $gContent->mInfo["user"]==$user)||($gBitUser->hasPermission( 'p_wiki_remove_page' ))) )) {
+	if( !$gContent->isLocked() && ( ($gBitUser->hasPermission( 'p_wiki_edit_page' ) && $gContent->isOwner())||($gContent->hasUserPermission( 'p_wiki_rollback' ))) ) {
 		// Remove the last version
 		$gContent->removeLastVersion();
-		// If page was deleted then re-create
-		if( !$fPID ) {
-			$wikilib->create_page($gContent->mInfo['title'],0,'',$gBitSystem->getUTCTime(),'Tiki initialization');
-		}
 	}
 }
 if ($gBitSystem->isFeatureActive( 'wiki_uses_slides' )) {
