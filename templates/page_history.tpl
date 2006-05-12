@@ -1,8 +1,8 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.6 2006/04/11 13:10:33 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.7 2006/05/12 20:27:45 sylvieg Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
-		<h1>{tr}History{/tr} {tr}of{/tr} <a href="{$pageInfo.display_url}">{$pageInfo.title|escape}</a></h1>
+		<h1>{tr}History{/tr} {tr}of{/tr} <a href="{$gContent->mInfo.display_url}">{$gContent->mInfo.title|escape}</a></h1>
 	</div>
 
 	<div class="body">
@@ -40,7 +40,7 @@
 		{/if}
 
 		{form}
-			<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
+			<input type="hidden" name="page_id" value="{$gContent->mInfo.page_id}" />
 			<input type="hidden" name="page" value="{$page}" />
 
 			<table class="data">
@@ -53,16 +53,16 @@
 				</tr>
 
 				<tr class="odd">
-					<td>{$pageInfo.last_modified|bit_short_datetime}<br />{$pageInfo.edit_comment}</td>
+					<td>{$gContent->mInfo.last_modified|bit_short_datetime}<br />{$gContent->mInfo.edit_comment}</td>
 
-					<td>{displayname user=$pageInfo.modifier_user user_id=$pageInfo.modifier_user_id real_name=$pageInfo.modifier_real_name} </td>
-					<td style="text-align:right;">{$pageInfo.ip}</td>
-					<td style="text-align:right;">{$pageInfo.version}</td>
+					<td>{displayname user=$gContent->mInfo.modifier_user user_id=$gContent->mInfo.modifier_user_id real_name=$gContent->mInfo.modifier_real_name} </td>
+					<td style="text-align:right;">{$gContent->mInfo.ip}</td>
+					<td style="text-align:right;">{$gContent->mInfo.version}</td>
 				</tr>
 
 				<tr class="odd">
 					<td colspan="4">
-						<a href="{$pageInfo.display_url}">{tr}Current{/tr}</a>
+						<a href="{$gContent->mInfo.display_url}">{tr}Current{/tr}</a>
 						&nbsp;&bull;&nbsp;{smartlink ititle="Source" page_id=`$gContent->mPageId` source="current"}
 					</td>
 				</tr>
@@ -106,7 +106,7 @@
 			{/if}
 		{/form}
 
-		{libertypagination numPages=$numPages page=$page page_id=$pageInfo.page_id}
+		{libertypagination numPages=$numPages page=$page page_id=$gContent->mInfo.page_id}
 	</div>
 </div> <!-- end .wiki -->
 {/strip}

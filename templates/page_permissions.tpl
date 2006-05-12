@@ -1,17 +1,17 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_permissions.tpl,v 1.3 2006/03/25 20:55:09 squareing Exp $ *}
-{strip}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_permissions.tpl,v 1.4 2006/05/12 20:28:50 sylvieg Exp $ *}
+{strip}{debug}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
 	<div class="header">
-		<h1>{tr}Permissions for{/tr} <a href="{$pageInfo.display_url}">{$pageInfo.title|escape}</a></h1>
+		<h1>{tr}Permissions for{/tr} <a href="{$gContent->mInfo.display_url}">{$gContent->mInfo.title|escape}</a></h1>
 	</div>
 
 	<div class="body">
 		{jstabs}
 			{jstab title="Permissions"}
 				{form legend="Assign permissions"}
-					<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
+					<input type="hidden" name="page_id" value="{$gContent->mInfo.page_id}" />
 
 					<div class="row">
 						{formlabel label="Group"}
@@ -42,8 +42,8 @@
 					</div>
 				{/form}
 
-				<h2>{tr}Current permissions for{/tr} {$pageInfo.title|escape}</h2>
-				<table class="data" summary="{tr}Table describing permissions for the page {$pageInfo.title|escape}{/tr}">
+				<h2>{tr}Current permissions for{/tr} {$gContent->mInfo.title|escape}</h2>
+				<table class="data" summary="{tr}Table describing permissions for the page {$gContent->mInfo.title|escape}{/tr}">
 					<tr>
 						<th scope="col">{tr}Group{/tr}</th>
 						<th scope="col">{tr}Permissions{/tr}</th>
@@ -68,7 +68,7 @@
 			{jstab title="Email Notifications"}
 
 				{form legend="Notify via email when updated"}
-					<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
+					<input type="hidden" name="page_id" value="{$gContent->mInfo.page_id}" />
 					<input type="hidden" name="tab" value="email" />
 
 					<div class="row">
@@ -88,7 +88,7 @@
 					<h2>{tr}Existing requests for email notification{/tr}</h2>
 					<ul>
 						{section name=ix loop=$emails}
-							<li>{$emails[ix]} <a href="{$smarty.const.WIKI_PKG_URL}page_permissions.php?page_id={$pageInfo.page_id}&amp;removeemail={$emails[ix]}&amp;tab=email">{biticon ipackage=liberty iname="delete_small" iexplain="delete"}</a></li>
+							<li>{$emails[ix]} <a href="{$smarty.const.WIKI_PKG_URL}page_permissions.php?page_id={$gContent->mInfo.page_id}&amp;removeemail={$emails[ix]}&amp;tab=email">{biticon ipackage=liberty iname="delete_small" iexplain="delete"}</a></li>
 						{/section}
 					</ul>
 				{/if}
