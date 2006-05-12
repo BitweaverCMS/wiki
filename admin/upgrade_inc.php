@@ -294,6 +294,12 @@ array( 'DATADICT' => array(
 		),
 	)),
 )),
+array('QUERY' =>
+	array( 'SQL92' => array(
+        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `perm_level`, `package`) VALUES ('p_wiki_view_history', 'Can view page history', 'basic', 'wiki')",
+        "INSERT INTO `".BIT_DB_PREFIX."users_group_permissions` (`group_id`, `perm_name`) VALUES (-1,'p_wiki_view_history')",
+	),
+)),
 		)
 	),
 
