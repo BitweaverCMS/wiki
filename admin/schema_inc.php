@@ -102,7 +102,7 @@ $gBitInstaller->registerUserPermissions( WIKI_PKG_NAME, array(
 	array('p_wiki_edit_book', 'Can create and edit books', 'registered', WIKI_PKG_NAME),
 	array('p_wiki_admin_book', 'Can administer books', 'editors', WIKI_PKG_NAME),
 	array('p_wiki_edit_copyright', 'Can edit copyright notices', 'registered', WIKI_PKG_NAME),
-	array('p_wiki_view_history', 'Can view page history', 'registered', WIKI_PKG_NAME),
+	array('p_wiki_view_history', 'Can view page history', 'basic', WIKI_PKG_NAME),
 
 ) );
 
