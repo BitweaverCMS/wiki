@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.34 2006/03/01 17:18:41 starrrider Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.35 2006/05/23 11:49:59 wolff_borg Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.34 2006/03/01 17:18:41 starrrider Exp $
+ * $Id: edit.php,v 1.1.1.1.2.35 2006/05/23 11:49:59 wolff_borg Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -452,7 +452,7 @@ if (!empty($gContent->mInfo['data'])) {
 	//This nice function does all the job!
 	if( $gBitSystem->isFeatureActive( 'wiki_spellcheck' )) {
 		if( isset( $_REQUEST["spellcheck"] ) && $_REQUEST["spellcheck"] == 'on' ) {
-			$parsed = $gBitSystem->spellcheckreplace( $formInfo['edit'], $parsed, $gBitLanguage->mLanguage, 'editwiki' );
+			$parsed = $gBitSystem->spellcheckreplace( $formInfo['edit'], $parsed, $gBitLanguage->mLanguage, 'editliberty' );
 			$gBitSmarty->assign( 'spellcheck', 'y' );
 		} else {
 			$gBitSmarty->assign( 'spellcheck', 'n' );
