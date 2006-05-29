@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.8 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.9 2006/05/29 17:33:07 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit_book.php,v 1.8 2006/04/11 13:10:33 squareing Exp $
+ * $Id: edit_book.php,v 1.9 2006/05/29 17:33:07 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -94,7 +94,7 @@ if( isset($_REQUEST["createstructure"]) ) {
 	}
 } elseif( @BitBase::verifyId( $_REQUEST["structure_id"] ) ) {
 	// Get all wiki pages for the select box
-	$_REQUEST['content_type'] = !isset( $_REQUEST['content_type'] ) ? 'bitpage' : $_REQUEST['content_type'];
+	$_REQUEST['content_type_guid'] = !isset( $_REQUEST['content_type_guid'] ) ? 'bitpage' : $_REQUEST['content_type_guid'];
 	// verify the book permission on structure load
 	$verifyStructurePermission = 'p_wiki_admin_book';
 	// load the javascript dynamic tree
