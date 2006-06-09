@@ -1,5 +1,5 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_permissions.tpl,v 1.4 2006/05/12 20:28:50 sylvieg Exp $ *}
-{strip}{debug}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_permissions.tpl,v 1.5 2006/06/09 16:56:24 sylvieg Exp $ *}
+{strip}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
