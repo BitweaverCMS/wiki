@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.1.2.8 2006/04/07 07:38:00 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.1.2.9 2006/06/11 01:57:12 wolff_borg Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -15,8 +15,8 @@ require_once( WIKI_PKG_PATH."BitPage.php" );
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyPackage( 'rss' );
 
-$rss->title = $gBitSystem->getPreference( 'title_rss_wiki', $gBitSystem->mPrefs['siteTitle'].' - '.tra( 'Wiki' ) );
-$rss->description = $gBitSystem->getPreference( 'desc_rss_wiki', $gBitSystem->mPrefs['siteTitle'].' - '.tra( 'RSS Feed' ) );
+$rss->title = $gBitSystem->getPreference( 'title_rss_wiki', $gBitSystem->getPreference( 'siteTitle' ).' - '.tra( 'Wiki' ) );
+$rss->description = $gBitSystem->getPreference( 'desc_rss_wiki', $gBitSystem->getPreference( 'siteTitle' ).' - '.tra( 'RSS Feed' ) );
 
 // check permission to view wiki pages
 if( !$gBitUser->hasPermission( 'bit_p_view' ) ) {
@@ -31,17 +31,17 @@ if( !$gBitUser->hasPermission( 'bit_p_view' ) ) {
 	$feeds = $feeds['data'];
 
 	// set the rss link
-	$rss->link = 'http://'.$_SERVER['HTTP_HOST'].WIKI_PKG_URL;
+	$rss->link = WIKI_PKG_URI;
 
 	// get all the data ready for the feed creator
 	foreach( $feeds as $feed ) {
 		$item = new FeedItem();
 		$item->title = $feed['title'];
-		$item->link = BIT_BASE_URI.$wiki->getDisplayUrl( $feed['title'] );
+		$item->link = httpPrefix().$wiki->getDisplayUrl( $feed['title'] );
 		$item->description = $wiki->parseData( $feed['data'], $feed['format_guid'] );
 
 		$item->date = ( int )$feed['last_modified'];
-		$item->source = 'http://'.$_SERVER['HTTP_HOST'].WIKI_PKG_URL;
+		$item->source = WIKI_PKG_URI;
 		$item->author = $gBitUser->getDisplayName( FALSE, array( 'real_name' => $feed['modifier_real_name'], 'login' => $feed['modifier_user'] ) );
 
 		$item->descriptionTruncSize = $gBitSystem->getPreference( 'rssfeed_truncate', 5000 );
