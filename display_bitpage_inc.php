@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.16 2006/05/04 15:48:55 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.1.1.1.2.17 2006/06/11 01:54:40 wolff_borg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.1.1.1.2.16 2006/05/04 15:48:55 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.1.1.1.2.17 2006/06/11 01:54:40 wolff_borg Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -160,7 +160,7 @@ if(isset($_REQUEST['refresh'])) {
 // assign_by_ref
 $gBitSmarty->assign('cached_page','n');
 $wiki_cache=$gBitSystem->getPreference( 'wiki_cache' );
-if(isset($gContent->mInfo['wiki_cache']) && $gContent->mInfo['wiki_cache']>0) {
+if(isset($gContent->mInfo['wiki_cache']) && $gContent->mInfo['wiki_cache']>=0) {
 	$wiki_cache=$gContent->mInfo['wiki_cache'];
 }
 if($wiki_cache>0) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.35 2006/05/23 11:49:59 wolff_borg Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.1.1.1.2.36 2006/06/11 01:55:53 wolff_borg Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.1.1.1.2.35 2006/05/23 11:49:59 wolff_borg Exp $
+ * $Id: edit.php,v 1.1.1.1.2.36 2006/06/11 01:55:53 wolff_borg Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -241,7 +241,7 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 //include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 // Now check permissions to access this page
 
-if( isset( $gContent->mInfo['wiki_cache'] ) && $gContent->mInfo['wiki_cache']!=0 ) {
+if( isset( $gContent->mInfo['wiki_cache'] ) ) {
   $wiki_cache = $gContent->mInfo['wiki_cache'];
   $gBitSmarty->assign( 'wiki_cache',$wiki_cache );
 }
