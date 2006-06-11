@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.26 2006/03/12 11:45:38 wolff_borg Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.2.2.27 2006/06/11 01:59:11 wolff_borg Exp $ *}
 <div class="floaticon">{bithelp}</div>
 
 <div class="edit wiki">
@@ -175,14 +175,16 @@
 									{formlabel label="Cache" for="wiki_cache"}
 									{forminput}
 										<select name="wiki_cache" id="wiki_cache">
-											<option value="0"    {if $gBitSystemPrefs.wiki_cache eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
-											<option value="60"   {if $gBitSystemPrefs.wiki_cache eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
-											<option value="300"  {if $gBitSystemPrefs.wiki_cache eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
-											<option value="600"  {if $gBitSystemPrefs.wiki_cache eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
-											<option value="900"  {if $gBitSystemPrefs.wiki_cache eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
-											<option value="1800" {if $gBitSystemPrefs.wiki_cache eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
-											<option value="3600" {if $gBitSystemPrefs.wiki_cache eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
-											<option value="7200" {if $gBitSystemPrefs.wiki_cache eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
+											<option value="0"    {if $wiki_cache eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
+											<option value="60"   {if $wiki_cache eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
+											<option value="300"  {if $wiki_cache eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
+											<option value="600"  {if $wiki_cache eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
+											<option value="900"  {if $wiki_cache eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
+											<option value="1800" {if $wiki_cache eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
+											<option value="3600" {if $wiki_cache eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
+											<option value="7200" {if $wiki_cache eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
+											<option value="43200" {if $wiki_cache eq 43200}selected="selected"{/if}>{tr}12 hours{/tr}</option>
+											<option value="86400" {if $wiki_cache eq 86400}selected="selected"{/if}>{tr}1 day{/tr}</option>
 										</select>
 										{formhelp note=""}
 									{/forminput}
