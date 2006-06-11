@@ -27,6 +27,8 @@
 						<option value="1800" {if $gBitSystemPrefs.wiki_cache eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
 						<option value="3600" {if $gBitSystemPrefs.wiki_cache eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
 						<option value="7200" {if $gBitSystemPrefs.wiki_cache eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
+						<option value="43200" {if $gBitSystemPrefs.wiki_cache eq 43200}selected="selected"{/if}>{tr}12 hours{/tr}</option>
+						<option value="86400" {if $gBitSystemPrefs.wiki_cache eq 86400}selected="selected"{/if}>{tr}1 day{/tr}</option>
 					</select>
 					{formhelp note="Cache wikipages for the given amount of time."}
 				{/forminput}
