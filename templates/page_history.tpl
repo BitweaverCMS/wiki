@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.7 2006/05/12 20:27:45 sylvieg Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.8 2006/07/05 18:51:35 squareing Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
@@ -107,6 +107,6 @@
 		{/form}
 
 		{libertypagination numPages=$numPages page=$page page_id=$gContent->mInfo.page_id}
-	</div>
+	</div><!-- end .body -->
 </div> <!-- end .wiki -->
 {/strip}

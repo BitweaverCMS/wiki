@@ -74,5 +74,5 @@
 				<input type="submit" name="addcopyright" value="{tr}add{/tr}" />
 			</div>
 		{/form}
-	</div>
+	</div><!-- end .body -->
 </div>

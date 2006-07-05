@@ -11,5 +11,5 @@
 				<li class="norecords">{tr}No pages found{/tr}</li>
 			{/section}
 		</ul>
-	</div>
+	</div><!-- end .body -->
 </div>

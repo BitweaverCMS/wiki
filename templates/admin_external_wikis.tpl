@@ -39,7 +39,7 @@
 {/section}
 </table>
 
-</div> {* end .body *}
+</div><!-- end .body -->
 
 {pagination}
 
