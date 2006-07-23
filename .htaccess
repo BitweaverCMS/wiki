@@ -1,9 +1,11 @@
 <IfModule mod_rewrite.c>
-	RewriteEngine  on
-	RewriteBase	/wiki/
-    RewriteCond	%{SCRIPT_FILENAME}  -f [OR]
-    RewriteCond	%{SCRIPT_FILENAME}/index.php    -f
-    RewriteRule	^(.*)$            - [L]
+        RewriteEngine  on
+#       RewriteBase     /wiki/
+    RewriteCond %{SCRIPT_FILENAME}  -f [OR]
+    RewriteCond %{SCRIPT_FILENAME}/index.php    -f
+    RewriteRule ^(.*)$            - [L]
 
-	RewriteRule ^(.*)$  index.php?page=$1  [L]
+        RewriteRule view/(.*)$  index.php?page=$1  [L]
+
+#       RewriteRule ^(.*)$  index.php?page=$1  [L]
 </IfModule>
