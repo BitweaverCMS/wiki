@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.63 2006/05/05 13:46:20 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.64 2006/07/23 05:00:20 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.63 $ $Date: 2006/05/05 13:46:20 $ $Author: sylvieg $
+ * @version $Revision: 1.64 $ $Date: 2006/07/23 05:00:20 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.63 2006/05/05 13:46:20 sylvieg Exp $
+ * $Id: BitPage.php,v 1.64 2006/07/23 05:00:20 spiderr Exp $
  */
 
 /**
@@ -297,20 +297,6 @@ class BitPage extends LibertyAttachable {
 			// we can only minor save over our own versions
 			if( !$gBitUser->isRegistered() || ($this->mInfo['modifier_user_id'] != $gBitUser->mUserId && !$gBitUser->isAdmin()) ) {
 				unset( $pParamHash['minor'] );
-			}
-		}
-
-		// content preferences
-		$prefs = array();
-		if( $gBitUser->hasPermission( 'p_liberty_enter_html' ) ) {
-			$prefs[] = 'content_enter_html';
-		}
-
-		foreach( $prefs as $pref ) {
-			if( !empty( $pParamHash['preferences'][$pref] ) ) {
-				$pParamHash['preferences_store'][$pref] = $pParamHash['preferences'][$pref];
-			} else {
-				$pParamHash['preferences_store'][$pref] = NULL;
 			}
 		}
 
