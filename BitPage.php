@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.65 2006/08/15 16:25:13 hash9 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.66 2006/08/16 06:03:55 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.65 $ $Date: 2006/08/15 16:25:13 $ $Author: hash9 $
+ * @version $Revision: 1.66 $ $Date: 2006/08/16 06:03:55 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.65 2006/08/15 16:25:13 hash9 Exp $
+ * $Id: BitPage.php,v 1.66 2006/08/16 06:03:55 jht001 Exp $
  */
 
 /**
@@ -634,7 +634,7 @@ class BitPage extends LibertyAttachable {
 			$get_data = '';
 		}
 
-		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name, `page_id`, `hits`, `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, 	lc.`created`, `ip`, `edit_comment`, lc.`version`, `flag`, wp.`content_id` $get_data $selectSql
+		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name, `page_id`,  `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, 	lc.`created`, `ip`, `edit_comment`, `lc.version`, `flag`, wp.`content_id` $get_data $selectSql
 				  FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
 					$joinSql ,
@@ -649,7 +649,7 @@ class BitPage extends LibertyAttachable {
 				  WHERE lc.`content_type_guid`=? $whereSql";
 
 		if( $pOrphansOnly ) {
-			$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name , `page_id`, `hits`, `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, lc.`created`,
+			$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name , `page_id`, `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, lc.`created`,
 				`ip`, `edit_comment`, `version`, `flag`, wp.`content_id` $get_data $selectSql
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
@@ -746,8 +746,8 @@ class BitPage extends LibertyAttachable {
 		global $gBitSystem ;
 		if ( $pContentId == 0 ) $pContentId = $this->mContentId;
 		$sql = "SELECT lc.`title`, lc.`data`, uu.`login`, uu.`real_name`, wp.`description` " .
-				"FROM `" . BIT_DB_PREFIX . "liberty_content` lc " .
-				"INNER JOIN `" . BIT_DB_PREFIX . "users_users` uu ON uu.`user_id`    = lc.`user_id` " .
+				"FROM `" . BIT_DB_PREFIX . "liberty_content` lc " .  
+				"INNER JOIN `" . BIT_DB_PREFIX . "users_users` uu ON uu.`user_id`    = lc.`user_id` " . 
 				"INNER JOIN `" . BIT_DB_PREFIX . "wiki_pages`  wp ON lc.`content_id` = wp.`content_id` " .
 				"WHERE lc.`content_id` = ?" ;
 		$res = $gBitSystem->mDb->getRow($sql, array($pContentId));
@@ -986,7 +986,8 @@ class WikiLib extends BitPage {
 	// it returns title and hits for each page
 	function get_top_pages($limit) {
 		$query = "select `title` , `hits`
-		from `".BIT_DB_PREFIX."wiki_pages`
+		from `".BIT_DB_PREFIX."wiki_pages` JOIN `".BIT_DB_PREFIX."liberty_content_hits` 
+			on  `".BIT_DB_PREFIX."wiki_pages`.`content_id` = `".BIT_DB_PREFIX."liberty_content_hits`.`content_ic`)
 		order by `hits` desc";
 
 		$result = $this->mDb->query($query, array(),$limit);
