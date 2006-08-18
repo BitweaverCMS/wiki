@@ -5,7 +5,7 @@
 			{if !$lock}
 				{assign var=format_guid value=$pageInfo.format_guid}
 				{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y'}
-					{if $gBitUser->hasPermission( 'p_wiki_edit_page' ) or $page eq 'SandBox'}
+					{if $gContent->hasUserPermission( 'p_wiki_edit_page' ) or $page eq 'SandBox'}
 						<li><a {if $beingEdited eq 'y'}class="highlight" title="{$semUser}"{/if} href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$pageInfo.page_id}">{tr}Edit{/tr}</a></li>
 					{/if}
 				{/if}
