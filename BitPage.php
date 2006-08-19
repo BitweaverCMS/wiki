@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.67 2006/08/17 22:36:27 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.68 2006/08/19 17:05:23 hash9 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.67 $ $Date: 2006/08/17 22:36:27 $ $Author: sylvieg $
+ * @version $Revision: 1.68 $ $Date: 2006/08/19 17:05:23 $ $Author: hash9 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.67 2006/08/17 22:36:27 sylvieg Exp $
+ * $Id: BitPage.php,v 1.68 2006/08/19 17:05:23 hash9 Exp $
  */
 
 /**
@@ -650,7 +650,7 @@ class BitPage extends LibertyAttachable {
 
 		if( $pOrphansOnly ) {
 			$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name , `page_id`, `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, lc.`created`,
-				`ip`, `edit_comment`, `version`, `flag`, wp.`content_id` $get_data $selectSql
+				`ip`, `edit_comment`, lc.`version`, `flag`, wp.`content_id` $get_data $selectSql
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) $joinSql,
