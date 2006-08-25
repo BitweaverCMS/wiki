@@ -280,11 +280,12 @@ array( 'CREATEINDEX' => array(
 // de-tikify tables
 array( 'DATADICT' => array(
 	array( 'RENAMETABLE' => array(
-		'tiki_page_footnotes' => 'wiki_footnotes',
-		'tiki_pages'          => 'wiki_pages',
-		'tiki_received_pages' => 'wiki_received_pages',
-		'tiki_tags'           => 'wiki_tags',
-		'tiki_extwiki'        => 'wiki_ext',
+		'tiki_page_footnotes'     => 'wiki_footnotes',
+		'tiki_pages'              => 'wiki_pages',
+		'tiki_pages_page_id_seq'  => 'wiki_pages_page_id_seq',
+		'tiki_received_pages'     => 'wiki_received_pages',
+		'tiki_tags'               => 'wiki_tags',
+		'tiki_extwiki'            => 'wiki_ext',
 	)),
 	array( 'RENAMECOLUMN' => array(
 		'wiki_pages' => array(
