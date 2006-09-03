@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_permissions.tpl,v 1.6 2006/07/18 14:18:01 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_permissions.tpl,v 1.7 2006/09/03 20:15:35 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -29,7 +29,7 @@
 			<h2>{tr}Existing requests for email notification{/tr}</h2>
 			<ul>
 				{section name=ix loop=$emails}
-					<li>{$emails[ix]} <a href="{$smarty.const.WIKI_PKG_URL}page_permissions.php?page_id={$gContent->mInfo.page_id}&amp;removeemail={$emails[ix]}&amp;tab=email">{biticon ipackage=liberty iname="delete_small" iexplain="delete"}</a></li>
+					<li>{$emails[ix]} <a href="{$smarty.const.WIKI_PKG_URL}page_permissions.php?page_id={$gContent->mInfo.page_id}&amp;removeemail={$emails[ix]}&amp;tab=email">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a></li>
 				{/section}
 			</ul>
 		{/if}

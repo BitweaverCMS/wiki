@@ -67,10 +67,10 @@
 <td>{$channels[user].received_from_site}</td>
 <td>{$channels[user].received_from_user}</td>
 <td>
-   <a title="{tr}edit{/tr}" href="{$smarty.const.WIKI_PKG_URL}received_pages.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;received_page_id={$channels[user].received_page_id}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
-   <a title="{tr}view{/tr}" href="{$smarty.const.WIKI_PKG_URL}received_pages.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;view={$channels[user].received_page_id}">{biticon ipackage=liberty iname="view" iexplain="view"}</a>
-   <a title="{tr}accept{/tr}" href="{$smarty.const.WIKI_PKG_URL}received_pages.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;accept={$channels[user].received_page_id}">{biticon ipackage=liberty iname="accept" iexplain="accept"}</a>
-   <a title="{tr}remove{/tr}" href="{$smarty.const.WIKI_PKG_URL}received_pages.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].received_page_id}">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
+   <a title="{tr}edit{/tr}" href="{$smarty.const.WIKI_PKG_URL}received_pages.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;received_page_id={$channels[user].received_page_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
+   <a title="{tr}view{/tr}" href="{$smarty.const.WIKI_PKG_URL}received_pages.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;view={$channels[user].received_page_id}">{biticon ipackage="icons" iname="document-open" iexplain="view"}</a>
+   <a title="{tr}accept{/tr}" href="{$smarty.const.WIKI_PKG_URL}received_pages.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;accept={$channels[user].received_page_id}">{biticon ipackage="icons" iname="dialog-ok" iexplain="accept"}</a>
+   <a title="{tr}remove{/tr}" href="{$smarty.const.WIKI_PKG_URL}received_pages.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].received_page_id}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
 </td>
 </tr>
 {sectionelse}

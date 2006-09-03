@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.17 2006/09/01 22:27:49 sylvieg Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.18 2006/09/03 20:15:34 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -15,7 +15,7 @@
 		{form id="checkform"}
 			<div class="navbar">
 				<ul>
-					<li>{biticon ipackage=liberty iname=sort iexplain="sort by"}</li>
+					<li>{biticon ipackage="icons" iname="emblem-symbolic-link" iexplain="sort by"}</li>
 					{if $gBitSystem->isFeatureActive( 'wiki_list_name' )}
 						<li>{smartlink ititle="Page Name" isort="title" offset=$offset}</li>
 					{/if}
@@ -127,9 +127,9 @@
 						{if $gBitSystem->isFeatureActive( 'wiki_list_status' )}
 							<td style="text-align:center;">
 								{if $listpages[changes].flag eq 'locked'}
-									{biticon ipackage="wiki" iname="locked" iexplain="locked"}
+									{biticon ipackage="icons" iname="emblem-readonly" iexplain="locked"}
 								{else}
-									{biticon ipackage="wiki" iname="unlocked" iexplain="unlocked"}
+									{biticon ipackage="icons" iname="emblem-default" iexplain="unlocked"}
 								{/if}
 							</td>
 						{/if}
@@ -158,7 +158,7 @@
 						{/if}
 						{if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
 							<td class="actionicon">
-								<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$listpages[changes].page_id}">{biticon ipackage="liberty" iname="edit" iexplain="edit"}</a>
+								<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$listpages[changes].page_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
 								{if $checkboxes_on eq 'y'}
 									<input type="checkbox" name="checked[]" value="{$listpages[changes].page_id}" />
 								{/if}
