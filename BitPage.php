@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.68 2006/08/19 17:05:23 hash9 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.69 2006/09/05 15:36:14 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.68 $ $Date: 2006/08/19 17:05:23 $ $Author: hash9 $
+ * @version $Revision: 1.69 $ $Date: 2006/09/05 15:36:14 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.68 2006/08/19 17:05:23 hash9 Exp $
+ * $Id: BitPage.php,v 1.69 2006/09/05 15:36:14 lsces Exp $
  */
 
 /**
@@ -618,13 +618,13 @@ class BitPage extends LibertyAttachable {
 		array_push( $bindVars, $this->mContentTypeGuid );
 		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 		if (is_array($find)) { // you can use an array of pages
-			$whereSql = " AND lc.`title` IN (".implode(',',array_fill(0,count($find),'?')).")";
+			$whereSql .= " AND lc.`title` IN (".implode(',',array_fill(0,count($find),'?')).")";
 			$bindVars = array_merge($bindVars,$find);
 		} elseif ( is_string($find) and $find != '' ) { // or a string
-			$whereSql = " AND UPPER(lc.`title`) LIKE ? ";
+			$whereSql .= " AND UPPER(lc.`title`) LIKE ? ";
 			$bindVars = array_merge($bindVars,array('%' . strtoupper( $find ) . '%'));
 		} elseif( @BitBase::verifyId( $pUserId ) ) { // or a string
-			$whereSql = " AND lc.`user_id` = ? ";
+			$whereSql .= " AND lc.`user_id` = ? ";
 			$bindVars = array_merge($bindVars, array( $pUserId ));
 		}
 
