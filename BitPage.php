@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.69 2006/09/05 15:36:14 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.70 2006/09/07 13:10:40 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.69 $ $Date: 2006/09/05 15:36:14 $ $Author: lsces $
+ * @version $Revision: 1.70 $ $Date: 2006/09/07 13:10:40 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.69 2006/09/05 15:36:14 lsces Exp $
+ * $Id: BitPage.php,v 1.70 2006/09/07 13:10:40 lsces Exp $
  */
 
 /**
@@ -634,9 +634,10 @@ class BitPage extends LibertyAttachable {
 			$get_data = '';
 		}
 
-		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name, `page_id`,  `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, 	lc.`created`, `ip`, `edit_comment`, lc.`version`, `flag`, wp.`content_id` $get_data $selectSql
+		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name, `page_id`,  `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, 	lc.`created`, `ip`, `edit_comment`, lc.`version`, `flag`, wp.`content_id`, lch.`hits` $get_data $selectSql
 				  FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
+					JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
 					$joinSql ,
 					`".BIT_DB_PREFIX."users_users` uue, `".BIT_DB_PREFIX."users_users` uuc
 				  WHERE lc.`content_type_guid`=?
@@ -987,7 +988,7 @@ class WikiLib extends BitPage {
 	function get_top_pages($limit) {
 		$query = "select `title` , `hits`
 		from `".BIT_DB_PREFIX."wiki_pages` JOIN `".BIT_DB_PREFIX."liberty_content_hits` 
-			on  `".BIT_DB_PREFIX."wiki_pages`.`content_id` = `".BIT_DB_PREFIX."liberty_content_hits`.`content_ic`)
+			on  `".BIT_DB_PREFIX."wiki_pages`.`content_id` = `".BIT_DB_PREFIX."liberty_content_hits`.`content_id`)
 		order by `hits` desc";
 
 		$result = $this->mDb->query($query, array(),$limit);
