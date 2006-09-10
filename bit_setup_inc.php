@@ -4,6 +4,7 @@ global $gBitSystem, $gBitUser;
 $registerHash = array(
 	'package_name' => 'wiki',
 	'package_path' => dirname( __FILE__ ).'/',
+	'homeable' => TRUE,
 );
 $gBitSystem->registerPackage( $registerHash );
 
