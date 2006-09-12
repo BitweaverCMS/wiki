@@ -12,7 +12,12 @@ define('BITPAGE_CONTENT_TYPE_GUID', 'bitpage' );
 
 if($gBitSystem->isPackageActive( 'wiki' ) ) {
 	if ($gBitUser->hasPermission( 'p_wiki_view_page' )) {
-		$gBitSystem->registerAppMenu( WIKI_PKG_NAME, ucfirst( WIKI_PKG_DIR ), WIKI_PKG_URL.'index.php', 'bitpackage:wiki/menu_wiki.tpl', 'wiki');
+		$menuHash = array(
+			'package_name'  => WIKI_PKG_NAME,
+			'index_url'     => WIKI_PKG_URL.'index.php',
+			'menu_template' => 'bitpackage:wiki/menu_wiki.tpl',
+		);
+		$gBitSystem->registerAppMenu( $menuHash );
 	}
 
 	$gBitSystem->registerNotifyEvent( array( "wiki_page_changes" => tra("Any wiki page is changed") ) );
