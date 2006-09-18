@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.72 2006/09/16 05:31:31 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.73 2006/09/18 07:37:14 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.72 $ $Date: 2006/09/16 05:31:31 $ $Author: squareing $
+ * @version $Revision: 1.73 $ $Date: 2006/09/18 07:37:14 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.72 2006/09/16 05:31:31 squareing Exp $
+ * $Id: BitPage.php,v 1.73 2006/09/18 07:37:14 squareing Exp $
  */
 
 /**
@@ -458,7 +458,7 @@ class BitPage extends LibertyAttachable {
 		global $gBitSystem, $gBitUser;
 		$ret = $pPageName;
 		if( $gBitSystem->isPackageActive( 'wiki' ) ) {
-			if( is_array( $pExistsHash ) ) {
+			if( !empty( $pExistsHash ) && is_array( $pExistsHash ) ) {
 				if( is_array( current( $pExistsHash ) ) ) {
 					$exists = $pExistsHash[0];
 					$multiple = TRUE;
