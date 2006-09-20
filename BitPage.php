@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.73 2006/09/18 07:37:14 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.74 2006/09/20 02:11:46 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.73 $ $Date: 2006/09/18 07:37:14 $ $Author: squareing $
+ * @version $Revision: 1.74 $ $Date: 2006/09/20 02:11:46 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.73 2006/09/18 07:37:14 squareing Exp $
+ * $Id: BitPage.php,v 1.74 2006/09/20 02:11:46 spiderr Exp $
  */
 
 /**
@@ -345,7 +345,7 @@ class BitPage extends LibertyAttachable {
 			if( empty( $this->mInfo ) ) {
 				$this->load();
 			}
-			$ret = (isset( $this->mInfo["flag"] ) && $this->mInfo["flag"] == 'L');
+			$ret = $this->getField( 'flag' ) == 'L';
 		}
 		return( $ret );
 	}
