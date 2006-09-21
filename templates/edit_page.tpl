@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.30 2006/09/20 23:03:43 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.31 2006/09/21 15:57:50 spiderr Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -77,7 +77,7 @@
 							</div>
 						{/if}
 
-						{include file="bitpackage:liberty/content_status.tpl"}
+						{include file="bitpackage:liberty/edit_content_status_inc.tpl"}
 
 						{include file="bitpackage:liberty/edit_format.tpl"}
 
