@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.74 2006/09/20 02:11:46 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.75 2006/09/29 18:14:09 sylvieg Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.74 $ $Date: 2006/09/20 02:11:46 $ $Author: spiderr $
+ * @version $Revision: 1.75 $ $Date: 2006/09/29 18:14:09 $ $Author: sylvieg $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.74 2006/09/20 02:11:46 spiderr Exp $
+ * $Id: BitPage.php,v 1.75 2006/09/29 18:14:09 sylvieg Exp $
  */
 
 /**
@@ -756,6 +756,37 @@ class BitPage extends LibertyAttachable {
 			$this->mInfo['index_data'] = $res["title"] . " " . $res["data"] . " " . $res["login"] . " " . $res["real_name"] . ' ' . $res["description"] ;
 		}
 	}
+	/* Update a page
+	 * $pHashOld the where conmdition : page_id
+	 * $pHashNew the new fields: title, data
+	 */
+	function update( $pHashOld, $pHashNew) {
+		$set = array();
+		$where = array();
+		if (!empty($pHashNew['title'])) {
+			$set[] = "lc.`title`=?";
+			$bindVars[] = $pHashNew['title'];
+		}
+		if (!empty($pHashNew['data'])) {
+			$set[] = "lc.`data`=?";
+			$bindVars[] = $pHashNew['data'];
+		}
+		if (!empty($pHashOld['page_id'])) {
+			$where[] = "wp.`page_id`=?";
+			$bindVars[] = $pHashOld['page_id'] ;
+		}
+		if (empty($where)) {
+			$this->mErrors['page_id'] = "You must specify a where condition";
+			return false;
+		}
+		
+		$query = "update `".BIT_DB_PREFIX."liberty_content` lc
+			LEFT JOIN `".BIT_DB_PREFIX."wiki_pages` wp on (wp.`content_id`= lc.`content_id`)
+			SET ".implode(',', $set)."
+			WHERE ".implode (" AND ", $where);
+		$this->mDb->query( $query, $bindVars);
+		return true;
+	}
 }
 
 define('PLUGINS_DIR', WIKI_PKG_PATH.'plugins');
@@ -1304,7 +1335,7 @@ class WikiLib extends BitPage {
 		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(wp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
 		$action = "recovered tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
-			}
+		}
 }
 
 /**
