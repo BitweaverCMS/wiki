@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.8 2006/07/05 18:51:35 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.9 2006/11/02 16:12:50 spiderr Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
@@ -10,7 +10,7 @@
 			<h2>{tr}Version{/tr} {$version}</h2>
 		{/if}
 
-		{if $parsed}
+		{if $smarty.request.preview}
 			{include file="bitpackage:wiki/show_page.tpl"}
 		{/if}
 

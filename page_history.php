@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.14 2006/05/12 20:33:25 sylvieg Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.15 2006/11/02 16:12:50 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.14 2006/05/12 20:33:25 sylvieg Exp $
+ * $Id: page_history.php,v 1.15 2006/11/02 16:12:50 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -52,7 +52,8 @@ if (isset($_REQUEST["delete"]) && isset($_REQUEST["hist"])) {
 	}
 } elseif (isset($_REQUEST["preview"])) {
 	if( $version = $gContent->getHistory( $_REQUEST["preview"] ) ) {
-		$gBitSmarty->assign_by_ref('parsed', $gContent->parseData( $version[0] ) );
+		$version[0]['parsed_data'] = $gContent->parseData( $version[0] );
+		$gBitSmarty->assign_by_ref('pageInfo', $version[0] );
 		$gBitSmarty->assign_by_ref('version', $_REQUEST["preview"]);
 	}
 } elseif( isset( $_REQUEST["diff2"] ) ) {

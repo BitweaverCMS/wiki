@@ -194,6 +194,7 @@ array( 'QUERY' =>
 	"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` (`name`, `value`, `package`) VALUES( 'feature_wiki_books', 'y', 'wiki' )",
 	"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` (`name`, `value`, `package`) VALUES( 'feature_history', 'y', 'wiki' )",
 	"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` (`name`, `value`, `package`) VALUES( 'feature_listPages', 'y', 'wiki' )",
+	"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET name='allow_html' WHERE name='feature_wiki_allowhtml',
 
 	"UPDATE `".BIT_DB_PREFIX."tiki_categorized_objects` SET `object_type`='".BITPAGE_CONTENT_TYPE_GUID."', `object_id`=(SELECT tc.`content_id` FROM `".BIT_DB_PREFIX."tiki_content` tc WHERE tc.`title`=`".BIT_DB_PREFIX."tiki_categorized_objects`.`objId` AND `".BIT_DB_PREFIX."tiki_categorized_objects`.`object_type`='wiki page')",
 
@@ -299,6 +300,7 @@ array('QUERY' =>
 	array( 'SQL92' => array(
         "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `perm_level`, `package`) VALUES ('p_wiki_view_history', 'Can view page history', 'basic', 'wiki')",
         "INSERT INTO `".BIT_DB_PREFIX."users_group_permissions` (`group_id`, `perm_name`) VALUES (-1,'p_wiki_view_history')",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET config_name='content_allow_html' WHERE config_name='allow_html',
 	),
 )),
 		)

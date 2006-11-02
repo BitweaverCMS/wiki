@@ -2,7 +2,7 @@
 <div class="wikibody">{$preview.data}</div>
 <div align="center">
 <form action="{$smarty.const.WIKI_PKG_URL}rollback.php" method="post">
-<input type="hidden"  name="page_id" value="{$pageInfo.page_id}" />
+<input type="hidden"  name="content_id" value="{$gContent->mContentId}" />
 <input type="hidden" name="version" value="{$version|escape}" />
 <input type="submit" name="rollback" value="{tr}rollback{/tr}" />
 </form>
