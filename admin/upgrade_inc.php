@@ -207,7 +207,7 @@ array( 'QUERY' =>
 )),
 
 /*
-array( 'sql92' => array(
+// array( 'sql92' => array(
 
 "ALTER TABLE `".BIT_DB_PREFIX."tiki_wiki_attachments` RENAME COLUMN `attId` TO att_id",
 "ALTER TABLE `".BIT_DB_PREFIX."tiki_wiki_attachments ADD user_id INT",
@@ -300,7 +300,7 @@ array('QUERY' =>
 	array( 'SQL92' => array(
         "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `perm_level`, `package`) VALUES ('p_wiki_view_history', 'Can view page history', 'basic', 'wiki')",
         "INSERT INTO `".BIT_DB_PREFIX."users_group_permissions` (`group_id`, `perm_name`) VALUES (-1,'p_wiki_view_history')",
-		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET config_name='content_allow_html' WHERE config_name='allow_html',
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET config_name='content_allow_html' WHERE config_name='allow_html'",
 	),
 )),
 		)
