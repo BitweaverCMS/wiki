@@ -194,7 +194,7 @@ array( 'QUERY' =>
 	"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` (`name`, `value`, `package`) VALUES( 'feature_wiki_books', 'y', 'wiki' )",
 	"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` (`name`, `value`, `package`) VALUES( 'feature_history', 'y', 'wiki' )",
 	"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` (`name`, `value`, `package`) VALUES( 'feature_listPages', 'y', 'wiki' )",
-	"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET name='allow_html' WHERE name='feature_wiki_allowhtml',
+	"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET name='allow_html' WHERE name='feature_wiki_allowhtml'",
 
 	"UPDATE `".BIT_DB_PREFIX."tiki_categorized_objects` SET `object_type`='".BITPAGE_CONTENT_TYPE_GUID."', `object_id`=(SELECT tc.`content_id` FROM `".BIT_DB_PREFIX."tiki_content` tc WHERE tc.`title`=`".BIT_DB_PREFIX."tiki_categorized_objects`.`objId` AND `".BIT_DB_PREFIX."tiki_categorized_objects`.`object_type`='wiki page')",
 
