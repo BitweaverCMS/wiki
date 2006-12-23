@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.26 2006/08/13 21:28:12 hash9 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.27 2006/12/23 09:29:05 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.26 2006/08/13 21:28:12 hash9 Exp $
+ * $Id: edit.php,v 1.27 2006/12/23 09:29:05 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -482,6 +482,6 @@ $gBitSmarty->assign_by_ref( 'pageInfo', $formInfo );
 $gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 
 // load the ajax library for this page
-$gBitSmarty->assign( 'loadAjax', TRUE );
+$gBitSmarty->assign( 'loadAjax', 'prototype' );
 $gBitSystem->display( 'bitpackage:wiki/edit_page.tpl', 'Edit: '.$gContent->getTitle() );
 ?>
