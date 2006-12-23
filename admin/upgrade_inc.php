@@ -233,7 +233,7 @@ array( 'PHP' => '
 	foreach( $roots AS $rootId=>$contentId ) {
 		$gBitSystem->mDb->query( "UPDATE `".BIT_DB_PREFIX."tiki_structures` SET `root_structure_id`=? WHERE `structure_id`=?", array( $rootId, $rootId ) );
 		$gBitSystem->mDb->query( "UPDATE `".BIT_DB_PREFIX."tiki_content` SET `content_type_guid`=? WHERE `content_id`=?", array( BITBOOK_CONTENT_TYPE_GUID, $contentId ) );
-		$toc = $s->build_subtree_toc( $rootId );
+		$toc = $s->buildSubtreeToc( $rootId );
 		$s->setTreeRoot( $rootId, $toc );
 	}
 
