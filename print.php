@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.15 2006/04/19 17:05:55 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.16 2006/12/23 15:44:22 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print.php,v 1.15 2006/04/19 17:05:55 spiderr Exp $
+ * $Id: print.php,v 1.16 2006/12/23 15:44:22 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -25,11 +25,9 @@ $gBitSystem->verifyPackage( 'wiki' );
 $requirePage = TRUE;
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
 
-// Now check permissions to access this page
-if (!$gContent->hasUserPermission( 'p_wiki_view_page' )) {
-	$gBitSmarty->assign('msg', tra("Permission denied you cannot view this page"));
-	$gBitSystem->display( 'error.tpl' );
-	die;
+// Since we updated the permissions using updateUserPermissions() in lookup_page_inc.php, we can use the regular permission methods here
+if( !$gBitUser->hasPermission( 'p_wiki_view_page' ) ) {
+	$gBitSystem->fatalError( tra( "Permission denied. You cannot view this page." ) );
 }
 
 require_once ( WIKI_PKG_PATH.'page_setup_inc.php' );
