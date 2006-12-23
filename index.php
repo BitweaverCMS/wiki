@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/index.php,v 1.9 2006/08/29 13:00:26 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/index.php,v 1.10 2006/12/23 16:43:49 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: index.php,v 1.9 2006/08/29 13:00:26 squareing Exp $
+ * $Id: index.php,v 1.10 2006/12/23 16:43:49 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -18,12 +18,7 @@
  */
 require_once( '../bit_setup_inc.php' );
 
-if (!defined('WIKI_PKG_PATH')) {
-	// need a module not active error message here and an exit
-	// need to make better than this:
-	echo "Wiki Module is not Active";
-	exit; 
-}
+$gBitSystem->verifyPackage( 'wiki' );
 require_once( WIKI_PKG_PATH.'BitPage.php' );
 
 if( !empty( $_REQUEST['structure_id'] ) ) {
@@ -33,10 +28,10 @@ if( !empty( $_REQUEST['structure_id'] ) ) {
 		$_REQUEST['page'] = $gBitSystem->getConfig( 'wiki_home_page', 'HomePage' );
 	}
 	$gHome = new BitPage();
-	$wikiHome = $gBitSystem->getConfig("wiki_home_page", 'HomePage');
-	if( !($gHome->pageExists( $wikiHome )) ) {
+	$wikiHome = $gBitSystem->getConfig( "wiki_home_page", 'HomePage' );
+	if( !($gHome->pageExists( $wikiHome ) ) ) {
 		$homeHash = array(
-			'title' => (isset( $wikiHome ) ? $wikiHome : 'HomePage'),
+			'title' => ( isset( $wikiHome ) ? $wikiHome : 'HomePage' ),
 			'creator_user_id' => ROOT_USER_ID,
 			'modifier_user_id' => ROOT_USER_ID,
 			'edit' => 'Welcome to '.( $gBitSystem->getConfig( 'site_title', 'our site' ) ) );
