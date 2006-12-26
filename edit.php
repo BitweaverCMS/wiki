@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.27 2006/12/23 09:29:05 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.28 2006/12/26 17:41:32 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.27 2006/12/23 09:29:05 squareing Exp $
+ * $Id: edit.php,v 1.28 2006/12/26 17:41:32 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -418,6 +418,7 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 
 		header( "Location: ".$gContent->getDisplayUrl() );
 	} else {
+		vd( $gContent->mErrors );
 		$formInfo = $_REQUEST;
 		$formInfo['data'] = &$_REQUEST['edit'];
 	}
