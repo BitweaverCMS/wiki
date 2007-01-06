@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.75 2006/09/29 18:14:09 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.76 2007/01/06 09:46:28 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.75 $ $Date: 2006/09/29 18:14:09 $ $Author: sylvieg $
+ * @version $Revision: 1.76 $ $Date: 2007/01/06 09:46:28 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.75 2006/09/29 18:14:09 sylvieg Exp $
+ * $Id: BitPage.php,v 1.76 2007/01/06 09:46:28 squareing Exp $
  */
 
 /**
@@ -643,7 +643,7 @@ class BitPage extends LibertyAttachable {
 				  WHERE lc.`content_type_guid`=?
 					AND lc.`modifier_user_id`=uue.`user_id`
 					AND lc.`user_id`=uuc.`user_id` $whereSql
-				  ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
+				  ORDER BY ".$this->mDb->convertSortmode( $sort_mode );
 		$query_cant = "SELECT COUNT(*)
 				  FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) $joinSql
@@ -662,7 +662,7 @@ class BitPage extends LibertyAttachable {
 					AND lc.`user_id`=uuc.`user_id`
 					AND lcl.`to_content_id` is NULL
 					$whereSql
-				ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
+				ORDER BY ".$this->mDb->convertSortmode( $sort_mode );
 			$query_cant = "SELECT COUNT(*)
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
@@ -1038,7 +1038,7 @@ class WikiLib extends BitPage {
 	// Returns the name of "n" random pages
 	function get_random_pages( $pNumPages=10 ) {
 		$ret = NULL;
-		$query = "select `content_id`, `title`  from `".BIT_DB_PREFIX."liberty_content` WHERE `content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' ORDER BY ".$this->mDb->convert_sortmode( 'random' );
+		$query = "select `content_id`, `title`  from `".BIT_DB_PREFIX."liberty_content` WHERE `content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' ORDER BY ".$this->mDb->convertSortmode( 'random' );
 		$rs = $this->mDb->query( $query, array(), $pNumPages );
 		while( $rs && !$rs->EOF ) {
 			$ret[$rs->fields['content_id']]['title'] = $rs->fields['title'];
@@ -1078,7 +1078,7 @@ class WikiLib extends BitPage {
 	}
 
 	function wiki_link_structure() {
-		$query = "select `title` from `".BIT_DB_PREFIX."wiki_pages` order by ".$this->mDb->convert_sortmode("title_asc");
+		$query = "select `title` from `".BIT_DB_PREFIX."wiki_pages` order by ".$this->mDb->convertSortmode("title_asc");
 		$result = $this->mDb->query($query);
 		while ($res = $result->fetchRow()) {
 			print ($res["title"] . " ");
@@ -1107,7 +1107,7 @@ class WikiLib extends BitPage {
 		$mid = "";
 		}
 
-		$query = "select * from `".BIT_DB_PREFIX."wiki_received_pages` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
+		$query = "select * from `".BIT_DB_PREFIX."wiki_received_pages` $mid order by ".$this->mDb->convertSortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."wiki_received_pages` $mid";
 		$result = $this->mDb->query($query,$bindvars,$max_records,$offset);
 		$cant = $this->mDb->getOne($query_cant,$bindvars);
@@ -1188,7 +1188,7 @@ class WikiLib extends BitPage {
 			$mid = "";
 		}
 
-		$query = "select * from `".BIT_DB_PREFIX."wiki_ext` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
+		$query = "select * from `".BIT_DB_PREFIX."wiki_ext` $mid order by ".$this->mDb->convertSortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."wiki_ext` $mid";
 		$result = $this->mDb->query($query,$bindvars,$max_records,$offset);
 		$cant = $this->mDb->getOne($query_cant,$bindvars);

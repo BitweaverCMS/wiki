@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.9 2006/05/28 08:25:04 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/export_lib.php,v 1.10 2007/01/06 09:46:28 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: export_lib.php,v 1.9 2006/05/28 08:25:04 lsces Exp $
+ * $Id: export_lib.php,v 1.10 2007/01/06 09:46:28 squareing Exp $
  * @package wiki
  */
 
@@ -31,7 +31,7 @@ class ExportLib extends BitBase {
 		include_once (UTIL_PKG_PATH."tar.class.php");
 		$tar = new tar();
 		$query = "SELECT wp.`page_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) 
-				  ORDER BY lc.".$this->mDb->convert_sortmode("title_asc");
+				  ORDER BY lc.".$this->mDb->convertSortmode("title_asc");
 		$result = $this->mDb->query($query,array());
 		while ($res = $result->fetchRow()) {
 			$page_id = $res["page_id"];
@@ -74,7 +74,7 @@ class ExportLib extends BitBase {
 				 "INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) " .
 				 "INNER JOIN `".BIT_DB_PREFIX."liberty_content_history` th ON (th.`page_id` = th.`page_id`) " .
 				 "INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = th.`user_id`) " .
-				 "WHERE wp.`page_id`=? order by th.".$this->mDb->convert_sortmode("version_desc");
+				 "WHERE wp.`page_id`=? order by th.".$this->mDb->convertSortmode("version_desc");
 		$result = $this->mDb->query($query,array($page_id));
 		$ret = array();
 		while ($res = $result->fetchRow()) {

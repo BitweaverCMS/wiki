@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights_lib.php,v 1.5 2006/02/18 09:24:54 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights_lib.php,v 1.6 2007/01/06 09:46:28 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: copyrights_lib.php,v 1.5 2006/02/18 09:24:54 lsces Exp $
+ * $Id: copyrights_lib.php,v 1.6 2007/01/06 09:46:28 squareing Exp $
  * @package wiki
  */
 
@@ -21,7 +21,7 @@ class CopyrightsLib extends BitBase {
 		BitBase::BitBase();
 	}
 	function list_copyrights( $pPageId ) {
-		$query = "select * from `".BIT_DB_PREFIX."liberty_copyrights` WHERE `page_id`=? order by ".$this->mDb->convert_sortmode( "copyright_order_asc" );
+		$query = "select * from `".BIT_DB_PREFIX."liberty_copyrights` WHERE `page_id`=? order by ".$this->mDb->convertSortmode( "copyright_order_asc" );
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."liberty_copyrights` WHERE `page_id`=?";
 		$result = $this->mDb->query($query, array( $pPageId ));
 		$cant = $this->mDb->getOne($query_cant, array( $pPageId ));
