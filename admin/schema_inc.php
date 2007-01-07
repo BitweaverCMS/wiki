@@ -139,16 +139,16 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	array( WIKI_PKG_NAME, 'wiki_words','y'),
 	//array( WIKI_PKG_NAME, 'wiki_min_versions','1'),
 	//array( WIKI_PKG_NAME, 'wiki_max_versions','0'),
-	array( WIKI_PKG_NAME, 'wiki_attachments_use_db','y'),
+	//array( WIKI_PKG_NAME, 'wiki_attachments_use_db','y'),
 	//array( WIKI_PKG_NAME, 'wiki_attachments_use_dir',''),
 	array( WIKI_PKG_NAME, 'wiki_warn_on_edit_time','2'),
 	//array( WIKI_PKG_NAME, 'wiki_bot_bar','n'),
-	array( WIKI_PKG_NAME, 'wiki_cache','0'),
+	//array( WIKI_PKG_NAME, 'wiki_cache','0'),
 	//array( WIKI_PKG_NAME, 'wiki_creator_admin','n'),
 	//array( WIKI_PKG_NAME, 'wiki_copyrights','n'),
 	//array( WIKI_PKG_NAME, 'wiki_forum',''),
 	//array( WIKI_PKG_NAME, 'wiki_forum_id',''),
-	array( WIKI_PKG_NAME, 'wiki_left_column','y'),
+	//array( WIKI_PKG_NAME, 'wiki_left_column','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_backlinks','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_comment','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_creator','y'),
@@ -162,7 +162,7 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	array( WIKI_PKG_NAME, 'wiki_list_user','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_versions','y'),
 	array( WIKI_PKG_NAME, 'wiki_page_regex','strict'),
-	array( WIKI_PKG_NAME, 'wiki_right_column','y'),
+	//array( WIKI_PKG_NAME, 'wiki_right_column','y'),
 	//array( WIKI_PKG_NAME, 'wiki_top_bar','n'),
 	//array( WIKI_PKG_NAME, 'wiki_uses_slides','n'),
 	array( WIKI_PKG_NAME, 'wiki_book_show_path','y'),
@@ -172,10 +172,9 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	//array( WIKI_PKG_NAME, 'wiki_submit_notice',''),
 ) );
 
-if( defined( 'RSS_PKG_NAME' ) ) {
+if( defined( 'RSS_PKG_NAME' )) {
 	$gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
-		array( RSS_PKG_NAME, 'rss_'.WIKI_PKG_NAME, 'y'),
-	) );
+		array( RSS_PKG_NAME, WIKI_PKG_NAME.'_rss', 'y'),
+	));
 }
-
 ?>
