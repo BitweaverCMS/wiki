@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.18 2006/09/03 20:15:34 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.19 2007/01/14 15:29:25 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -154,7 +154,7 @@
 							<td>{$listpages[changes].format_guid}</td>
 						{/if}
 						{if $gBitSystem->isFeatureActive( 'wiki_list_size' )}
-							<td style="text-align:right;">{$listpages[changes].len|kbsize}</td>
+							<td style="text-align:right;">{$listpages[changes].len|display_bytes}</td>
 						{/if}
 						{if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
 							<td class="actionicon">
