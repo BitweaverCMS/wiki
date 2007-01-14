@@ -5,7 +5,7 @@
 	{/if}
 
 	{if $gBitSystem->isFeatureActive( 'wiki_description' ) and $description}
-		<h2>{$pageInfo.description|escape}</h2>
+		<p>{$pageInfo.description|escape}</p>
 	{/if}
 
 	{include file="bitpackage:wiki/page_date_bar.tpl"}
