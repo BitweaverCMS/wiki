@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.php,v 1.6 2005/10/12 15:14:13 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.php,v 1.7 2007/01/17 20:16:24 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: mod_top_pages.php,v 1.6 2005/10/12 15:14:13 spiderr Exp $
+ * $Id: mod_top_pages.php,v 1.7 2007/01/17 20:16:24 spiderr Exp $
  * @package wiki
  * @subpackage modules
  */
@@ -19,7 +19,9 @@
 require_once( WIKI_PKG_PATH.'BitPage.php' );
 global $gQueryUser, $module_rows, $module_params;
 
-$modWiki = new BitPage();
-$modRank = $modWiki->getList( 0, !empty( $module_rows ) ? $module_rows : 10, 'hits_desc', !empty( $module_params['user_pages'] ) ? $gQueryUser->mUserId : NULL );
-$gBitSmarty->assign( 'modTopPages', $modRank["data"] );
+if( $gBitUser->hasPermission( 'p_wiki_view_page' ) ) {
+	$modWiki = new BitPage();
+	$modRank = $modWiki->getList( 0, !empty( $module_rows ) ? $module_rows : 10, 'hits_desc', !empty( $module_params['user_pages'] ) ? $gQueryUser->mUserId : NULL );
+	$gBitSmarty->assign( 'modTopPages', $modRank["data"] );
+}
 ?>

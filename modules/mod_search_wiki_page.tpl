@@ -1,5 +1,6 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_search_wiki_page.tpl,v 1.1 2005/06/19 06:12:45 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_search_wiki_page.tpl,v 1.2 2007/01/17 20:16:24 spiderr Exp $ *}
 {strip}
+{if $gBitUser->hasPermission('p_wiki_view_page')}
 {bitmodule title="$moduleTitle" name="search_box"}
 	{form ipackage=wiki ifile="list_pages.php"}
 		<div class="row">
@@ -10,4 +11,5 @@
 		</div>
 	{/form}
 {/bitmodule}
+{/if}
 {/strip}

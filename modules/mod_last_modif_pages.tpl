@@ -1,5 +1,5 @@
 {strip}
-{if $gBitSystem->isPackageActive( 'wiki' )}
+{if $gBitSystem->isPackageActive( 'wiki' ) && $modLastModif}
 	{bitmodule title="$moduleTitle" name="last_modif_pages"}
 		<ol>
 			{section name=ix loop=$modLastModif}

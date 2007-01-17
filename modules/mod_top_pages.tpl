@@ -1,6 +1,6 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.tpl,v 1.8 2006/03/25 20:55:08 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.tpl,v 1.9 2007/01/17 20:16:24 spiderr Exp $ *}
 {strip}
-{if $gBitSystem->isPackageActive( 'wiki' )}
+{if $gBitSystem->isPackageActive( 'wiki' ) && $modTopPages}
 	{bitmodule title="$moduleTitle" name="top_pages"}
 		<ol>
 			{section name=ix loop=$modTopPages}
