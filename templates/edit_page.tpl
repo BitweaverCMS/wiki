@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.32 2007/01/21 07:16:30 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.33 2007/01/21 20:19:45 jht001 Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -112,9 +112,9 @@
 
 						{if $page ne 'SandBox'}
 							<div class="row">
-								{formlabel label="Comment" for="history_comment"}
+								{formlabel label="Comment" for="edit_comment"}
 								{forminput}
-									<input size="50" type="text" name="history_comment" id="history_comment" value="{$pageInfo.history_comment}" />
+									<input size="50" type="text" name="edit_comment" id="edit_comment" value="{$pageInfo.edit_comment}" />
 									{formhelp note="Add a comment to illustrate your most recent changes."}
 								{/forminput}
 							</div>

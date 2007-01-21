@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.76 2007/01/06 09:46:28 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.77 2007/01/21 20:19:45 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.76 $ $Date: 2007/01/06 09:46:28 $ $Author: squareing $
+ * @version $Revision: 1.77 $ $Date: 2007/01/21 20:19:45 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.76 2007/01/06 09:46:28 squareing Exp $
+ * $Id: BitPage.php,v 1.77 2007/01/21 20:19:45 jht001 Exp $
  */
 
 /**
@@ -286,11 +286,6 @@ class BitPage extends LibertyAttachable {
 			$pParamHash['page_store']['edit_comment'] = NULL;
 		} else {
 			$pParamHash['page_store']['edit_comment'] = substr( $pParamHash['edit_comment'], 0, 200 );
-		}
-
-		if( $this->getField( 'edit_comment' ) ) {
-			// used in LibertyContent when storing the history
-			$this->mInfo['history_comment'] = $this->getField( 'edit_comment' );
 		}
 
 		if( !empty( $pParamHash['minor'] ) && $this->isValid() ) {
