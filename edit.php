@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.28 2006/12/26 17:41:32 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.29 2007/01/21 07:16:30 jht001 Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.28 2006/12/26 17:41:32 squareing Exp $
+ * $Id: edit.php,v 1.29 2007/01/21 07:16:30 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -262,7 +262,7 @@ if( !empty( $gContent->mInfo ) ) {
 	}
 
 	$formInfo['edit'] = $data_to_edit;
-	$formInfo['comment'] = '';
+	$formInfo['history_comment'] = '';
 }
 
 $gBitSmarty->assign( 'footnote', '' );
@@ -306,10 +306,10 @@ if( isset( $_REQUEST['title'] ) ) {
 if( isset( $_REQUEST["description"] ) ) {
 	$formInfo['description'] = $_REQUEST["description"];
 }
-if( isset( $_REQUEST["comment"] ) ) {
-	$formInfo['comment'] = $_REQUEST["comment"];
+if( isset( $_REQUEST["history_comment"] ) ) {
+	$formInfo['history_comment'] = $_REQUEST["history_comment"];
 } else {
-	$formInfo['comment'] = '';
+	$formInfo['history_comment'] = '';
 }
 
 $cat_obj_type = BITPAGE_CONTENT_TYPE_GUID;
