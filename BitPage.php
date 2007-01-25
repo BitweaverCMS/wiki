@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.77 2007/01/21 20:19:45 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.78 2007/01/25 11:19:12 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.77 $ $Date: 2007/01/21 20:19:45 $ $Author: jht001 $
+ * @version $Revision: 1.78 $ $Date: 2007/01/25 11:19:12 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.77 2007/01/21 20:19:45 jht001 Exp $
+ * $Id: BitPage.php,v 1.78 2007/01/25 11:19:12 squareing Exp $
  */
 
 /**
@@ -427,11 +427,16 @@ class BitPage extends LibertyAttachable {
 	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
 	* @return the link to display the page.
 	*/
-	function getDisplayUrl( $pPageName=NULL ) {
+	function getDisplayUrl( $pPageName=NULL, $pMixed=NULL ) {
 		global $gBitSystem;
-		if( empty( $pPageName ) ) {
+		if( empty( $this->mPageName ) && !empty( $pMixed['title'] )) {
+			$pPageName = $pMixed['title'];
+		}
+
+		if( empty( $pPageName ) && !empty( $this->mPageName )) {
 			$pPageName = $this->mPageName;
 		}
+
 		if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
 			$rewrite_tag = $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ? 'view/':'';
 			$baseUrl = WIKI_PKG_URL . $rewrite_tag;
