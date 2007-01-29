@@ -1,28 +1,24 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.20 2007/01/29 05:42:11 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.21 2007/01/29 10:03:14 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin wiki">
 	<div class="header">
-		<h1>{if $pagetitle ne ''}{$pagetitle}{else}{tr}WikiPages{/tr}{/if}</h1>
+		<h1>{tr}WikiPages{/tr}</h1>
 	</div>
 
 	{formfeedback error=$errors}
 
 	<div class="body">
-	{*	{minifind sort_mode=$sort_mode} *}
-
-{strip}
-{form class="minifind" legend="find in entries"}
-    <input type="hidden" name="sort_mode" value="{$sort_mode}" />
-    {biticon ipackage="icons" iname="edit-find" iexplain="Search"}
-    Title: <input type="text" name="find_title" value="{$find_title|default:$smarty.request.find_title|escape}" />&nbsp;
-    Author: <input type="text" name="find_author" value="{$find_author|default:$smarty.request.find_author|escape}" />&nbsp;
-    Last Editor: <input type="text" name="find_last_editor" value="{$find_last_editor|default:$smarty.request.find_last_editor|escape}" />&nbsp;
-    <input type="submit" name="search" value="{tr}Find{/tr}" />&nbsp;
-	<input type="button" onclick="location.href='{$smarty.server.PHP_SELF}{if $hidden}?{/if}{foreach from=$hidden item=value key=name}{$name}={$value}&amp;{/foreach}'" value="{tr}Reset{/tr}" />
-{/form}
-{/strip}
+		{form class="minifind" legend="find in entries"}
+			<input type="hidden" name="sort_mode" value="{$sort_mode}" />
+			{biticon ipackage="icons" iname="edit-find" iexplain="Search"} &nbsp;
+			<label>{tr}Title{/tr}:&nbsp;<input size="16" type="text" name="find_title" value="{$find_title|default:$smarty.request.find_title|escape}" /></label> &nbsp;
+			<label>{tr}Author{/tr}:&nbsp;<input size="10" type="text" name="find_author" value="{$find_author|default:$smarty.request.find_author|escape}" /></label> &nbsp;
+			<label>{tr}Last Editor{/tr}:&nbsp;<input size="10" type="text" name="find_last_editor" value="{$find_last_editor|default:$smarty.request.find_last_editor|escape}" /></label> &nbsp;
+			<input type="submit" name="search" value="{tr}Find{/tr}" />&nbsp;
+			<input type="button" onclick="location.href='{$smarty.server.PHP_SELF}{if $hidden}?{/if}{foreach from=$hidden item=value key=name}{$name}={$value}&amp;{/foreach}'" value="{tr}Reset{/tr}" />
+		{/form}
 
 		{form id="checkform"}
 			<div class="navbar">
@@ -111,33 +107,31 @@
 							{/if}
 
 							{if $gBitSystem->isFeatureActive( 'wiki_list_creator' ) && $gBitSystem->isFeatureActive( 'wiki_list_lastmodif' ) }
-								<table><tr><td width='50%'>
-								{tr}Created:{/tr} {displayname real_name=$listpages[changes].creator_real_name user=$listpages[changes].creator_user}
-								, {$listpages[changes].created|bit_short_datetime}
-								</td>
-								<td>
-								{if ($listpages[changes].version <= 1)}
-									{tr}No edits since creation{/tr}
-								{else}
-								{tr}Last Edited:{/tr}
-									&nbsp;{displayname real_name=$listpages[changes].modifier_real_name user=$listpages[changes].modifier_user}
-								, {$listpages[changes].last_modified|bit_short_datetime}
-								{/if}
-								</td></tr></table>
+								<span style="display:block; width:50%; float:left;">
+									{tr}Created:{/tr} {displayname real_name=$listpages[changes].creator_real_name user=$listpages[changes].creator_user}
+									, {$listpages[changes].created|bit_short_datetime}
+								</span>
+								<span style="display:block; width:50%; float:right;">
+									{if ($listpages[changes].version <= 1)}
+										{tr}No edits since creation{/tr}
+									{else}
+										{tr}Last Edited:{/tr} {displayname real_name=$listpages[changes].modifier_real_name user=$listpages[changes].modifier_user}
+										, {$listpages[changes].last_modified|bit_short_datetime}
+									{/if}
+								</span>
 							{else}
-						
-							{if $gBitSystem->isFeatureActive( 'wiki_list_creator' )}
-								{tr}Created by{/tr} {displayname real_name=$listpages[changes].creator_real_name user=$listpages[changes].creator_user}
-							{/if}
-							, {$listpages[changes].created|bit_short_datetime}
-							{if $gBitSystem->isFeatureActive( 'wiki_list_lastmodif' ) && ($listpages[changes].version > 1)}
-								<br />
-								{tr}Last modified{/tr}
-								{if $listpages[changes].editor != $listpages[changes].creator}
-									&nbsp;{tr}by{/tr} {displayname real_name=$listpages[changes].modifier_real_name user=$listpages[changes].modifier_user}
+								{if $gBitSystem->isFeatureActive( 'wiki_list_creator' )}
+									{tr}Created by{/tr} {displayname real_name=$listpages[changes].creator_real_name user=$listpages[changes].creator_user}
 								{/if}
-								, {$listpages[changes].last_modified|bit_short_datetime}
-							{/if}
+								, {$listpages[changes].created|bit_short_datetime}
+								{if $gBitSystem->isFeatureActive( 'wiki_list_lastmodif' ) && ($listpages[changes].version > 1)}
+									<br />
+									{tr}Last modified{/tr}
+									{if $listpages[changes].editor != $listpages[changes].creator}
+										&nbsp;{tr}by{/tr} {displayname real_name=$listpages[changes].modifier_real_name user=$listpages[changes].modifier_user}
+									{/if}
+									, {$listpages[changes].last_modified|bit_short_datetime}
+								{/if}
 							{/if}
 						</td>
 						<td style="text-align:right; vertical-align:top;">
