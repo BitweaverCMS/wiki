@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.78 2007/01/25 11:19:12 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.79 2007/01/29 05:42:10 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.78 $ $Date: 2007/01/25 11:19:12 $ $Author: squareing $
+ * @version $Revision: 1.79 $ $Date: 2007/01/29 05:42:10 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.78 2007/01/25 11:19:12 squareing Exp $
+ * $Id: BitPage.php,v 1.79 2007/01/29 05:42:10 jht001 Exp $
  */
 
 /**
@@ -583,7 +583,7 @@ class BitPage extends LibertyAttachable {
    	 *	This can take some time to calculate, and so should not normally be enabled
    	 * @param pOrphansOnly If Set list only unattached pages ( ones not used in other content )
 	 */
-	function getList($offset = 0, $max_records = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE, $pGetData=FALSE ) {
+	function getList($offset = 0, $max_records = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE, $pGetData=FALSE, $pFilterAuthor='', $pFilterLastEditor='' ) {
 		global $gBitSystem, $gBitUser;
 		if ($sort_mode == 'size_desc') {
 			$sort_mode = 'wiki_page_size_desc';
@@ -627,7 +627,14 @@ class BitPage extends LibertyAttachable {
 			$whereSql .= " AND lc.`user_id` = ? ";
 			$bindVars = array_merge($bindVars, array( $pUserId ));
 		}
-
+		if ( is_string($pFilterAuthor) and $pFilterAuthor != '' ) { // or a string
+			$whereSql .= " AND UPPER(uuc.`login`) = ? ";
+			$bindVars = array_merge($bindVars,array(strtoupper( $pFilterAuthor )));
+		} 
+		if ( is_string($pFilterLastEditor) and $pFilterLastEditor != '' ) { // or a string
+			$whereSql .= " AND UPPER(uue.`login`) = ? ";
+			$bindVars = array_merge($bindVars,array(strtoupper( $pFilterLastEditor )));
+		}
 		if( $pGetData ) {
 			$get_data = ', lc.`data`';
 		} else {
@@ -646,9 +653,13 @@ class BitPage extends LibertyAttachable {
 				  ORDER BY ".$this->mDb->convertSortmode( $sort_mode );
 		$query_cant = "SELECT COUNT(*)
 				  FROM `".BIT_DB_PREFIX."wiki_pages` wp
-					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) $joinSql
-				  WHERE lc.`content_type_guid`=? $whereSql";
-
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) 
+					$joinSql,
+					`".BIT_DB_PREFIX."users_users` uue, `".BIT_DB_PREFIX."users_users` uuc
+				  WHERE lc.`content_type_guid`=? 
+					AND lc.`modifier_user_id`=uue.`user_id`
+					AND lc.`user_id`=uuc.`user_id` $whereSql
+					";
 		if( $pOrphansOnly ) {
 			$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name , `page_id`, `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, lc.`created`,
 				`ip`, `edit_comment`, lc.`version`, `flag`, wp.`content_id` $get_data $selectSql
@@ -667,8 +678,12 @@ class BitPage extends LibertyAttachable {
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
-					$joinSql
-				WHERE lc.`content_type_guid`=? $whereSql
+					$joinSql,
+					`".BIT_DB_PREFIX."users_users` uue, `".BIT_DB_PREFIX."users_users` uuc
+				WHERE lc.`content_type_guid`=? 
+					AND lc.`modifier_user_id`=uue.`user_id`
+					AND lc.`user_id`=uuc.`user_id`
+					$whereSql
 					AND lcl.`to_content_id` IS NULL";
 		}
 

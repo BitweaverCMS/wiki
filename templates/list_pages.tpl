@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.19 2007/01/14 15:29:25 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.20 2007/01/29 05:42:11 jht001 Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -10,23 +10,35 @@
 	{formfeedback error=$errors}
 
 	<div class="body">
-		{minifind sort_mode=$sort_mode}
+	{*	{minifind sort_mode=$sort_mode} *}
+
+{strip}
+{form class="minifind" legend="find in entries"}
+    <input type="hidden" name="sort_mode" value="{$sort_mode}" />
+    {biticon ipackage="icons" iname="edit-find" iexplain="Search"}
+    Title: <input type="text" name="find_title" value="{$find_title|default:$smarty.request.find_title|escape}" />&nbsp;
+    Author: <input type="text" name="find_author" value="{$find_author|default:$smarty.request.find_author|escape}" />&nbsp;
+    Last Editor: <input type="text" name="find_last_editor" value="{$find_last_editor|default:$smarty.request.find_last_editor|escape}" />&nbsp;
+    <input type="submit" name="search" value="{tr}Find{/tr}" />&nbsp;
+	<input type="button" onclick="location.href='{$smarty.server.PHP_SELF}{if $hidden}?{/if}{foreach from=$hidden item=value key=name}{$name}={$value}&amp;{/foreach}'" value="{tr}Reset{/tr}" />
+{/form}
+{/strip}
 
 		{form id="checkform"}
 			<div class="navbar">
 				<ul>
 					<li>{biticon ipackage="icons" iname="emblem-symbolic-link" iexplain="sort by"}</li>
 					{if $gBitSystem->isFeatureActive( 'wiki_list_name' )}
-						<li>{smartlink ititle="Page Name" isort="title" offset=$offset}</li>
+						<li>{smartlink ititle="Page Name" isort="title" offset="$offset" find_title="$find_title" find_author="$find_author" find_last_editor="$find_last_editor"}</li>
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_lastmodif' )}
-						<li>{smartlink ititle="Last Modified" iorder="desc" idefault=1 isort="last_modified" offset=$offset}</li>
+						<li>{smartlink ititle="Last Modified" iorder="desc" idefault=1 isort="last_modified" offset=$offset find_title="$find_title" find_author="$find_author" find_last_editor="$find_last_editor"}</li>
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_creator' )}
-						<li>{smartlink ititle="Author" isort="creator_user" offset=$offset}</li>
+						<li>{smartlink ititle="Author" isort="creator_user" offset=$offset find_title="$find_title" find_author="$find_author" find_last_editor="$find_last_editor"}</li>
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_user' )}
-						<li>{smartlink ititle="Last Editor" isort="modifier_user" offset=$offset}</li>
+						<li>{smartlink ititle="Last Editor" isort="modifier_user" offset=$offset find_title="$find_title" find_author="$find_author" find_last_editor="$find_last_editor"}</li>
 					{/if}
 					{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='list_sort' serviceHash=$gContent->mInfo}
 				</ul>
@@ -97,6 +109,23 @@
 							{else}
 								<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$listpages[changes].page_id}" title="{$listpages[changes].page_id}">Page #{$listpages[changes].page_id}</a>
 							{/if}
+
+							{if $gBitSystem->isFeatureActive( 'wiki_list_creator' ) && $gBitSystem->isFeatureActive( 'wiki_list_lastmodif' ) }
+								<table><tr><td width='50%'>
+								{tr}Created:{/tr} {displayname real_name=$listpages[changes].creator_real_name user=$listpages[changes].creator_user}
+								, {$listpages[changes].created|bit_short_datetime}
+								</td>
+								<td>
+								{if ($listpages[changes].version <= 1)}
+									{tr}No edits since creation{/tr}
+								{else}
+								{tr}Last Edited:{/tr}
+									&nbsp;{displayname real_name=$listpages[changes].modifier_real_name user=$listpages[changes].modifier_user}
+								, {$listpages[changes].last_modified|bit_short_datetime}
+								{/if}
+								</td></tr></table>
+							{else}
+						
 							{if $gBitSystem->isFeatureActive( 'wiki_list_creator' )}
 								{tr}Created by{/tr} {displayname real_name=$listpages[changes].creator_real_name user=$listpages[changes].creator_user}
 							{/if}
@@ -108,6 +137,7 @@
 									&nbsp;{tr}by{/tr} {displayname real_name=$listpages[changes].modifier_real_name user=$listpages[changes].modifier_user}
 								{/if}
 								, {$listpages[changes].last_modified|bit_short_datetime}
+							{/if}
 							{/if}
 						</td>
 						<td style="text-align:right; vertical-align:top;">

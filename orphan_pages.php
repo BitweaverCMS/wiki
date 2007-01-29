@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.8 2007/01/29 05:42:11 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: orphan_pages.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
+ * $Id: orphan_pages.php,v 1.8 2007/01/29 05:42:11 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -86,16 +86,28 @@ if (isset($_REQUEST['page'])) {
 	$offset = ($page - 1) * $max_records;
 }
 $gBitSmarty->assign_by_ref('offset', $offset);
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
+if (isset($_REQUEST["find_title"])) {
+	$find = $_REQUEST["find_title"];
 } else {
 	$find = '';
 }
-$gBitSmarty->assign('find', $find);
+if (isset($_REQUEST["find_author"])) {
+	$find_author = $_REQUEST["find_author"];
+} else {
+	$find_author = '';
+}
+if (isset($_REQUEST["find_last_editor"])) {
+	$find_last_editor = $_REQUEST["find_last_editor"];
+} else {
+	$find_last_editor = '';
+}
+$gBitSmarty->assign('find_title', $find);
+$gBitSmarty->assign('find_author', $find_author);
+$gBitSmarty->assign('find_last_editor', $find_last_editor);
 // Get a list of last changes to the Wiki database
 $Content = new BitPage();
 $sort_mode = preg_replace( '/^user_/', 'creator_user_', $sort_mode );
-$listpages = $Content->getList( $offset, $max_records, $sort_mode, $find, NULL, TRUE, TRUE );
+$listpages = $Content->getList( $offset, $max_records, $sort_mode, $find, NULL, TRUE, TRUE, FALSE, $find_author, $find_last_editor );
 // If there're more records then assign next_offset
 $cant_pages = ceil($listpages["cant"] / $max_records);
 $gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
