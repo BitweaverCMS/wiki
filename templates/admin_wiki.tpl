@@ -47,7 +47,7 @@
 			<div class="row">
 				{formlabel label="Warn on edit" for="warn_on_edit"}
 				{forminput}
-					{html_checkboxes name="warn_on_edit" values="y" checked=`$gBitSystem->getConfig('warn_on_edit')` labels=false id="warn_on_edit"}
+					{html_checkboxes name="warn_on_edit" values="y" checked=$gBitSystem->getConfig('warn_on_edit') labels=false id="warn_on_edit"}
 				{/forminput}
 				{forminput}
 					<select name="wiki_warn_on_edit_time">
