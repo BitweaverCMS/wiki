@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.15 2006/11/02 16:12:50 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.16 2007/02/11 00:24:43 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.15 2006/11/02 16:12:50 spiderr Exp $
+ * $Id: page_history.php,v 1.16 2007/02/11 00:24:43 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -32,6 +32,8 @@ include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {
 	$gBitSystem->fatalError( "Unknown page" );
 }
+
+$page_id = $_REQUEST['page_id'];
 
 $gBitSmarty->assign('source', 0);
 // If we have to include a preview please show it
@@ -87,17 +89,12 @@ if (isset($_REQUEST["delete"]) && isset($_REQUEST["hist"])) {
 }
 
 // pagination stuff
-$gBitSmarty->assign( 'page', $page = !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : 1 );
+$gBitSmarty->assign( 'page', $page = !empty( $_REQUEST['list_page'] ) ? $_REQUEST['list_page'] : 1 );
 $offset = ( $page - 1 ) * $gBitSystem->getConfig( 'max_records' );
 $history = $gContent->getHistory( NULL, NULL, $offset, $gBitSystem->getConfig( 'max_records' ) );
+$gContent->postGetList($history);
 $gBitSmarty->assign_by_ref( 'history', $history );
-
-//vd($gContent->getHistoryCount());
-
-// calculate page number
-$numPages = ceil( $gContent->getHistoryCount() / $gBitSystem->getConfig('max_records', 20) );
-$gBitSmarty->assign( 'numPages', $numPages );
-
+$gBitSmarty->assign_by_ref( 'listInfo', $history['listInfo'] );
 
 // Display the template
 $gBitSmarty->assign_by_ref( 'gContent', $gContent );

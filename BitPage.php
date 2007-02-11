@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.79 2007/01/29 05:42:10 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.80 2007/02/11 00:24:43 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.79 $ $Date: 2007/01/29 05:42:10 $ $Author: jht001 $
+ * @version $Revision: 1.80 $ $Date: 2007/02/11 00:24:43 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.79 2007/01/29 05:42:10 jht001 Exp $
+ * $Id: BitPage.php,v 1.80 2007/02/11 00:24:43 jht001 Exp $
  */
 
 /**
@@ -754,6 +754,11 @@ class BitPage extends LibertyAttachable {
 		$retval = array();
 		$retval["data"] = $ret;
 		$retval["cant"] = $cant;
+		$retval["max_records"] = $max_records;
+		$retval["offset"] = $offset;
+		$retval["find"] = $find;
+		$retval["sort_mode"] = $sort_mode;
+		
 		return $retval;
 	}
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.8 2007/01/29 05:42:11 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.9 2007/02/11 00:24:44 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: orphan_pages.php,v 1.8 2007/01/29 05:42:11 jht001 Exp $
+ * $Id: orphan_pages.php,v 1.9 2007/02/11 00:24:44 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -81,8 +81,8 @@ if (!isset($_REQUEST["offset"])) {
 } else {
 	$offset = $_REQUEST["offset"];
 }
-if (isset($_REQUEST['page'])) {
-	$page = &$_REQUEST['page'];
+if (isset($_REQUEST['list_page'])) {
+	$page = &$_REQUEST['list_page'];
 	$offset = ($page - 1) * $max_records;
 }
 $gBitSmarty->assign_by_ref('offset', $offset);
@@ -108,24 +108,11 @@ $gBitSmarty->assign('find_last_editor', $find_last_editor);
 $Content = new BitPage();
 $sort_mode = preg_replace( '/^user_/', 'creator_user_', $sort_mode );
 $listpages = $Content->getList( $offset, $max_records, $sort_mode, $find, NULL, TRUE, TRUE, FALSE, $find_author, $find_last_editor );
-// If there're more records then assign next_offset
-$cant_pages = ceil($listpages["cant"] / $max_records);
-$gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
-$gBitSmarty->assign_by_ref('pagecount', $listpages['cant']);
-$gBitSmarty->assign('actual_page', 1 + ($offset / $max_records));
-if ($listpages["cant"] > ($offset + $max_records)) {
-	$gBitSmarty->assign('next_offset', $offset + $max_records);
-} else {
-	$gBitSmarty->assign('next_offset', -1);
-}
-// If offset is > 0 then prev_offset
-if ($offset > 0) {
-	$gBitSmarty->assign('prev_offset', $offset - $max_records);
-} else {
-	$gBitSmarty->assign('prev_offset', -1);
-}
-$gBitSmarty->assign_by_ref('listpages', $listpages["data"]);
-//print_r($listpages["data"]);
+$Content->postGetList($listpages);
+
+$gBitSmarty->assign_by_ref( 'listpages', $listpages["data"] );
+$gBitSmarty->assign_by_ref( 'listInfo', $listpages['listInfo'] );
+
 
 // Display the template
 $gBitSystem->display( 'bitpackage:wiki/orphan_pages.tpl');
