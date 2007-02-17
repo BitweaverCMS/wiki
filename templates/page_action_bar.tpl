@@ -1,13 +1,14 @@
-{if $print_page ne 'y'}
-<div class="navbar">
-	<ul>
-		{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
+{if $print_page ne 'y' && $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
+	{capture name=navbarlist}{strip}
 			{if !$lock}
 				{assign var=format_guid value=$pageInfo.format_guid}
 				{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y'}
 					{if $gContent->hasUserPermission( 'p_wiki_edit_page' ) or $page eq 'SandBox'}
 						<li><a {if $beingEdited eq 'y'}class="highlight" title="{$semUser}"{/if} href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$pageInfo.page_id}">{tr}Edit{/tr}</a></li>
 					{/if}
+				{/if}
+				{if $page ne 'SandBox' && $gBitUser->hasPermission( 'p_wiki_remove_page' )}
+					<li><a title="{tr}remove this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}remove_page.php?page_id={$pageInfo.page_id}&amp;version=last">{tr}Remove{/tr}</a></li>
 				{/if}
 			{/if}
 			{if $page ne 'SandBox'}
@@ -47,7 +48,12 @@
 			{if $gBitSystem->isFeatureActive( 'users_watches' ) and $gContent->hasUserPermission('p_users_admin')}
 				<li><a href="{$smarty.const.WIKI_PKG_URL}page_watches.php?page_id={$pageInfo.page_id}">{tr}Watches{/tr}</a></li>
 			{/if}
-		{/if}
-	</ul>
-</div>
+	{/strip}{/capture}
+	{if $smarty.capture.navbarlist ne ''}
+		<div class="navbar">
+			<ul>
+				{$smarty.capture.navbarlist}
+			</ul>
+		</div>
+	{/if}
 {/if}
