@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.14 2007/02/11 00:24:44 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.15 2007/02/25 08:37:07 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: list_pages.php,v 1.14 2007/02/11 00:24:44 jht001 Exp $
+ * $Id: list_pages.php,v 1.15 2007/02/25 08:37:07 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -92,9 +92,9 @@ if (isset($_REQUEST['list_page'])) {
 }
 $gBitSmarty->assign_by_ref('offset', $offset);
 if (isset($_REQUEST["find_title"])) {
-	$find = $_REQUEST["find_title"];
+	$find_title = $_REQUEST["find_title"];
 } else {
-	$find = '';
+	$find_title = '';
 }
 if (isset($_REQUEST["find_author"])) {
 	$find_author = $_REQUEST["find_author"];
@@ -106,14 +106,20 @@ if (isset($_REQUEST["find_last_editor"])) {
 } else {
 	$find_last_editor = '';
 }
-$gBitSmarty->assign('find_title', $find);
+$gBitSmarty->assign('find_title', $find_title);
 $gBitSmarty->assign('find_author', $find_author);
 $gBitSmarty->assign('find_last_editor', $find_last_editor);
 // Get a list of last changes to the Wiki database
 $gContent = new BitPage();
 $gBitSmarty->assign_by_ref( "gContent", $gContent );
 $sort_mode = preg_replace( '/^user_/', 'creator_user_', $sort_mode );
-$listpages = $gContent->getList( $offset, $max_records, $sort_mode, $find, NULL, TRUE, FALSE, FALSE, $find_author, $find_last_editor );
+$listpages = $gContent->getList( $offset, $max_records, $sort_mode, $find_title, NULL, TRUE, FALSE, FALSE, $find_author, $find_last_editor );
+#this probably isn't the best way to do this...
+$listpages['listInfo']['parameters']['find_title'] = $find_title;
+$listpages['listInfo']['parameters']['find_author'] = $find_author;
+$listpages['listInfo']['parameters']['find_last_editor'] = $find_last_editor;
+#$listpages['listInfo']['parameters']['sort_mode'] = $sort_mode;
+ 
 $gContent->postGetList($listpages);
 
 
