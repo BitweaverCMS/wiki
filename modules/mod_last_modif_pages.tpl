@@ -17,8 +17,7 @@
 			{/section}
 		</ol>
 		{if $gBitSystem->isFeatureActive( 'wiki_list_pages') }
-			<a class="more" href="{$smarty.const.WIKI_PKG_URL}list_pages.php?sort_mode=last_modified_desc">{tr
-			}Show More{/tr}&hellip;</a>
+			<a class="more" href="{$smarty.const.WIKI_PKG_URL}list_pages.php?sort_mode=last_modified_desc">{tr}Show More{/tr}&hellip;</a>
 		{/if}
 	{/bitmodule}
 {/if}
