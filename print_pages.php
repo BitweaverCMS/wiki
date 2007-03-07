@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print_pages.php,v 1.5 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print_pages.php,v 1.6 2007/03/07 18:48:45 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print_pages.php,v 1.5 2006/04/11 13:10:33 squareing Exp $
+ * $Id: print_pages.php,v 1.6 2007/03/07 18:48:45 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -46,8 +46,13 @@ if (isset($_REQUEST["clearpages"])) {
 $gBitSmarty->assign('printpages', $printpages);
 $form_printpages = urlencode(serialize($printpages));
 $gBitSmarty->assign('form_printpages', $form_printpages);
-$pages = $wikilib->getList(0, -1, 'title_asc', $find);
-$gBitSmarty->assign_by_ref('pages', $pages["data"]);
+$listHash = array(
+	'max_records' => -1,
+	'sort_mode' => 'title_asc',
+	'find' => $find,
+);
+$pages = $wikilib->getList( $listHash );
+$gBitSmarty->assign_by_ref('pages', $pages);
 
 // Display the template
 $gBitSystem->display( 'bitpackage:wiki/print_pages.tpl');

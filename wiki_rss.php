@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.15 2007/01/07 10:48:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.16 2007/03/07 18:48:45 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -29,8 +29,12 @@ if( !$gBitUser->hasPermission( 'p_wiki_view_page' ) ) {
 	$rss->useCached( $rss_version_name, $cacheFile, $gBitSystem->getConfig( 'rssfeed_cache_time' ));
 
 	$wiki = new BitPage();
-	$feeds = $wiki->getList( 0, $gBitSystem->getConfig( 'wiki_rss_max_records', 10 ), 'last_modified_desc', NULL, NULL, FALSE, FALSE, TRUE );
-	$feeds = $feeds['data'];
+	$listHash = array(
+		'max_records' => $gBitSystem->getConfig( 'wiki_rss_max_records', 10 ),
+		'sort_mode' => 'last_modified_desc',
+		'get_data' => TRUE,
+	);
+	$feeds = $wiki->getList( $listHash );
 
 	// set the rss link
 	$rss->link = 'http://'.$_SERVER['HTTP_HOST'].WIKI_PKG_URL;

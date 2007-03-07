@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.21 2007/01/29 10:03:14 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.22 2007/03/07 18:48:45 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -25,16 +25,16 @@
 				<ul>
 					<li>{biticon ipackage="icons" iname="emblem-symbolic-link" iexplain="sort by"}</li>
 					{if $gBitSystem->isFeatureActive( 'wiki_list_name' )}
-						<li>{smartlink ititle="Page Name" isort="title" offset="$offset" find_title="$find_title" find_author="$find_author" find_last_editor="$find_last_editor"}</li>
+						<li>{smartlink ititle="Page Name" isort="title" icontrol=$listInfo}</li>
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_lastmodif' )}
-						<li>{smartlink ititle="Last Modified" iorder="desc" idefault=1 isort="last_modified" offset=$offset find_title="$find_title" find_author="$find_author" find_last_editor="$find_last_editor"}</li>
+						<li>{smartlink ititle="Last Modified" iorder="desc" idefault=1 isort="last_modified" icontrol=$listInfo}</li>
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_creator' )}
-						<li>{smartlink ititle="Author" isort="creator_user" offset=$offset find_title="$find_title" find_author="$find_author" find_last_editor="$find_last_editor"}</li>
+						<li>{smartlink ititle="Author" isort="creator_user" icontrol=$listInfo}</li>
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_user' )}
-						<li>{smartlink ititle="Last Editor" isort="modifier_user" offset=$offset find_title="$find_title" find_author="$find_author" find_last_editor="$find_last_editor"}</li>
+						<li>{smartlink ititle="Last Editor" isort="modifier_user" icontrol=$listInfo}</li>
 					{/if}
 					{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='list_sort' serviceHash=$gContent->mInfo}
 				</ul>
@@ -44,7 +44,7 @@
 			<input type="hidden" name="sort_mode" value="{$sort_mode}" />
 
 			<table class="clear data">
-				<caption>{tr}WikiPages Listing{/tr} <span class="total">[ {$pagecount} ]</span></caption>
+				<caption>{tr}WikiPages Listing{/tr} <span class="total">[ {$listInfo.total_records} ]</span></caption>
 				<tr>
 					{*  at the moment, the only working option to use the checkboxes for is deleting pages. so for now the checkboxes are visible iff $p_wiki_remove_page is set. Other applications make sense as well (categorize, convert to pdf, etc). Add necessary corresponding permission here: *}
 
@@ -55,39 +55,39 @@
 					{/if}
 					{counter name=cols start=-1 print=false}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_hits' )}
-						<th>{smartlink ititle="Hits" isort="hits" offset=$offset}</th>
+						<th>{smartlink ititle="Hits" isort="hits" icontrol=$listInfo}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_lastver' )}
-						<th>{smartlink ititle="Last Version" isort="version" offset=$offset}</th>
+						<th>{smartlink ititle="Last Version" isort="version" icontrol=$listInfo}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_comment' )}
-						<th>{smartlink ititle="Comment" isort="edit_comment" offset=$offset}</th>
+						<th>{smartlink ititle="Comment" isort="edit_comment" icontrol=$listInfo}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_status' )}
-						<th>{smartlink ititle="Status" isort="flag" offset=$offset}</th>
+						<th>{smartlink ititle="Status" isort="flag" icontrol=$listInfo}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_versions' )}
-						<th>{smartlink ititle="Version" isort="versions" offset=$offset}</th>
+						<th>{smartlink ititle="Version" isort="versions" icontrol=$listInfo}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_links' )}
-						<th>{smartlink ititle="Links" isort="links" offset=$offset}</th>
+						<th>{smartlink ititle="Links" isort="links" icontrol=$listInfo}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_backlinks' )}
-						<th>{smartlink ititle="Backlinks" isort="backlinks" offset=$offset}</th>
+						<th>{smartlink ititle="Backlinks" isort="backlinks" icontrol=$listInfo}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_format_guid' )}
-						<th>{smartlink ititle="GUID" isort="format_guid" offset=$offset}</th>
+						<th>{smartlink ititle="GUID" isort="format_guid" icontrol=$listInfo}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_size' )}
-						<th>{smartlink ititle="Size" isort="size" offset=$offset}</th>
+						<th>{smartlink ititle="Size" isort="size" icontrol=$listInfo}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
 					{if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
@@ -203,7 +203,7 @@
 						document.write("<input name=\"switcher\" id=\"switcher\" type=\"checkbox\" onclick=\"switchCheckboxes(this.form.id,'checked[]','switcher')\" />");
 					/* ]]> */</script>
 					<br />
-					<select name="submit_mult" onchange="this.form.submit();">
+					<select name="batch_submit" onchange="this.form.submit();">
 						<option value="" selected="selected">{tr}with checked{/tr}:</option>
 						{if $gBitUser->hasPermission( 'p_wiki_remove_page' )}
 							<option value="remove_pages">{tr}remove{/tr}</option>

@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.80 2007/02/11 00:24:43 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.81 2007/03/07 18:48:45 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.80 $ $Date: 2007/02/11 00:24:43 $ $Author: jht001 $
+ * @version $Revision: 1.81 $ $Date: 2007/03/07 18:48:45 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.80 2007/02/11 00:24:43 jht001 Exp $
+ * $Id: BitPage.php,v 1.81 2007/03/07 18:48:45 squareing Exp $
  */
 
 /**
@@ -572,130 +572,150 @@ class BitPage extends LibertyAttachable {
 		}
 	}
 
-   	/**
-   	 * Generate list of pages
-   	 * @param offset Number of the first record to list
-   	 * @param max_records Number of records to list
-   	 * @param sort_mode Order in which the records will be sorted
-   	 * @param find Filter to be applied to the list
-   	 * @param pUserId If set additionally filter on UserId
-   	 * @param pExtras If set adds additional counts of links to and from each page
-   	 *	This can take some time to calculate, and so should not normally be enabled
-   	 * @param pOrphansOnly If Set list only unattached pages ( ones not used in other content )
+	// this was the original set of parameters
+	// function getList( $offset = 0, $max_records = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE, $pGetData=FALSE, $pFilterAuthor='', $pFilterLastEditor='' ) {
+	/**
+	 * getList 
+	 * 
+	 * @param array $pListHash array of list parameters
+	 * @param boolean $pListHash['orphans_only'] only return orphan wiki pages
+	 * @param boolean $pListHash['extras'] load extra infrmation such as backlinks and links
+	 * @param boolean $pListHash['get_data'] return the wiki page data along with the listed information
+	 * @param string $pListHash['find_title'] filter by the page title
+	 * @param string $pListHash['find_author'] filter by the login name of the page author
+	 * @param string $pListHash['find_last_editor'] filter by the login name of the last editor of the page
+	 * @access public
+	 * @return array of wiki pages
 	 */
-	function getList($offset = 0, $max_records = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE, $pGetData=FALSE, $pFilterAuthor='', $pFilterLastEditor='' ) {
+	function getList( &$pListHash ) {
 		global $gBitSystem, $gBitUser;
-		if ($sort_mode == 'size_desc') {
-			$sort_mode = 'wiki_page_size_desc';
+		LibertyContent::prepGetList( $pListHash );
+
+		if( $pListHash['sort_mode'] == 'size_asc' || $pListHash['sort_mode'] == 'size_desc' ) {
+			$pListHash['sort_mode'] = str_replace( 'size', 'wiki_page_size', $pListHash['sort_mode'] );
 		}
 
-		if ($sort_mode == 'size_asc') {
-			$sort_mode = 'wiki_page_size_asc';
+		$specialSort = array(
+			'versions_desc',
+			'versions_asc',
+			'links_asc',
+			'links_desc',
+			'backlinks_asc',
+			'backlinks_desc'
+		);
+
+		if( in_array( $pListHash['sort_mode'], $specialSort )) {
+			$originalListHash         = $pListHash;
+			// now we can set the new values in the pListHash
+			$pListHash['sort_mode']   = 'modifier_user_desc';
+			$pListHash['offset']      = 0;
+			$pListHash['max_records'] = -1;
 		}
 
-		$old_sort_mode = '';
-		if (in_array($sort_mode, array(
-				'versions_desc',
-				'versions_asc',
-				'links_asc',
-				'links_desc',
-				'backlinks_asc',
-				'backlinks_desc'
-				))) {
-			$old_offset = $offset;
-
-			$old_max_records = $max_records;
-			$old_sort_mode = $sort_mode;
-			$sort_mode = 'modifier_user_desc';
-			$offset = 0;
-			$max_records = -1;
-		}
-
-		$whereSql = '';
-		$joinSql = '';
-		$selectSql = '';
+		$whereSql = $joinSql = $selectSql = '';
 		$bindVars = array();
 		array_push( $bindVars, $this->mContentTypeGuid );
 		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
-		if (is_array($find)) { // you can use an array of pages
-			$whereSql .= " AND lc.`title` IN (".implode(',',array_fill(0,count($find),'?')).")";
-			$bindVars = array_merge($bindVars,$find);
-		} elseif ( is_string($find) and $find != '' ) { // or a string
-			$whereSql .= " AND UPPER(lc.`title`) LIKE ? ";
-			$bindVars = array_merge($bindVars,array('%' . strtoupper( $find ) . '%'));
-		} elseif( @BitBase::verifyId( $pUserId ) ) { // or a string
-			$whereSql .= " AND lc.`user_id` = ? ";
-			$bindVars = array_merge($bindVars, array( $pUserId ));
-		}
-		if ( is_string($pFilterAuthor) and $pFilterAuthor != '' ) { // or a string
-			$whereSql .= " AND UPPER(uuc.`login`) = ? ";
-			$bindVars = array_merge($bindVars,array(strtoupper( $pFilterAuthor )));
-		} 
-		if ( is_string($pFilterLastEditor) and $pFilterLastEditor != '' ) { // or a string
-			$whereSql .= " AND UPPER(uue.`login`) = ? ";
-			$bindVars = array_merge($bindVars,array(strtoupper( $pFilterLastEditor )));
-		}
-		if( $pGetData ) {
-			$get_data = ', lc.`data`';
-		} else {
-			$get_data = '';
+
+		// make find_title compatible with {minifind}
+		if( empty( $pListHash['find_title'] )) {
+			$pListHash['find_title'] = $pListHash['find'];
 		}
 
-		$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name, `page_id`,  `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, 	lc.`created`, `ip`, `edit_comment`, lc.`version`, `flag`, wp.`content_id`, lch.`hits` $get_data $selectSql
-				  FROM `".BIT_DB_PREFIX."wiki_pages` wp
-					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
-					LEFT JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
-					$joinSql ,
-					`".BIT_DB_PREFIX."users_users` uue, `".BIT_DB_PREFIX."users_users` uuc
-				  WHERE lc.`content_type_guid`=?
-					AND lc.`modifier_user_id`=uue.`user_id`
-					AND lc.`user_id`=uuc.`user_id` $whereSql
-				  ORDER BY ".$this->mDb->convertSortmode( $sort_mode );
-		$query_cant = "SELECT COUNT(*)
-				  FROM `".BIT_DB_PREFIX."wiki_pages` wp
-					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) 
-					$joinSql,
-					`".BIT_DB_PREFIX."users_users` uue, `".BIT_DB_PREFIX."users_users` uuc
-				  WHERE lc.`content_type_guid`=? 
-					AND lc.`modifier_user_id`=uue.`user_id`
-					AND lc.`user_id`=uuc.`user_id` $whereSql
-					";
-		if( $pOrphansOnly ) {
-			$query = "SELECT uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name , `page_id`, `wiki_page_size` as `len`, lc.`title`, lc.`format_guid`, wp.`description`, lc.`last_modified`, lc.`created`,
-				`ip`, `edit_comment`, lc.`version`, `flag`, wp.`content_id` $get_data $selectSql
+		// use an array or string to search for wiki page titles
+		if( is_array( $pListHash['find_title'] )) {
+			$whereSql .= " AND lc.`title` IN (".implode(',',array_fill( 0, count( $pListHash['find_title'] ), '?' )).")";
+			$bindVars = array_merge( $bindVars, $pListHash['find_title'] );
+		} elseif( !empty( $pListHash['find_title'] ) && is_string( $pListHash['find_title'] )) {
+			$whereSql .= " AND UPPER(lc.`title`) LIKE ? ";
+			$bindVars = array_merge( $bindVars, array( '%'.strtoupper( $pListHash['find_title'] ) . '%' ));
+		}
+
+		// limit by user id
+		if( @BitBase::verifyId( $pListHash['user_id'] )) {
+			$whereSql .= " AND lc.`user_id` = ? ";
+			$bindVars = array_merge( $bindVars, array( $pListHash['user_id'] ));
+		}
+
+		// filter pages by author login
+		if( !empty( $pListHash['find_author'] )) {
+			$whereSql .= " AND UPPER(uuc.`login`) = ? ";
+			$bindVars = array_merge( $bindVars, array( strtoupper( $pListHash['find_author'] )));
+		}
+
+		// filter pages by last editor
+		if( !empty( $pListHash['find_last_editor'] )) {
+			$whereSql .= " AND UPPER(uue.`login`) = ? ";
+			$bindVars = array_merge( $bindVars, array( strtoupper( $pListHash['find_last_editor'] )));
+		}
+
+		$get_data = '';
+		if( !empty( $pListHash['get_data'] )) {
+			$get_data = ', lc.`data`';
+		}
+
+		if( empty( $pListHash['orphans_only'] )) {
+			$query = "
+				SELECT
+					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
+					wp.`page_id`, wp.`wiki_page_size` as `len`, wp.`description`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
+					lc.`title`, lc.`format_guid`, lc.`last_modified`, lc.`created`, lc.`ip`, lc.`version`,
+					lch.`hits` $get_data $selectSql
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
-					LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
-					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) $joinSql,
-					`".BIT_DB_PREFIX."users_users` uue,
-					`".BIT_DB_PREFIX."users_users` uuc
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uuc ON ( uuc.`user_id` = lc.`user_id` )
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uue ON ( uue.`user_id` = lc.`user_id` )
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
+					$joinSql
+				WHERE lc.`content_type_guid`=? $whereSql
+				ORDER BY ".$this->mDb->convertSortmode( $pListHash['sort_mode'] );
+			$query_cant = "
+				SELECT COUNT(*)
+				FROM `".BIT_DB_PREFIX."wiki_pages` wp
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uuc ON ( uuc.`user_id` = lc.`user_id` )
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uue ON ( uue.`user_id` = lc.`user_id` )
+					$joinSql
+				WHERE lc.`content_type_guid`=? $whereSql
+				";
+		} else {
+			$query = "
+				SELECT
+					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
+					wp.`page_id`, wp.`wiki_page_size` AS `len`,wp.`description`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
+					lc.`title`, lc.`format_guid`, lc.`last_modified`, lc.`created`, lc.`ip`, lc.`version`,
+					lch.`hits` $get_data $selectSql
+				FROM `".BIT_DB_PREFIX."wiki_pages` wp
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uuc ON ( uuc.`user_id` = lc.`user_id` )
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uue ON ( uue.`user_id` = lc.`user_id` )
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
+					$joinSql
 				WHERE lc.`content_type_guid`=?
-					AND lc.`modifier_user_id`=uue.`user_id`
-					AND lc.`user_id`=uuc.`user_id`
 					AND lcl.`to_content_id` is NULL
 					$whereSql
-				ORDER BY ".$this->mDb->convertSortmode( $sort_mode );
-			$query_cant = "SELECT COUNT(*)
+				ORDER BY ".$this->mDb->convertSortmode( $pListHash['sort_mode'] );
+			$query_cant = "
+				SELECT COUNT(*)
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
-					$joinSql,
-					`".BIT_DB_PREFIX."users_users` uue, `".BIT_DB_PREFIX."users_users` uuc
-				WHERE lc.`content_type_guid`=? 
-					AND lc.`modifier_user_id`=uue.`user_id`
-					AND lc.`user_id`=uuc.`user_id`
-					$whereSql
-					AND lcl.`to_content_id` IS NULL";
+					$joinSql
+				WHERE lc.`content_type_guid`=?
+					AND lcl.`to_content_id` IS NULL
+					$whereSql";
 		}
 
 		// If sort mode is versions then offset is 0, max_records is -1 (again) and sort_mode is nil
 		// If sort mode is links then offset is 0, max_records is -1 (again) and sort_mode is nil
 		// If sort mode is backlinks then offset is 0, max_records is -1 (again) and sort_mode is nil
 
+		$ret = array();
 		$this->mDb->StartTrans();
-		$result = $this->mDb->query( $query, $bindVars, $max_records, $offset );
+		$result = $this->mDb->query( $query, $bindVars, $pListHash['max_records'], $pListHash['offset'] );
 		$cant = $this->mDb->getOne( $query_cant, $bindVars );
 		$this->mDb->CompleteTrans();
-		$ret = array();
 		while( $res = $result->fetchRow() ) {
 			$aux = array();
 			$aux = $res;
@@ -704,62 +724,45 @@ class BitPage extends LibertyAttachable {
 			$aux['flag'] = $res["flag"] == 'L' ? tra('locked') : tra('unlocked');
 			$aux['display_link'] = $this->getListLink( $aux ); //WIKI_PKG_URL."index.php?page_id=".$res['page_id'];
 			$aux['display_url'] = $this->getDisplayUrl( $aux['title'], $aux );
-			if( $pExtras ) {
+			if( !empty( $pListHash['extras'] )) {
 				// USE SPARINGLY!!! This gets expensive fast
-//				$aux['versions"] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."liberty_content_history` where `page_id`=?", array( $res["page_id"] ) );
-				$aux['links'] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."liberty_content_links` where `from_content_id`=?", array( $res["content_id"] ) );
-				$aux['backlinks'] = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."liberty_content_links` where `to_title`=?", array( $aux['title'] ) );
+//				$aux['versions"]  = $this->mDb->getOne( "SELECT COUNT(*) FROM `".BIT_DB_PREFIX."liberty_content_history` WHERE `page_id`=?", array( $res["page_id"] ));
+				$aux['links']     = $this->mDb->getOne( "SELECT COUNT(*) FROM `".BIT_DB_PREFIX."liberty_content_links` WHERE `from_content_id`=?", array( $res["content_id"] ));
+				$aux['backlinks'] = $this->mDb->getOne( "select COUNT(*) FROM `".BIT_DB_PREFIX."liberty_content_links` WHERE `to_title`=?", array( $aux['title'] ));
 			}
 			$ret[] = $aux;
 		}
 
 
-		// If sortmode is versions, links or backlinks sort using the ad-hoc function and reduce using old_offse and old_max_records
-		if ($old_sort_mode == 'versions_asc' && !empty( $ret['versions'] ) ) {
-			usort($ret, 'compare_versions');
+		// apply the custom sorting options if needed
+		if( !empty( $originalListHash )) {
+			if( $originalListHash['sort_mode'] == 'versions_asc' && !empty( $ret['versions'] )) {
+				usort( $ret, 'compare_versions');
+			} elseif( $originalListHash['sort_mode'] == 'versions_desc' && !empty( $ret['versions'] )) {
+				usort( $ret, 'r_compare_versions');
+			} elseif( $originalListHash['sort_mode'] == 'links_desc' && !empty( $ret['links'] )) {
+				usort( $ret, 'compare_links');
+			} elseif( $originalListHash['sort_mode'] == 'links_asc' && !empty( $ret['links'] )) {
+				usort( $ret, 'r_compare_links');
+			} elseif( $originalListHash['sort_mode'] == 'backlinks_desc' && !empty( $ret['backlinks'] )) {
+				usort($ret, 'compare_backlinks');
+			} elseif( $originalListHash['sort_mode'] == 'backlinks_asc' && !empty( $ret['backlinks'] )) {
+				usort($ret, 'r_compare_backlinks');
+			}
+
+			// return only requested values
+			if( in_array( $originalListHash['sort_mode'], $specialSort )) {
+				$ret = array_slice( $ret, $originalListHash['offset'], $originalListHash['max_records'] );
+			}
+
+			// load original listHash
+			$pListHash = $originalListHash;
 		}
 
-		if ($old_sort_mode == 'versions_desc' && !empty( $ret['versions'] ) ) {
-			usort($ret, 'r_compare_versions');
-		}
+		$pListHash['cant'] = $cant;
+		LibertyContent::postGetList( $pListHash );
 
-		if ($old_sort_mode == 'links_desc' && !empty( $ret['links'] ) ) {
-			usort($ret, 'compare_links');
-		}
-
-		if ($old_sort_mode == 'links_asc' && !empty( $ret['links'] ) ) {
-			usort($ret, 'r_compare_links');
-		}
-
-		if( $old_sort_mode == 'backlinks_desc' && !empty( $ret['backlinks'] ) ) {
-			usort($ret, 'compare_backlinks');
-		}
-
-		if( $old_sort_mode == 'backlinks_asc' && !empty( $ret['backlinks'] ) ) {
-			usort($ret, 'r_compare_backlinks');
-		}
-
-		if (in_array($old_sort_mode, array(
-				'versions_desc',
-				'versions_asc',
-				'links_asc',
-				'links_desc',
-				'backlinks_asc',
-				'backlinks_desc'
-				))) {
-			$ret = array_slice($ret, $old_offset, $old_max_records);
-		}
-
-
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		$retval["max_records"] = $max_records;
-		$retval["offset"] = $offset;
-		$retval["find"] = $find;
-		$retval["sort_mode"] = $sort_mode;
-		
-		return $retval;
+		return $ret;
 	}
 
 	// Overriding the LibertyContet function to include decriptions from wiki_pages table.
