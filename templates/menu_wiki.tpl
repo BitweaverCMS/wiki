@@ -15,7 +15,7 @@
 	{if $gBitSystem->isFeatureActive( 'wiki_books' ) && $gBitUser->hasPermission( 'p_wiki_edit_book' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}edit_book.php">{biticon ipackage="icons" iname="document-new" iexplain="Create a new book" iforce="icon"} {tr}Create book{/tr}</a></li>
 	{/if}
-	{if $gBitSystem->isFeatureActive( 'wiki_list_pages' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
+	{if $gBitSystem->isFeatureActive( 'wiki_list_orphans' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}orphan_pages.php">{biticon ipackage=liberty iname=spacer iexplain="Orphan pages" iforce="icon"} {tr}Orphan pages{/tr}</a></li>
 	{/if}
 	{if $gBitSystem->isFeatureActive( 'wiki_multiprint' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
