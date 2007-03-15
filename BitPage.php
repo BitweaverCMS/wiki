@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.81 2007/03/07 18:48:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.82 2007/03/15 22:21:25 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.81 $ $Date: 2007/03/07 18:48:45 $ $Author: squareing $
+ * @version $Revision: 1.82 $ $Date: 2007/03/15 22:21:25 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.81 2007/03/07 18:48:45 squareing Exp $
+ * $Id: BitPage.php,v 1.82 2007/03/15 22:21:25 lsces Exp $
  */
 
 /**
@@ -655,8 +655,7 @@ class BitPage extends LibertyAttachable {
 		}
 
 		if( empty( $pListHash['orphans_only'] )) {
-			$query = "
-				SELECT
+			$query = "SELECT 
 					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
 					wp.`page_id`, wp.`wiki_page_size` as `len`, wp.`description`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
 					lc.`title`, lc.`format_guid`, lc.`last_modified`, lc.`created`, lc.`ip`, lc.`version`,
@@ -679,8 +678,7 @@ class BitPage extends LibertyAttachable {
 				WHERE lc.`content_type_guid`=? $whereSql
 				";
 		} else {
-			$query = "
-				SELECT
+			$query = "SELECT 
 					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
 					wp.`page_id`, wp.`wiki_page_size` AS `len`,wp.`description`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
 					lc.`title`, lc.`format_guid`, lc.`last_modified`, lc.`created`, lc.`ip`, lc.`version`,
