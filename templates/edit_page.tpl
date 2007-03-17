@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.33 2007/01/21 20:19:45 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.34 2007/03/17 11:45:37 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -30,6 +30,12 @@
 			<div class="translate">
 				{include file="bitpackage:wiki/page_header.tpl" pageInfo=$translateFrom->mInfo}
 				{include file="bitpackage:wiki/page_display.tpl" pageInfo=$translateFrom->mInfo}
+
+				{if $translateFrom->mInfo.google_guess}
+					<hr />
+					<h1>{tr}Google's translation attempt{/tr}</h1>
+					{$translateFrom->mInfo.google_guess|nl2br}
+				{/if}
 			</div>
 		{/if}
 
