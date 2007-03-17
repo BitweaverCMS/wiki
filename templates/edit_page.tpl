@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.34 2007/03/17 11:45:37 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.35 2007/03/17 14:42:28 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -34,7 +34,7 @@
 				{if $translateFrom->mInfo.google_guess}
 					<hr />
 					<h1>{tr}Google's translation attempt{/tr}</h1>
-					{$translateFrom->mInfo.google_guess|nl2br}
+					<code>{$translateFrom->mInfo.google_guess|nl2br}</code>
 				{/if}
 			</div>
 		{/if}
