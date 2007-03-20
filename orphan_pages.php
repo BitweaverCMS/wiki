@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.11 2007/03/09 04:43:22 nickpalmer Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.12 2007/03/20 16:56:34 spiderr Exp $
  *
- * $Id: orphan_pages.php,v 1.11 2007/03/09 04:43:22 nickpalmer Exp $
+ * $Id: orphan_pages.php,v 1.12 2007/03/20 16:56:34 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -27,7 +27,6 @@ $gBitSystem->verifyPermission( 'p_wiki_view_page' );
    then we check permission to delete pages.
    if so, we call BitPage::expunge for all the checked pages.  */
 if( isset( $_REQUEST["batch_submit"] ) && isset( $_REQUEST["checked"] ) && $_REQUEST["batch_submit"] == "remove_pages" ) {
-	include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 
 	// Now check permissions to remove the selected pages
 	$gBitSystem->verifyPermission( 'p_wiki_remove_page' );

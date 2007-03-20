@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.29 2006/12/23 15:44:22 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.30 2007/03/20 16:56:34 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.29 2006/12/23 15:44:22 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.30 2007/03/20 16:56:34 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -42,7 +42,6 @@ if (isset($_REQUEST["structure_id"])) {
 $gBitSmarty->assign_by_ref('page',$gContent->mInfo['title']);
 */
 
-require_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 // Let creator set permissions
 if($gBitSystem->isFeatureActive( 'wiki_creator_admin' )) {
 	if( $gContent->isOwner() ) {

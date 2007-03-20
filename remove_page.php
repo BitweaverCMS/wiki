@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/remove_page.php,v 1.5 2006/09/22 01:36:49 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/remove_page.php,v 1.6 2007/03/20 16:56:34 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: remove_page.php,v 1.5 2006/09/22 01:36:49 spiderr Exp $
+ * $Id: remove_page.php,v 1.6 2007/03/20 16:56:34 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -19,7 +19,6 @@
 require_once( '../bit_setup_inc.php' );
 include_once( WIKI_PKG_PATH.'BitPage.php');
 include_once( WIKI_PKG_PATH.'lookup_page_inc.php' );
-include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 
 $gBitSystem->verifyPackage( 'wiki' );
 

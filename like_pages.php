@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/like_pages.php,v 1.8 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/like_pages.php,v 1.9 2007/03/20 16:56:34 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: like_pages.php,v 1.8 2006/04/11 13:10:33 squareing Exp $
+ * $Id: like_pages.php,v 1.9 2007/03/20 16:56:34 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -29,7 +29,6 @@ if( !$gContent->isValid() ) {
 	$gBitSystem->display( 'error.tpl' );
 	die;
 }
-include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 
 $likepages = $wikilib->get_like_pages( $gContent->mInfo['title'] );
 $gBitSmarty->assign_by_ref('likepages', $likepages);

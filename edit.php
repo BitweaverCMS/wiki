@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.30 2007/01/21 20:19:45 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.31 2007/03/20 16:56:34 spiderr Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.30 2007/01/21 20:19:45 jht001 Exp $
+ * $Id: edit.php,v 1.31 2007/03/20 16:56:34 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -241,9 +241,6 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 	}
 }
 //
-
-//include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
-// Now check permissions to access this page
 
 if( isset( $gContent->mInfo['wiki_cache'] ) && $gContent->mInfo['wiki_cache']!=0 ) {
 	$wiki_cache = $gContent->mInfo['wiki_cache'];

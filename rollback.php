@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/rollback.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/rollback.php,v 1.8 2007/03/20 16:56:34 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: rollback.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
+ * $Id: rollback.php,v 1.8 2007/03/20 16:56:34 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -30,7 +30,6 @@ $gBitSystem->verifyPackage( 'wiki' );
 	$gBitSmarty->assign_by_ref('page', $_REQUEST["page"]);
 }*/
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
-include_once( WIKI_PKG_PATH.'page_setup_inc.php' );
 
 if (!isset($_REQUEST["version"])) {
 	$gBitSmarty->assign('msg', tra("No version indicated"));
