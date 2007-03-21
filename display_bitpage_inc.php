@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.30 2007/03/20 16:56:34 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.31 2007/03/21 07:53:13 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.30 2007/03/20 16:56:34 spiderr Exp $
+ * $Id: display_bitpage_inc.php,v 1.31 2007/03/21 07:53:13 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -97,7 +97,6 @@ if( $gBitSystem->isFeatureActive( 'users_count_admin_pageviews' ) || !$gBitUser-
 if( isset( $_REQUEST["action"] ) && (($_REQUEST["action"] == 'lock' || $_REQUEST["action"]=='unlock' ) &&
 	($gBitUser->hasPermission( 'p_wiki_admin' )) || ($user and ($gBitUser->hasPermission( 'p_wiki_lock_page' )) and ($gBitSystem->isFeatureActive( 'wiki_usrlock' )))) ) {
 	$gContent->setLock( ($_REQUEST["action"] == 'lock' ? 'L' : NULL ) );
-	$gBitSmarty->assign('lock', ($_REQUEST["action"] == 'lock') );
 }
 
 
@@ -107,11 +106,8 @@ if( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->isValid() && $gBitUs
 	require_once( NOTEPAD_PKG_PATH.'notepad_lib.php' );
 	$notepadlib->replace_note( $user, 0, $gContent->mPageName, $gContent->mInfo['data'] );
 }
-// Assign lock status
-$gBitSmarty->assign('lock', $gContent->isLocked() );
 // Process an undo here
 if(isset($_REQUEST["undo"])) {
-
 	if( !$gContent->isLocked() && ( ($gBitUser->hasPermission( 'p_wiki_edit_page' ) && $gContent->isOwner())||($gContent->hasUserPermission( 'p_wiki_rollback' ))) ) {
 		// Remove the last version
 		$gContent->removeLastVersion();
