@@ -25,10 +25,7 @@
 		</div>
 	{/if} {* end .pagination *}
 
-	{if $footnote}
-		{$footnote}
-	{/if}
-
+	{$footnote}
 
 	{if $gBitSystem->isFeatureActive( 'wiki_copyrights' )}
 		<p class="copyright">
@@ -45,9 +42,9 @@
 		</p>
 	{/if}
 
-	{if $print_page ne 'y'}
+	{* all page actions have been moved to icons if $print_page ne 'y'}
 		{include file="bitpackage:wiki/page_action_bar.tpl"}
-	{/if}
+	{/if*}
 </div><!-- end .wiki -->
 
 {if !$gBitSystem->isFeatureActive( 'comments_at_top_of_page' ) and $print_page ne 'y' and $gBitSystem->isFeatureActive( 'wiki_comments' )}
