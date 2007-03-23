@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print_multi_pages.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print_multi_pages.php,v 1.8 2007/03/23 21:30:00 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print_multi_pages.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
+ * $Id: print_multi_pages.php,v 1.8 2007/03/23 21:30:00 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -34,7 +34,8 @@ if (isset($_REQUEST["print"])) {
 	$pages = array();
 	foreach( $printpages as $contentId ) {
 		$page = new BitPage( NULL, $contentId );
-		if( $page->load() && $page->hasUserPermission( 'p_wiki_view_page', TRUE )) {
+		if( $page->load() ) {
+			$page->verifyPermission( 'p_wiki_view_page' );
 			$page_info = $page->mInfo;
 			$page_info["parsed"] = $page->parseData( $page_info );
 			$pages[] = $page_info;
