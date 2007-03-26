@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.82 2007/03/15 22:21:25 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.83 2007/03/26 13:17:54 laetzer Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.82 $ $Date: 2007/03/15 22:21:25 $ $Author: lsces $
+ * @version $Revision: 1.83 $ $Date: 2007/03/26 13:17:54 $ $Author: laetzer $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.82 2007/03/15 22:21:25 lsces Exp $
+ * $Id: BitPage.php,v 1.83 2007/03/26 13:17:54 laetzer Exp $
  */
 
 /**
@@ -719,7 +719,7 @@ class BitPage extends LibertyAttachable {
 			$aux = $res;
 			$aux['creator'] = (isset( $res['creator_real_name'] ) ? $res['creator_real_name'] : $res['creator_user'] );
 			$aux['editor'] = (isset( $res['modifier_real_name'] ) ? $res['modifier_real_name'] : $res['modifier_user'] );
-			$aux['flag'] = $res["flag"] == 'L' ? tra('locked') : tra('unlocked');
+			$aux['flag'] = $res["flag"] == 'L' ? 'locked' : 'unlocked';
 			$aux['display_link'] = $this->getListLink( $aux ); //WIKI_PKG_URL."index.php?page_id=".$res['page_id'];
 			$aux['display_url'] = $this->getDisplayUrl( $aux['title'], $aux );
 			if( !empty( $pListHash['extras'] )) {
