@@ -112,7 +112,7 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	array( WIKI_PKG_NAME, 'wiki_history','y'),
 	array( WIKI_PKG_NAME, 'wiki_last_changes','y'),
 	array( WIKI_PKG_NAME, 'wiki_like_pages','y'),
-	array( WIKI_PKG_NAME, 'wiki_allow_dup_page_names','y'),
+	//array( WIKI_PKG_NAME, 'wiki_allow_dup_page_names','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_pages','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_orphans','y'),
 	array( WIKI_PKG_NAME, 'wiki_page_title','y'),
