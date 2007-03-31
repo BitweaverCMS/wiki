@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.83 2007/03/26 13:17:54 laetzer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.84 2007/03/31 23:30:19 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.83 $ $Date: 2007/03/26 13:17:54 $ $Author: laetzer $
+ * @version $Revision: 1.84 $ $Date: 2007/03/31 23:30:19 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.83 2007/03/26 13:17:54 laetzer Exp $
+ * $Id: BitPage.php,v 1.84 2007/03/31 23:30:19 squareing Exp $
  */
 
 /**
@@ -410,7 +410,7 @@ class BitPage extends LibertyAttachable {
 	* @return the link to display the page.
 	*/
 	function getListLink( $pPageHash ) {
-		return BitPage::getDisplayUrl($pPageHash['title']);
+		return BitPage::getDisplayLink( $pPageHash['title'], NULL );
 	}
 
 
@@ -720,8 +720,9 @@ class BitPage extends LibertyAttachable {
 			$aux['creator'] = (isset( $res['creator_real_name'] ) ? $res['creator_real_name'] : $res['creator_user'] );
 			$aux['editor'] = (isset( $res['modifier_real_name'] ) ? $res['modifier_real_name'] : $res['modifier_user'] );
 			$aux['flag'] = $res["flag"] == 'L' ? 'locked' : 'unlocked';
-			$aux['display_link'] = $this->getListLink( $aux ); //WIKI_PKG_URL."index.php?page_id=".$res['page_id'];
 			$aux['display_url'] = $this->getDisplayUrl( $aux['title'], $aux );
+			// display_link does not seem to be used when getList is called
+			//$aux['display_link'] = $this->getDisplayLink( $aux['title'] ); //WIKI_PKG_URL."index.php?page_id=".$res['page_id'];
 			if( !empty( $pListHash['extras'] )) {
 				// USE SPARINGLY!!! This gets expensive fast
 //				$aux['versions"]  = $this->mDb->getOne( "SELECT COUNT(*) FROM `".BIT_DB_PREFIX."liberty_content_history` WHERE `page_id`=?", array( $res["page_id"] ));

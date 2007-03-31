@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.22 2007/03/07 18:48:45 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.23 2007/03/31 23:30:19 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -101,9 +101,9 @@
 					<tr class="{cycle advance=false}">
 						<td colspan="{$cols}">
 							{if $gBitSystem->isFeatureActive( 'wiki_list_name' )}
-								<h3><a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$listpages[changes].page_id}" title="{$listpages[changes].description}">{$listpages[changes].title|escape}</a></h3>
+								<h3><a href="{$listpages[changes].display_url}" title="{$listpages[changes].description}">{$listpages[changes].title|escape}</a></h3>
 							{else}
-								<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$listpages[changes].page_id}" title="{$listpages[changes].page_id}">Page #{$listpages[changes].page_id}</a>
+								<a href="{$listpages[changes].display_url}" title="{$listpages[changes].page_id}">Page #{$listpages[changes].page_id}</a>
 							{/if}
 
 							{if $gBitSystem->isFeatureActive( 'wiki_list_creator' ) && $gBitSystem->isFeatureActive( 'wiki_list_lastmodif' ) }
