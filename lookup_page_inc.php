@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.18 2006/12/23 15:44:22 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.19 2007/03/31 13:01:09 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.18 2006/12/23 15:44:22 squareing Exp $
+ * $Id: lookup_page_inc.php,v 1.19 2007/03/31 13:01:09 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -52,7 +52,8 @@
 
 	// Now that gContent is loaded, we can transparently update user 
 	// permissions as set by the individual page permissions - if any are set
-	$gContent->updateUserPermissions();
+	// this is now done using a liberty service - xing
+	//$gContent->updateUserPermissions();
 
 	// we weren't passed a structure, but maybe this page belongs to one. let's check...
 	if( empty( $gStructure ) ) {
