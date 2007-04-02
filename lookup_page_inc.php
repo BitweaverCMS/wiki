@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.19 2007/03/31 13:01:09 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.20 2007/04/02 18:55:02 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.19 2007/03/31 13:01:09 squareing Exp $
+ * $Id: lookup_page_inc.php,v 1.20 2007/04/02 18:55:02 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -16,128 +16,133 @@
 /**
  * required setup
  */
-	require_once( WIKI_PKG_PATH.'BitBook.php');
+require_once( WIKI_PKG_PATH.'BitBook.php');
 
-	global $gContent, $wikilib;
-	include_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
+global $gContent, $wikilib;
+include_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
 
-	// if we already have a gContent, we assume someone else created it for us, and has properly loaded everything up.
-	if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gContent ) ) != 'bitpage' ) {
-		$gContent = new BitPage( @BitBase::verifyId( $_REQUEST['page_id'] ) ? $_REQUEST['page_id'] : NULL, @BitBase::verifyId( $_REQUEST['content_id'] ) ? $_REQUEST['content_id'] : NULL );
+// this is needed when the center module is applied to avoid abusing $_REQUEST
+if( empty( $lookupHash )) {
+	$lookupHash = &$_REQUEST;
+}
 
-		$loadPage = (!empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL);
-		if( empty( $gContent->mPageId ) && empty( $gContent->mContentId )  ) {
-			//handle legacy forms that use plain 'page' form variable name
+// if we already have a gContent, we assume someone else created it for us, and has properly loaded everything up.
+if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gContent ) ) != 'bitpage' ) {
+	$gContent = new BitPage( @BitBase::verifyId( $lookupHash['page_id'] ) ? $lookupHash['page_id'] : NULL, @BitBase::verifyId( $lookupHash['content_id'] ) ? $lookupHash['content_id'] : NULL );
 
-			if( $loadPage && $existsInfo = $wikilib->pageExists( $loadPage ) ) {
-				if (count($existsInfo)) {
-					if (count($existsInfo) > 1) {
-						// Display page so user can select which wiki page they want (there are multiple that share this name)
-						$gBitSmarty->assign( 'choose', $_REQUEST['page'] );
-						$gBitSmarty->assign('dupePages', $existsInfo);
-						$gBitSystem->display('bitpackage:wiki/page_select.tpl');
-						die;
-					} else {
-						$gContent->mPageId = $existsInfo[0]['page_id'];
-					}
-				}
-			} elseif ($loadPage) {
-				$gBitSmarty->assign('page', $loadPage);//to have the create page link in the error
-			}
-		}
-		if( !$gContent->load() && $loadPage ) {
-			$gContent->mInfo['title'] = $loadPage;
-		}
- 	}
+	$loadPage = (!empty( $lookupHash['page'] ) ? $lookupHash['page'] : NULL);
+	if( empty( $gContent->mPageId ) && empty( $gContent->mContentId )  ) {
+		//handle legacy forms that use plain 'page' form variable name
 
-	// Now that gContent is loaded, we can transparently update user 
-	// permissions as set by the individual page permissions - if any are set
-	// this is now done using a liberty service - xing
-	//$gContent->updateUserPermissions();
-
-	// we weren't passed a structure, but maybe this page belongs to one. let's check...
-	if( empty( $gStructure ) ) {
-		//Get the structures this page is a member of
-		if( !empty($_REQUEST['structure']) ) {
-			$structure=$_REQUEST['structure'];
-		} else {
-			$structure='';
-		}
-		$structs = $gContent->getStructures();
-		if (count($structs)==1) {
-			$gStructure = new LibertyStructure( $structs[0]['structure_id'] );
-			if( $gStructure->load() ) {
-				$gStructure->loadNavigation();
-				$gStructure->loadPath();
-				$gBitSmarty->assign( 'structureInfo', $gStructure->mInfo );
-			}
-		} else {
-			$gBitSmarty->assign('showstructs', $structs);
-		}
-	}
-
-	if( $gContent->isValid() && $gBitSystem->isPackageActive( 'stickies' ) ) {
-		require_once( STICKIES_PKG_PATH.'BitSticky.php' );
-		global $gNote;
-		$gNote = new BitSticky( NULL, NULL, $gContent->mContentId );
-		$gNote->load();
-		$gBitSmarty->assign_by_ref( 'stickyInfo', $gNote->mInfo );
-	}
-
-	// if we are looking up a page
-	if( $gBitSystem->isFeatureActive( 'warn_on_edit' ) && $gContent->isValid() ) {
-		// Notice if a page is being edited or if it was being edited and not anymore
-		// print($GLOBALS["HTTP_REFERER"]);
-		// IF isset the referer and if the referer is editpage then unset taking the pagename from the
-		// query or homepage if not query
-		if (isset($_SERVER['HTTP_REFERER']) && (strstr($_SERVER['HTTP_REFERER'], WIKI_PKG_URL.'edit') ) ) {
-			$purl = parse_url($_SERVER['HTTP_REFERER']);
-
-			if (!isset($purl["query"])) {
-				$purl["query"] = '';
-			}
-
-			parse_str($purl["query"], $purlquery);
-
-			if (!isset($purlquery["page"])) {
-				$purlquery["page"] = $gBitSystem->getConfig( 'wiki_home_page' );
-			}
-
-			if (isset($_SESSION["edit_lock"])) {
-				// TODO - find out if this function is supposed to exist - wolff_borg
-				//$gBitUser->expungeSemaphore($purlquery["page"], $_SESSION["edit_lock"]);
-			}
-		}
-
-		if (strstr($_SERVER['REQUEST_URI'], WIKI_PKG_URL . 'edit')) {
-			$purl = parse_url($_SERVER['REQUEST_URI']);
-
-			if (!isset($purl["query"])) {
-				$purl["query"] = '';
-			}
-
-			parse_str($purl["query"], $purlquery);
-
-			// When WIKI_PKG_URL.'edit.php' is loading, check to see if there is an editing conflict
-			if( $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->getConfig( 'wiki_warn_on_edit_time' ) * 60 ) ) {
-				$gBitSmarty->assign('editpageconflict', 'y');
-			} else {
-				if (!(isset($_REQUEST['save'])) && $gContent->isValid() ) {
-					$_SESSION["edit_lock"] = $gBitUser->storeSemaphore( $gContent->mContentId );
-					$gBitSmarty->assign('editpageconflict', 'n');
+		if( $loadPage && $existsInfo = $wikilib->pageExists( $loadPage ) ) {
+			if (count($existsInfo)) {
+				if (count($existsInfo) > 1) {
+					// Display page so user can select which wiki page they want (there are multiple that share this name)
+					$gBitSmarty->assign( 'choose', $lookupHash['page'] );
+					$gBitSmarty->assign('dupePages', $existsInfo);
+					$gBitSystem->display('bitpackage:wiki/page_select.tpl');
+					die;
+				} else {
+					$gContent->mPageId = $existsInfo[0]['page_id'];
 				}
 			}
+		} elseif( $loadPage ) {
+			$gBitSmarty->assign('page', $loadPage);//to have the create page link in the error
+		}
+	}
+	if( !$gContent->load() && $loadPage ) {
+		$gContent->mInfo['title'] = $loadPage;
+	}
+}
+
+// Now that gContent is loaded, we can transparently update user 
+// permissions as set by the individual page permissions - if any are set
+// this is now done using a liberty service - xing
+//$gContent->updateUserPermissions();
+
+// we weren't passed a structure, but maybe this page belongs to one. let's check...
+if( empty( $gStructure ) ) {
+	//Get the structures this page is a member of
+	if( !empty($lookupHash['structure']) ) {
+		$structure=$lookupHash['structure'];
+	} else {
+		$structure='';
+	}
+	$structs = $gContent->getStructures();
+	if (count($structs)==1) {
+		$gStructure = new LibertyStructure( $structs[0]['structure_id'] );
+		if( $gStructure->load() ) {
+			$gStructure->loadNavigation();
+			$gStructure->loadPath();
+			$gBitSmarty->assign( 'structureInfo', $gStructure->mInfo );
+		}
+	} else {
+		$gBitSmarty->assign('showstructs', $structs);
+	}
+}
+
+if( $gContent->isValid() && $gBitSystem->isPackageActive( 'stickies' ) ) {
+	require_once( STICKIES_PKG_PATH.'BitSticky.php' );
+	global $gNote;
+	$gNote = new BitSticky( NULL, NULL, $gContent->mContentId );
+	$gNote->load();
+	$gBitSmarty->assign_by_ref( 'stickyInfo', $gNote->mInfo );
+}
+
+// if we are looking up a page
+if( $gBitSystem->isFeatureActive( 'warn_on_edit' ) && $gContent->isValid() ) {
+	// Notice if a page is being edited or if it was being edited and not anymore
+	// print($GLOBALS["HTTP_REFERER"]);
+	// IF isset the referer and if the referer is editpage then unset taking the pagename from the
+	// query or homepage if not query
+	if (isset($_SERVER['HTTP_REFERER']) && (strstr($_SERVER['HTTP_REFERER'], WIKI_PKG_URL.'edit') ) ) {
+		$purl = parse_url($_SERVER['HTTP_REFERER']);
+
+		if (!isset($purl["query"])) {
+			$purl["query"] = '';
 		}
 
-		if( $semUser = $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->getConfig( 'wiki_warn_on_edit_time' ) * 60 ) ) {
-			$gContent->mErrors['edit_conflict'] = 'This page is being edited by '.$gBitUser->getDisplayName( TRUE, $semUser ).'. Proceed at your own peril';
-			$gBitSmarty->assign( 'semUser', $semUser );
-			$beingedited = 'y';
-		} else {
-			$beingedited = 'n';
+		parse_str($purl["query"], $purlquery);
+
+		if (!isset($purlquery["page"])) {
+			$purlquery["page"] = $gBitSystem->getConfig( 'wiki_home_page' );
 		}
-		$gBitSmarty->assign('beingEdited', $beingedited);
+
+		if (isset($_SESSION["edit_lock"])) {
+			// TODO - find out if this function is supposed to exist - wolff_borg
+			//$gBitUser->expungeSemaphore($purlquery["page"], $_SESSION["edit_lock"]);
+		}
 	}
-	$gBitSmarty->clear_assign( 'gContent' );
-	$gBitSmarty->assign_by_ref( 'gContent', $gContent );
+
+	if (strstr($_SERVER['REQUEST_URI'], WIKI_PKG_URL . 'edit')) {
+		$purl = parse_url($_SERVER['REQUEST_URI']);
+
+		if (!isset($purl["query"])) {
+			$purl["query"] = '';
+		}
+
+		parse_str($purl["query"], $purlquery);
+
+		// When WIKI_PKG_URL.'edit.php' is loading, check to see if there is an editing conflict
+		if( $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->getConfig( 'wiki_warn_on_edit_time' ) * 60 ) ) {
+			$gBitSmarty->assign('editpageconflict', 'y');
+		} else {
+			if (!(isset($lookupHash['save'])) && $gContent->isValid() ) {
+				$_SESSION["edit_lock"] = $gBitUser->storeSemaphore( $gContent->mContentId );
+				$gBitSmarty->assign('editpageconflict', 'n');
+			}
+		}
+	}
+
+	if( $semUser = $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->getConfig( 'wiki_warn_on_edit_time' ) * 60 ) ) {
+		$gContent->mErrors['edit_conflict'] = 'This page is being edited by '.$gBitUser->getDisplayName( TRUE, $semUser ).'. Proceed at your own peril';
+		$gBitSmarty->assign( 'semUser', $semUser );
+		$beingedited = 'y';
+	} else {
+		$beingedited = 'n';
+	}
+	$gBitSmarty->assign('beingEdited', $beingedited);
+}
+$gBitSmarty->clear_assign( 'gContent' );
+$gBitSmarty->assign_by_ref( 'gContent', $gContent );
 ?>
