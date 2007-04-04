@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.84 2007/03/31 23:30:19 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.85 2007/04/04 14:31:33 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.84 $ $Date: 2007/03/31 23:30:19 $ $Author: squareing $
+ * @version $Revision: 1.85 $ $Date: 2007/04/04 14:31:33 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.84 2007/03/31 23:30:19 squareing Exp $
+ * $Id: BitPage.php,v 1.85 2007/04/04 14:31:33 squareing Exp $
  */
 
 /**
@@ -1167,7 +1167,7 @@ class WikiLib extends BitPage {
 		global $wiki_home_page, $gBitSystem, $gBitUser;
 
 		$tar = new tar();
-		$tar->addFile( $gBitSystem->getStyleCss() );
+		$tar->addFile( $gBitThemes->getStyleCss() );
 		// Foreach page
 		$query = "select * from `".BIT_DB_PREFIX."wiki_pages`";
 		$result = $this->mDb->query($query,array());
@@ -1187,7 +1187,7 @@ class WikiLib extends BitPage {
 			$dat = preg_replace("/edit.php\?page=([^\'\"\$]+)/", "", $dat);
 			//preg_match_all("/index.php\?page=([^ ]+)/",$dat,$cosas);
 			//print_r($cosas);
-			$data = "<html><head><title>" . $res["title"] . "</title><link rel='StyleSheet' href='".$gBitSystem->getStyleCss()."' type='text/css'></head><body><a class='wiki' href='$wiki_home_page.html'>home</a><br/><h1>" . $res["title"] . "</h1><div class='wikitext'>" . $dat . '</div></body></html>';
+			$data = "<html><head><title>" . $res["title"] . "</title><link rel='StyleSheet' href='".$gBitThemes->getStyleCss()."' type='text/css'></head><body><a class='wiki' href='$wiki_home_page.html'>home</a><br/><h1>" . $res["title"] . "</h1><div class='wikitext'>" . $dat . '</div></body></html>';
 			$tar->addData($title, $data, $res["last_modified"]);
 		}
 
