@@ -3,7 +3,7 @@
  * BitBook class
  *
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.4 $
+ * @version  $Revision: 1.5 $
  * @package  wiki
  */
 // +----------------------------------------------------------------------+
@@ -18,7 +18,7 @@
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
 //
-// $Id: BitBook.php,v 1.4 2005/12/26 12:27:43 squareing Exp $
+// $Id: BitBook.php,v 1.5 2007/04/16 20:35:27 jetskijoe Exp $
 
 
 /**
@@ -34,11 +34,13 @@ define('BITBOOK_CONTENT_TYPE_GUID', 'bitbook' );
  *
  * @abstract
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.4 $
+ * @version  $Revision: 1.5 $
  * @package  wiki
  * @subpackage BitBook
  */
 class BitBook extends BitPage {
+	var $mPageId;
+	var $mPageName;
 	 function BitBook( $pPageId=NULL, $pContentId=NULL ) {
 		$this->registerContentType( BITBOOK_CONTENT_TYPE_GUID, array(
 			'content_type_guid' => BITBOOK_CONTENT_TYPE_GUID,
