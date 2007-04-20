@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.35 2007/03/17 14:42:28 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.36 2007/04/20 12:43:28 nickpalmer Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -83,28 +83,11 @@
 							</div>
 						{/if}
 
-						{include file="bitpackage:liberty/edit_content_status_inc.tpl"}
-
-						{include file="bitpackage:liberty/edit_format.tpl"}
-
-						{if $gBitSystem->isPackageActive( 'smileys' )}
-							{include file="bitpackage:smileys/smileys_full.tpl"}
-						{/if}
-
-						{if $gBitSystem->isPackageActive( 'quicktags' )}
-							{include file="bitpackage:quicktags/quicktags_full.tpl"}
-						{/if}
-
 						{if $pageInfo.edit_section == 1}
 							<input type="hidden" name="section" value="{$pageInfo.section}" />
 						{/if}
 
-						<div class="row">
-							{formlabel label="" for=$textarea_id}
-							{forminput}
-								<textarea {spellchecker} id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:20}" cols="50">{$pageInfo.data|escape:html}</textarea>
-							{/forminput}
-						</div>
+						{textarea}{$pageInfo.data}{/textarea}
 
 						{if $footnote}
 							<div class="row">
