@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.32 2007/03/31 23:33:05 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.33 2007/04/20 13:36:59 nickpalmer Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.32 2007/03/31 23:33:05 squareing Exp $
+ * $Id: edit.php,v 1.33 2007/04/20 13:36:59 nickpalmer Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -450,11 +450,6 @@ if( isset( $_REQUEST["preview"] ) ) {
 	$gContent->invokeServices( 'content_edit_function' );
 }
 
-// Configure quicktags list
-if( $gBitSystem->isPackageActive( 'quicktags' ) ) {
-	include_once( QUICKTAGS_PKG_PATH.'quicktags_inc.php' );
-}
-
 if( $gContent->isInStructure() ) {
 	$gBitSmarty->assign( 'showstructs', $gContent->getStructures() );
 }
@@ -463,9 +458,6 @@ if( $gContent->isInStructure() ) {
 // so no need to show comments & attachments, but need
 // to show 'wiki quick help'
 $gBitSmarty->assign( 'edit_page', 'y' );
-
-// WYSIWYG and Quicktag variable
-$gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
 
 // formInfo might be set due to a error on submit
 if( empty( $formInfo ) ) {
