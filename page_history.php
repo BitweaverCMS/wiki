@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.17 2007/03/20 16:56:34 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.18 2007/04/23 09:36:32 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.17 2007/03/20 16:56:34 spiderr Exp $
+ * $Id: page_history.php,v 1.18 2007/04/23 09:36:32 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -29,7 +29,7 @@ include( WIKI_PKG_PATH.'lookup_page_inc.php' );
 
 //vd($gContent->mPageId);vd($gContent->mInfo);
 if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {
-	$gBitSystem->fatalError( "Unknown page" );
+	$gBitSystem->fatalError( tra( "Unknown page" ));
 }
 
 $page_id = $_REQUEST['page_id'];

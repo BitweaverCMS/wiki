@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.33 2007/04/20 13:36:59 nickpalmer Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.34 2007/04/23 09:36:32 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.33 2007/04/20 13:36:59 nickpalmer Exp $
+ * $Id: edit.php,v 1.34 2007/04/23 09:36:32 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -41,9 +41,9 @@ if( ( !empty( $_REQUEST['page'] ) && $_REQUEST['page'] == 'SandBox' ) || ( !empt
 
 
 if( $wiki_sandbox && !$gBitSystem->isFeatureActive( 'wiki_sandbox' ) ) {
-	$gBitSystem->fatalError( "The SandBox is disabled" );
+	$gBitSystem->fatalError( tra( "The SandBox is disabled" ));
 } elseif( !$wiki_sandbox && !$gContent->hasUserPermission( 'p_wiki_edit_page' ) ) {
-	$gBitSystem->fatalError( 'Permission denied you cannot edit the page named "'.$gContent->getTitle().'"' );
+	$gBitSystem->fatalError( tra( 'Permission denied you cannot edit the page named' ).' "'.$gContent->getTitle().'"' );
 }
 
 if( $gContent->isLocked() ) {
@@ -201,14 +201,14 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 		//   At least one export filter for wiki already coded : ) -- PDF exporter...
 		$sdta = @file_get_contents( $suck_url );
 		if( isset( $php_errormsg ) && strlen( $php_errormsg ) ) {
-			$gBitSystem->fatalError( 'Can\'t import remote HTML page' );
+			$gBitSystem->fatalError( tra( "Can't import remote HTML page" ));
 		}
 		// Need to parse HTML?
 		if( $parsehtml == 'y' ) {
 			// Read compiled( serialized ) grammar
 			$grammarfile = UTIL_PKG_PATH.'htmlparser/htmlgrammar.cmp';
 			if( !$fp = @fopen( $grammarfile,'r' ) ) {
-				$gBitSystem->fatalError( 'Can\'t parse remote HTML page' );
+				$gBitSystem->fatalError( tra( "Can't parse remote HTML page" ));
 			}
 			$grammar = unserialize( fread( $fp, filesize( $grammarfile ) ) );
 			fclose( $fp );
