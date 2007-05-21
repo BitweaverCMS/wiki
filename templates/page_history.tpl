@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.10 2007/02/11 09:38:19 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.11 2007/05/21 18:51:51 lsces Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
@@ -67,7 +67,7 @@
 					</td>
 				</tr>
 
-				{foreach from=$history item=item}
+				{foreach from=$data item=item}
 					<tr class="{cycle values='even,odd' advance=false}">
 						<td><label for="hist_{$item.version}">{$item.last_modified|bit_short_datetime}<br />{$item.history_comment}</label></td>
 						<td>{displayname hash=$item}</td>

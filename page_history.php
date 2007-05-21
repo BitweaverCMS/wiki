@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.18 2007/04/23 09:36:32 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.19 2007/05/21 18:51:50 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.18 2007/04/23 09:36:32 squareing Exp $
+ * $Id: page_history.php,v 1.19 2007/05/21 18:51:50 lsces Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -91,8 +91,7 @@ if (isset($_REQUEST["delete"]) && isset($_REQUEST["hist"])) {
 $gBitSmarty->assign( 'page', $page = !empty( $_REQUEST['list_page'] ) ? $_REQUEST['list_page'] : 1 );
 $offset = ( $page - 1 ) * $gBitSystem->getConfig( 'max_records' );
 $history = $gContent->getHistory( NULL, NULL, $offset, $gBitSystem->getConfig( 'max_records' ) );
-$gContent->postGetList($history);
-$gBitSmarty->assign_by_ref( 'history', $history );
+$gBitSmarty->assign_by_ref( 'data', $history['data'] );
 $gBitSmarty->assign_by_ref( 'listInfo', $history['listInfo'] );
 
 // Display the template
