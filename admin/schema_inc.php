@@ -14,10 +14,7 @@ $tables = array(
 	wiki_page_size I4 DEFAULT 0,
 	description C(200),
 	edit_comment C(200),
-	flag C(1),
-	points I4,
-	votes I4,
-	page_rank N(4,3)
+	flag C(1)
 ",
 
 'wiki_received_pages' => "
@@ -68,7 +65,6 @@ $gBitInstaller->registerPackageInfo( WIKI_PKG_NAME, array(
 // ### Indexes
 $indices = array (
 	'wiki_pages_content_idx' => array( 'table' => 'wiki_pages', 'cols' => 'content_id', 'opts' => 'UNIQUE' ),
-	'wiki_pages_page_rank_idx' => array( 'table' => 'wiki_pages', 'cols' => 'page_rank', 'opts' => NULL ),
 	'wiki_page_footnotes_page_idx' => array( 'table' => 'wiki_footnotes', 'cols' => 'page_id', 'opts' => NULL )
 );
 $gBitInstaller->registerSchemaIndexes( WIKI_PKG_NAME, $indices );
