@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.86 2007/06/01 15:16:48 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.87 2007/06/01 16:01:29 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.86 $ $Date: 2007/06/01 15:16:48 $ $Author: squareing $
+ * @version $Revision: 1.87 $ $Date: 2007/06/01 16:01:29 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.86 2007/06/01 15:16:48 squareing Exp $
+ * $Id: BitPage.php,v 1.87 2007/06/01 16:01:29 squareing Exp $
  */
 
 /**
@@ -249,15 +249,7 @@ class BitPage extends LibertyAttachable {
 					}
 				}
 			}
-
-/*		} elseif( !empty( $pParamHash['page'] ) && !empty( $pParamHash['newpage'] ) && ( $pParamHash['page'] != $pParamHash['newpage'] ) ) {
-			// check for rename, and rename it now if we can
-			if ($this->wiki_rename_page( $pParamHash['page'], $pParamHash['newpage'])) {
-				$pParamHash['page'] = $pParamHash['newpage'];
-			} else {
-				$this->mErrors['page'] = 'Page "'.$pParamHash['newpage'].'" already exists, it could not be renamed';
-			}
-*/		}
+		}
 
 		if( empty( $pParamHash['edit_comment'] ) ) {
 			$pParamHash['page_store']['edit_comment'] = NULL;
@@ -732,95 +724,30 @@ class BitPage extends LibertyAttachable {
 		$this->mDb->query( $query, $bindVars);
 		return true;
 	}
-}
 
-define('PLUGINS_DIR', WIKI_PKG_PATH.'plugins');
-/**
- * @package wiki
- */
-class WikiLib extends BitPage {
-	function WikiLib() {
-		BitPage::BitPage();
-	}
-
-	// 29-Jun-2003, by zaufi
-	// The 2 functions below contain duplicate code
-	// to remove <PRE> tags... (moreover I copy this code
-	// from gBitSystem.php, and paste to artlib.php, bloglib.php
-	// and wikilib.php)
-	// TODO: it should be separate function to avoid
-	// maintain 3 pieces... (but I don't know PHP and TIKI
-	// architecture very well yet to make this :()
-	//Special parsing for multipage articles
-	function countPages($data) {
-/*
-
-		SPIDER KILL - 2005-05-16 - This was causing apache segfaults
-
-		// Temporary remove <PRE></PRE> secions to protect
-		// from broke <PRE> tags and leave well known <PRE>
-		// behaviour (i.e. type all text inside AS IS w/o
-		// any interpretation)
-
-		$preparsed = array();
-		preg_match_all("/(<[Pp][Rr][Ee]>)((.|\n)*?)(<\/[Pp][Rr][Ee]>)/", $data, $preparse);
-		$idx = 0;
-		foreach (array_unique($preparse[2])as $pp) {
-			$key = md5(BitSystem::genPass());
-			$aux["key"] = $key;
-			$aux["data"] = $pp;
-			$preparsed[] = $aux;
-			$data = str_replace($preparse[1][$idx] . $pp . $preparse[4][$idx], $key, $data);
-			$idx = $idx + 1;
-		}
-		$parts = explode("...page...", $data);
-		return count($parts);
-*/
+	// ...page... functions
+	function countSubPages($data) {
 		// we always have at least one page
 		return( (preg_match_all( '/'.(defined('PAGE_SEP') ? preg_quote(PAGE_SEP) : '\.\.\.page\.\.\.').'/', $data, $matches ) + 1) );
 	}
 
-	function get_page($data, $i) {
-/*
-
-		SPIDER KILL - 2005-05-16 - This was causing apache segfaults
-
-		// Temporary remove <PRE></PRE> secions to protect
-		// from broke <PRE> tags and leave well known <PRE>
-		// behaviour (i.e. type all text inside AS IS w/o
-		// any interpretation)
-
-		$preparsed = array();
-		preg_match_all("/(<[Pp][Rr][Ee]>)((.|\n)*?)(<\/[Pp][Rr][Ee]>)/", $data, $preparse);
-		$idx = 0;
-		foreach (array_unique($preparse[2])as $pp) {
-			$key = md5(BitSystem::genPass());
-			$aux["key"] = $key;
-			$aux["data"] = $pp;
-			$preparsed[] = $aux;
-			$data = str_replace($preparse[1][$idx] . $pp . $preparse[4][$idx], $key, $data);
-			$idx = $idx + 1;
-		}
-*/		// Get slides
+	function getSubPage($data, $i) {
+		// Get slides
 		$parts = explode(defined('PAGE_SEP') ? PAGE_SEP : "...page...", $data);
 		if (substr($parts[$i - 1], 1, 5) == "<br/>")
 			$ret = substr($parts[$i - 1], 6);
 		else
 			$ret = $parts[$i - 1];
-/*		// Replace back <PRE> sections
-		foreach ($preparsed as $pp)
-			$ret = str_replace($pp["key"], "<pre>" . $pp["data"] . "</pre>", $ret);
-*/
 		return $ret;
 	}
 
 	// Like pages are pages that share a word in common with the current page
-	function get_like_pages($page) {
+	function getLikePages( $pPageTitle ) {
 		$ret = array();
 		if( !empty( $pPageName ) ) {
-			preg_match_all("/([A-Z])([a-z]+)/", $page, $words);
+			preg_match_all("/([A-Z])([a-z]+)/", $pPageTitle, $words);
 			// Add support to ((x)) in either strict or full modes
-			preg_match_all("/(([A-Za-z]|[\x80-\xFF])+)/", $page, $words2);
+			preg_match_all("/(([A-Za-z]|[\x80-\xFF])+)/", $pPageTitle, $words2);
 			$words = array_unique(array_merge($words[0], $words2[0]));
 			$exps = array();
 			$bindVars=array();
@@ -842,90 +769,16 @@ class WikiLib extends BitPage {
 		}
 		return $ret;
 	}
-/*
+}
 
-	DEPRECTATED - spider 2005-10-07
-
-	function get_user_pages( $pUserId, $max, $who='user_id') {
-		if( $pUserId ) {
-			$query = "SELECT lc.`title` as `title`
-					  FROM `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
-					  WHERE `$who`=?";
-
-			$result = $this->mDb->query($query,array($pUserId),$max);
-			$ret = array();
-
-			while ($res = $result->fetchRow()) {
-			$ret[] = $res;
-			}
-
-			return $ret;
-		}
+define('PLUGINS_DIR', WIKI_PKG_PATH.'plugins');
+/**
+ * @package wiki
+ */
+class WikiLib extends BitPage {
+	function WikiLib() {
+		BitPage::BitPage();
 	}
-*/
-
-/* ======================================== NOT USED ANYWHERE - not sure how to calculate a ranking of wiki pages anyway. what are the criteria and what does it say about a page? - xing
-	// This function calculates the page_ranks for the wiki_pages
-	// it can be used to compute the most relevant pages
-	// according to the number of links they have
-	// this can be a very interesting ranking for the Wiki
-	// More about this on version 1.3 when we add the page_rank
-	// column to wiki_pages
-	function page_rank($loops = 16) {
-		$query = "select `content_id`, lc.`title`  from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( wp.`content_id`=lc.`content_id` ";
-		$result = $this->mDb->query($query,array());
-		$ret = array();
-
-		while ($res = $result->fetchRow()) {
-			$ret[$res["content_id"]] = $res["title"];
-		}
-
-		// Now calculate the loop
-		$pages = array();
-
-		foreach( array_keys( $ret ) as $conId ) {
-			$val = 1 / count($ret);
-
-			$pages[$conId] = $val;
-			// Fixed query.  -rlpowell
-			$query = "update `".BIT_DB_PREFIX."wiki_pages` set `page_rank`=? where `content_id`= ?";
-			$result = $this->mDb->query($query, array((int)$val, $conId) );
-		}
-
-		for ($i = 0; $i < $loops; $i++) {
-			foreach ($pages as $pagename => $rank) {
-				// Get all the pages linking to this one
-				// Fixed query.  -rlpowell
-				$query = "select `from_content_id`  from `".BIT_DB_PREFIX."liberty_content_links` where `to_content_id` = ?";
-				$result = $this->mDb->query($query, array( $pagename ) );
-				$sum = 0;
-
-				while ($res = $result->fetchRow()) {
-				$linking = $res["from_page"];
-
-				if (isset($pages[$linking])) {
-					// Fixed query.  -rlpowell
-					$q2 = "select count(*) from `".BIT_DB_PREFIX."liberty_content_links` where `from_page`= ?";
-					$cant = $this->mDb->getOne($q2, array($linking) );
-					if ($cant == 0) $cant = 1;
-					$sum += $pages[$linking] / $cant;
-				}
-				}
-
-				$val = (1 - 0.85) + 0.85 * $sum;
-				$pages[$pagename] = $val;
-				// Fixed query.  -rlpowell
-				$query = "update `".BIT_DB_PREFIX."wiki_pages` set `page_rank`=? where `title`=?";
-				$result = $this->mDb->query($query, array((int)$val, $pagename) );
-
-				// Update
-			}
-		}
-
-		arsort ($pages);
-		return $pages;
-	}
-*/
 
 	function wiki_page_graph(&$str, &$graph, $garg) {
 		$page = $str['name'];
@@ -987,34 +840,16 @@ class WikiLib extends BitPage {
 		return $aux;
 	}
 
-	function wiki_link_structure() {
-		$query = "select `title` from `".BIT_DB_PREFIX."wiki_pages` order by ".$this->mDb->convertSortmode("title_asc");
-		$result = $this->mDb->query($query);
-		while ($res = $result->fetchRow()) {
-			print ($res["title"] . " ");
-			$page = $res["title"];
-			$query2 = "select `to_page` from `".BIT_DB_PREFIX."liberty_content_links` where `from_page`=?";
-			$result2 = $this->mDb->query($query2, array( $page ) );
-			$pages = array();
-			while ($res2 = $result2->fetchRow()) {
-			if (($res2["to_page"] <> $res["title"]) && (!in_array($res2["to_page"], $pages))) {
-				$pages[] = $res2["to_page"];
-				print ($res2["to_page"] . " ");
-			}
-			}
-			print ("\n");
-		}
-	}
 	/*shared*/
 	function list_received_pages($offset, $max_records, $sort_mode = 'title_asc', $find) {
 		$bindvars = array();
 		if ($find) {
-		$findesc = '%'.strtoupper( $find ).'%';
-		$mid = " where (UPPER(`pagename`) like ? or UPPER(`data`) like ?)";
-		$bindvbars[] = $findesc;
-		$bindvbars[] = $findesc;
+			$findesc = '%'.strtoupper( $find ).'%';
+			$mid = " where (UPPER(`pagename`) like ? or UPPER(`data`) like ?)";
+			$bindvbars[] = $findesc;
+			$bindvbars[] = $findesc;
 		} else {
-		$mid = "";
+			$mid = "";
 		}
 
 		$query = "select * from `".BIT_DB_PREFIX."wiki_received_pages` $mid order by ".$this->mDb->convertSortmode($sort_mode);
@@ -1024,13 +859,13 @@ class WikiLib extends BitPage {
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
-		if ($this->pageExists($res["title"])) {
-			$res["exists"] = 'y';
-		} else {
-			$res["exists"] = 'n';
-		}
+			if ($this->pageExists($res["title"])) {
+				$res["exists"] = 'y';
+			} else {
+				$res["exists"] = 'n';
+			}
 
-		$ret[] = $res;
+			$ret[] = $res;
 		}
 
 		$retval = array();
@@ -1046,6 +881,26 @@ class WikiLib extends BitPage {
 	 * =================================================================================================
 	 * =================================================================================================
 	 * =================================================================================================
+
+	function wiki_link_structure() {
+		$query = "select `title` from `".BIT_DB_PREFIX."wiki_pages` order by ".$this->mDb->convertSortmode("title_asc");
+		$result = $this->mDb->query($query);
+		while ($res = $result->fetchRow()) {
+			print ($res["title"] . " ");
+			$page = $res["title"];
+			$query2 = "select `to_page` from `".BIT_DB_PREFIX."liberty_content_links` where `from_page`=?";
+			$result2 = $this->mDb->query($query2, array( $page ) );
+			$pages = array();
+			while ($res2 = $result2->fetchRow()) {
+				if (($res2["to_page"] <> $res["title"]) && (!in_array($res2["to_page"], $pages))) {
+					$pages[] = $res2["to_page"];
+					print ($res2["to_page"] . " ");
+				}
+			}
+			print ("\n");
+		}
+	}
+
 	// This funcion return the $limit most accessed pages
 	// it returns title and hits for each page
 	function get_top_pages($limit) {
@@ -1289,16 +1144,6 @@ class WikiLib extends BitPage {
 		$t = $gBitSystem->getUTCTime();
 	}
 	 */
-}
-
-/**
- * the wikilib class
- * @global WikiLib $wikilib
- */
-global $wikilib;
-// Perhaps someone overrode the wikilib class to do there own magic, and have alread instantiated...
-if( empty( $wikilib ) ) {
-	$wikilib = new WikiLib();
 }
 
 ?>

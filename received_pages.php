@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/received_pages.php,v 1.8 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/received_pages.php,v 1.9 2007/06/01 16:01:30 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: received_pages.php,v 1.8 2006/04/11 13:10:33 squareing Exp $
+ * $Id: received_pages.php,v 1.9 2007/06/01 16:01:30 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -57,7 +57,7 @@ $gBitSmarty->assign('title', $info["title"]);
 $gBitSmarty->assign('data', $info["data"]);
 $gBitSmarty->assign('comment', $info["comment"]);
 // Assign parsed
-$gBitSmarty->assign('parsed', $wikilib->parseData($info));
+$gBitSmarty->assign('parsed', $gContent->parseData($info));
 if (isset($_REQUEST["remove"])) {
 	
 	$commlib->remove_received_page($_REQUEST["remove"]);
@@ -94,6 +94,7 @@ if (isset($_REQUEST["find"])) {
 }
 $gBitSmarty->assign_by_ref('find', $find);
 
+$wikilib = new WikiLib();
 $channels = $wikilib->list_received_pages($offset, $max_records, $sort_mode, $find);
 $cant_pages = ceil($channels["cant"] / $max_records);
 $gBitSmarty->assign_by_ref('cant_pages', $cant_pages);

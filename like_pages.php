@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/like_pages.php,v 1.10 2007/06/01 15:16:49 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/like_pages.php,v 1.11 2007/06/01 16:01:30 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: like_pages.php,v 1.10 2007/06/01 15:16:49 squareing Exp $
+ * $Id: like_pages.php,v 1.11 2007/06/01 16:01:30 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -25,13 +25,11 @@ $gBitSystem->verifyPermission( 'p_wiki_view_page', tra( "Permission denied you c
 
 // Get the page from the request var or default it to HomePage
 if( !$gContent->isValid() ) {
-	$gBitSmarty->assign('msg', tra("No page indicated"));
-	$gBitSystem->display( 'error.tpl' );
-	die;
+	$gBitSystem->fatalError( tra( "No page indicated" ));
 }
 
-$likepages = $gContent->get_like_pages( $gContent->mInfo['title'] );
-$gBitSmarty->assign_by_ref('likepages', $likepages);
+$likepages = $gContent->getLikePages( $gContent->mInfo['title'] );
+$gBitSmarty->assign_by_ref( 'likepages', $likepages );
 
 // Display the template
 $gBitSystem->display( 'bitpackage:wiki/like_pages.tpl');

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.16 2007/06/01 15:16:49 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.17 2007/06/01 16:01:30 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: slideshow.php,v 1.16 2007/06/01 15:16:49 squareing Exp $
+ * $Id: slideshow.php,v 1.17 2007/06/01 16:01:30 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -17,9 +17,7 @@
  * required setup
  */
 require_once( '../bit_setup_inc.php' );
-
 require_once( 'BitPage.php' );
-
 
 $gBitSystem->verifyPackage( 'wiki' );
 //print($GLOBALS["HTTP_REFERER"]);
@@ -33,13 +31,11 @@ if (!isset($_SESSION["thedate"])) {
 require_once ( WIKI_PKG_PATH.'lookup_page_inc.php' );
 // If the page doesn't exist then display an error
 if (!$gContent->isValid()) {
-	$gBitSmarty->fatalError(tra("Page cannot be found"));
+	$gBitSystem->fatalError(tra("Page cannot be found"));
 }
 
 // Now check permissions to access this page
-if (!$gBitUser->hasPermission( 'p_wiki_view_page' )) {
-	$gBitSmarty->fatalError(tra("Permission denied you cannot view this page"));
-}
+$gBitSystem->verifyPermission( 'p_wiki_view_page' );
 
 // Get page data
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );

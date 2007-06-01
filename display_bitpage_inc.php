@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.33 2007/06/01 15:16:49 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.34 2007/06/01 16:01:30 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.33 2007/06/01 15:16:49 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.34 2007/06/01 16:01:30 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -101,12 +101,13 @@ if ($gBitSystem->isFeatureActive( 'wiki_uses_slides' )) {
 	$gBitSmarty->assign('show_slideshow','n');
 }
 
-$pages = $gContent->countPages($gContent->mInfo['parsed_data']);
+// ...page... stuff - TODO: this is cumbersome and should be cleaned up
+$pages = $gContent->countSubPages($gContent->mInfo['parsed_data']);
 if( $pages > 1 ) {
 	if(!isset($_REQUEST['pagenum'])) {
 		$_REQUEST['pagenum']=1;
 	}
-	$gContent->mInfo['parsed_data']=$gContent->get_page($gContent->mInfo['parsed_data'],$_REQUEST['pagenum']);
+	$gContent->mInfo['parsed_data']=$gContent->getSubPage($gContent->mInfo['parsed_data'],$_REQUEST['pagenum']);
 	$gBitSmarty->assign('pages',$pages);
 	if($pages>$_REQUEST['pagenum']) {
 		$gBitSmarty->assign('next_page',$_REQUEST['pagenum']+1);
@@ -122,6 +123,7 @@ if( $pages > 1 ) {
 	$gBitSmarty->assign('last_page',$pages);
 	$gBitSmarty->assign('pagenum',$_REQUEST['pagenum']);
 }
+
 //$gBitSmarty->assign_by_ref('last_modified',date("l d of F, Y  [H:i:s]",$gContent->mInfo["last_modified"]));
 $gBitSmarty->assign_by_ref('last_modified',$gContent->mInfo["last_modified"]);
 if(empty($gContent->mInfo["user"])) {
