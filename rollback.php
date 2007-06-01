@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/rollback.php,v 1.8 2007/03/20 16:56:34 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/rollback.php,v 1.9 2007/06/01 18:06:03 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: rollback.php,v 1.8 2007/03/20 16:56:34 spiderr Exp $
+ * $Id: rollback.php,v 1.9 2007/06/01 18:06:03 wjames5 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -47,8 +47,8 @@ if (!$gBitUser->hasPermission( 'p_wiki_rollback' )) {
 	die;
 }
 $version = $gContent->getHistory( $version );
-$version[0]["data"] = $gContent->parseData($version[0]);
-$gBitSmarty->assign_by_ref('preview', $version[0]);
+$version["data"][0]["data"] = $gContent->parseData($version["data"][0]);
+$gBitSmarty->assign_by_ref('preview', $version["data"][0]);
 if (isset($_REQUEST["rollback"])) {
 	if( $gContent->rollbackVersion( $_REQUEST["version"] ) ) {
 		header( "location: ".$gContent->getDisplayUrl() );
