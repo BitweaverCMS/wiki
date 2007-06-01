@@ -296,7 +296,14 @@ array( 'DATADICT' => array(
 		),
 	)),
 	array( 'DROPCOLUMN' => array(
-		'wiki_pages' => array( 'page_cache', 'wiki_cache', 'cache_timestamp' ),
+		'wiki_pages' => array(
+			'page_cache',
+			'wiki_cache',
+			'cache_timestamp',
+			'votes',
+			'points',
+			'page_rank',
+		),
 	)),
 )),
 array('QUERY' =>
