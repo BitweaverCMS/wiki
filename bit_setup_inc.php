@@ -22,9 +22,6 @@ if($gBitSystem->isPackageActive( 'wiki' ) ) {
 
 	$gBitSystem->registerNotifyEvent( array( "wiki_page_changes" => tra("Any wiki page is changed") ) );
 
-	// Stuff found in kernel that is package dependent - wolff_borg
-	include_once( WIKI_PKG_PATH.'diff.php' );
-
 	$wiki_home_page = $gBitSystem->getConfig("wiki_home_page", 'HomePage');
 }
 ?>
