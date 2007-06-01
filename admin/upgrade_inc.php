@@ -295,6 +295,9 @@ array( 'DATADICT' => array(
 			'`comment`' => '`edit_comment` C(200)',
 		),
 	)),
+	array( 'DROPCOLUMN' => array(
+		'wiki_pages' => array( 'page_cache', 'wiki_cache', 'cache_timestamp' ),
+	)),
 )),
 array('QUERY' =>
 	array( 'SQL92' => array(

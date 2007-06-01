@@ -96,21 +96,6 @@
 				{/section}
 			</select>
 		{/if}
-
-		{* potentially unused stuff
-		{if $gBitUser->hasPermission( 'p_wiki_admin' )}
-			<a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php?page_id={$gContent->mInfo.page_id}">{tr}Export{/tr}</a>
-		{/if}
-		{if $gBitUser->hasPermission( 'p_wiki_admin' )}
-			<a href="{$smarty.const.WIKI_PKG_URL}page_permissions.php?page_id={$gContent->mInfo.page_id}">{tr}Permissions{/tr}</a>
-		{/if}
-		{if $gBitSystem->isFeatureActive( 'users_watches' ) and $gContent->hasUserPermission('p_users_admin')}
-			<a href="{$smarty.const.WIKI_PKG_URL}page_watches.php?page_id={$gContent->mInfo.page_id}">{tr}Watches{/tr}</a>
-		{/if}
-		{if $gContent->mInfo.page_is_cached}
-			<a title="{tr}refresh cache{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;refresh=1">{biticon ipackage="icons" iname="view-refresh" iexplain="Refresh cache"}</a>
-		{/if}
-		*}
 	</div>
 {/if}
 {/strip}

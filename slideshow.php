@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.15 2007/03/21 08:56:52 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.16 2007/06/01 15:16:49 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: slideshow.php,v 1.15 2007/03/21 08:56:52 squareing Exp $
+ * $Id: slideshow.php,v 1.16 2007/06/01 15:16:49 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -33,47 +33,12 @@ if (!isset($_SESSION["thedate"])) {
 require_once ( WIKI_PKG_PATH.'lookup_page_inc.php' );
 // If the page doesn't exist then display an error
 if (!$gContent->isValid()) {
-	$gBitSmarty->assign('msg', tra("Page cannot be found"));
-
-	$gBitSystem->display( 'error.tpl' );
-	die;
+	$gBitSmarty->fatalError(tra("Page cannot be found"));
 }
 
 // Now check permissions to access this page
 if (!$gBitUser->hasPermission( 'p_wiki_view_page' )) {
-	$gBitSmarty->assign('msg', tra("Permission denied you cannot view this page"));
-
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
-
-// BreadCrumbNavigation here
-// Get the number of pages from the default or userPreferences
-// Remember to reverse the array when posting the array
-$anonpref = $wikilib->getPreference('users_bread_crumb', 4);
-
-if( $gBitUser->isRegistered() ) {
-	$users_bread_crumb = $wikilib->getPreference('users_bread_crumb', $anonpref, $user );
-} else {
-	$users_bread_crumb = $anonpref;
-}
-
-if( empty( $_SESSION["breadCrumb"] ) ) {
-	$_SESSION["breadCrumb"] = array();
-}
-
-if( !in_array($page, $_SESSION["breadCrumb"])) {
-	if (count($_SESSION["breadCrumb"]) > $users_bread_crumb) {
-		array_shift ($_SESSION["breadCrumb"]);
-	}
-
-	array_push($_SESSION["breadCrumb"], $page);
-} else {
-	// If the page is in the array move to the last position
-	$pos = array_search($page, $_SESSION["breadCrumb"]);
-
-	unset ($_SESSION["breadCrumb"][$pos]);
-	array_push($_SESSION["breadCrumb"], $page);
+	$gBitSmarty->fatalError(tra("Permission denied you cannot view this page"));
 }
 
 // Get page data

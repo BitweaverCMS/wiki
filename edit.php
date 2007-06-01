@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.34 2007/04/23 09:36:32 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.35 2007/06/01 15:16:49 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.34 2007/04/23 09:36:32 squareing Exp $
+ * $Id: edit.php,v 1.35 2007/06/01 15:16:49 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -24,9 +24,6 @@ include_once( LIBERTY_PKG_PATH.'edit_help_inc.php' );
 $gBitSystem->verifyPackage( 'wiki' );
 
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
-
-// Get plugins with descriptions
-global $wikilib, $gLibertySystem;
 
 #edit preview needs this
 if( !isset( $_REQUEST['title'] ) && isset( $gContent->mInfo['title'] ) ) {
@@ -242,11 +239,6 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 }
 //
 
-if( isset( $gContent->mInfo['wiki_cache'] ) && $gContent->mInfo['wiki_cache']!=0 ) {
-	$wiki_cache = $gContent->mInfo['wiki_cache'];
-	$gBitSmarty->assign( 'wiki_cache',$wiki_cache );
-}
-
 if( !empty( $gContent->mInfo ) ) {
 	$formInfo = $gContent->mInfo;
 	$data_to_edit = !empty( $gContent->mInfo['data'] ) ? $gContent->mInfo['data'] : '';
@@ -270,10 +262,10 @@ if( $gBitSystem->isFeatureActive( 'wiki_footnotes' ) ) {
 		$gBitSmarty->assign( 'footnote', $footnote );
 		if( $footnote )
 			$gBitSmarty->assign( 'has_footnote', 'y' );
-		$gBitSmarty->assign( 'parsed_footnote', $wikilib->parseData( $footnote ) );
+		$gBitSmarty->assign( 'parsed_footnote', $gContent->parseData( $footnote ) );
 		if( isset( $_REQUEST['footnote'] ) ) {
 
-			$gBitSmarty->assign( 'parsed_footnote', $wikilib->parseData( $_REQUEST['footnote'] ) );
+			$gBitSmarty->assign( 'parsed_footnote', $gContent->parseData( $_REQUEST['footnote'] ) );
 			$gBitSmarty->assign( 'footnote', $_REQUEST['footnote'] );
 			$gBitSmarty->assign( 'has_footnote', 'y' );
 			if( empty( $_REQUEST['footnote'] ) ) {
@@ -284,12 +276,6 @@ if( $gBitSystem->isFeatureActive( 'wiki_footnotes' ) ) {
 		}
 	}
 }
-if( isset( $_REQUEST["template_id"] ) && $_REQUEST["template_id"] > 0 ) {
-	$template_data = $wikilib->get_template( $_REQUEST["template_id"] );
-	$_REQUEST["edit"] = $template_data["content"];
-	$_REQUEST["preview"] = 1;
-}
-
 if( isset( $_REQUEST["edit"] ) ) {
 	$formInfo['edit'] = $_REQUEST["edit"];
 }

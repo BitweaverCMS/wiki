@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.32 2007/04/23 09:36:32 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.33 2007/06/01 15:16:49 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.32 2007/04/23 09:36:32 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.33 2007/06/01 15:16:49 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -64,34 +64,12 @@ if( $gBitSystem->isFeatureActive( 'wiki_backlinks' ) ) {
 // the text as '... learn more ((about me)).'.  When the link is
 // followed,
 $gBitSystem->setBrowserTitle( $gContent->mInfo['title'] );
-// BreadCrumbNavigation here
-// Get the number of pages from the default or userPreferences
-// Remember to reverse the array when posting the array
-$anonpref = $wikilib->getPreference('users_bread_crumb',4);
-if(!empty($user)) {
-  $users_bread_crumb = $gBitUser->getPreference( 'users_bread_crumb', $anonpref );
-} else {
-  $users_bread_crumb = $anonpref;
-}
-if(!isset($_SESSION["breadCrumb"])) {
-  $_SESSION["breadCrumb"]=Array();
-}
-if(!in_array($gContent->mInfo['title'],$_SESSION["breadCrumb"])) {
-  if(count($_SESSION["breadCrumb"])>$users_bread_crumb) {
-    array_shift($_SESSION["breadCrumb"]);
-  }
-  array_push($_SESSION["breadCrumb"],$gContent->mInfo['title']);
-} else {
-  // If the page is in the array move to the last position
-  $pos = array_search($gContent->mInfo['title'], $_SESSION["breadCrumb"]);
-  unset($_SESSION["breadCrumb"][$pos]);
-  array_push($_SESSION["breadCrumb"],$gContent->mInfo['title']);
-}
-//print_r($_SESSION["breadCrumb"]);
+
 // Now increment page hits since we are visiting this page
 if( $gBitSystem->isFeatureActive( 'users_count_admin_pageviews' ) || !$gBitUser->isAdmin() ) {
   $gContent->addHit();
 }
+
 // Check if we have to perform an action for this page
 // for example lock/unlock
 if( isset( $_REQUEST["action"] ) && (($_REQUEST["action"] == 'lock' || $_REQUEST["action"]=='unlock' ) &&
@@ -99,13 +77,6 @@ if( isset( $_REQUEST["action"] ) && (($_REQUEST["action"] == 'lock' || $_REQUEST
 	$gContent->setLock( ($_REQUEST["action"] == 'lock' ? 'L' : NULL ) );
 }
 
-
-// Save to notepad if user wants to
-if( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->isValid() && $gBitUser->hasPermission( 'bit_p_notepad' ) && isset($_REQUEST['savenotepad'])) {
-
-	require_once( NOTEPAD_PKG_PATH.'notepad_lib.php' );
-	$notepadlib->replace_note( $user, 0, $gContent->mPageName, $gContent->mInfo['data'] );
-}
 // Process an undo here
 if(isset($_REQUEST["undo"])) {
 	if( !$gContent->isLocked() && ( ($gBitUser->hasPermission( 'p_wiki_edit_page' ) && $gContent->isOwner())||($gContent->hasUserPermission( 'p_wiki_rollback' ))) ) {
@@ -113,6 +84,7 @@ if(isset($_REQUEST["undo"])) {
 		$gContent->removeLastVersion();
 	}
 }
+
 if ($gBitSystem->isFeatureActive( 'wiki_uses_slides' )) {
 	$slides = split("-=[^=]+=-",$gContent->mInfo["data"]);
 	if(count($slides)>1) {
@@ -128,26 +100,13 @@ if ($gBitSystem->isFeatureActive( 'wiki_uses_slides' )) {
 } else {
 	$gBitSmarty->assign('show_slideshow','n');
 }
-if(isset($_REQUEST['refresh'])) {
 
-  $gContent->invalidateCache();
-}
-// Here's where the data is parsed
-// if using cache
-//
-// get cache information
-// if cache is valid then pdata is cache
-// else
-// pdata is parse_data
-//   if using cache then update the cache
-// assign_by_ref
-
-$pages = $wikilib->countPages($gContent->mInfo['parsed_data']);
+$pages = $gContent->countPages($gContent->mInfo['parsed_data']);
 if( $pages > 1 ) {
 	if(!isset($_REQUEST['pagenum'])) {
 		$_REQUEST['pagenum']=1;
 	}
-	$gContent->mInfo['parsed_data']=$wikilib->get_page($gContent->mInfo['parsed_data'],$_REQUEST['pagenum']);
+	$gContent->mInfo['parsed_data']=$gContent->get_page($gContent->mInfo['parsed_data'],$_REQUEST['pagenum']);
 	$gBitSmarty->assign('pages',$pages);
 	if($pages>$_REQUEST['pagenum']) {
 		$gBitSmarty->assign('next_page',$_REQUEST['pagenum']+1);

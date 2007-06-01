@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.20 2007/04/02 18:55:02 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.21 2007/06/01 15:16:49 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.20 2007/04/02 18:55:02 squareing Exp $
+ * $Id: lookup_page_inc.php,v 1.21 2007/06/01 15:16:49 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -18,7 +18,7 @@
  */
 require_once( WIKI_PKG_PATH.'BitBook.php');
 
-global $gContent, $wikilib;
+global $gContent;
 include_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
 
 // this is needed when the center module is applied to avoid abusing $_REQUEST
@@ -34,7 +34,7 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 	if( empty( $gContent->mPageId ) && empty( $gContent->mContentId )  ) {
 		//handle legacy forms that use plain 'page' form variable name
 
-		if( $loadPage && $existsInfo = $wikilib->pageExists( $loadPage ) ) {
+		if( $loadPage && $existsInfo = $gContent->pageExists( $loadPage ) ) {
 			if (count($existsInfo)) {
 				if (count($existsInfo) > 1) {
 					// Display page so user can select which wiki page they want (there are multiple that share this name)

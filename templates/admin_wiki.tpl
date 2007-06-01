@@ -28,23 +28,6 @@
 			</div>
 
 			<div class="row">
-				{formlabel label="Global WikiPage Cache" for="wiki_cache"}
-				{forminput}
-					<select name="wiki_cache" id="wiki_cache">
-						<option value="0"    {if $gBitSystem->getConfig('wiki_cache') eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
-						<option value="60"   {if $gBitSystem->getConfig('wiki_cache') eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
-						<option value="300"  {if $gBitSystem->getConfig('wiki_cache') eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
-						<option value="600"  {if $gBitSystem->getConfig('wiki_cache') eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
-						<option value="900"  {if $gBitSystem->getConfig('wiki_cache') eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
-						<option value="1800" {if $gBitSystem->getConfig('wiki_cache') eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
-						<option value="3600" {if $gBitSystem->getConfig('wiki_cache') eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
-						<option value="7200" {if $gBitSystem->getConfig('wiki_cache') eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
-					</select>
-					{formhelp note="Cache wikipages for the given amount of time."}
-				{/forminput}
-			</div>
-
-			<div class="row">
 				{formlabel label="Warn on edit" for="warn_on_edit"}
 				{forminput}
 					{html_checkboxes name="warn_on_edit" values="y" checked=$gBitSystem->getConfig('warn_on_edit') labels=false id="warn_on_edit"}
@@ -154,57 +137,6 @@
 				</div>
 			{/legend}
 
-			{legend legend="Dumps and Export"}
-				<div class="row">
-					{forminput}
-						{if $dumpUrl}<a href="{$dumpUrl}">{tr}Download last dump{/tr}</a><br />{/if}
-						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=wiki&amp;dump=1">{tr}Generate dump{/tr}</a><br />
-						<a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php">{tr}Export wiki pages{/tr}</a>
-					{/forminput}
-				</div>
-			{/legend}
-
-			{legend legend="Wiki Tags"}
-				<div class="row">
-					{formlabel label="Create a tag" for="tagname"}
-					{forminput}
-						<input maxlength="20" size="20" type="text" name="tagname" id="tagname" />
-						<input type="submit" name="createtag" value="{tr}create{/tr}" />
-						{formhelp note="Creating a wiki tag sets sort of 'bookmark' that can be used to restore the wiki to a specific state."}
-					{/forminput}
-				</div>
-
-				<div class="row">
-					{formlabel label="Remove a Tag" for="remtagname"}
-					{forminput}
-						<select name="remtagname" id="remtagname">
-							{section name=sel loop=$tags}
-								<option value="{$tags[sel]|escape}">{$tags[sel]}</option>
-							{sectionelse}
-								<option>{tr}No records found{/tr}</option>
-							{/section}
-						</select>
-						<input type="submit" name="removetag" value="{tr}remove{/tr}" />
-						{formhelp note="Here you can remove any obsolete wiki tags. This will <strong>not</strong> harm your wiki pages in any way."}
-					{/forminput}
-				</div>
-
-				<div class="row">
-					{formlabel label="Restore the wiki" for="restagname"}
-					{forminput}
-						<select name="restagname" id="restagname">
-							{section name=sel loop=$tags}
-								<option value="{$tags[sel]|escape}">{$tags[sel]}</option>
-							{sectionelse}
-								<option>{tr}No records found{/tr}</option>
-							{/section}
-						</select>
-						<input type="submit" name="restoretag" value="{tr}restore{/tr}" />
-						{formhelp note="This will restore the entire wiki to when you created this tag. All the entries since then will be lost."}
-					{/forminput}
-				</div>
-			{/legend}
-
 			{legend legend="Wiki Link Format"}
 				<div class="row">
 					{formlabel label="Wiki Link Format" for="wiki_page_regex"}
@@ -220,26 +152,6 @@
 
 				<div class="row submit">
 					<input type="submit" name="setwikiregex" value="{tr}Change preferences{/tr}" />
-				</div>
-			{/legend}
-
-			{legend legend="Wiki History"}
-				<div class="row">
-					{formlabel label="Maximum number of versions in history" for="wiki_max_versions"}
-					{forminput}
-						<input size="5" type="text" name="wiki_max_versions" id="wiki_max_versions" value="{$wiki_max_versions|escape}" />
-					{/forminput}
-				</div>
-
-				<div class="row">
-					{formlabel label="Never delete versions younger than days" for="wiki_min_versions"}
-					{forminput}
-						<input size="5" type="text" name="wiki_min_versions" id="wiki_min_versions" value="{$wiki_min_versions|escape}" />
-					{/forminput}
-				</div>
-
-				<div class="row submit">
-					<input type="submit" name="wikisetprefs" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 

@@ -1,11 +1,8 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.24 2007/03/09 04:43:22 nickpalmer Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.25 2007/06/01 15:16:49 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-
-// FIXME: including wikilib is NOT the way to fix this.
-require_once( WIKI_PKG_PATH.'BitPage.php' );
 
 $formWikiLists = array(
 	"wiki_list_name" => array(
@@ -103,10 +100,6 @@ $formWikiFeatures = array(
 		'label' => 'Comments',
 		'note' => 'Allow the addition of user comments at the end of every wikipage.',
 	),
-	"wiki_dump" => array(
-		'label' => 'Dump',
-		'note' => 'Allow the creation of a dump of a page.',
-	),
 	"wiki_sandbox" => array(
 		'label' => 'Sandbox',
 		'note' => 'The Sandbox is a wikipage that can be modified by any user to practise the wiki syntax. This page has no history nor is the contents searchable.',
@@ -130,10 +123,6 @@ $formWikiFeatures = array(
 	"wiki_url_import" => array(
 		'label' => 'Allow URL Import',
 		'note' => 'Allow urls to be imported and saved to the wiki.',
-	),
-	"wiki_icache" => array(
-		'label' => 'Individual WikiPage Cache',
-		'note' => 'Allow individual cache settings for wikipages.',
 	),
 	"wiki_preserve_leading_blanks" => array(
 		'label' => 'Preserve leading blanks',
@@ -159,8 +148,6 @@ if (isset($_REQUEST["wikifeatures"])) {
 	//$gBitSystem->storeConfig("wiki_link_type", $_REQUEST["link_type"], WIKI_PKG_NAME);
 	$gBitSystem->storeConfig("wiki_warn_on_edit_time", $_REQUEST["wiki_warn_on_edit_time"], WIKI_PKG_NAME);
 	$gBitSmarty->assign('wiki_warn_on_edit_time', $_REQUEST["wiki_warn_on_edit_time"]);
-	$gBitSystem->storeConfig('wiki_cache', $_REQUEST["wiki_cache"], WIKI_PKG_NAME);
-	$gBitSmarty->assign('wiki_cache', $_REQUEST["wiki_cache"]);
 
 	/* not sure if the following are still required */
 	$gBitSystem->storeConfig('wiki_tables', $_REQUEST['wiki_tables'], WIKI_PKG_NAME);
@@ -264,20 +251,20 @@ $formWikiWatch = array(
 		'label' => 'Page editor watch',
 		'note' => 'Automatically set a watch for the editor of a page.',
 	),
-	"wiki_watch_comments" => array(
-		'label' => 'Comment watch',
-		'note' => 'Allow watching of comments (who knows if this works).',
-	),
+//	"wiki_watch_comments" => array(
+//		'label' => 'Comment watch',
+//		'note' => 'Allow watching of comments (who knows if this works).',
+//	),
 );
 $gBitSmarty->assign( 'formWikiWatch',$formWikiWatch );
 
 if (isset($_REQUEST["wikiwatch"])) {
-
 	foreach( $formWikiWatch  as $item => $data ) {
 		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
 }
 
+/*
 if (isset($_REQUEST["dump"])) {
 
 	include (UTIL_PKG_PATH."tar.class.php");
@@ -312,28 +299,9 @@ if (isset($_REQUEST["removetag"])) {
 	// Check existance
 	$adminlib->remove_tag($_REQUEST["remtagname"]);
 }
-if (isset($_REQUEST["setwikihome"])) {
+$tags = $wikilib->get_tags();
+$gBitSmarty->assign_by_ref("tags", $tags);
 
-	$gBitSystem->storeConfig('wiki_home_page', $_REQUEST["wiki_home_page"], WIKI_PKG_NAME);
-	$gBitSmarty->assign('wiki_home_page', $_REQUEST["wiki_home_page"]);
-}
-if (isset($_REQUEST["wikidiscussprefs"])) {
-
-	if (isset($_REQUEST["wiki_discuss"])) {
-		$gBitSystem->storeConfig('wiki_discuss', 'y', WIKI_PKG_NAME);
-		$gBitSmarty->assign('wiki_discuss', 'y');
-	} else {
-		$gBitSystem->storeConfig("wiki_discuss", 'n', WIKI_PKG_NAME);
-		$gBitSmarty->assign('wiki_discuss', 'n');
-	}
-}
-if (isset($_REQUEST["setwikiregex"])) {
-
-	$gBitSystem->storeConfig('wiki_page_regex', $_REQUEST["wiki_page_regex"], WIKI_PKG_NAME);
-	$gBitSmarty->assign( 'wiki_page_regex', $_REQUEST["wiki_page_regex"] );
-} else {
-    $gBitSmarty->assign( 'wiki_page_regex', $gBitSystem->getConfig( 'wiki_page_regex', 'strict' ) );
-}
 if (isset($_REQUEST["wikisetprefs"])) {
 
 	if (isset($_REQUEST["wiki_max_versions"])) {
@@ -344,8 +312,35 @@ if (isset($_REQUEST["wikisetprefs"])) {
 		$gBitSmarty->assign('wiki_min_versions', $_REQUEST["wiki_min_versions"]);
 	}
 }
-if (isset($_REQUEST["wikisetcopyright"])) {
+$gBitSmarty->assign("wiki_max_versions", $gBitSystem->getConfig("wiki_max_versions", 0));
+$gBitSmarty->assign("wiki_min_versions", $gBitSystem->getConfig("wiki_min_versions", 1));
+ */
 
+if (isset($_REQUEST["setwikihome"])) {
+
+	$gBitSystem->storeConfig('wiki_home_page', $_REQUEST["wiki_home_page"], WIKI_PKG_NAME);
+	$gBitSmarty->assign('wiki_home_page', $_REQUEST["wiki_home_page"]);
+}
+
+if (isset($_REQUEST["wikidiscussprefs"])) {
+
+	if (isset($_REQUEST["wiki_discuss"])) {
+		$gBitSystem->storeConfig('wiki_discuss', 'y', WIKI_PKG_NAME);
+		$gBitSmarty->assign('wiki_discuss', 'y');
+	} else {
+		$gBitSystem->storeConfig("wiki_discuss", 'n', WIKI_PKG_NAME);
+		$gBitSmarty->assign('wiki_discuss', 'n');
+	}
+}
+
+if (isset($_REQUEST["setwikiregex"])) {
+	$gBitSystem->storeConfig('wiki_page_regex', $_REQUEST["wiki_page_regex"], WIKI_PKG_NAME);
+	$gBitSmarty->assign( 'wiki_page_regex', $_REQUEST["wiki_page_regex"] );
+} else {
+    $gBitSmarty->assign( 'wiki_page_regex', $gBitSystem->getConfig( 'wiki_page_regex', 'strict' ) );
+}
+
+if (isset($_REQUEST["wikisetcopyright"])) {
 	simple_set_toggle( 'wiki_copyrights',WIKI_PKG_NAME );
 	if (isset($_REQUEST["wiki_license_page"])) {
 		$gBitSystem->storeConfig("wiki_license_page", $_REQUEST["wiki_license_page"], WIKI_PKG_NAME);
@@ -356,14 +351,7 @@ if (isset($_REQUEST["wikisetcopyright"])) {
 		$gBitSmarty->assign('wiki_submit_notice', $_REQUEST["wiki_submit_notice"]);
 	}
 }
-$tags = $wikilib->get_tags();
-$gBitSmarty->assign_by_ref("tags", $tags);
-$gBitSmarty->assign("wiki_max_versions", $gBitSystem->getConfig("wiki_max_versions", 0));
-$gBitSmarty->assign("wiki_min_versions", $gBitSystem->getConfig("wiki_min_versions", 1));
-
 $gBitSmarty->assign("wiki_copyrights", $gBitSystem->getConfig("wiki_copyrights"));
 $gBitSmarty->assign('wiki_license_page', $gBitSystem->getConfig("wiki_license_page"));
 $gBitSmarty->assign('wiki_submit_notice', $gBitSystem->getConfig("wiki_submit_notice"));
-
-
 ?>

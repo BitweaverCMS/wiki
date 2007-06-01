@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.85 2007/04/04 14:31:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.86 2007/06/01 15:16:48 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.85 $ $Date: 2007/04/04 14:31:33 $ $Author: squareing $
+ * @version $Revision: 1.86 $ $Date: 2007/06/01 15:16:48 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.85 2007/04/04 14:31:33 squareing Exp $
+ * $Id: BitPage.php,v 1.86 2007/06/01 15:16:48 squareing Exp $
  */
 
 /**
@@ -84,12 +84,6 @@ class BitPage extends LibertyAttachable {
 				$this->mInfo['editor'] = (isset( $this->mInfo['modifier_real_name'] ) ? $this->mInfo['modifier_real_name'] : $this->mInfo['modifier_user'] );
 				$this->mInfo['display_url'] = $this->getDisplayUrl();
 
-				// parse the data respecting caching options
-				$cache = $gBitSystem->getConfig( 'wiki_cache' );
-				if( @BitBase::verifyId( $this->mInfo['wiki_cache'] ) && $this->mInfo['wiki_cache'] > 0 ) {
-					$cache = $this->mInfo['wiki_cache'];
-				}
-
 				// Save some work if wiki_attachments are not active
 				// get prefs before we parse the data that we know how to parse the data
 				if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
@@ -98,18 +92,7 @@ class BitPage extends LibertyAttachable {
 					LibertyContent::load();
 				}
 
-				if( $cache > 0 ) {
-					if( ( $this->mInfo['cache_timestamp'] + $cache ) > $gBitSystem->getUTCTime() ) {
-						$this->mInfo['parsed_data'] = $this->mInfo['page_cache'];
-						$this->mInfo['page_is_cached'] = TRUE;
-					} else {
-						$this->mInfo['parsed_data'] = $this->parseData();
-						$this->updateCache( $this->mInfo['parsed_data'] );
-					}
-				} else {
-					$this->mInfo['parsed_data'] = $this->parseData();
-				}
-
+				$this->mInfo['parsed_data'] = $this->parseData();
 			} else {
 				$this->mPageId = NULL;
 			}
@@ -132,17 +115,11 @@ class BitPage extends LibertyAttachable {
 		$this->mDb->StartTrans();
 
 		if( $this->verify( $pParamHash ) && LibertyAttachable::store( $pParamHash ) ) {
-			if(isset($pParamHash['wiki_cache']) ) {
-				$this->setPageCache( $pParamHash['wiki_cache'] );
-			}
-
 			$pParamHash['page_store']['wiki_page_size'] = !empty( $pParamHash['edit'] ) ? strlen( $pParamHash['edit'] ) : 0;
 
 			$table = BIT_DB_PREFIX."wiki_pages";
 			if( $this->verifyId( $this->mPageId ) ) {
-				$this->invalidateCache();
 				$result = $this->mDb->associateUpdate( $table, $pParamHash['page_store'], array( "page_id" => $this->mPageId ) );
-
 			} else {
 				$pParamHash['page_store']['content_id'] = $pParamHash['content_id'];
 				if( @$this->verifyId( $pParamHash['page_id'] ) ) {
@@ -520,60 +497,6 @@ class BitPage extends LibertyAttachable {
 		return $ret;
 	}
 
-   	/**
-   	 * Methods to cache and handle the cached version of wiki pages
-	 * to prevent parsing large pages.
-	 */
-   	/**
-   	 * Save cached version of page to store
-   	 * @param cache Data to be cached
-	 */
-	function setPageCache( $cache ) {
-		if( $this->verifyId( $this->mPageId ) ) {
-			$query = "update `".BIT_DB_PREFIX."wiki_pages` set `wiki_cache`=? where `page_id`=?";
-			$this->mDb->query( $query, array( $cache, $this->mPageId ) );
-		}
-	}
-
-   	/**
-   	 * Get cached version of page from store
-   	 * @param page ? Not used
-	 */
-	function get_cache_info($page) {
-		if( $this->verifyId( $this->mPageId ) ) {
-			$query = "select `page_cache`,`cache_timestamp` from `".BIT_DB_PREFIX."wiki_pages` where `page_id`=?";
-			$result = $this->mDb->query( $query, array( $this->mPageId ) );
-			return $result->fetchRow();
-		}
-	}
-
-   	/**
-   	 * Update cached version of page in store
-   	 * @param data Data to be cached
-	 */
-	function updateCache( $data ) {
-		if( $this->verifyId( $this->mPageId ) ) {
-			global $gBitSystem;
-			$now = $gBitSystem->getUTCTime();
-			$query = "update `".BIT_DB_PREFIX."wiki_pages` set `page_cache`=?, `cache_timestamp`=$now where `page_id`=?";
-			$result = $this->mDb->query( $query, array( $data, $this->mPageId ) );
-			return true;
-		}
-	}
-
-   	/**
-   	 * Flag cached version as out of date
-   	 * Cache will be updated next time the page is accessed
-	 */
-	function invalidateCache() {
-		if( $this->verifyId( $this->mPageId ) ) {
-			$query = "UPDATE `".BIT_DB_PREFIX."wiki_pages` SET `cache_timestamp`=? WHERE `page_id`=?";
-			$this->mDb->query( $query, array( 0, $this->mPageId ) );
-		}
-	}
-
-	// this was the original set of parameters
-	// function getList( $offset = 0, $max_records = -1, $sort_mode = 'title_desc', $find = '', $pUserId=NULL, $pExtras=FALSE, $pOrphansOnly=FALSE, $pGetData=FALSE, $pFilterAuthor='', $pFilterLastEditor='' ) {
 	/**
 	 * getList 
 	 * 
@@ -1036,41 +959,6 @@ class WikiLib extends BitPage {
 		}
 	}
 
-	// This funcion return the $limit most accessed pages
-	// it returns title and hits for each page
-	function get_top_pages($limit) {
-		$query = "select `title` , `hits`
-		from `".BIT_DB_PREFIX."wiki_pages` JOIN `".BIT_DB_PREFIX."liberty_content_hits` 
-			on  `".BIT_DB_PREFIX."wiki_pages`.`content_id` = `".BIT_DB_PREFIX."liberty_content_hits`.`content_id`)
-		order by `hits` desc";
-
-		$result = $this->mDb->query($query, array(),$limit);
-		$ret = array();
-
-		while ($res = $result->fetchRow()) {
-		$aux["title"] = $res["title"];
-
-		$aux["hits"] = $res["hits"];
-		$ret[] = $aux;
-		}
-
-		return $ret;
-	}
-
-	// Returns the name of "n" random pages
-	function get_random_pages( $pNumPages=10 ) {
-		$ret = NULL;
-		$query = "select `content_id`, `title`  from `".BIT_DB_PREFIX."liberty_content` WHERE `content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' ORDER BY ".$this->mDb->convertSortmode( 'random' );
-		$rs = $this->mDb->query( $query, array(), $pNumPages );
-		while( $rs && !$rs->EOF ) {
-			$ret[$rs->fields['content_id']]['title'] = $rs->fields['title'];
-			$ret[$rs->fields['content_id']]['display_url'] = $this->getDisplayUrl( $rs->fields['title'] );
-			$rs->MoveNext();
-		}
-
-		return $ret;
-	}
-
 	function get_graph_map($page, $level, $garg) {
 		include_once( UTIL_PKG_PATH.'GraphViz.php' );
 		$str = $this->wiki_get_link_structure($page, $level);
@@ -1149,6 +1037,48 @@ class WikiLib extends BitPage {
 		$retval["data"] = $ret;
 		$retval["cant"] = $cant;
 		return $retval;
+	}
+
+	/* =================================================================================================
+	 * =================================================================================================
+	 * =================================================================================================
+	 * ================================ all the stuff below here is obsoleete ==========================
+	 * =================================================================================================
+	 * =================================================================================================
+	 * =================================================================================================
+	// This funcion return the $limit most accessed pages
+	// it returns title and hits for each page
+	function get_top_pages($limit) {
+		$query = "select `title` , `hits`
+		from `".BIT_DB_PREFIX."wiki_pages` JOIN `".BIT_DB_PREFIX."liberty_content_hits` 
+			on  `".BIT_DB_PREFIX."wiki_pages`.`content_id` = `".BIT_DB_PREFIX."liberty_content_hits`.`content_id`)
+		order by `hits` desc";
+
+		$result = $this->mDb->query($query, array(),$limit);
+		$ret = array();
+
+		while ($res = $result->fetchRow()) {
+		$aux["title"] = $res["title"];
+
+		$aux["hits"] = $res["hits"];
+		$ret[] = $aux;
+		}
+
+		return $ret;
+	}
+
+	// Returns the name of "n" random pages
+	function get_random_pages( $pNumPages=10 ) {
+		$ret = NULL;
+		$query = "select `content_id`, `title`  from `".BIT_DB_PREFIX."liberty_content` WHERE `content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' ORDER BY ".$this->mDb->convertSortmode( 'random' );
+		$rs = $this->mDb->query( $query, array(), $pNumPages );
+		while( $rs && !$rs->EOF ) {
+			$ret[$rs->fields['content_id']]['title'] = $rs->fields['title'];
+			$ret[$rs->fields['content_id']]['display_url'] = $this->getDisplayUrl( $rs->fields['title'] );
+			$rs->MoveNext();
+		}
+
+		return $ret;
 	}
 
 	function getDumpFile() {
@@ -1273,7 +1203,7 @@ class WikiLib extends BitPage {
 		return $res;
 	}
 
-/* ================== WIKI TAG FUNCTIONS ============== */
+// ================== WIKI TAG FUNCTIONS ==============
 	function tag_exists($tag) {
 		$query = "select distinct `tag_name` from `".BIT_DB_PREFIX."wiki_tags` where `tag_name` = ?";
 
@@ -1357,7 +1287,8 @@ class WikiLib extends BitPage {
 		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(wp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
 		$action = "recovered tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
-		}
+	}
+	 */
 }
 
 /**

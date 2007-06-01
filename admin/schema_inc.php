@@ -17,9 +17,6 @@ $tables = array(
 	flag C(1),
 	points I4,
 	votes I4,
-	page_cache X,
-	wiki_cache I8,
-	cache_timestamp I8,
 	page_rank N(4,3)
 ",
 

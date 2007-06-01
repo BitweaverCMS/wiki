@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.36 2007/04/20 12:43:28 nickpalmer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.37 2007/06/01 15:16:50 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -115,25 +115,6 @@
 								{forminput}
 									<input type="checkbox" name="isminor" id="isminor" value="on" />
 									{formhelp note="This will prevent the generation of a new version. You can use this, if your changes are minor."}
-								{/forminput}
-							</div>
-						{/if}
-
-						{if $gBitSystem->isFeatureActive( 'wiki_icache' )}
-							<div class="row">
-								{formlabel label="Cache" for="wiki_cache"}
-								{forminput}
-									<select name="wiki_cache" id="wiki_cache">
-										<option value="0"    {if $gBitSystem->getConfig('wiki_cache') eq 0}selected="selected"{/if}>{tr}0 (no cache){/tr}</option>
-										<option value="60"   {if $gBitSystem->getConfig('wiki_cache') eq 60}selected="selected"{/if}>{tr}1 minute{/tr}</option>
-										<option value="300"  {if $gBitSystem->getConfig('wiki_cache') eq 300}selected="selected"{/if}>{tr}5 minutes{/tr}</option>
-										<option value="600"  {if $gBitSystem->getConfig('wiki_cache') eq 600}selected="selected"{/if}>{tr}10 minutes{/tr}</option>
-										<option value="900"  {if $gBitSystem->getConfig('wiki_cache') eq 900}selected="selected"{/if}>{tr}15 minutes{/tr}</option>
-										<option value="1800" {if $gBitSystem->getConfig('wiki_cache') eq 1800}selected="selected"{/if}>{tr}30 minutes{/tr}</option>
-										<option value="3600" {if $gBitSystem->getConfig('wiki_cache') eq 3600}selected="selected"{/if}>{tr}1 hour{/tr}</option>
-										<option value="7200" {if $gBitSystem->getConfig('wiki_cache') eq 7200}selected="selected"{/if}>{tr}2 hours{/tr}</option>
-									</select>
-									{formhelp note=""}
 								{/forminput}
 							</div>
 						{/if}
