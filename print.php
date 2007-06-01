@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.17 2007/03/20 16:56:34 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.18 2007/06/01 17:32:28 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print.php,v 1.17 2007/03/20 16:56:34 spiderr Exp $
+ * $Id: print.php,v 1.18 2007/06/01 17:32:28 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -65,9 +65,9 @@ if (empty($info["user"])) {
 }
 $gBitSmarty->assign_by_ref('lastUser', $info["user"]);
 //Store the page URL to be displayed on print page
-$site_http_domain = $wikilib->getPreference('site_http_domain', false);
-$site_http_port = $wikilib->getPreference('site_http_port', 80);
-$site_http_prefix = $wikilib->getPreference('site_http_prefix', '/');
+$site_http_domain = $gContent->getPreference('site_http_domain', false);
+$site_http_port = $gContent->getPreference('site_http_port', 80);
+$site_http_prefix = $gContent->getPreference('site_http_prefix', '/');
 if ($site_http_domain) {
 	$prefix = 'http://' . $site_http_domain;
 	if ($site_http_port != 80)
