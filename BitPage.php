@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.88 2007/06/10 15:33:09 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.89 2007/06/10 15:58:38 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.88 $ $Date: 2007/06/10 15:33:09 $ $Author: wjames5 $
+ * @version $Revision: 1.89 $ $Date: 2007/06/10 15:58:38 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.88 2007/06/10 15:33:09 wjames5 Exp $
+ * $Id: BitPage.php,v 1.89 2007/06/10 15:58:38 squareing Exp $
  */
 
 /**
@@ -314,13 +314,9 @@ class BitPage extends LibertyAttachable {
 		return( $ret );
 	}
 	
-	function isCommentable(){
+	function isCommentable() {
 		global $gBitSystem;
-		if ($gBitSystem->isFeatureActive( 'wiki_comments' )){
-			return TRUE;
-		}else{
-			return FALSE;
-		}
+		return( $gBitSystem->isFeatureActive( 'wiki_comments' ));
 	}	
 
 	function setLock( $pLock, $pModUserId=NULL ) {
