@@ -6,8 +6,12 @@
 {include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav' serviceHash=$gContent->mInfo}
 
 <div class="display wiki {$pageInfo.title|escape|lower|regex_replace:"/[^a-z_]/i":""}">
-	{include file="bitpackage:wiki/page_icons.tpl"}
-	{include file="bitpackage:wiki/page_header.tpl"}
+	{if $includeIcons}
+		{include file="bitpackage:wiki/page_icons.tpl"}
+	{/if}
+	{if $includeHeader}
+		{include file="bitpackage:wiki/page_header.tpl"}
+	{/if}
 
 	{if $gBitSystem->isPackageActive( 'stickies' )}
 		{include file="bitpackage:stickies/display_bitsticky.tpl"}
