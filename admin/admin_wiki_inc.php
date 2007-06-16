@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.27 2007/06/16 07:42:52 starrrider Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.28 2007/06/16 08:15:16 starrrider Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -302,16 +302,6 @@ if (isset($_REQUEST["removetag"])) {
 $tags = $wikilib->get_tags();
 $gBitSmarty->assign_by_ref("tags", $tags);
 
-if (isset($_REQUEST["wikisetprefs"])) {
-
-	if (isset($_REQUEST["wiki_max_versions"])) {
-		$gBitSystem->storeConfig("wiki_max_versions", $_REQUEST["wiki_max_versions"], WIKI_PKG_NAME);
-	}
-	if (isset($_REQUEST["wiki_min_versions"])) {
-		$gBitSystem->storeConfig("wiki_min_versions", $_REQUEST["wiki_min_versions"], WIKI_PKG_NAME);
-		$gBitSmarty->assign('wiki_min_versions', $_REQUEST["wiki_min_versions"]);
-	}
-}
 $gBitSmarty->assign("wiki_max_versions", $gBitSystem->getConfig("wiki_max_versions", 0));
 $gBitSmarty->assign("wiki_min_versions", $gBitSystem->getConfig("wiki_min_versions", 1));
  */

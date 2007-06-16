@@ -129,8 +129,6 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	//array( WIKI_PKG_NAME, 'wiki_undo','n'),
 	//array( WIKI_PKG_NAME, 'wiki_usrlock','n'),
 	array( WIKI_PKG_NAME, 'wiki_words','y'),
-	//array( WIKI_PKG_NAME, 'wiki_min_versions','1'),
-	//array( WIKI_PKG_NAME, 'wiki_max_versions','0'),
 	//array( WIKI_PKG_NAME, 'wiki_attachments_use_db','y'),
 	//array( WIKI_PKG_NAME, 'wiki_attachments_use_dir',''),
 	array( WIKI_PKG_NAME, 'wiki_warn_on_edit_time','2'),
