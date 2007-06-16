@@ -121,7 +121,6 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	//array( WIKI_PKG_NAME, 'wiki_monosp','n'),
 	//array( WIKI_PKG_NAME, 'wiki_multiprint','n'),
 	//array( WIKI_PKG_NAME, 'wiki_notepad','n'),
-	//array( WIKI_PKG_NAME, 'wiki_generate_pdf',''),
 	array( WIKI_PKG_NAME, 'wiki_pictures','y'),
 	array( WIKI_PKG_NAME, 'wiki_plurals','y'),
 	array( WIKI_PKG_NAME, 'wiki_rankings','y'),
