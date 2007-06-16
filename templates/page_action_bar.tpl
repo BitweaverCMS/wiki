@@ -42,9 +42,6 @@
 			{if $gBitUser->hasPermission( 'p_wiki_admin' )}
 				<li><a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php?page_id={$pageInfo.page_id}">{tr}Export{/tr}</a></li>
 			{/if}
-			{if $gBitSystem->isFeatureActive( 'wiki_discuss' )}
-				<li><a href="{$smarty.const.BITFORUMS_PKG_URL}view_forum.php?forum_id={$wiki_forum_id}&amp;comments_postComment=post&amp;comments_title={$page|escape:"url"}&amp;comments_data={ "Use this thread to discuss the [index.php\?page=$page|$page page."|escape:"url"}&amp;comment_topictype=n">{tr}Discuss{/tr}</a></li>
-			{/if}
 			{if $gBitSystem->isFeatureActive( 'users_watches' ) and $gContent->hasUserPermission('p_users_admin')}
 				<li><a href="{$smarty.const.WIKI_PKG_URL}page_watches.php?page_id={$pageInfo.page_id}">{tr}Watches{/tr}</a></li>
 			{/if}
