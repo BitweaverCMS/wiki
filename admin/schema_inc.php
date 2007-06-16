@@ -139,8 +139,6 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	//array( WIKI_PKG_NAME, 'wiki_cache','0'),
 	//array( WIKI_PKG_NAME, 'wiki_creator_admin','n'),
 	//array( WIKI_PKG_NAME, 'wiki_copyrights','n'),
-	//array( WIKI_PKG_NAME, 'wiki_forum',''),
-	//array( WIKI_PKG_NAME, 'wiki_forum_id',''),
 	//array( WIKI_PKG_NAME, 'wiki_left_column','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_backlinks','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_comment','y'),
