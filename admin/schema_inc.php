@@ -118,7 +118,6 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	//array( WIKI_PKG_NAME, 'wiki_comments','n'),
 	array( WIKI_PKG_NAME, 'wiki_description','y'),
 	//array( WIKI_PKG_NAME, 'wiki_footnotes','n'),
-	//array( WIKI_PKG_NAME, 'wiki_icache','n'),
 	//array( WIKI_PKG_NAME, 'wiki_monosp','n'),
 	//array( WIKI_PKG_NAME, 'wiki_multiprint','n'),
 	//array( WIKI_PKG_NAME, 'wiki_notepad','n'),
