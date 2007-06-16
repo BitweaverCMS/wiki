@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.36 2007/06/14 21:20:27 nickpalmer Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.37 2007/06/16 15:51:06 lsces Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.36 2007/06/14 21:20:27 nickpalmer Exp $
+ * $Id: edit.php,v 1.37 2007/06/16 15:51:06 lsces Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -45,13 +45,6 @@ if( $wiki_sandbox && !$gBitSystem->isFeatureActive( 'wiki_sandbox' ) ) {
 
 if( $gContent->isLocked() ) {
 	$gBitSystem->fatalError( 'Cannot edit page because it is locked' );
-}
-
-// see if we should show the attachments tab at all
-foreach( $gLibertySystem->mPlugins as $plugin ) {
-	if( ( $plugin['plugin_type'] == 'storage' ) && ( $plugin['is_active'] == 'y' ) ) {
-		$gBitSmarty->assign( 'show_attachments','y' );
-	}
 }
 
 function  extract_section($data,$section) {
