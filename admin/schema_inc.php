@@ -112,6 +112,7 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	//array( WIKI_PKG_NAME, 'wiki_ranking','n'),
 	array( WIKI_PKG_NAME, 'wiki_sandbox','y'),
 	//array( WIKI_PKG_NAME, 'warn_on_edit','n'),
+	array( WIKI_PKG_NAME, 'wiki_hide_date','n'),
 	array( WIKI_PKG_NAME, 'wiki_attachments','y'),
 	array( WIKI_PKG_NAME, 'wiki_books','y'),
 	//array( WIKI_PKG_NAME, 'wiki_comments','n'),
