@@ -148,7 +148,6 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	array( WIKI_PKG_NAME, 'wiki_list_user','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_versions','y'),
 	array( WIKI_PKG_NAME, 'wiki_page_regex','strict'),
-	//array( WIKI_PKG_NAME, 'wiki_top_bar','n'),
 	//array( WIKI_PKG_NAME, 'wiki_uses_slides','n'),
 	array( WIKI_PKG_NAME, 'wiki_book_show_path','y'),
 	array( WIKI_PKG_NAME, 'wiki_book_show_navigation','y'),
