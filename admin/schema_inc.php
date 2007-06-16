@@ -78,7 +78,6 @@ $gBitInstaller->registerSchemaSequences( WIKI_PKG_NAME, $sequences );
 
 // ### Default UserPermissions
 $gBitInstaller->registerUserPermissions( WIKI_PKG_NAME, array(
-	array('p_wiki_admin_attachments', 'Can admin attachments to wiki pages', 'editors', WIKI_PKG_NAME),
 	array('p_wiki_admin_book', 'Can administer books', 'editors', WIKI_PKG_NAME),
 	array('p_wiki_admin', 'Can admin the wiki', 'editors', WIKI_PKG_NAME),
 	array('p_wiki_edit_book', 'Can create and edit books', 'registered', WIKI_PKG_NAME),
@@ -90,8 +89,6 @@ $gBitInstaller->registerUserPermissions( WIKI_PKG_NAME, array(
 	array('p_wiki_rename_page', 'Can rename pages', 'editors', WIKI_PKG_NAME),
 	array('p_wiki_rollback', 'Can rollback pages', 'editors', WIKI_PKG_NAME),
 	array('p_wiki_save_minor', 'Can save as minor edit', 'registered', WIKI_PKG_NAME),
-	array('p_wiki_upload_picture', 'Can upload pictures to wiki pages', 'registered', WIKI_PKG_NAME),
-	array('p_wiki_view_attachments', 'Can view wiki attachments and download them', 'registered', WIKI_PKG_NAME),
 	array('p_wiki_view_history', 'Can view page history', 'basic', WIKI_PKG_NAME),
 	array('p_wiki_view_page', 'Can view page/pages', 'basic', WIKI_PKG_NAME),
 ) );
