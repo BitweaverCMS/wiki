@@ -125,7 +125,6 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	array( WIKI_PKG_NAME, 'wiki_plurals','y'),
 	array( WIKI_PKG_NAME, 'wiki_rankings','y'),
 	array( WIKI_PKG_NAME, 'wiki_tables','new'),
-	//array( WIKI_PKG_NAME, 'wiki_templates','n'),
 	//array( WIKI_PKG_NAME, 'wiki_undo','n'),
 	//array( WIKI_PKG_NAME, 'wiki_usrlock','n'),
 	array( WIKI_PKG_NAME, 'wiki_words','y'),
