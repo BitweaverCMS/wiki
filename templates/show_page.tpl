@@ -6,7 +6,7 @@
 {include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav' serviceHash=$gContent->mInfo}
 
 <div class="display wiki {$pageInfo.title|escape|lower|regex_replace:"/[^a-z_]/i":""}">
-	{if !$preview}
+	{if !$liberty_preview}
 		{include file="bitpackage:wiki/page_icons.tpl"}
 		{include file="bitpackage:wiki/page_header.tpl"}
 	{/if}
