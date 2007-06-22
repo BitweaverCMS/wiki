@@ -22,7 +22,5 @@ if($gBitSystem->isPackageActive( 'wiki' ) ) {
 	}
 
 	$gBitSystem->registerNotifyEvent( array( "wiki_page_changes" => tra("Any wiki page is changed") ) );
-
-	$wiki_home_page = $gBitSystem->getConfig("wiki_home_page", 'HomePage');
 }
 ?>
