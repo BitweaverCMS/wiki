@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.91 2007/06/22 11:15:00 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.92 2007/06/22 12:35:27 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.91 $ $Date: 2007/06/22 11:15:00 $ $Author: lsces $
+ * @version $Revision: 1.92 $ $Date: 2007/06/22 12:35:27 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.91 2007/06/22 11:15:00 lsces Exp $
+ * $Id: BitPage.php,v 1.92 2007/06/22 12:35:27 squareing Exp $
  */
 
 /**
@@ -767,6 +767,68 @@ class BitPage extends LibertyAttachable {
 				$ret[] = $res["title"];
 			}
 		}
+		return $ret;
+	}
+
+	function getStats() {
+		global $gBitSystem;
+		$ret = array();
+
+		$query = "SELECT COUNT(*) FROM `".BIT_DB_PREFIX."wiki_pages`";
+		$ret['pages'] = array(
+			'label' => "Number of pages",
+			'value' => $this->mDb->getOne( $query ),
+		);
+
+		$listHash = array( 'orphans_only' => TRUE );
+		$this->getList( $listHash );
+		$ret['orphans'] = array(
+			'label' => 'Orphan Pages',
+			'value' => $listHash['listInfo']['total_records'],
+		);
+
+		$query = "SELECT SUM(`wiki_page_size`) FROM `".BIT_DB_PREFIX."wiki_pages`";
+		$ret['size'] = array(
+			'label' => "Combined size",
+			'value' => $this->mDb->getOne( $query ),
+			'modifier' => 'display_bytes',
+		);
+
+		$ret['average_size'] = array(
+			'label' => 'Average page size',
+			'value' => $ret['size']['value'] / $ret['pages']['value'],
+			'modifier' => 'display_bytes',
+		);
+
+		$query = "
+			SELECT COUNT(*)
+			FROM `".BIT_DB_PREFIX."liberty_content_history` lch
+			INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( lch.`content_id` = lc.`content_id` )
+			WHERE lc.`content_type_guid` = ?";
+		$ret['versions'] = array(
+			'label' => "Versions",
+			'value' => $this->mDb->getOne( $query, array( BITPAGE_CONTENT_TYPE_GUID )),
+		);
+
+		$ret['average_versions'] = array(
+			'label' => 'Average versions per page',
+			'value' => round( $ret['versions']['value'] / $ret['pages']['value'], 3 ),
+		);
+
+		$query = "
+			SELECT COUNT(*) FROM `".BIT_DB_PREFIX."liberty_content_links` lcl
+			INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( lcl.`from_content_id` = lc.`content_id` OR lcl.`from_content_id` = lc.`content_id` )
+			WHERE lc.`content_type_guid` = ?";
+		$ret['links'] = array(
+			'label' => "Total wiki links",
+			'value' => $this->mDb->getOne( $query, array( BITPAGE_CONTENT_TYPE_GUID )),
+		);
+
+		$ret['average_links'] = array(
+			'label' => 'Average links per page',
+			'value' => round( $ret['links']['value'] / $ret['pages']['value'], 3 ),
+		);
+
 		return $ret;
 	}
 }
