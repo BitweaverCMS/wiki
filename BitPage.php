@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.90 2007/06/22 09:00:57 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.91 2007/06/22 11:15:00 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.90 $ $Date: 2007/06/22 09:00:57 $ $Author: lsces $
+ * @version $Revision: 1.91 $ $Date: 2007/06/22 11:15:00 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.90 2007/06/22 09:00:57 lsces Exp $
+ * $Id: BitPage.php,v 1.91 2007/06/22 11:15:00 lsces Exp $
  */
 
 /**
@@ -23,7 +23,6 @@ require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
 
 /**
  * @package wiki
- * @subpackage BitPage
  */
 class BitPage extends LibertyAttachable {
 	var $mPageId;
