@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.89 2007/06/10 15:58:38 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.90 2007/06/22 09:00:57 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.89 $ $Date: 2007/06/10 15:58:38 $ $Author: squareing $
+ * @version $Revision: 1.90 $ $Date: 2007/06/22 09:00:57 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.89 2007/06/10 15:58:38 squareing Exp $
+ * $Id: BitPage.php,v 1.90 2007/06/22 09:00:57 lsces Exp $
  */
 
 /**
@@ -22,12 +22,8 @@
 require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
 
 /**
- * Sample class to illustrate best practices when creating a new bitweaver package that
- * builds on core bitweaver functionality, such as the Liberty CMS engine
- *
  * @package wiki
- *
- * created 2004/8/15
+ * @subpackage BitPage
  */
 class BitPage extends LibertyAttachable {
 	var $mPageId;
