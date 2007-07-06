@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/rankings.php,v 1.8 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/rankings.php,v 1.9 2007/07/06 16:22:14 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: rankings.php,v 1.8 2006/04/11 13:10:33 squareing Exp $
+ * $Id: rankings.php,v 1.9 2007/07/06 16:22:14 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -20,7 +20,7 @@ require_once( '../bit_setup_inc.php' );
 
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyFeature( 'wiki_rankings' );
-$gBitSystem->verifyPermission( 'p_wiki_view_page' );
+$gContent->verifyPermission( 'p_wiki_view_page' );
 
 $rankingOptions = array(
 	array(

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.20 2007/06/01 18:06:03 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.21 2007/07/06 16:22:14 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.20 2007/06/01 18:06:03 wjames5 Exp $
+ * $Id: page_history.php,v 1.21 2007/07/06 16:22:14 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -21,8 +21,8 @@ include_once( WIKI_PKG_PATH.'BitPage.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyFeature( 'wiki_history' );
-$gBitSystem->verifyPermission( 'p_wiki_view_page', tra( "Permission denied you cannot browse this page history" ) );
-$gBitSystem->verifyPermission( 'p_wiki_view_history', tra( "Permission denied you cannot browse this page history" ) );
+$gContent->verifyPermission( 'p_wiki_view_page', tra( "Permission denied you cannot browse this page history" ) );
+$gContent->verifyPermission( 'p_wiki_view_history', tra( "Permission denied you cannot browse this page history" ) );
 
 // Get the page from the request var or default it to HomePage
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );

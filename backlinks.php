@@ -3,13 +3,13 @@
  * assigned_modules
  *
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.11 $
+ * @version  $Revision: 1.12 $
  * @package  wiki
  * @subpackage  functions
  * @copyright Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * @license Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
  */
-// $Header: /cvsroot/bitweaver/_bit_wiki/backlinks.php,v 1.11 2007/06/01 16:01:30 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/backlinks.php,v 1.12 2007/07/06 16:22:14 spiderr Exp $
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 
 /**
@@ -30,7 +30,7 @@ if (!isset($_REQUEST["page"])) {
 }
 
 // Now check permissions to access this page
-$gBitSystem->verifyPermission( 'p_wiki_view_page' );
+$gContent->verifyPermission( 'p_wiki_view_page' );
 
 // If the page doesn't exist then display an error
 if( !$gContent->pageExists( $page )) {

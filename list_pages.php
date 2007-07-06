@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.17 2007/03/20 16:56:34 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.18 2007/07/06 16:22:14 spiderr Exp $
  *
- * $Id: list_pages.php,v 1.17 2007/03/20 16:56:34 spiderr Exp $
+ * $Id: list_pages.php,v 1.18 2007/07/06 16:22:14 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -16,7 +16,7 @@ require_once( WIKI_PKG_PATH.'BitPage.php' );
 // verify stuff
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyFeature( 'wiki_list_pages' );
-$gBitSystem->verifyPermission( 'p_wiki_view_page' );
+$gContent->verifyPermission( 'p_wiki_view_page' );
 
 /* mass-remove:
    the checkboxes are sent as the array $_REQUEST["checked[]"], values are the wiki-PageNames,
@@ -28,7 +28,7 @@ $gBitSystem->verifyPermission( 'p_wiki_view_page' );
 if( isset( $_REQUEST["batch_submit"] ) && isset( $_REQUEST["checked"] ) && $_REQUEST["batch_submit"] == "remove_pages" ) {
 
 	// Now check permissions to remove the selected pages
-	$gBitSystem->verifyPermission( 'p_wiki_remove_page' );
+	$gContent->verifyPermission( 'p_wiki_remove_page' );
 
 	if( !empty( $_REQUEST['cancel'] )) {
 		// user cancelled - just continue on, doing nothing
