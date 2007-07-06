@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.21 2007/06/01 15:16:49 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.22 2007/07/06 15:43:23 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.21 2007/06/01 15:16:49 squareing Exp $
+ * $Id: lookup_page_inc.php,v 1.22 2007/07/06 15:43:23 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -54,11 +54,6 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 		$gContent->mInfo['title'] = $loadPage;
 	}
 }
-
-// Now that gContent is loaded, we can transparently update user 
-// permissions as set by the individual page permissions - if any are set
-// this is now done using a liberty service - xing
-//$gContent->updateUserPermissions();
 
 // we weren't passed a structure, but maybe this page belongs to one. let's check...
 if( empty( $gStructure ) ) {
