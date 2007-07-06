@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.34 2007/06/01 16:01:30 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.35 2007/07/06 16:11:41 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.34 2007/06/01 16:01:30 squareing Exp $
+ * $Id: display_bitpage_inc.php,v 1.35 2007/07/06 16:11:41 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -20,7 +20,7 @@ include_once( WIKI_PKG_PATH.'BitBook.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
 
-$gBitSystem->verifyPermission( 'p_wiki_view_page' );
+$gContent->verifyPermission( 'p_wiki_view_page' );
 
 // Check permissions to access this page
 if( !$gContent->isValid() ) {

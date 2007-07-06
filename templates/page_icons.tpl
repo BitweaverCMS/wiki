@@ -1,5 +1,5 @@
 {strip}
-{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
+{if $gContent->hasUserPermission( 'p_users_view_icons_and_tools' )}
 	<div class="floaticon">
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$gContent->mInfo}
 
@@ -8,14 +8,14 @@
 		{/if}
 
 		{if $gContent->isLocked()}
-			{if $gBitUser->hasPermission( 'p_wiki_admin' ) or ($gContent->isOwner() and $gBitUser->hasPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
+			{if $gContent->hasUserPermission( 'p_wiki_admin' ) or ($gContent->isOwner() and $gContent->hasUserPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
 				<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;action=unlock">{biticon ipackage="icons" iname="emblem-readonly" iexplain="Unlock this page"}</a>
 			{/if}
 		{else}
 			{assign var=format_guid value=$gContent->mInfo.format_guid}
 			{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y'}
-				{if $gBitUser->hasPermission( 'p_wiki_edit_page' ) or $gContent->mInfo.title eq 'SandBox'}
-					{if $gBitUser->hasPermission( 'p_wiki_admin' ) or ($gContent->isOwner() and $gBitUser->hasPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
+				{if $gContent->hasUserPermission( 'p_wiki_edit_page' ) or $gContent->mInfo.title eq 'SandBox'}
+					{if $gContent->hasUserPermission( 'p_wiki_admin' ) or ($gContent->isOwner() and $gContent->hasUserPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
 						<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;action=lock">{biticon ipackage="icons" iname="emblem-readonly" iexplain="Lock this page"}</a>
 					{/if}
 					<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$gContent->mInfo.page_id}" {if $beingEdited eq 'y'}class="highlight" title="$semUser"{/if}>{biticon ipackage="icons" iname="accessories-text-editor" iexplain="Edit"}</a>
@@ -31,7 +31,7 @@
 			{/if}
 		{/if}
 
-		{if $gBitSystem->isPackageActive( 'stickies' ) && $gBitUser->hasPermission('p_stickies_edit') }
+		{if $gBitSystem->isPackageActive( 'stickies' ) && $gContent->hasUserPermission('p_stickies_edit') }
 			{if ($structureInfo.structure_id)}
 				{assign var='stickyRequest' value="structure_id=`$structureInfo.structure_id`"}
 			{else}
@@ -40,7 +40,7 @@
 			<a href="{$smarty.const.STICKIES_PKG_URL}edit.php?{$stickyRequest}">{biticon ipackage=stickies iname="sticky_note" iexplain="Add sticky note"}</a>
 		{/if}
 
-		{if ($structureInfo.structure_id) && ($gStructure->mInfo.creator_user_id == $gBitUser->mUserId || $gBitUser->hasPermission( 'p_wiki_admin_book' ))}
+		{if ($structureInfo.structure_id) && ($gStructure->mInfo.creator_user_id == $gBitUser->mUserId || $gContent->hasUserPermission( 'p_wiki_admin_book' ))}
 			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$structureInfo.structure_id}">{biticon ipackage="icons" iname="emblem-system" iexplain="Edit book"}</a>
 		{/if}
 
@@ -49,7 +49,7 @@
 		{/if}
 
 		{* we hide this link from browsers that can interpret css since we use css to determine what is printed and what not *}
-		{if $gBitUser->hasPermission( 'p_liberty_print' )}
+		{if $gContent->hasUserPermission( 'p_liberty_print' )}
 			<a title="{tr}print{/tr}" style="display:none;" href="{$smarty.const.WIKI_PKG_URL}print.php?{if $structureInfo.root_structure_id}structure_id={$structureInfo.root_structure_id}{else}page_id={$gContent->mInfo.page_id}{/if}">{biticon ipackage="icons" iname="document-print" iexplain="Print"}</a>
 		{/if}
 
@@ -70,7 +70,7 @@
 		{/if}
 
 		{if $gContent->mInfo.title ne 'SandBox' && !$gContent->isLocked()}
-			{if $gBitUser->hasPermission( 'p_wiki_remove_page' )}
+			{if $gContent->hasUserPermission( 'p_wiki_remove_page' )}
 				<a title="{tr}remove this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}remove_page.php?page_id={$gContent->mInfo.page_id}&amp;version=last">{biticon ipackage="icons" iname="edit-delete" iexplain="Delete"}</a>
 			{/if}
 		{/if}
