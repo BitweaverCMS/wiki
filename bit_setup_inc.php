@@ -8,10 +8,10 @@ $registerHash = array(
 );
 $gBitSystem->registerPackage( $registerHash );
 
-define('BITPAGE_CONTENT_TYPE_GUID', 'bitpage' );
+define( 'BITPAGE_CONTENT_TYPE_GUID', 'bitpage' );
 
-if($gBitSystem->isPackageActive( 'wiki' ) ) {
-	if ($gBitUser->hasPermission( 'p_wiki_view_page' )) {
+if( $gBitSystem->isPackageActive( 'wiki' )) {
+	if( $gBitUser->hasPermission( 'p_wiki_view_page' )) {
 		$menuHash = array(
 			'package_name'       => WIKI_PKG_NAME,
 			'index_url'          => WIKI_PKG_URL.'index.php',
@@ -21,6 +21,6 @@ if($gBitSystem->isPackageActive( 'wiki' ) ) {
 		$gBitSystem->registerAppMenu( $menuHash );
 	}
 
-	$gBitSystem->registerNotifyEvent( array( "wiki_page_changes" => tra("Any wiki page is changed") ) );
+	$gBitSystem->registerNotifyEvent( array( "wiki_page_changes" => tra( "Any wiki page is changed" )));
 }
 ?>
