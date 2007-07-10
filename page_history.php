@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.21 2007/07/06 16:22:14 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.22 2007/07/10 16:19:50 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.21 2007/07/06 16:22:14 spiderr Exp $
+ * $Id: page_history.php,v 1.22 2007/07/10 16:19:50 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -21,8 +21,6 @@ include_once( WIKI_PKG_PATH.'BitPage.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyFeature( 'wiki_history' );
-$gContent->verifyPermission( 'p_wiki_view_page', tra( "Permission denied you cannot browse this page history" ) );
-$gContent->verifyPermission( 'p_wiki_view_history', tra( "Permission denied you cannot browse this page history" ) );
 
 // Get the page from the request var or default it to HomePage
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
@@ -32,66 +30,12 @@ if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {
 	$gBitSystem->fatalError( tra( "Unknown page" ));
 }
 
+$gContent->verifyPermission( 'p_wiki_view_page' );
+$gContent->verifyPermission( 'p_wiki_view_history' );
+
 $page_id = $_REQUEST['page_id'];
-
 $smartyContentRef = 'pageInfo';
-
 include_once( LIBERTY_PKG_PATH.'content_history_inc.php' );
-
-/* SLATED FOR REMOVAL - SCRIPT MOVED TO LIBERTY:content_history_inc.php
-$gBitSmarty->assign('source', 0);
-// If we have to include a preview please show it
-$gBitSmarty->assign('preview', false);
-$gBitSmarty->assign('compare', 'n');
-$gBitSmarty->assign('diff2', 'n');
-if (isset($_REQUEST["delete"]) && isset($_REQUEST["hist"])) {
-	foreach (array_keys($_REQUEST["hist"])as $version) {
-		$gContent->expungeVersion( $version );
-	}
-} elseif (isset($_REQUEST['source'])) {
-	$gBitSmarty->assign('source', $_REQUEST['source']);
-	if ($_REQUEST['source'] == 'current') {
-		$gBitSmarty->assign('sourcev', nl2br(htmlentities($gContent->mInfo['data'])));
-	} else {
-		$version = $gContent->getHistory($_REQUEST["source"]);
-		$gBitSmarty->assign('sourcev', nl2br(htmlentities($version[0]["data"])));
-	}
-} elseif (isset($_REQUEST["preview"])) {
-	if( $version = $gContent->getHistory( $_REQUEST["preview"] ) ) {
-		$version[0]['parsed_data'] = $gContent->parseData( $version[0] );
-		$gBitSmarty->assign_by_ref('pageInfo', $version[0] );
-		$gBitSmarty->assign_by_ref('version', $_REQUEST["preview"]);
-	}
-} elseif( isset( $_REQUEST["diff2"] ) ) {
-	$from_version = $_REQUEST["diff2"];
-	$from_page = $gContent->getHistory( $from_version );
-	$from_lines = explode("\n",$from_page[0]["data"]);
-	$to_version = $gContent->mInfo["version"];
-	$to_lines = explode("\n",$gContent->mInfo["data"]);
-
-	include_once( WIKI_PKG_PATH.'diff.php');        
-	$diffx = new WikiDiff($from_lines,$to_lines);
-	$fmt = new WikiUnifiedDiffFormatter;
-	$html = $fmt->format($diffx, $from_lines);
-	$gBitSmarty->assign('diffdata', $html);
-	$gBitSmarty->assign('diff2', 'y');
-	$gBitSmarty->assign('version_from', $from_version);
-	$gBitSmarty->assign('version_to', $to_version);
-
-} elseif( isset( $_REQUEST["compare"] ) ) {
-	$from_version = $_REQUEST["compare"];
-	$from_page = $gContent->getHistory($from_version);
-	$gBitSmarty->assign('compare', 'y');
-	$gBitSmarty->assign_by_ref('diff_from', $gContent->parseData( $from_page[0] ) );
-	$gBitSmarty->assign_by_ref('diff_to', $gContent->parseData() );
-	$gBitSmarty->assign_by_ref('version_from', $from_version);
-} elseif (isset($_REQUEST["rollback"])) {
-	if( $version = $gContent->getHistory( $_REQUEST["preview"] ) ) {
-		$gBitSmarty->assign_by_ref('parsed', $gContent->parseData( $version[0] ) );
-		$gBitSmarty->assign_by_ref('version', $_REQUEST["preview"]);
-	}
-}
-*/
 
 // pagination stuff
 $gBitSmarty->assign( 'page', $page = !empty( $_REQUEST['list_page'] ) ? $_REQUEST['list_page'] : 1 );
