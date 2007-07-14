@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.38 2007/06/16 15:51:06 lsces Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.39 2007/07/14 14:52:33 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -227,10 +227,6 @@
 				{/if}
 			{/jstabs}
 		{/form}
-
-		<br /><br />
-		{include file="bitpackage:liberty/edit_help_inc.tpl"}
-
 	</div><!-- end .body -->
 </div><!-- end .admin -->
 {/strip}

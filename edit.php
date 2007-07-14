@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.39 2007/07/10 19:03:16 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.40 2007/07/14 14:52:33 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.39 2007/07/10 19:03:16 squareing Exp $
+ * $Id: edit.php,v 1.40 2007/07/14 14:52:33 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -17,9 +17,7 @@
  * required setup
  */
 require_once( '../bit_setup_inc.php' );
-
 include_once( WIKI_PKG_PATH.'BitBook.php' );
-include_once( LIBERTY_PKG_PATH.'edit_help_inc.php' );
 
 $gBitSystem->verifyPackage( 'wiki' );
 
