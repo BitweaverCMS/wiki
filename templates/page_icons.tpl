@@ -10,6 +10,8 @@
 		{if $gContent->isLocked()}
 			{if $gContent->hasUserPermission( 'p_wiki_admin' ) or ($gContent->isOwner() and $gContent->hasUserPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
 				<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;action=unlock">{biticon ipackage="icons" iname="emblem-readonly" iexplain="Unlock this page"}</a>
+			{else}
+				{biticon ipackage="icons" iname="emblem-readonly" iexplain="Locked"}
 			{/if}
 		{else}
 			{assign var=format_guid value=$gContent->mInfo.format_guid}
