@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.92 2007/06/22 12:35:27 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.93 2007/07/16 15:27:22 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.92 $ $Date: 2007/06/22 12:35:27 $ $Author: squareing $
+ * @version $Revision: 1.93 $ $Date: 2007/07/16 15:27:22 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.92 2007/06/22 12:35:27 squareing Exp $
+ * $Id: BitPage.php,v 1.93 2007/07/16 15:27:22 squareing Exp $
  */
 
 /**
@@ -41,6 +41,11 @@ class BitPage extends LibertyAttachable {
 		$this->mPageId = (int)$pPageId;
 		$this->mContentId = (int)$pContentId;
 		$this->mContentTypeGuid = BITPAGE_CONTENT_TYPE_GUID;
+
+		// Permission setup
+		$this->mViewContentPerm  = 'p_wiki_view_page';
+		$this->mEditContentPerm  = 'p_wiki_edit_page';
+		$this->mAdminContentPerm = 'p_wiki_admin';
 	}
 
 	function findByPageName( $pPageName, $pUserId=NULL ) {
