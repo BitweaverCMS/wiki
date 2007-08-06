@@ -1,6 +1,6 @@
 {if $print_page ne 'y' && $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
 	{capture name=navbarlist}{strip}
-			{if !$lock}
+			{if !$gContent->isLocked()}
 				{assign var=format_guid value=$pageInfo.format_guid}
 				{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y'}
 					{if $gContent->hasUserPermission( 'p_wiki_edit_page' ) or $page eq 'SandBox'}
@@ -13,7 +13,7 @@
 			{/if}
 			{if $page ne 'SandBox'}
 				{if $gBitUser->hasPermission( 'p_wiki_admin' ) or ($gBitUser->mUserId and ($gBitUser->mUserId eq $pageInfo.modifier_user_id) and ($gBitUser->hasPermission( 'p_wiki_lock_page' )) and ($gBitSystem->isFeatureActive( 'wiki_usrlock' )))}
-					{if $lock}
+					{if $gContent->isLocked()}
 						<li><a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;action=unlock">{tr}Unlock{/tr}</a></li>
 					{else}
 						<li><a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$pageInfo.page_id}&amp;action=lock">{tr}Lock{/tr}</a></li>
