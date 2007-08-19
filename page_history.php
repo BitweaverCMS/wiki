@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.22 2007/07/10 16:19:50 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.23 2007/08/19 12:16:12 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.22 2007/07/10 16:19:50 squareing Exp $
+ * $Id: page_history.php,v 1.23 2007/08/19 12:16:12 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -38,7 +38,12 @@ $smartyContentRef = 'pageInfo';
 include_once( LIBERTY_PKG_PATH.'content_history_inc.php' );
 
 // pagination stuff
+$gBitSmarty->assign( 'page', $page = !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : 1 );
+if ( !empty($_REQUEST['list_page']) ) {
 $gBitSmarty->assign( 'page', $page = !empty( $_REQUEST['list_page'] ) ? $_REQUEST['list_page'] : 1 );
+}
+
+
 $offset = ( $page - 1 ) * $gBitSystem->getConfig( 'max_records' );
 $history = $gContent->getHistory( NULL, NULL, $offset, $gBitSystem->getConfig( 'max_records' ) );
 $gBitSmarty->assign_by_ref( 'data', $history['data'] );
