@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.20 2007/08/05 22:21:54 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.21 2007/08/23 08:10:22 squareing Exp $
  *
- * $Id: list_pages.php,v 1.20 2007/08/05 22:21:54 spiderr Exp $
+ * $Id: list_pages.php,v 1.21 2007/08/23 08:10:22 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -19,6 +19,7 @@ $gBitSystem->verifyFeature( 'wiki_list_pages' );
 $gBitSystem->verifyPermission( 'p_wiki_view_page' );
 
 $gContent = new BitPage();
+$gContent->invokeServices( 'content_list_function', $_REQUEST );
 
 /* mass-remove:
    the checkboxes are sent as the array $_REQUEST["checked[]"], values are the wiki-PageNames,

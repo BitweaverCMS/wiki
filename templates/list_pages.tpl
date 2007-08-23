@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.23 2007/03/31 23:30:19 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.24 2007/08/23 08:10:22 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -43,7 +43,11 @@
 			<input type="hidden" name="offset" value="{$offset}" />
 			<input type="hidden" name="sort_mode" value="{$sort_mode}" />
 
-			<table class="clear data">
+			<div class="clear"></div>
+
+			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='list_options'}
+
+			<table class="data">
 				<caption>{tr}WikiPages Listing{/tr} <span class="total">[ {$listInfo.total_records} ]</span></caption>
 				<tr>
 					{*  at the moment, the only working option to use the checkboxes for is deleting pages. so for now the checkboxes are visible iff $p_wiki_remove_page is set. Other applications make sense as well (categorize, convert to pdf, etc). Add necessary corresponding permission here: *}
@@ -134,10 +138,12 @@
 								{/if}
 							{/if}
 						</td>
+
 						<td style="text-align:right; vertical-align:top;">
-							{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='list' serviceHash=$listpages[changes]}
+							{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='list_actions' serviceHash=$listpages[changes]}
 						</td>
 					</tr>
+
 					<tr class="{cycle}">
 						{if $gBitSystem->isFeatureActive( 'wiki_list_hits' )}
 							<td style="text-align:center;">{$listpages[changes].hits}</td>

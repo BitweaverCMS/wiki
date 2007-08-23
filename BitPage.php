@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.93 2007/07/16 15:27:22 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.94 2007/08/23 08:10:22 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.93 $ $Date: 2007/07/16 15:27:22 $ $Author: squareing $
+ * @version $Revision: 1.94 $ $Date: 2007/08/23 08:10:22 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.93 2007/07/16 15:27:22 squareing Exp $
+ * $Id: BitPage.php,v 1.94 2007/08/23 08:10:22 squareing Exp $
  */
 
 /**
@@ -535,7 +535,7 @@ class BitPage extends LibertyAttachable {
 		$whereSql = $joinSql = $selectSql = '';
 		$bindVars = array();
 		array_push( $bindVars, $this->mContentTypeGuid );
-		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
+		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars, NULL, $pListHash );
 
 		// make find_title compatible with {minifind}
 		if( empty( $pListHash['find_title'] )) {
