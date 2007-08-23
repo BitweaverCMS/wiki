@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.40 2007/07/14 14:52:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.41 2007/08/23 22:33:55 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.40 2007/07/14 14:52:33 squareing Exp $
+ * $Id: edit.php,v 1.41 2007/08/23 22:33:55 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -403,7 +403,7 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 }
 
 if( isset( $_REQUEST['format_guid'] ) && !isset( $gContent->mInfo['format_guid'] ) ) {
-	$formInfo['format_guid'] = $gContent->mInfo['format_guid'] = $_REQUEST['format_guid']; 
+	$formInfo['format_guid'] = $gContent->mInfo['format_guid'] = $_REQUEST['format_guid'];
 }
 
 if( isset( $_REQUEST["preview"] ) ) {
@@ -415,14 +415,15 @@ if( isset( $_REQUEST["preview"] ) ) {
 	}
 
 	$data_to_parse = $formInfo['edit'];
-	if (!empty($formInfo['section'])
-	&& !empty($gContent->mInfo['data']) ) {
+	if( !empty( $formInfo['section'] ) && !empty( $gContent->mInfo['data'] )) {
 		$full_page_data = $gContent->mInfo['data'];
 	}
 
 
-	$formInfo['parsed_data'] = $gContent->parseData( $data_to_parse, ( !empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] :
-		( isset( $gContent->mInfo['format_guid'] ) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ) ) );
+	$formInfo['parsed_data'] = $gContent->parseData(
+		$data_to_parse,
+		( !empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] : ( isset( $gContent->mInfo['format_guid'] ) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ))
+	);
 	$gContent->invokeServices( 'content_preview_function' );
 } else {
 	$gContent->invokeServices( 'content_edit_function' );
