@@ -1,8 +1,8 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.11 2007/05/21 18:51:51 lsces Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.12 2007/08/24 16:32:35 laetzer Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
-		<h1>{tr}History{/tr} {tr}of{/tr} <a href="{$gContent->mInfo.display_url}">{$gContent->mInfo.title|escape}</a></h1>
+		<h1>{tr}History of{/tr} <a href="{$gContent->mInfo.display_url}">{$gContent->mInfo.title|escape}</a></h1>
 	</div>
 
 	<div class="body">
