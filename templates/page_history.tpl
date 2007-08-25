@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.12 2007/08/24 16:32:35 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.13 2007/08/25 02:26:05 laetzer Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
@@ -53,7 +53,7 @@
 				</tr>
 
 				<tr class="odd">
-					<td>{$gContent->mInfo.last_modified|bit_short_datetime}<br />{$gContent->mInfo.edit_comment}</td>
+					<td>{$gContent->mInfo.last_modified|bit_short_datetime}<br />{$gContent->mInfo.edit_comment|escape|default:"&mdash;"}</td>
 
 					<td>{displayname user=$gContent->mInfo.modifier_user user_id=$gContent->mInfo.modifier_user_id real_name=$gContent->mInfo.modifier_real_name} </td>
 					<td style="text-align:right;">{$gContent->mInfo.ip}</td>
@@ -69,7 +69,7 @@
 
 				{foreach from=$data item=item}
 					<tr class="{cycle values='even,odd' advance=false}">
-						<td><label for="hist_{$item.version}">{$item.last_modified|bit_short_datetime}<br />{$item.history_comment}</label></td>
+						<td><label for="hist_{$item.version}">{$item.last_modified|bit_short_datetime}<br />{$item.history_comment|escape|default:"&mdash;"}</label></td>
 						<td>{displayname hash=$item}</td>
 						<td style="text-align:right;">{$item.ip}</td>
 						<td style="text-align:right;">{$item.version}</td>
