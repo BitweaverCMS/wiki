@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.18 2007/07/06 16:22:14 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.19 2007/09/14 17:07:20 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: slideshow.php,v 1.18 2007/07/06 16:22:14 spiderr Exp $
+ * $Id: slideshow.php,v 1.19 2007/09/14 17:07:20 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -35,7 +35,7 @@ if (!$gContent->isValid()) {
 }
 
 // Now check permissions to access this page
-$gContent->verifyPermission( 'p_wiki_view_page' );
+$gContent->verifyViewPermission();
 
 // Get page data
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
@@ -44,11 +44,11 @@ $info = $gContent->mInfo;
 // If not locked and last version is user version then can undo
 $gBitSmarty->assign('canundo', 'n');
 
-if ($info["flag"] != 'L' && (($gBitUser->hasPermission( 'p_wiki_edit_page' ) && $info["user"] == $user) || ($gBitUser->hasPermission( 'p_wiki_remove_page' )))) {
+if ($info["flag"] != 'L' && (($gContent->hasEditPermission() && $info["user"] == $user) || ($gContent->hasUserPermission( 'p_wiki_remove_page' )))) {
 	$gBitSmarty->assign('canundo', 'y');
 }
 
-if ($gBitUser->hasPermission( 'p_wiki_admin' )) {
+if( $gContent->hasAdminPermission() ) {
 	$gBitSmarty->assign('canundo', 'y');
 }
 

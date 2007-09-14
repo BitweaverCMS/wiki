@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.20 2007/07/06 16:22:14 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.21 2007/09/14 17:07:20 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print.php,v 1.20 2007/07/06 16:22:14 spiderr Exp $
+ * $Id: print.php,v 1.21 2007/09/14 17:07:20 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -20,7 +20,7 @@ require_once( '../bit_setup_inc.php' );
 include_once( WIKI_PKG_PATH.'BitPage.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
-$gContent->verifyPermission( 'p_wiki_view_page' );
+$gContent->verifyViewPermission();
 
 // If the page doesn't exist then display an error
 $requirePage = TRUE;

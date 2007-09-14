@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.13 2007/07/06 16:22:14 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.14 2007/09/14 17:07:20 spiderr Exp $
  *
- * $Id: orphan_pages.php,v 1.13 2007/07/06 16:22:14 spiderr Exp $
+ * $Id: orphan_pages.php,v 1.14 2007/09/14 17:07:20 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -17,7 +17,7 @@ include_once( WIKI_PKG_PATH.'BitPage.php' );
 $gBitSystem->verifyPackage( 'wiki' );
 
 $gBitSystem->verifyFeature( 'wiki_list_orphans' );
-$gContent->verifyPermission( 'p_wiki_view_page' );
+$gContent->verifyViewPermission();
 
 /* mass-remove:
    the checkboxes are sent as the array $_REQUEST["checked[]"], values are the wiki-PageNames,
