@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.96 2007/09/10 15:17:25 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.97 2007/09/14 17:06:00 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.96 $ $Date: 2007/09/10 15:17:25 $ $Author: squareing $
+ * @version $Revision: 1.97 $ $Date: 2007/09/14 17:06:00 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.96 2007/09/10 15:17:25 squareing Exp $
+ * $Id: BitPage.php,v 1.97 2007/09/14 17:06:00 spiderr Exp $
  */
 
 /**
@@ -301,6 +301,73 @@ class BitPage extends LibertyAttachable {
 	function isValid() {
 		return( $this->verifyId( $this->mPageId ) );
 	}
+
+	/**
+	 * Function that determines if this content specified permission for the current gBitUser. 
+	 * Override LibertyContent method default $pCheckGlobalPerm=FALSE to enable shared editing
+	 * See LibertyContent method for defaults
+	*/
+	function hasUserPermission( $pPermName, $pVerifyAccessControl=TRUE, $pCheckGlobalPerm=TRUE ) {
+		return parent::hasUserPermission( $pPermName, $pVerifyAccessControl, $pCheckGlobalPerm );
+	}
+
+	/**
+	 * Function that determines if this content specified permission for the current gBitUser. 
+	 * Override LibertyContent method default $pCheckGlobalPerm=FALSE to enable shared editing
+	 * See LibertyContent method for defaults
+	*/
+	function hasAdminPermission( $pVerifyAccessControl=TRUE, $pCheckGlobalPerm=TRUE ) {
+		return( $this->hasUserPermission( $this->mAdminContentPerm, $pVerifyAccessControl, $pCheckGlobalPerm ) );
+	}
+
+	// === verifyAdminPermission
+	/**
+	 * Function that determines if this content specified permission for the current gBitUser. 
+	 * Override LibertyContent method default $pCheckGlobalPerm=FALSE to enable shared editing
+	 * See LibertyContent method for defaults
+	*/
+	function verifyAdminPermission( $pVerifyAccessControl=TRUE, $pCheckGlobalPerm=TRUE ) {
+		return parent::verifyAdminPermission( $pVerifyAccessControl, $pCheckGlobalPerm );
+	}
+
+	/**
+	 * Function that determines if this content specified permission for the current gBitUser. 
+	 * Override LibertyContent method default $pCheckGlobalPerm=FALSE to enable shared editing
+	 * See LibertyContent method for defaults
+	*/
+	function hasEditPermission( $pVerifyAccessControl=TRUE, $pCheckGlobalPerm=TRUE ) {
+		return( $this->hasUserPermission( $this->mEditContentPerm, $pVerifyAccessControl, $pCheckGlobalPerm ) );
+	}
+
+	// === verifyEditPermission
+	/**
+	 * Function that determines if this content specified permission for the current gBitUser. 
+	 * Override LibertyContent method default $pCheckGlobalPerm=FALSE to enable shared editing
+	 * See LibertyContent method for defaults
+	*/
+	function verifyEditPermission( $pVerifyAccessControl=TRUE, $pCheckGlobalPerm=TRUE ) {
+		return parent::verifyEditPermission( $pVerifyAccessControl, $pCheckGlobalPerm );
+	}
+
+	/**
+	 * Function that determines if this content specified permission for the current gBitUser. 
+	 * Override LibertyContent method default $pCheckGlobalPerm=FALSE to enable shared editing
+	 * See LibertyContent method for defaults
+	*/
+	function hasViewPermission( $pVerifyAccessControl=TRUE, $pCheckGlobalPerm=TRUE ) {
+		return parent::hasViewPermission( $pVerifyAccessControl, $pCheckGlobalPerm );
+	}
+
+	// === verifyViewPermission
+	/**
+	 * Function that determines if this content specified permission for the current gBitUser. 
+	 * Override LibertyContent method default $pCheckGlobalPerm=FALSE to enable shared editing
+	 * See LibertyContent method for defaults
+	*/
+	function verifyViewPermission( $pVerifyAccessControl=TRUE, $pCheckGlobalPerm=FALSE ) {
+		return parent::verifyViewPermission( $pVerifyAccessControl, $pCheckGlobalPerm );
+	}
+
 
 
 	function isLocked() {
