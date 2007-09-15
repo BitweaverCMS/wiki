@@ -1,3 +1,4 @@
+{strip}
 {if !$gBitSystem->isFeatureActive( 'wiki_hide_date' )}
 	<div class="date">
 		{tr}Created by{/tr}: {displayname user=$pageInfo.creator_user user_id=$pageInfo.user_id real_name=$pageInfo.creator_real_name},
@@ -7,3 +8,4 @@
 		{/if}
 	</div>
 {/if}
+{/strip}
