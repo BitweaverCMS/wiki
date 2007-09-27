@@ -295,6 +295,18 @@ array( 'DATADICT' => array(
 			'`comment`' => '`edit_comment` C(200)',
 		),
 	)),
+)),
+
+array('QUERY' =>
+	array( 'SQL92' => array(
+		"INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `perm_level`, `package`) VALUES ('p_wiki_view_history', 'Can view page history', 'basic', 'wiki')",
+		"INSERT INTO `".BIT_DB_PREFIX."users_group_permissions` (`group_id`, `perm_name`) VALUES (-1,'p_wiki_view_history')",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET config_name='content_allow_html' WHERE config_name='allow_html'",
+		"INSERT INTO `".BIT_DB_PREFIX."liberty_content_data` (`content_id`,`data`,`data_type`) (SELECT `content_id`, `description`, 'summary' FROM `".BIT_DB_PREFIX."wiki_pages` WHERE `description` IS NOT NULL)",
+	),
+)),
+
+array( 'DATADICT' => array(
 	array( 'DROPCOLUMN' => array(
 		'wiki_pages' => array(
 			'page_cache',
@@ -307,14 +319,7 @@ array( 'DATADICT' => array(
 		),
 	)),
 )),
-array('QUERY' =>
-	array( 'SQL92' => array(
-        "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`,`perm_desc`, `perm_level`, `package`) VALUES ('p_wiki_view_history', 'Can view page history', 'basic', 'wiki')",
-        "INSERT INTO `".BIT_DB_PREFIX."users_group_permissions` (`group_id`, `perm_name`) VALUES (-1,'p_wiki_view_history')",
-		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET config_name='content_allow_html' WHERE config_name='allow_html'",
-		"INSERT INTO `".BIT_DB_PREFIX."liberty_content_data` (`content_id`,`data`,`data_type`) (SELECT `content_id`, `description`, 'summary' FROM `".BIT_DB_PREFIX."wiki_pages` WHERE `description` IS NOT NULL)",
-	),
-)),
+
 		)
 	),
 
