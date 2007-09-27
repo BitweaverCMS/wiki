@@ -12,7 +12,6 @@ $tables = array(
 	page_id I4 PRIMARY,
 	content_id I4 NOTNULL,
 	wiki_page_size I4 DEFAULT 0,
-	description C(200),
 	edit_comment C(200),
 	flag C(1)
 ",

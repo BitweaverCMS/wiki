@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.98 2007/09/15 02:00:47 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.99 2007/09/27 13:49:58 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.98 $ $Date: 2007/09/15 02:00:47 $ $Author: spiderr $
+ * @version $Revision: 1.99 $ $Date: 2007/09/27 13:49:58 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.98 2007/09/15 02:00:47 spiderr Exp $
+ * $Id: BitPage.php,v 1.99 2007/09/27 13:49:58 spiderr Exp $
  */
 
 /**
@@ -68,11 +68,12 @@ class BitPage extends LibertyAttachable {
 			array_push( $bindVars, $lookupId = @BitBase::verifyId( $this->mPageId )? $this->mPageId : $this->mContentId );
 			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
-			$query = "select wp.*, lc.*,
+			$query = "select wp.*, lc.*, lcds.`data` AS `summary`,
 					  uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
 					  uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name $selectSql
 					  FROM `".BIT_DB_PREFIX."wiki_pages` wp
 						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) $joinSql
+						LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
 						LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = lc.`modifier_user_id`)
 						LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
 					  WHERE wp.`$lookupColumn`=? $whereSql";
@@ -208,16 +209,6 @@ class BitPage extends LibertyAttachable {
 			$pParamHash['page_store']['content_id'] = $pParamHash['content_id'];
 		}
 
-		// check some lengths, if too long, then truncate
-		if( $this->isValid() && !empty( $this->mInfo['description'] ) && empty( $pParamHash['description'] ) ) {
-			// someone has deleted the description, we need to null it out
-			$pParamHash['page_store']['description'] = '';
-		} elseif( empty( $pParamHash['description'] ) ) {
-			unset( $pParamHash['description'] );
-		} else {
-			$pParamHash['page_store']['description'] = substr( $pParamHash['description'], 0, 200 );
-		}
-
 		// check for name issues, first truncate length if too long
 		if( empty( $pParamHash['title'] ) ) {
 			$this->mErrors['title'] = 'You must specify a title';
@@ -263,9 +254,6 @@ class BitPage extends LibertyAttachable {
 				unset( $pParamHash['minor'] );
 			}
 		}
-
-		//override default index words because wiki pages have data in non-liberty tables (description in this case)
-		$this->mInfo['index_data'] = ( !empty( $pParamHash['content_store']['title'] ) ? $pParamHash['content_store']['title'] : '').' '.$pParamHash['edit'].' '.( !empty( $pParamHash['page_store']['description'] ) ? $pParamHash['page_store']['description'] : '' );
 
 		return( count( $this->mErrors ) == 0 );
 	}
@@ -466,7 +454,7 @@ class BitPage extends LibertyAttachable {
 				if( $multiple ) {
 					$desc = tra( 'Multiple pages with this name' );
 				} else {
-					$desc = empty( $exists['description'] ) ? $exists['title'] : $exists['description'];
+					$desc = empty( $exists['summary'] ) ? $exists['title'] : $exists['summary'];
 				}
 				$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrl( $exists['title'] ).'">'.htmlspecialchars( $pPageName ).'</a>';
 			} else {
@@ -598,13 +586,14 @@ class BitPage extends LibertyAttachable {
 		if( empty( $pListHash['orphans_only'] )) {
 			$query = "SELECT 
 					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
-					wp.`page_id`, wp.`wiki_page_size` as `len`, wp.`description`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
+					wp.`page_id`, wp.`wiki_page_size` as `len`, lcds.`data` AS `summary`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
 					lc.`title`, lc.`format_guid`, lc.`last_modified`, lc.`created`, lc.`ip`, lc.`version`,
 					lch.`hits` $get_data $selectSql
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
 					INNER JOIN `".BIT_DB_PREFIX."users_users` uuc ON ( uuc.`user_id` = lc.`user_id` )
 					INNER JOIN `".BIT_DB_PREFIX."users_users` uue ON ( uue.`user_id` = lc.`modifier_user_id` )
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
 					$joinSql
 				WHERE lc.`content_type_guid`=? $whereSql
@@ -621,7 +610,7 @@ class BitPage extends LibertyAttachable {
 		} else {
 			$query = "SELECT 
 					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
-					wp.`page_id`, wp.`wiki_page_size` AS `len`,wp.`description`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
+					wp.`page_id`, wp.`wiki_page_size` AS `len`,lcds.`data` AS `description`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
 					lc.`title`, lc.`format_guid`, lc.`last_modified`, lc.`created`, lc.`ip`, lc.`version`,
 					lch.`hits` $get_data $selectSql
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
@@ -630,6 +619,7 @@ class BitPage extends LibertyAttachable {
 					INNER JOIN `".BIT_DB_PREFIX."users_users` uue ON ( uue.`user_id` = lc.`user_id` )
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
 					$joinSql
 				WHERE lc.`content_type_guid`=?
 					AND lcl.`to_content_id` is NULL
@@ -705,20 +695,6 @@ class BitPage extends LibertyAttachable {
 		return $ret;
 	}
 
-	// Overriding the LibertyContet function to include decriptions from wiki_pages table.
-	function setIndexData( $pContentId = 0 ) {
-		global $gBitSystem ;
-		if ( $pContentId == 0 ) $pContentId = $this->mContentId;
-		$sql = "SELECT lc.`title`, lc.`data`, uu.`login`, uu.`real_name`, wp.`description` " .
-				"FROM `" . BIT_DB_PREFIX . "liberty_content` lc " .  
-				"INNER JOIN `" . BIT_DB_PREFIX . "users_users` uu ON uu.`user_id`    = lc.`user_id` " . 
-				"INNER JOIN `" . BIT_DB_PREFIX . "wiki_pages`  wp ON lc.`content_id` = wp.`content_id` " .
-				"WHERE lc.`content_id` = ?" ;
-		$res = $gBitSystem->mDb->getRow($sql, array($pContentId));
-		if (!(isset($this->mInfo['no_index']) and $this->mInfo['no_index'] == true)) {
-			$this->mInfo['index_data'] = $res["title"] . " " . $res["data"] . " " . $res["login"] . " " . $res["real_name"] . ' ' . $res["description"] ;
-		}
-	}
 	/* Update a page
 	 * $pHashOld the where conmdition : page_id
 	 * $pHashNew the new fields: title, data

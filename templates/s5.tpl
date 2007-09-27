@@ -35,8 +35,8 @@
 		<div id="currentSlide"><!-- DO NOT EDIT --></div>
 		<div id="header"></div>
 		<div id="footer">
-			<h1>{$gContent->mInfo.title|escape}</h1>
-			<h2>{$gContent->mInfo.description|escape}</h2>
+			<h1>{$gContent->getTitle()|escape}</h1>
+			<h2>{$gContent->getField('summary')|escape}</h2>
 		</div>
 	</div>
 

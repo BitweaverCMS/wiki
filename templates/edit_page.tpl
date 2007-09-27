@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.39 2007/07/14 14:52:33 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.40 2007/09/27 13:49:58 spiderr Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -75,9 +75,9 @@
 
 						{if $gBitSystem->isFeatureActive( 'wiki_description' )}
 							<div class="row">
-								{formlabel label="Description" for="description"}
+								{formlabel label="Summary" for="summary"}
 								{forminput}
-									<input size="50" type="text" maxlength="200" name="description" id="description" value="{$pageInfo.description|escape:html}" />
+									<input size="50" type="text" name="summary" id="summary" value="{$pageInfo.summary|escape:html}" />
 									{formhelp note="Brief description of the page. This is visible when you hover over a link to this page and just below the title of the wiki page."}
 								{/forminput}
 							</div>
