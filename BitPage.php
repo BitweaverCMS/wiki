@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.99 2007/09/27 13:49:58 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.100 2007/09/27 17:53:37 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.99 $ $Date: 2007/09/27 13:49:58 $ $Author: spiderr $
+ * @version $Revision: 1.100 $ $Date: 2007/09/27 17:53:37 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.99 2007/09/27 13:49:58 spiderr Exp $
+ * $Id: BitPage.php,v 1.100 2007/09/27 17:53:37 squareing Exp $
  */
 
 /**
@@ -610,7 +610,7 @@ class BitPage extends LibertyAttachable {
 		} else {
 			$query = "SELECT 
 					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
-					wp.`page_id`, wp.`wiki_page_size` AS `len`,lcds.`data` AS `description`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
+					wp.`page_id`, wp.`wiki_page_size` AS `len`,lcds.`data` AS `summary`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
 					lc.`title`, lc.`format_guid`, lc.`last_modified`, lc.`created`, lc.`ip`, lc.`version`,
 					lch.`hits` $get_data $selectSql
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
