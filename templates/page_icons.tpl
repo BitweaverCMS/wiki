@@ -8,7 +8,7 @@
 		{/if}
 
 		{if $gContent->isLocked()}
-			{if $gContent->hasUserPermission( 'p_wiki_admin' ) or ($gContent->isOwner() and $gContent->hasUserPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
+			{if $gContent->hasAdminPermission() or ($gContent->isOwner() and $gContent->hasUserPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
 				<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;action=unlock">{biticon ipackage="icons" iname="emblem-readonly" iexplain="Unlock this page"}</a>
 			{else}
 				{biticon ipackage="icons" iname="emblem-readonly" iexplain="Locked"}
@@ -16,8 +16,8 @@
 		{else}
 			{assign var=format_guid value=$gContent->mInfo.format_guid}
 			{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y'}
-				{if $gContent->hasUserPermission( 'p_wiki_edit_page' ) or $gContent->mInfo.title eq 'SandBox'}
-					{if $gContent->hasUserPermission( 'p_wiki_admin' ) or ($gContent->isOwner() and $gContent->hasUserPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
+				{if $gContent->hasEditPermission() or $gContent->mInfo.title eq 'SandBox'}
+					{if $gContent->hasAdminPermission() or ($gContent->isOwner() and $gContent->hasUserPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
 						<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;action=lock">{biticon ipackage="icons" iname="emblem-readonly" iexplain="Lock this page"}</a>
 					{/if}
 					<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$gContent->mInfo.page_id}" {if $beingEdited eq 'y'}class="highlight" title="$semUser"{/if}>{biticon ipackage="icons" iname="accessories-text-editor" iexplain="Edit"}</a>
@@ -72,7 +72,7 @@
 		{/if}
 
 		{if $gContent->mInfo.title ne 'SandBox' && !$gContent->isLocked()}
-			{if $gContent->hasUserPermission( 'p_wiki_remove_page' )}
+			{if $gContent->isOwner() || $gContent->hasUserPermission( 'p_wiki_remove_page' )}
 				<a title="{tr}remove this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}remove_page.php?page_id={$gContent->mInfo.page_id}&amp;version=last">{biticon ipackage="icons" iname="edit-delete" iexplain="Delete"}</a>
 			{/if}
 		{/if}
