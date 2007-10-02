@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.100 2007/09/27 17:53:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.101 2007/10/02 14:47:22 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.100 $ $Date: 2007/09/27 17:53:37 $ $Author: squareing $
+ * @version $Revision: 1.101 $ $Date: 2007/10/02 14:47:22 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.100 2007/09/27 17:53:37 squareing Exp $
+ * $Id: BitPage.php,v 1.101 2007/10/02 14:47:22 spiderr Exp $
  */
 
 /**
@@ -288,6 +288,15 @@ class BitPage extends LibertyAttachable {
 
 	function isValid() {
 		return( $this->verifyId( $this->mPageId ) );
+	}
+
+	/**
+	 * Function that determines if this content specified permission for the current gBitUser. 
+	 * Override LibertyContent method default $pCheckGlobalPerm=FALSE to enable shared editing
+	 * See LibertyContent method for defaults
+	*/
+	function hasUserPermission( $pPermName, $pVerifyAccessControl=TRUE, $pCheckGlobalPerm=TRUE ) {
+		return( parent::hasUserPermission( $pPermName, $pVerifyAccessControl, $pCheckGlobalPerm ) );
 	}
 
 	/**
