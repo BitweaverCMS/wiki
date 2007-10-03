@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.24 2007/09/14 17:07:20 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.25 2007/10/03 07:00:13 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.24 2007/09/14 17:07:20 spiderr Exp $
+ * $Id: page_history.php,v 1.25 2007/10/03 07:00:13 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -33,16 +33,16 @@ if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {
 $gContent->verifyViewPermission();
 $gContent->verifyPermission( 'p_wiki_view_history' );
 
-$page_id = $_REQUEST['page_id'];
+// set up stuff to get history working
 $smartyContentRef = 'pageInfo';
+$rollbackPerm     = 'p_wiki_rollback';
 include_once( LIBERTY_PKG_PATH.'content_history_inc.php' );
 
 // pagination stuff
 $gBitSmarty->assign( 'page', $page = !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : 1 );
-if ( !empty($_REQUEST['list_page']) ) {
-$gBitSmarty->assign( 'page', $page = !empty( $_REQUEST['list_page'] ) ? $_REQUEST['list_page'] : 1 );
+if( !empty( $_REQUEST['list_page'] )) {
+	$gBitSmarty->assign( 'page', $page = !empty( $_REQUEST['list_page'] ) ? $_REQUEST['list_page'] : 1 );
 }
-
 
 $offset = ( $page - 1 ) * $gBitSystem->getConfig( 'max_records' );
 $history = $gContent->getHistory( NULL, NULL, $offset, $gBitSystem->getConfig( 'max_records' ) );

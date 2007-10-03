@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.13 2007/08/25 02:26:05 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.14 2007/10/03 07:00:13 squareing Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
@@ -81,7 +81,7 @@
 							&nbsp;&bull;&nbsp;{smartlink ititle="Difference" page_id=`$gContent->mPageId` diff2=`$item.version`}
 							&nbsp;&bull;&nbsp;{smartlink ititle="Source" page_id=`$gContent->mPageId` source=`$item.version`}
 							{if $gBitUser->hasPermission( 'p_wiki_rollback' )}
-								&nbsp;&bull;&nbsp;{smartlink iurl="rollback.php" ititle="Rollback" page_id=`$gContent->mPageId` version=`$item.version`}
+								&nbsp;&bull;&nbsp;{smartlink ititle="Rollback" page_id=`$gContent->mPageId` rollback=`$item.version`}
 							{/if}
 						</td>
 						<td style="text-align:right;">
