@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.21 2007/08/23 08:10:22 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.22 2007/10/12 16:14:14 spiderr Exp $
  *
- * $Id: list_pages.php,v 1.21 2007/08/23 08:10:22 squareing Exp $
+ * $Id: list_pages.php,v 1.22 2007/10/12 16:14:14 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -16,7 +16,7 @@ require_once( WIKI_PKG_PATH.'BitPage.php' );
 // verify stuff
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyFeature( 'wiki_list_pages' );
-$gBitSystem->verifyPermission( 'p_wiki_view_page' );
+$gBitSystem->verifyPermission( 'p_wiki_list_pages' );
 
 $gContent = new BitPage();
 $gContent->invokeServices( 'content_list_function', $_REQUEST );
