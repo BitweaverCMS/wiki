@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.101 2007/10/02 14:47:22 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.102 2007/10/22 15:51:16 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.101 $ $Date: 2007/10/02 14:47:22 $ $Author: spiderr $
+ * @version $Revision: 1.102 $ $Date: 2007/10/22 15:51:16 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.101 2007/10/02 14:47:22 spiderr Exp $
+ * $Id: BitPage.php,v 1.102 2007/10/22 15:51:16 squareing Exp $
  */
 
 /**
@@ -59,9 +59,17 @@ class BitPage extends LibertyAttachable {
 		return $ret;
 	}
 
+	/**
+	 * load 
+	 * 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
 	function load() {
 		if( $this->verifyId( $this->mPageId ) || $this->verifyId( $this->mContentId ) ) {
 			global $gBitSystem;
+
+			/** This is the original code. below is an example of the new working code
 			$lookupColumn = @BitBase::verifyId( $this->mPageId ) ? 'page_id' : 'content_id';
 
 			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
@@ -78,12 +86,26 @@ class BitPage extends LibertyAttachable {
 						LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
 					  WHERE wp.`$lookupColumn`=? $whereSql";
 			if( $this->mInfo = $this->mDb->getRow( $query, $bindVars ) ) {
+			 */
+
+		// currently this code is acting as a showcase for the new LibertyContent::getLibertySql and LibertyContent::convertQueryHash methods
+			// please don't copy this code (yet) as the new system might not be the final version - xing - Monday Oct 22, 2007   17:28:38 CEST
+			$queryHash['select']['sql'][] = "wp.*";
+			$queryHash['from']['sql'][]   = "`".BIT_DB_PREFIX."wiki_pages` wp";
+			$queryHash['where']['sql'][]  = "wp.`".( @BitBase::verifyId( $this->mPageId ) ? 'page_id' : 'content_id' )."` = ?";
+			$queryHash['where']['var'][]  = @BitBase::verifyId( $this->mPageId ) ? $this->mPageId : $this->mContentId;
+			$this->getLibertySql( 'wp.`content_id`', $queryHash, FALSE, 'content_load_sql_function' );
+			$this->convertQueryHash( $queryHash );
+
+			if( $this->mInfo = $this->mDb->getRow( $queryHash['query'], $queryHash['bind_vars'] )) {
 				$this->mContentId = $this->mInfo['content_id'];
 				$this->mPageId = $this->mInfo['page_id'];
 				$this->mPageName = $this->mInfo['title'];
+				$this->mInfo['display_url'] = $this->getDisplayUrl();
+
+				// TODO: this is a bad habbit and should not be done BitUser::getDisplayName sorts out what name to display
 				$this->mInfo['creator'] = (isset( $this->mInfo['creator_real_name'] ) ? $this->mInfo['creator_real_name'] : $this->mInfo['creator_user'] );
 				$this->mInfo['editor'] = (isset( $this->mInfo['modifier_real_name'] ) ? $this->mInfo['modifier_real_name'] : $this->mInfo['modifier_user'] );
-				$this->mInfo['display_url'] = $this->getDisplayUrl();
 
 				// Save some work if wiki_attachments are not active
 				// get prefs before we parse the data that we know how to parse the data
