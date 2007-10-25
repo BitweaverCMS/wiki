@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.9 2006/05/29 17:33:07 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.10 2007/10/25 17:14:15 nickpalmer Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit_book.php,v 1.9 2006/05/29 17:33:07 spiderr Exp $
+ * $Id: edit_book.php,v 1.10 2007/10/25 17:14:15 nickpalmer Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -83,7 +83,8 @@ if( isset($_REQUEST["createstructure"]) ) {
 					$params['title'] = trim($chapterName);
 					$params['edit'] = '';
 					if( !$nodePage->store( $params ) ) {
-						vd( $bookPage->mErrors );
+						$gBitSystem->fatalError("Error Storing", "There was an error storing the page: " . vc($bookPage->mErrors)./multisites/Multisites.php
+ );
 					}
 				}
 				$nodeHash['content_id'] = $nodePage->mContentId;
