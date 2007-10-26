@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.14 2007/09/14 17:07:20 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.15 2007/10/26 13:33:32 nickpalmer Exp $
  *
- * $Id: orphan_pages.php,v 1.14 2007/09/14 17:07:20 spiderr Exp $
+ * $Id: orphan_pages.php,v 1.15 2007/10/26 13:33:32 nickpalmer Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -17,6 +17,7 @@ include_once( WIKI_PKG_PATH.'BitPage.php' );
 $gBitSystem->verifyPackage( 'wiki' );
 
 $gBitSystem->verifyFeature( 'wiki_list_orphans' );
+$gContent = new BitPage();
 $gContent->verifyViewPermission();
 
 /* mass-remove:
