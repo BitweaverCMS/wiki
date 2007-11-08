@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.11 2007/10/25 20:43:02 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.12 2007/11/08 21:59:36 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit_book.php,v 1.11 2007/10/25 20:43:02 squareing Exp $
+ * $Id: edit_book.php,v 1.12 2007/11/08 21:59:36 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -97,8 +97,14 @@ if( isset($_REQUEST["createstructure"]) ) {
 	$_REQUEST['content_type_guid'] = !isset( $_REQUEST['content_type_guid'] ) ? 'bitpage' : $_REQUEST['content_type_guid'];
 	// verify the book permission on structure load
 	$verifyStructurePermission = 'p_wiki_admin_book';
-	// load the javascript dynamic tree
-	$gBitSmarty->assign( "loadDynamicTree", TRUE );
+
+	// we need to load some javascript and css for this page
+	$gBitThemes->loadCss( UTIL_PKG_PATH.'javascript/libs/mygosu/DynamicTree.css' );
+	if( $gSniffer->_browser_info['browser'] == 'ie' && $gSniffer->_browser_info['maj_ver'] == 5 ) {
+		$gBitThemes->loadJavascript( UTIL_PKG_PATH.'javascript/libs/mygosu/ie5.js' );
+	}
+	$gBitThemes->loadJavascript( UTIL_PKG_PATH.'javascript/libs/mygosu/DynamicTreeBuilder.js' );
+
 	// set the correct display template
 	$mid = 'bitpackage:wiki/edit_book.tpl';
 	include_once( LIBERTY_PKG_PATH.'edit_structure_inc.php');
