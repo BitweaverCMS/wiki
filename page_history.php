@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.25 2007/10/03 07:00:13 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.26 2007/11/20 10:02:18 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.25 2007/10/03 07:00:13 squareing Exp $
+ * $Id: page_history.php,v 1.26 2007/11/20 10:02:18 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -32,6 +32,10 @@ if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {
 
 $gContent->verifyViewPermission();
 $gContent->verifyPermission( 'p_wiki_view_history' );
+
+if (!empty( $_REQUEST['rollback_preview'] )) {
+	$gBitSmarty->assign( 'rollback_preview', $_REQUEST['rollback_preview']);
+	}
 
 // set up stuff to get history working
 $smartyContentRef = 'pageInfo';
