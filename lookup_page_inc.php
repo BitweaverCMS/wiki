@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.23 2008/01/13 14:53:46 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.24 2008/01/14 09:26:02 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.23 2008/01/13 14:53:46 lsces Exp $
+ * $Id: lookup_page_inc.php,v 1.24 2008/01/14 09:26:02 lsces Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -45,7 +45,6 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 				} else {
 					$gContent->mPageId = $existsInfo[0]['page_id'];
 					$gContent->mContentId = $existsInfo[0]['content_id'];
-					$gContent->setProtected();
 				}
 			}
 		} elseif( $loadPage ) {
