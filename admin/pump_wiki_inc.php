@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/admin/pump_wiki_inc.php,v 1.2 2007/07/11 10:22:03 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/admin/pump_wiki_inc.php,v 1.3 2008/01/22 08:52:00 moooooooo Exp $
  * @package install
  * @subpackage pumps
  */
@@ -71,7 +71,7 @@ Some other packages also have plugins. These settings can usually be found in th
 		'title' => 'Getting Help',
 		'description' => 'Help and Contact Details',
 		'edit' => 'bitweaver features an internal help system that provides help in virtually all forms and areas where you have to enter information. However, should you require more help, you can always contact us by any of the means mentioned below.
-* Since we are still wroking hard on improving usability and stability of bitweaver, we haven\'t had time to translate bitweaver into various languages. If you are interested in helping us translate parts of bitweaver, please feel free to contact us.
+* Since we are still working hard on improving usability and stability of bitweaver, we haven\'t had time to translate bitweaver into various languages. If you are interested in helping us translate parts of bitweaver, please feel free to contact us.
 * If you want to find out more about existing packages and how to install them, you can find information at [http://www.bitweaver.org|bitweaver].
 * Best methods to get in contact with us
 	** IRC ([http://www.bitweaver.org/wiki/index.php?page=ConnectingToIrc|instructions] on connecting to irc)
