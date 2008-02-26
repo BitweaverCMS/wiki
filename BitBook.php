@@ -3,7 +3,7 @@
  * BitBook class
  *
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.7 $
+ * @version  $Revision: 1.8 $
  * @package  wiki
  */
 // +----------------------------------------------------------------------+
@@ -18,7 +18,7 @@
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
 //
-// $Id: BitBook.php,v 1.7 2007/07/16 15:27:22 squareing Exp $
+// $Id: BitBook.php,v 1.8 2008/02/26 21:09:09 wjames5 Exp $
 
 
 /**
@@ -34,13 +34,14 @@ define('BITBOOK_CONTENT_TYPE_GUID', 'bitbook' );
  *
  * @abstract
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.7 $
+ * @version  $Revision: 1.8 $
  * @package  wiki
  */
 class BitBook extends BitPage {
 	var $mPageId;
 	var $mPageName;
 	 function BitBook( $pPageId=NULL, $pContentId=NULL ) {
+		BitPage::BitPage( $pPageId, $pContentId );
 		$this->registerContentType( BITBOOK_CONTENT_TYPE_GUID, array(
 			'content_type_guid' => BITBOOK_CONTENT_TYPE_GUID,
 			'content_description' => 'Wiki Book',
@@ -49,7 +50,6 @@ class BitBook extends BitPage {
 			'handler_file' => 'BitBook.php',
 			'maintainer_url' => 'http://www.bitweaver.org'
 		) );
-		BitPage::BitPage( $pPageId, $pContentId );
 		$this->mContentTypeGuid = BITBOOK_CONTENT_TYPE_GUID;
 
 		// Permission setup
