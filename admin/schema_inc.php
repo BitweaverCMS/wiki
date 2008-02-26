@@ -162,4 +162,10 @@ if( defined( 'RSS_PKG_NAME' )) {
 		array( RSS_PKG_NAME, WIKI_PKG_NAME.'_rss', 'y'),
 	));
 }
+
+// ### Register content types
+$gBitInstaller->registerContentObjects( WIKI_PKG_NAME, array( 
+	'BitPage'=>WIKI_PKG_PATH.'BitPage.php',
+	'BitBook'=>WIKI_PKG_PATH.'BitBook.php',
+));
 ?>
