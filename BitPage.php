@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.103 2007/10/25 06:54:25 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.104 2008/03/01 10:08:10 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.103 $ $Date: 2007/10/25 06:54:25 $ $Author: squareing $
+ * @version $Revision: 1.104 $ $Date: 2008/03/01 10:08:10 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.103 2007/10/25 06:54:25 squareing Exp $
+ * $Id: BitPage.php,v 1.104 2008/03/01 10:08:10 jht001 Exp $
  */
 
 /**
@@ -661,8 +661,23 @@ class BitPage extends LibertyAttachable {
 
 		$ret = array();
 		$this->mDb->StartTrans();
-		$result = $this->mDb->query( $query, $bindVars, $pListHash['max_records'], $pListHash['offset'] );
+
+		# get count of total number of items available
 		$cant = $this->mDb->getOne( $query_cant, $bindVars );
+		$pListHash["cant"] = $cant;
+
+		# Check for offset out of range
+		if ( $pListHash['offset'] < 0 ) {
+			$pListHash['offset'] = 0;
+			}
+		elseif ( $pListHash['offset']	> $pListHash["cant"] ) {
+			$lastPageNumber = ceil ( $pListHash["cant"] / $pListHash['max_records'] ) - 1;
+			$pListHash['offset'] = $pListHash['max_records'] * $lastPageNumber;
+			}
+
+
+
+		$result = $this->mDb->query( $query, $bindVars, $pListHash['max_records'], $pListHash['offset'] );
 		$this->mDb->CompleteTrans();
 		while( $res = $result->fetchRow() ) {
 			$aux = array();
@@ -708,7 +723,6 @@ class BitPage extends LibertyAttachable {
 			$pListHash = $originalListHash;
 		}
 
-		$pListHash['cant'] = $cant;
 		LibertyContent::postGetList( $pListHash );
 
 		return $ret;
