@@ -63,6 +63,16 @@
 			{/if}
 		{/if}
 
+		{if $gBitSystem->isFeatureActive( 'users_watches' ) and $gContent->hasUserPermission('p_users_admin')}
+			<a href="{$smarty.const.WIKI_PKG_URL}page_watches.php?page_id={$gContent->mInfo.page_id}">{tr}Watches{/tr}</a>
+		{/if}
+
+{* seem to be broken 
+		{if $gBitUser->hasPermission( 'p_wiki_admin' )}
+			<li><a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php?page_id={$gContent->mInfo.page_id}">{tr}Export{/tr}</a></li>
+		{/if}
+*}
+
 		{if $gBitSystem->isFeatureActive( 'wiki_uses_slides' )}
 			{if $show_slideshow eq 'y'}
 				<a href="{$smarty.const.WIKI_PKG_URL}slideshow.php?page_id={$gContent->mInfo.page_id}">{biticon ipackage="icons" iname="x-office-presentation" iexplain="Slideshow"}</a>
