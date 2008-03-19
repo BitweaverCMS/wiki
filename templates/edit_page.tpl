@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.40 2007/09/27 13:49:58 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.41 2008/03/19 15:05:04 spiderr Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -118,6 +118,8 @@
 								{/forminput}
 							</div>
 						{/if}
+
+						{include file="bitpackage:liberty/edit_content_alias_inc.tpl"}
 
 						{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_mini_tpl}
 
