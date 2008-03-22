@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.39 2008/03/22 21:37:47 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.40 2008/03/22 23:18:19 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.39 2008/03/22 21:37:47 jht001 Exp $
+ * $Id: display_bitpage_inc.php,v 1.40 2008/03/22 23:18:19 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -16,9 +16,20 @@
 /**
  * required setup
  */
+include_once( WIKI_PKG_PATH.'BitBook.php');
 
-include( WIKI_PKG_PATH.'get_bitpage_info.php' );
+$gBitSystem->verifyPackage( 'wiki' );
 
+$gContent->verifyViewPermission();
+
+// Check permissions to access this page
+if( !$gContent->isValid() ) {
+	$gBitSystem->setHttpStatus( 404 );
+	$gBitSystem->fatalError( tra( 'Page cannot be found' ));
+}
+
+$displayHash = array( 'perm_name' => 'p_wiki_view_page' );
+$gContent->invokeServices( 'content_display_function', $displayHash );
 
 /*
 $gBitSmarty->assign('structure','n');
@@ -41,7 +52,19 @@ if($gBitSystem->isFeatureActive( 'wiki_creator_admin' )) {
 if(isset($_REQUEST["copyrightpage"])) {
 	$gBitSmarty->assign_by_ref('copyrightpage',$_REQUEST["copyrightpage"]);
 }
+if( $gBitSystem->isFeatureActive( 'wiki_backlinks' ) ) {
+	// Get the backlinks for the page "page"
+	$backlinks = $gContent->getBacklinks();
+	$gBitSmarty->assign_by_ref('backlinks', $backlinks);
+}
 
+// Update the pagename with the canonical name.  This makes it
+// possible to link to a page using any case, but the page is still
+// displayed with the original capitalization.  So if there's a page
+// called 'About Me', then one can conveniently make a link to it in
+// the text as '... learn more ((about me)).'.  When the link is
+// followed,
+$gBitSystem->setBrowserTitle( $gContent->mInfo['title'] );
 
 // Now increment page hits since we are visiting this page
 if( $gBitSystem->isFeatureActive( 'users_count_admin_pageviews' ) || !$gBitUser->isAdmin() ) {
@@ -102,13 +125,64 @@ if( $pages > 1 ) {
 	$gBitSmarty->assign('pagenum',$_REQUEST['pagenum']);
 }
 
+//$gBitSmarty->assign_by_ref('last_modified',date("l d of F, Y  [H:i:s]",$gContent->mInfo["last_modified"]));
+$gBitSmarty->assign_by_ref('last_modified',$gContent->mInfo["last_modified"]);
+if(empty($gContent->mInfo["user"])) {
+	$gContent->mInfo["user"]='anonymous';
+}
+$gBitSmarty->assign_by_ref('lastUser',$gContent->mInfo["user"]);
+
+// Comments engine!
+if( $gBitSystem->isFeatureActive( 'wiki_comments' ) ) {
+	$comments_vars = Array('page');
+	$comments_prefix_var='wiki page:';
+	$comments_object_var='page';
+	$commentsParentId = $gContent->mContentId;
+	$comments_return_url = WIKI_PKG_URL.'index.php?page_id='.$gContent->mPageId;
+	include_once( LIBERTY_PKG_PATH.'comments_inc.php' );
+}
+
+if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
+	$gBitSmarty->assign('atts',$gContent->mStorage);
+	$gBitSmarty->assign('atts_count',count($gContent->mStorage));
+}
+
+if( $gBitSystem->isFeatureActive( 'wiki_footnotes' ) && $gBitUser->isValid() ) {
+	if( $footnote = $gContent->getFootnote( $gBitUser->mUserId ) ) {
+		$gBitSmarty->assign( 'footnote', $gContent->parseData( $footnote ) );
+	}
+}
+
+if( $gBitSystem->isFeatureActive( 'wiki_copyrights' ) ) {
+	require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
+	$copyrights = $copyrightslib->list_copyrights( $gContent->mPageId );
+	$gBitSmarty->assign('pageCopyrights', $copyrights["data"]);
+}
+
 // Watches
 if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
+	if( isset( $_REQUEST['watch_event'] ) ) {
+		if( $gBitUser->isRegistered() ) {
+			if($_REQUEST['watch_action']=='add') {
+				$gBitUser->storeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'], $gContent->mContentTypeGuid, $gContent->mPageName, $gContent->getDisplayUrl() );
+			} else {
+				$gBitUser->expungeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'] );
+			}
+		} else {
+			$gBitSmarty->assign('msg', tra("This feature requires a registered user.").": users_watches");
+			$gBitSystem->display( 'error.tpl' );
+			die;
+		}
+	}
 	$gBitSmarty->assign('user_watching_page','n');
 	if( $watch = $gBitUser->getEventWatches( 'wiki_page_changed', $gContent->mPageId ) ) {
 		$gBitSmarty->assign('user_watching_page','y');
 	}
 }
+$sameurl_elements=Array('title','page');
+
+// Display the Index Template
+$gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
 
 if( isset( $_REQUEST['s5'] ) ) {
 	include_once( WIKI_PKG_PATH.'s5.php');
