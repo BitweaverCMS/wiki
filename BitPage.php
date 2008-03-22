@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.104 2008/03/01 10:08:10 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.105 2008/03/22 20:56:49 jht001 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.104 $ $Date: 2008/03/01 10:08:10 $ $Author: jht001 $
+ * @version $Revision: 1.105 $ $Date: 2008/03/22 20:56:49 $ $Author: jht001 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.104 2008/03/01 10:08:10 jht001 Exp $
+ * $Id: BitPage.php,v 1.105 2008/03/22 20:56:49 jht001 Exp $
  */
 
 /**
@@ -951,8 +951,20 @@ class WikiLib extends BitPage {
 
 		$query = "select * from `".BIT_DB_PREFIX."wiki_received_pages` $mid order by ".$this->mDb->convertSortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."wiki_received_pages` $mid";
-		$result = $this->mDb->query($query,$bindvars,$max_records,$offset);
 		$cant = $this->mDb->getOne($query_cant,$bindvars);
+
+		# Check for offset out of range
+		if ( $offset < 0 ) {
+			$offset = 0;
+			}
+		elseif ( $offset > $cant ) {
+			$lastPageNumber = ceil ( $cant / $max_records ) - 1;
+			$offset = $max_records * $lastPageNumber;
+			}
+
+
+
+		$result = $this->mDb->query($query,$bindvars,$max_records,$offset);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
