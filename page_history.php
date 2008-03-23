@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.28 2008/03/23 00:01:26 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.29 2008/03/23 10:57:04 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.28 2008/03/23 00:01:26 jht001 Exp $
+ * $Id: page_history.php,v 1.29 2008/03/23 10:57:04 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -25,11 +25,6 @@ $gBitSystem->verifyFeature( 'wiki_history' );
 // Get the page from the request var or default it to HomePage
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
 
-// make comment count for this page available for templates
-$gComment = new LibertyComment( NULL, $gContent->mContentId );
-$numComments = $gComment->getNumComments($gContent->mContentId);
-$gBitSmarty->assign('comments_count', $numComments);
-
 //vd($gContent->mPageId);vd($gContent->mInfo);
 if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {
 	$gBitSystem->fatalError( tra( "Unknown page" ));
@@ -37,6 +32,13 @@ if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {
 
 $gContent->verifyViewPermission();
 $gContent->verifyPermission( 'p_wiki_view_history' );
+
+// make comment count for this page available for templates
+$gComment = new LibertyComment( NULL, $gContent->mContentId );
+$numComments = $gComment->getNumComments($gContent->mContentId);
+$gBitSmarty->assign('comments_count', $numComments);
+
+$gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
 
 if (!empty( $_REQUEST['rollback_preview'] )) {
 	$gBitSmarty->assign( 'rollback_preview', $_REQUEST['rollback_preview']);
@@ -60,7 +62,5 @@ $gBitSmarty->assign_by_ref( 'listInfo', $history['listInfo'] );
 
 // Display the template
 $gBitSmarty->assign_by_ref( 'gContent', $gContent );
-$gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
-
-$gBitSystem->display( 'bitpackage:wiki/page_history.tpl');
+$gBitSystem->display( 'bitpackage:wiki/page_history.tpl' );
 ?>
