@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.40 2008/03/22 23:18:19 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.41 2008/03/23 00:17:18 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.40 2008/03/22 23:18:19 jht001 Exp $
+ * $Id: display_bitpage_inc.php,v 1.41 2008/03/23 00:17:18 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -139,6 +139,18 @@ if( $gBitSystem->isFeatureActive( 'wiki_comments' ) ) {
 	$comments_object_var='page';
 	$commentsParentId = $gContent->mContentId;
 	$comments_return_url = WIKI_PKG_URL.'index.php?page_id='.$gContent->mPageId;
+	# Support displaying comments on their own page instead of on content page
+	if ( ( isset( $_REQUEST["comments_page"] ) && ( $_REQUEST["comments_page"] == '1' ) )
+	|| !empty($_REQUEST['view_comment_id'])
+	
+	) {
+		 $gBitSmarty->assign('comments_page',1);
+		 $comments_on_separate_page = 1;
+		$comments_return_url = WIKI_PKG_URL.'index.php?page_id='.$gContent->mPageId . '&' . 'comments_page=1';
+		if ( !empty($_REQUEST['view_comment_id']) ) {
+			$comments_return_url .= '&comments_maxComments=1';
+		}
+	}
 	include_once( LIBERTY_PKG_PATH.'comments_inc.php' );
 }
 
