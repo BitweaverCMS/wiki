@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.45 2008/03/22 21:37:47 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.46 2008/03/23 00:01:26 jht001 Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.45 2008/03/22 21:37:47 jht001 Exp $
+ * $Id: edit.php,v 1.46 2008/03/23 00:01:26 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -24,9 +24,11 @@ $gBitSystem->verifyPackage( 'wiki' );
 
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
 
-//make info about page available for templates
+//make comment count for this page available for templates
 if ( !empty( $_REQUEST['page_id'] ) ) {
-	include( WIKI_PKG_PATH.'get_bitpage_info.php' );
+	$gComment = new LibertyComment( NULL, $gContent->mContentId );
+	$numComments = $gComment->getNumComments($gContent->mContentId);
+	$gBitSmarty->assign('comments_count', $numComments);
 }
 
 #edit preview needs this

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_watches.php,v 1.4 2008/03/22 21:37:47 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_watches.php,v 1.5 2008/03/23 00:01:26 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_watches.php,v 1.4 2008/03/22 21:37:47 jht001 Exp $
+ * $Id: page_watches.php,v 1.5 2008/03/23 00:01:26 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -26,8 +26,12 @@ $gBitSystem->verifyPermission( 'p_admin_users', tra( "Permission denied you cann
 // Get the page from the request var or default it to HomePage
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
 
-//make info about page available for templates
-include( WIKI_PKG_PATH.'get_bitpage_info.php' );
+// make comment count for this page available for templates
+$gComment = new LibertyComment( NULL, $gContent->mContentId );
+$numComments = $gComment->getNumComments($gContent->mContentId);
+$gBitSmarty->assign('comments_count', $numComments);
+
+
 
 //vd($gContent->mPageId);vd($gContent->mInfo);
 if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {
@@ -40,6 +44,7 @@ if( !empty( $gContent->mPageId ) ) {
     $event = 'wiki_page_changed';    
     $watches = $gBitUser->get_event_watches($event, $gContent->mPageId);
     $gBitSmarty->assign_by_ref('watches', $watches);
+    $gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
     }
 
 // Display the template

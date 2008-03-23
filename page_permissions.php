@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_permissions.php,v 1.10 2008/03/22 21:37:47 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_permissions.php,v 1.11 2008/03/23 00:01:26 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_permissions.php,v 1.10 2008/03/22 21:37:47 jht001 Exp $
+ * $Id: page_permissions.php,v 1.11 2008/03/23 00:01:26 jht001 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -21,8 +21,7 @@ include_once( WIKI_PKG_PATH.'BitPage.php');
 include_once( WIKI_PKG_PATH.'BitBook.php');
 include_once( KERNEL_PKG_PATH.'notification_lib.php' );
 include_once( WIKI_PKG_PATH.'lookup_page_inc.php' );
-//make info about page available for templates
-include( WIKI_PKG_PATH.'get_bitpage_info.php' );
+
 
 $gBitSystem->verifyPackage( 'wiki' );
 
@@ -32,6 +31,12 @@ if( !$gContent->isValid() ) {
 	$gBitSystem->display( 'error.tpl' );
 	die;
 }
+
+// make comment count for this page available for templates
+$gComment = new LibertyComment( NULL, $gContent->mContentId );
+$numComments = $gComment->getNumComments($gContent->mContentId);
+$gBitSmarty->assign('comments_count', $numComments);
+
 
 // Let creator set permissions
 if( $gBitSystem->isFeatureActive( 'wiki_creator_admin' ) && $gContent->isOwner() ) {
@@ -62,6 +67,8 @@ if( !$gBitUser->isAdmin() ) {
 		}
 	}
 }
+
+$gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
 
 require_once( LIBERTY_PKG_PATH.'content_permissions_inc.php' );
 
