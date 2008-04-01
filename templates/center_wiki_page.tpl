@@ -1,5 +1,5 @@
 {strip}
-<div class="display wikipage">
+<div class="display wiki">
 	<div class="floaticon"> <!-- Actions -->
 		{if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
 			<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$gContent->mInfo.page_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
@@ -13,11 +13,13 @@
 		<div class="header"><h1>{$gContent->mInfo.title|escape}</h1></div>
 	{/if}
 
-	<div class="content">
-		{if $gBitSystem->isFeatureActive( 'liberty_auto_display_attachment_thumbs' )}
-			{include file="bitpackage:liberty/storage_thumbs.tpl"}
-		{/if}
-		{$gContent->mInfo.parsed_data}
+	<div class="body">
+		<div class="content">
+			{if $gBitSystem->isFeatureActive( 'liberty_auto_display_attachment_thumbs' )}
+				{include file="bitpackage:liberty/storage_thumbs.tpl"}
+			{/if}
+			{$gContent->mInfo.parsed_data}
+		</div>
 	</div>
 </div>
 {/strip}
