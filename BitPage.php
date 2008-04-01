@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.105 2008/03/22 20:56:49 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.106 2008/04/01 15:56:34 wjames5 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.105 $ $Date: 2008/03/22 20:56:49 $ $Author: jht001 $
+ * @version $Revision: 1.106 $ $Date: 2008/04/01 15:56:34 $ $Author: wjames5 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.105 2008/03/22 20:56:49 jht001 Exp $
+ * $Id: BitPage.php,v 1.106 2008/04/01 15:56:34 wjames5 Exp $
  */
 
 /**
@@ -421,6 +421,24 @@ class BitPage extends LibertyAttachable {
 	function getRenderFile() {
 		return WIKI_PKG_PATH."display_bitpage_inc.php";
 	}
+
+
+	/**
+	 * Returns the center template for the view selected
+	 */
+	function getViewTemplate( $pAction ){				
+		$ret = null;
+		switch ( $pAction ){
+			case "view":
+				$ret = "bitpackage:wiki/center_wiki_page.tpl"; 
+				break;
+			case "list":
+				$ret = "bitpackage:liberty/center_".$pAction."_generic.tpl"; 
+				break;
+		}
+		return $ret;
+	}
+
 
 	/**
 	* Generates the URL to this wiki page
