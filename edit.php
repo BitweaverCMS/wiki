@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.47 2008/04/08 13:54:06 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.48 2008/04/14 08:59:53 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.47 2008/04/08 13:54:06 spiderr Exp $
+ * $Id: edit.php,v 1.48 2008/04/14 08:59:53 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -51,7 +51,7 @@ if( $wiki_sandbox && !$gBitSystem->isFeatureActive( 'wiki_sandbox' ) ) {
 		$gContent->verifyEditPermission();
 	} else {
 		$gBitSystem->verifyPermission( 'p_wiki_edit_page' );
-	}	
+	}
 }
 
 
@@ -316,9 +316,9 @@ if( $gBitSystem->isFeatureActive( 'wiki_copyrights' ) ) {
 
 
 function htmldecode( $string ) {
-   $string = strtr( $string, array_flip( get_html_translation_table( HTML_ENTITIES ) ) );
-   $string = preg_replace( "/&#([0-9]+);/me", "chr('\\1')", $string );
-   return $string;
+	$string = strtr( $string, array_flip( get_html_translation_table( HTML_ENTITIES ) ) );
+	$string = preg_replace( "/&#([0-9]+);/me", "chr('\\1')", $string );
+	return $string;
 }
 function parse_output( &$obj, &$parts,$i ) {
 	if( !empty( $obj->parts ) ) {
@@ -362,7 +362,7 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 		&& isset( $_REQUEST['copyrightAuthors'] )
 		&& !empty( $_REQUEST['copyrightYear'] )
 		&& !empty( $_REQUEST['copyrightTitle'] )
- ) {
+	) {
 		require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
 		$copyrightYear = $_REQUEST['copyrightYear'];
 		$copyrightTitle = $_REQUEST['copyrightTitle'];
