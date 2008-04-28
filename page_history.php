@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.29 2008/03/23 10:57:04 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.30 2008/04/28 14:45:47 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.29 2008/03/23 10:57:04 jht001 Exp $
+ * $Id: page_history.php,v 1.30 2008/04/28 14:45:47 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -17,7 +17,7 @@
  * required setup
  */
 require_once( '../bit_setup_inc.php' );
-include_once( WIKI_PKG_PATH.'BitPage.php');
+require_once( WIKI_PKG_PATH.'BitPage.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyFeature( 'wiki_history' );
@@ -33,16 +33,11 @@ if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {
 $gContent->verifyViewPermission();
 $gContent->verifyPermission( 'p_wiki_view_history' );
 
-// make comment count for this page available for templates
-$gComment = new LibertyComment( NULL, $gContent->mContentId );
-$numComments = $gComment->getNumComments($gContent->mContentId);
-$gBitSmarty->assign('comments_count', $numComments);
-
 $gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
 
 if (!empty( $_REQUEST['rollback_preview'] )) {
 	$gBitSmarty->assign( 'rollback_preview', $_REQUEST['rollback_preview']);
-	}
+}
 
 // set up stuff to get history working
 $smartyContentRef = 'pageInfo';
