@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print_multi_pages.php,v 1.9 2007/09/14 17:07:20 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print_multi_pages.php,v 1.10 2008/05/02 15:44:45 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print_multi_pages.php,v 1.9 2007/09/14 17:07:20 spiderr Exp $
+ * $Id: print_multi_pages.php,v 1.10 2008/05/02 15:44:45 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -22,9 +22,8 @@ require_once( WIKI_PKG_PATH.'BitPage.php' );
 $gBitSystem->verifyFeature( 'wiki_multiprint' );
 
 if (!isset($_REQUEST["printpages"])) {
-	$gBitSmarty->assign('msg', tra("No pages indicated"));
-	$gBitSystem->display( 'error.tpl' );
-	die;
+	$gBitSystem->setHttpStatus( 404 );
+	$gBitSystem->fatalError( tra( "No pages indicated" ) );
 } else {
 	$printpages = unserialize(urldecode($_REQUEST["printpages"]));
 }

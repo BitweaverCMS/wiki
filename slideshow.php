@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.19 2007/09/14 17:07:20 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/slideshow.php,v 1.20 2008/05/02 15:44:45 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: slideshow.php,v 1.19 2007/09/14 17:07:20 spiderr Exp $
+ * $Id: slideshow.php,v 1.20 2008/05/02 15:44:45 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -31,6 +31,7 @@ if (!isset($_SESSION["thedate"])) {
 require_once ( WIKI_PKG_PATH.'lookup_page_inc.php' );
 // If the page doesn't exist then display an error
 if (!$gContent->isValid()) {
+	$gBitSystem->setHttpStatus( 404 );
 	$gBitSystem->fatalError(tra("Page cannot be found"));
 }
 
