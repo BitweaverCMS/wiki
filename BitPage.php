@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.106 2008/04/01 15:56:34 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.107 2008/05/10 21:52:01 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.106 $ $Date: 2008/04/01 15:56:34 $ $Author: wjames5 $
+ * @version $Revision: 1.107 $ $Date: 2008/05/10 21:52:01 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,23 +13,23 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.106 2008/04/01 15:56:34 wjames5 Exp $
+ * $Id: BitPage.php,v 1.107 2008/05/10 21:52:01 squareing Exp $
  */
 
 /**
  * required setup
  */
-require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php' );
+require_once( LIBERTY_PKG_PATH.'LibertyMime.php' );
 
 /**
  * @package wiki
  */
-class BitPage extends LibertyAttachable {
+class BitPage extends LibertyMime {
 	var $mPageId;
 	var $mPageName;
 
 	function BitPage( $pPageId=NULL, $pContentId=NULL ) {
-		LibertyAttachable::LibertyAttachable();
+		LibertyMime::LibertyMime();
 		$this->registerContentType( BITPAGE_CONTENT_TYPE_GUID, array(
 				'content_type_guid' => BITPAGE_CONTENT_TYPE_GUID,
 				'content_description' => 'Wiki Page',
@@ -98,7 +98,7 @@ class BitPage extends LibertyAttachable {
 				// Save some work if wiki_attachments are not active
 				// get prefs before we parse the data that we know how to parse the data
 				if( $gBitSystem->isFeatureActive( 'wiki_attachments' ) ) {
-					LibertyAttachable::load();
+					LibertyMime::load();
 				} else {
 					LibertyContent::load();
 				}
@@ -125,7 +125,7 @@ class BitPage extends LibertyAttachable {
 	function store( &$pParamHash ) {
 		$this->mDb->StartTrans();
 
-		if( $this->verify( $pParamHash ) && LibertyAttachable::store( $pParamHash ) ) {
+		if( $this->verify( $pParamHash ) && LibertyMime::store( $pParamHash ) ) {
 			$pParamHash['page_store']['wiki_page_size'] = !empty( $pParamHash['edit'] ) ? strlen( $pParamHash['edit'] ) : 0;
 
 			$table = BIT_DB_PREFIX."wiki_pages";
@@ -278,7 +278,7 @@ class BitPage extends LibertyAttachable {
 			$this->expungeVersion(); // will nuke all versions
 			$query = "DELETE FROM `".BIT_DB_PREFIX."wiki_pages` WHERE `content_id` = ?";
 			$result = $this->mDb->query( $query, array( $this->mContentId ) );
-			if( LibertyAttachable::expunge() ) {
+			if( LibertyMime::expunge() ) {
 				$ret = TRUE;
 				$this->mDb->CompleteTrans();
 			} else {
