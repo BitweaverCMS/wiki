@@ -3,7 +3,7 @@
  * BitBook class
  *
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.8 $
+ * @version  $Revision: 1.9 $
  * @package  wiki
  */
 // +----------------------------------------------------------------------+
@@ -18,7 +18,7 @@
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
 //
-// $Id: BitBook.php,v 1.8 2008/02/26 21:09:09 wjames5 Exp $
+// $Id: BitBook.php,v 1.9 2008/05/18 11:16:58 squareing Exp $
 
 
 /**
@@ -34,13 +34,13 @@ define('BITBOOK_CONTENT_TYPE_GUID', 'bitbook' );
  *
  * @abstract
  * @author   spider <spider@steelsun.com>
- * @version  $Revision: 1.8 $
+ * @version  $Revision: 1.9 $
  * @package  wiki
  */
 class BitBook extends BitPage {
 	var $mPageId;
 	var $mPageName;
-	 function BitBook( $pPageId=NULL, $pContentId=NULL ) {
+	function BitBook( $pPageId=NULL, $pContentId=NULL ) {
 		BitPage::BitPage( $pPageId, $pContentId );
 		$this->registerContentType( BITBOOK_CONTENT_TYPE_GUID, array(
 			'content_type_guid' => BITBOOK_CONTENT_TYPE_GUID,
@@ -56,12 +56,15 @@ class BitBook extends BitPage {
 		$this->mViewContentPerm  = 'p_wiki_view_page';
 		$this->mEditContentPerm  = 'p_wiki_edit_book';
 		$this->mAdminContentPerm = 'p_wiki_admin_book';
-	 }
+	}
 
 	function getList( &$pListHash ) {
 		$struct = new LibertyStructure();
 		return $struct->getList( $pListHash );
 	}
-}
 
+	function getStats() {
+		return FALSE;
+	}
+}
 ?>
