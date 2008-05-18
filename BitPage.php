@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.107 2008/05/10 21:52:01 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.108 2008/05/18 11:18:12 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.107 $ $Date: 2008/05/10 21:52:01 $ $Author: squareing $
+ * @version $Revision: 1.108 $ $Date: 2008/05/18 11:18:12 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.107 2008/05/10 21:52:01 squareing Exp $
+ * $Id: BitPage.php,v 1.108 2008/05/18 11:18:12 squareing Exp $
  */
 
 /**
@@ -687,13 +687,10 @@ class BitPage extends LibertyMime {
 		# Check for offset out of range
 		if ( $pListHash['offset'] < 0 ) {
 			$pListHash['offset'] = 0;
-			}
-		elseif ( $pListHash['offset']	> $pListHash["cant"] ) {
+		} elseif ( $pListHash['offset']	> $pListHash["cant"] ) {
 			$lastPageNumber = ceil ( $pListHash["cant"] / $pListHash['max_records'] ) - 1;
 			$pListHash['offset'] = $pListHash['max_records'] * $lastPageNumber;
-			}
-
-
+		}
 
 		$result = $this->mDb->query( $query, $bindVars, $pListHash['max_records'], $pListHash['offset'] );
 		$this->mDb->CompleteTrans();
@@ -714,7 +711,6 @@ class BitPage extends LibertyMime {
 			}
 			$ret[] = $aux;
 		}
-
 
 		// apply the custom sorting options if needed
 		if( !empty( $originalListHash )) {
