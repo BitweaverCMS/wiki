@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.108 2008/05/18 11:18:12 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.109 2008/05/21 02:31:40 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.108 $ $Date: 2008/05/18 11:18:12 $ $Author: squareing $
+ * @version $Revision: 1.109 $ $Date: 2008/05/21 02:31:40 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.108 2008/05/18 11:18:12 squareing Exp $
+ * $Id: BitPage.php,v 1.109 2008/05/21 02:31:40 spiderr Exp $
  */
 
 /**
@@ -315,7 +315,7 @@ class BitPage extends LibertyMime {
 	 * See LibertyContent method for defaults
 	*/
 	function hasEditPermission( $pVerifyAccessControl=TRUE, $pCheckGlobalPerm=TRUE ) {
-		return( $this->hasUserPermission( $this->mEditContentPerm, $pVerifyAccessControl, $pCheckGlobalPerm ) );
+		return( $this->hasUserPermission( $this->mEditContentPerm, $pVerifyAccessControl, $pCheckGlobalPerm ) && ! $this->isLocked() );
 	}
 
 	// === verifyEditPermission
