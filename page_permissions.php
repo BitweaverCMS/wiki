@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_permissions.php,v 1.11 2008/03/23 00:01:26 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/Attic/page_permissions.php,v 1.12 2008/06/25 22:21:29 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_permissions.php,v 1.11 2008/03/23 00:01:26 jht001 Exp $
+ * $Id: page_permissions.php,v 1.12 2008/06/25 22:21:29 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -28,7 +28,7 @@ $gBitSystem->verifyPackage( 'wiki' );
 // Make sure $gContent is set
 if( !$gContent->isValid() ) {
 	$gBitSmarty->assign('msg', tra( "No page indicated" ) );
-	$gBitSystem->display( 'error.tpl' );
+	$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
 	die;
 }
 
@@ -46,7 +46,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_creator_admin' ) && $gContent->isOwner()
 // Now check permissions to access this page
 if( !$gBitUser->hasPermission( 'p_wiki_admin' ) ) {
 	$gBitSmarty->assign( 'msg', tra( "Permission denied you cannot assign permissions for this page" ) );
-	$gBitSystem->display( 'error.tpl' );
+	$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
 	die;
 }
 
@@ -72,5 +72,5 @@ $gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
 
 require_once( LIBERTY_PKG_PATH.'content_permissions_inc.php' );
 
-$gBitSystem->display( 'bitpackage:wiki/page_permissions.tpl', tra( 'Page Permissions' ) );
+$gBitSystem->display( 'bitpackage:wiki/page_permissions.tpl', tra( 'Page Permissions' ) , array( 'display_mode' => 'display' ));
 ?>

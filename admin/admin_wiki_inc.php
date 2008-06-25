@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.28 2007/06/16 08:15:16 starrrider Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.29 2008/06/25 22:21:30 spiderr Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -279,7 +279,7 @@ if (isset($_REQUEST["createtag"])) {
 	// Check existance
 	if ($adminlib->tag_exists($_REQUEST["tagname"])) {
 		$gBitSmarty->assign('msg', tra("Tag already exists"));
-		$gBitSystem->display( 'error.tpl' );
+		$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'admin' ));
 		die;
 	}
 	$adminlib->create_tag($_REQUEST["tagname"]);
@@ -289,7 +289,7 @@ if (isset($_REQUEST["restoretag"])) {
 	// Check existance
 	if (!$adminlib->tag_exists($_REQUEST["restagname"])) {
 		$gBitSmarty->assign('msg', tra("Tag not found"));
-		$gBitSystem->display( 'error.tpl' );
+		$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'admin' ));
 		die;
 	}
 	$adminlib->restore_tag($_REQUEST["restagname"]);

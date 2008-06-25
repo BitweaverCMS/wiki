@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.24 2008/01/14 09:26:02 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.25 2008/06/25 22:21:29 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.24 2008/01/14 09:26:02 lsces Exp $
+ * $Id: lookup_page_inc.php,v 1.25 2008/06/25 22:21:29 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -40,7 +40,7 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 					// Display page so user can select which wiki page they want (there are multiple that share this name)
 					$gBitSmarty->assign( 'choose', $lookupHash['page'] );
 					$gBitSmarty->assign('dupePages', $existsInfo);
-					$gBitSystem->display('bitpackage:wiki/page_select.tpl');
+					$gBitSystem->display('bitpackage:wiki/page_select.tpl', NULL, array( 'display_mode' => 'display' ));
 					die;
 				} else {
 					$gContent->mPageId = $existsInfo[0]['page_id'];

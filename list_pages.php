@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.22 2007/10/12 16:14:14 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.23 2008/06/25 22:21:29 spiderr Exp $
  *
- * $Id: list_pages.php,v 1.22 2007/10/12 16:14:14 spiderr Exp $
+ * $Id: list_pages.php,v 1.23 2008/06/25 22:21:29 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -79,5 +79,5 @@ $gBitSmarty->assign_by_ref( 'listpages', $listpages );
 $gBitSmarty->assign_by_ref( 'listInfo', $listHash['listInfo'] );
 
 // Display the template
-$gBitSystem->display( 'bitpackage:wiki/list_pages.tpl', tra( 'Wiki Pages' ));
+$gBitSystem->display( 'bitpackage:wiki/list_pages.tpl', tra( 'Wiki Pages' ), array( 'display_mode' => 'list' ));
 ?>

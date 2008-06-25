@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print_pages.php,v 1.9 2007/09/14 17:07:20 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print_pages.php,v 1.10 2008/06/25 22:21:30 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: print_pages.php,v 1.9 2007/09/14 17:07:20 spiderr Exp $
+ * $Id: print_pages.php,v 1.10 2008/06/25 22:21:30 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -55,5 +55,5 @@ $pages = $gContent->getList( $listHash );
 $gBitSmarty->assign_by_ref('pages', $pages);
 
 // Display the template
-$gBitSystem->display( 'bitpackage:wiki/print_pages.tpl');
+$gBitSystem->display( 'bitpackage:wiki/print_pages.tpl', NULL, array( 'display_mode' => 'display' ));
 ?>

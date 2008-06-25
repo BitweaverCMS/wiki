@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/copyrights.php,v 1.8 2008/06/25 22:21:29 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: copyrights.php,v 1.7 2006/04/11 13:10:33 squareing Exp $
+ * $Id: copyrights.php,v 1.8 2008/06/25 22:21:29 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -32,7 +32,7 @@ if (isset($_REQUEST['addcopyright'])) {
 		$copyrightslib->add_copyright($gContent->mPageId, $copyrightTitle, $copyrightYear, $copyrightAuthors, $gBitUser->mUserId);
 	} else {
 		$gBitSmarty->assign('msg', tra("You must supply all the information, including title and year."));
-		$gBitSystem->display( 'error.tpl' );
+		$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
 		die;
 	}
 }
@@ -46,7 +46,7 @@ if (isset($_REQUEST['editcopyright'])) {
 		$copyrightslib->edit_copyright($copyright_id, $copyrightTitle, $copyrightYear, $copyrightAuthors, $gBitUser->mUserId);
 	} else {
 		$gBitSmarty->assign('msg', tra("You must supply all the information, including title and year."));
-		$gBitSystem->display( 'error.tpl' );
+		$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
 		die;
 	}
 }
@@ -62,5 +62,5 @@ if (isset($_REQUEST['action']) && isset($_REQUEST['copyright_id'])) {
 $copyrights = $copyrightslib->list_copyrights( $gContent->mPageId );
 $gBitSmarty->assign('copyrights', $copyrights["data"]);
 // Display the template
-$gBitSystem->display( 'bitpackage:wiki/copyrights.tpl');
+$gBitSystem->display( 'bitpackage:wiki/copyrights.tpl', NULL, array( 'display_mode' => 'display' ));
 ?>

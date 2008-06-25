@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.48 2008/04/14 08:59:53 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.49 2008/06/25 22:21:29 spiderr Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.48 2008/04/14 08:59:53 squareing Exp $
+ * $Id: edit.php,v 1.49 2008/06/25 22:21:29 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -463,5 +463,5 @@ $formInfo['original_title'] =( !empty( $gContent->mInfo['title'] ) ) ? $gContent
 $gBitSmarty->assign_by_ref( 'pageInfo', $formInfo );
 $gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 
-$gBitSystem->display( 'bitpackage:wiki/edit_page.tpl', 'Edit: '.$gContent->getTitle() );
+$gBitSystem->display( 'bitpackage:wiki/edit_page.tpl', 'Edit: '.$gContent->getTitle() , array( 'display_mode' => 'edit' ));
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_watches.php,v 1.5 2008/03/23 00:01:26 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_watches.php,v 1.6 2008/06/25 22:21:30 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_watches.php,v 1.5 2008/03/23 00:01:26 jht001 Exp $
+ * $Id: page_watches.php,v 1.6 2008/06/25 22:21:30 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -48,6 +48,6 @@ if( !empty( $gContent->mPageId ) ) {
     }
 
 // Display the template
-$gBitSystem->display( 'bitpackage:wiki/page_watches.tpl');
+$gBitSystem->display( 'bitpackage:wiki/page_watches.tpl', NULL, array( 'display_mode' => 'display' ));
 
 ?>

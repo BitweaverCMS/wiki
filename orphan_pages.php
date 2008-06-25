@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.15 2007/10/26 13:33:32 nickpalmer Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.16 2008/06/25 22:21:29 spiderr Exp $
  *
- * $Id: orphan_pages.php,v 1.15 2007/10/26 13:33:32 nickpalmer Exp $
+ * $Id: orphan_pages.php,v 1.16 2008/06/25 22:21:29 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -80,5 +80,5 @@ $gBitSmarty->assign_by_ref( 'listpages', $listpages );
 $gBitSmarty->assign_by_ref( 'listInfo', $listHash['listInfo'] );
 
 // Display the template
-$gBitSystem->display( 'bitpackage:wiki/orphan_pages.tpl', tra( 'Orphan Pages' ));
+$gBitSystem->display( 'bitpackage:wiki/orphan_pages.tpl', tra( 'Orphan Pages' ), array( 'display_mode' => 'display' ));
 ?>

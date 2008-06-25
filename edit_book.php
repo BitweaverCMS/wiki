@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.12 2007/11/08 21:59:36 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.13 2008/06/25 22:21:29 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit_book.php,v 1.12 2007/11/08 21:59:36 squareing Exp $
+ * $Id: edit_book.php,v 1.13 2008/06/25 22:21:29 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -36,7 +36,7 @@ global $gStructure;
 if( isset($_REQUEST["createstructure"]) ) {
 	if ((empty($_REQUEST['name']))) {
 		$gBitSmarty->assign('msg', tra("You must specify a name."));
-		$gBitSystem->display( 'error.tpl' );
+		$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'edit' ));
 		die;
 	}
 
@@ -60,7 +60,7 @@ if( isset($_REQUEST["createstructure"]) ) {
 		//Cannot create a structure if a structure already exists
 		if (!isset($structure_id)) {
 			$gBitSmarty->assign('msg', $_REQUEST['name'] . " " . tra("page not added (Exists)"));
-			$gBitSystem->display( 'error.tpl' );
+			$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'edit' ));
 			die;
 		}
 
@@ -114,5 +114,5 @@ if( isset($_REQUEST["createstructure"]) ) {
 }
 $gBitSystem->setBrowserTitle( !empty($gStructure) ? 'Edit Wiki Book:'.$gStructure->mInfo["title"] : NULL );
 // Display the template
-$gBitSystem->display( $mid );
+$gBitSystem->display( $mid , NULL, array( 'display_mode' => 'edit' ));
 ?>

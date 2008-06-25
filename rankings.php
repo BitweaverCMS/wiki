@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/rankings.php,v 1.11 2007/10/12 16:14:14 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/rankings.php,v 1.12 2008/06/25 22:21:30 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: rankings.php,v 1.11 2007/10/12 16:14:14 spiderr Exp $
+ * $Id: rankings.php,v 1.12 2008/06/25 22:21:30 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -68,5 +68,5 @@ if( empty( $gContent ) ) {
 $rankList = $gContent->getContentRanking( $_REQUEST );
 $gBitSmarty->assign( 'rankList', $rankList );
 
-$gBitSystem->display( 'bitpackage:liberty/rankings.tpl', tra( "Wiki Rankings" ) );
+$gBitSystem->display( 'bitpackage:liberty/rankings.tpl', tra( "Wiki Rankings" ) , array( 'display_mode' => 'display' ));
 ?>

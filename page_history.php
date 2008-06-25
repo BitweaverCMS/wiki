@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.30 2008/04/28 14:45:47 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_history.php,v 1.31 2008/06/25 22:21:29 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: page_history.php,v 1.30 2008/04/28 14:45:47 spiderr Exp $
+ * $Id: page_history.php,v 1.31 2008/06/25 22:21:29 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -57,5 +57,5 @@ $gBitSmarty->assign_by_ref( 'listInfo', $history['listInfo'] );
 
 // Display the template
 $gBitSmarty->assign_by_ref( 'gContent', $gContent );
-$gBitSystem->display( 'bitpackage:wiki/page_history.tpl' );
+$gBitSystem->display( 'bitpackage:wiki/page_history.tpl' , NULL, array( 'display_mode' => 'display' ));
 ?>

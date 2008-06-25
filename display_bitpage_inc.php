@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.41 2008/03/23 00:17:18 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.42 2008/06/25 22:21:29 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.41 2008/03/23 00:17:18 jht001 Exp $
+ * $Id: display_bitpage_inc.php,v 1.42 2008/06/25 22:21:29 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -182,7 +182,7 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 			}
 		} else {
 			$gBitSmarty->assign('msg', tra("This feature requires a registered user.").": users_watches");
-			$gBitSystem->display( 'error.tpl' );
+			$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
 			die;
 		}
 	}
@@ -200,6 +200,6 @@ if( isset( $_REQUEST['s5'] ) ) {
 	include_once( WIKI_PKG_PATH.'s5.php');
 }
 
-$gBitSystem->display('bitpackage:wiki/show_page.tpl');
+$gBitSystem->display('bitpackage:wiki/show_page.tpl', NULL, array( 'display_mode' => 'display' ));
 // xdebug_dump_function_profile(XDEBUG_PROFILER_CPU);
 ?>

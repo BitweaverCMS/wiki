@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_external_wikis.php,v 1.3 2006/02/06 00:12:23 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_external_wikis.php,v 1.4 2008/06/25 22:21:30 spiderr Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -8,7 +8,7 @@ require_once( '../../bit_setup_inc.php' );
 include_once( KERNEL_PKG_PATH.'admin_lib.php' );
 if (!$gBitUser->isAdmin()) {
 	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
-	$gBitSystem->display( 'error.tpl' );
+	$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'admin' ));
 	die;
 }
 if (!isset($_REQUEST["extwiki_id"])) {
@@ -77,5 +77,5 @@ if ($offset > 0) {
 $gBitSmarty->assign_by_ref('channels', $channels["data"]);
 
 // Display the template
-$gBitSystem->display( 'bitpackage:wiki/admin_external_wikis.tpl');
+$gBitSystem->display( 'bitpackage:wiki/admin_external_wikis.tpl', NULL, array( 'display_mode' => 'admin' ));
 ?>
