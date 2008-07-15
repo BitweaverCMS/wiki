@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.50 2008/07/15 16:07:45 huyderman Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.51 2008/07/15 16:29:16 huyderman Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.50 2008/07/15 16:07:45 huyderman Exp $
+ * $Id: edit.php,v 1.51 2008/07/15 16:29:16 huyderman Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -205,8 +205,13 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 		//   flags 'strip HTML tags' and 'try to convert HTML to wiki' : )
 		//   At least one export filter for wiki already coded : ) -- PDF exporter...
 		$parsed_url = parse_url($suck_url);
-		if(!isset($parsed_url['scheme']) || $parsed_url['scheme']!='http'){
+		//Disallow urls without schema (usually relative urls), or http(s)
+		if(!isset($parsed_url['scheme']) || ($parsed_url['scheme']!='http' && $parsed_url['scheme']!='https')){
 			$gBitSystem->fatalError( tra( "Invalid URL; not absolute or not HTTP" ));
+		}
+		//Make sure the passed host isn't local
+		if(!isset($parsed_url['host']) || ($parsed_url['host']=='localhost') || strncmp($parsed_url['host'],"127.",4)==0){
+			$gBitSystem->fatalError( tra( "The host specified is either empty or local." ));
 		}
 		$sdta = @file_get_contents( $suck_url );
 		if( isset( $php_errormsg ) && strlen( $php_errormsg ) ) {
