@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.49 2008/06/25 22:21:29 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.50 2008/07/15 16:07:45 huyderman Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.49 2008/06/25 22:21:29 spiderr Exp $
+ * $Id: edit.php,v 1.50 2008/07/15 16:07:45 huyderman Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -186,6 +186,9 @@ function walk_and_parse( &$c, &$src, &$p ) {
 	}
 }
 if( isset( $_REQUEST["suck_url"] ) ) {
+	if( $wiki_sandbox && !$gBitSystem->isFeatureActive( 'wiki_url_import' ) ) {
+		$gBitSystem->fatalError( tra( "Importing remote URLs is disabled" ));
+	}
 	// Suck another page and append to the end of current
 	require_once( UTIL_PKG_PATH.'htmlparser/html_parser_inc.php' );
 	$suck_url = isset( $_REQUEST["suck_url"] ) ? $_REQUEST["suck_url"] : '';
@@ -201,6 +204,10 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 		//   pluged into wiki page edit form too...( like HTML importer may have
 		//   flags 'strip HTML tags' and 'try to convert HTML to wiki' : )
 		//   At least one export filter for wiki already coded : ) -- PDF exporter...
+		$parsed_url = parse_url($suck_url);
+		if(!isset($parsed_url['scheme']) || $parsed_url['scheme']!='http'){
+			$gBitSystem->fatalError( tra( "Invalid URL; not absolute or not HTTP" ));
+		}
 		$sdta = @file_get_contents( $suck_url );
 		if( isset( $php_errormsg ) && strlen( $php_errormsg ) ) {
 			$gBitSystem->fatalError( tra( "Can't import remote HTML page" ));
