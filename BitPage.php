@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.109 2008/05/21 02:31:40 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.110 2008/07/17 12:31:34 lsces Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.109 $ $Date: 2008/05/21 02:31:40 $ $Author: spiderr $
+ * @version $Revision: 1.110 $ $Date: 2008/07/17 12:31:34 $ $Author: lsces $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.109 2008/05/21 02:31:40 spiderr Exp $
+ * $Id: BitPage.php,v 1.110 2008/07/17 12:31:34 lsces Exp $
  */
 
 /**
@@ -463,7 +463,7 @@ class BitPage extends LibertyMime {
 				$ret = WIKI_PKG_URL.'index.php?page='.urlencode( $pPageName );
 			}
 		} else {
-			$ret = LibertyContent::getDisplayUrl( NULL, $pParamHash );
+			$ret = LibertyContent::getDisplayUrl( NULL, $pPageHash );
 		}
 
 		return $ret;
