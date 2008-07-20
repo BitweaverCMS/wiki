@@ -142,11 +142,16 @@
 					{formlabel label="Wiki Link Format" for="wiki_page_regex"}
 					{forminput}
 						<select name="wiki_page_regex" id="wiki_page_regex">
-							<option value="complete" {if $gBitSystem->getConfig('wiki_page_regex') eq 'complete'}selected="selected"{/if}>{tr}complete{/tr}</option>
-							<option value="full"     {if $gBitSystem->getConfig('wiki_page_regex') eq 'full'}selected="selected"{/if}>{tr}latin{/tr}</option>
-							<option value="strict"   {if $gBitSystem->getConfig('wiki_page_regex') eq 'strict'}selected="selected"{/if}>{tr}english{/tr}</option>
+							<option value="strict"   {if $gBitSystem->getConfig('wiki_page_regex') eq 'strict'}selected="selected"{/if}>{tr}English{/tr}</option>
+							<option value="full"     {if $gBitSystem->getConfig('wiki_page_regex') eq 'full'}selected="selected"{/if}>{tr}Latin{/tr}</option>
+							<option value="complete" {if $gBitSystem->getConfig('wiki_page_regex') eq 'complete'}selected="selected"{/if}>{tr}Complete{/tr}</option>
 						</select>
-						{formhelp note="Controls recognition of Wiki links using the two parenthesis Wiki link syntax <i>((page name))</i>."}
+						{formhelp note="Controls recognition of Wiki links using the two parenthesis Wiki link syntax <em>((page name))</em>.
+							<dl>
+								<dt>English</dt><dd>allows only letters, numbers, space, underscore, dash, period and semicolon. <em>Space, dash, period and semicolon not allowed as the first character.</em></dd>
+								<dt>Latin</dt><dd>adds accented characters such as äöüåñòôùçèêîâööúä.</dd>
+								<dt>Complete</dt><dd>allows any character at all but is not guaranteed to be bug-free or secure.</dd>
+							</dl>"}
 					{/forminput}
 				</div>
 
