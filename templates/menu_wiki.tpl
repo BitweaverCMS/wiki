@@ -3,7 +3,7 @@
 	{if $gBitUser->hasPermission( 'p_wiki_view_page' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}index.php">{biticon iname="go-home" iexplain="Wiki Home" ilocation=menu}</a></li>
 	{/if}
-	{if $gBitSystem->isFeatureActive( 'wiki_list_pages' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
+	{if $gBitSystem->isFeatureActive( 'wiki_list_pages' ) and $gBitUser->hasPermission( 'p_wiki_list_pages' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}list_pages.php">{biticon iname="format-justify-fill" iexplain="List Pages" ilocation=menu}</a></li>
 	{/if}
 	{if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
@@ -21,7 +21,7 @@
 	{if $gBitSystem->isFeatureActive( 'wiki_multiprint' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}print_pages.php">{biticon iname="document-print" iexplain="Print" ilocation=menu}</a></li>
 	{/if}
-	{if $gBitSystem->isFeatureActive( 'wiki_rankings' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
+	{if $gBitSystem->isFeatureActive( 'wiki_rankings' ) and $gBitUser->hasPermission( 'p_wiki_list_pages' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}rankings.php">{biticon iname="format-justify-fill" iexplain="Wiki Rankings" ilocation=menu}</a></li>
 	{/if}
 	{if $gBitSystem->isFeatureActive( 'wiki_sandbox' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
