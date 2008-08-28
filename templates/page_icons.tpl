@@ -88,19 +88,17 @@
 		{/if}
 
 		{if $gBitSystem->isFeatureActive( 'wiki_backlinks' ) and $backlinks}
-			<br />
-			<select name="page" onchange="go(this)">
-				<option value="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}">{tr}Backlinks{/tr}...</option>
+			<select id="sel-backlinks" name="page" onchange="go(this)">
+				<option value="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}">{tr}Backlinks{/tr} &hellip;</option>
 				{foreach key=contentId item=backPage from=$backlinks}
-					<option value="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$contentId}">{$backPage|truncate:30:"...":true}</option>
+					<option value="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$contentId}">{$backPage|truncate:30:"&hellip":true}</option>
 				{/foreach}
 			</select>
 		{/if}
 
 		{if count($showstructs) gt 0}
-			<br />
-			<select name="page" onchange="go(this)">
-				<option value="">{tr}Wiki Books{/tr}...</option>
+			<select id="sel-structures" name="page" onchange="go(this)">
+				<option value="">{tr}Wiki Books{/tr} &hellip;</option>
 				{section name=struct loop=$showstructs}
 					<option value="{$smarty.const.WIKI_PKG_URL}index.php?structure_id={$showstructs[struct].structure_id}">
 						{$showstructs[struct].root_title}
