@@ -10,7 +10,7 @@
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}edit.php">{biticon iname="document-new" iexplain="Create Page" ilocation=menu}</a></li>
 	{/if}
 	{if $gBitUser->hasPermission( 'p_wiki_view_page' ) and $gBitSystem->isFeatureActive( 'wiki_books' )}
-		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}books.php">{biticon iname="x-office-address-book" iexplain="Wiki Books" ilocation=menu}</a></li>
+		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}books.php">{biticon iname="folder-open" iexplain="Wiki Books" ilocation=menu}</a></li>
 	{/if}
 	{if $gBitSystem->isFeatureActive( 'wiki_books' ) && $gBitUser->hasPermission( 'p_wiki_edit_book' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}edit_book.php">{biticon iname="folder-new" iexplain="Create Book" ilocation=menu}</a></li>
