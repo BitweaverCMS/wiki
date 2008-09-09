@@ -47,7 +47,7 @@
 		{/if}
 
 		{if $gBitSystem->isFeatureActive( 'wiki_uses_s5' )}
-			<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;s5=1" onclick="return confirm('this works best in gecko based browsers (mozilla, firefox) or opera (press F11)')">{biticon ipackage="icons" iname="x-office-presentation" iexplain="s5 slideshow"}</a>
+			<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;s5=1">{biticon ipackage="icons" iname="x-office-presentation" iexplain="s5 slideshow"}</a>
 		{/if}
 
 		{* we hide this link from browsers that can interpret css since we use css to determine what is printed and what not *}

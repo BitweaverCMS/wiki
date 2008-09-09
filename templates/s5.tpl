@@ -12,11 +12,11 @@
 	<meta name="defaultView" content="slideshow" />
 	<meta name="controlVis" content="hidden" />
 	{assign var=s5theme value=default}
-	<link rel="stylesheet" href="{$smarty.const.UTIL_PKG_URL}s5/ui/{$s5theme}/slides.css" type="text/css" media="projection" id="slideProj" />
-	<link rel="stylesheet" href="{$smarty.const.UTIL_PKG_URL}s5/ui/{$s5theme}/outline.css" type="text/css" media="screen" id="outlineStyle" />
-	<link rel="stylesheet" href="{$smarty.const.UTIL_PKG_URL}s5/ui/{$s5theme}/print.css" type="text/css" media="print" id="slidePrint" />
-	<link rel="stylesheet" href="{$smarty.const.UTIL_PKG_URL}s5/ui/{$s5theme}/opera.css" type="text/css" media="projection" id="operaFix" />
-	<script src="{$smarty.const.UTIL_PKG_URL}ui/{$s5theme}/slides.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="{$smarty.const.UTIL_PKG_URL}s5/ui/{$s5theme|default:'default'}/slides.css" type="text/css" media="projection" id="slideProj" />
+	<link rel="stylesheet" href="{$smarty.const.UTIL_PKG_URL}s5/ui/{$s5theme|default:'default'}/outline.css" type="text/css" media="screen" id="outlineStyle" />
+	<link rel="stylesheet" href="{$smarty.const.UTIL_PKG_URL}s5/ui/{$s5theme|default:'default'}/print.css" type="text/css" media="print" id="slidePrint" />
+	<link rel="stylesheet" href="{$smarty.const.UTIL_PKG_URL}s5/ui/{$s5theme|default:'default'}/opera.css" type="text/css" media="projection" id="operaFix" />
+	<script src="{$smarty.const.UTIL_PKG_URL}s5/ui/{$s5theme|default:'default'}/slides.js" type="text/javascript"></script>
 	{literal}
 	<style type="text/css" media="all">
 		.imgcon		{width: 525px; margin: 0 auto; padding: 0; text-align: center;}
