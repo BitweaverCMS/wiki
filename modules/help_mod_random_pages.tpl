@@ -1,0 +1,1 @@
+<p>This module doesn't take any parameters.</p>
