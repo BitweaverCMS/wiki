@@ -1,7 +1,6 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.42 2008/07/03 15:28:05 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.43 2008/09/15 04:30:30 laetzer Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
-
 <div class="edit wiki">
 	<div class="header">
 		<h1>
@@ -114,7 +113,7 @@
 							<div class="row">
 								{formlabel label="Minor save" for="isminor"}
 								{forminput}
-									<input type="checkbox" name="isminor" id="isminor" value="on" />
+									<input type="checkbox" name="isminor" id="isminor" value="on" {if $pageInfo.isminor}checked="checked" {/if}/>
 									{formhelp note="This will prevent the generation of a new version. You can use this, if your changes are minor."}
 								{/forminput}
 							</div>
