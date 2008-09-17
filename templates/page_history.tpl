@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.14 2007/10/03 07:00:13 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.15 2008/09/17 17:36:19 laetzer Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
@@ -36,7 +36,13 @@
 
 		{if $diff2 eq 'y'}
 			<h2>{tr}Differences from version{/tr} {$version_from} to {$version_to}</h2>
-			{$diffdata}
+			
+			{if $pageInfo.format_guid eq 'bithtml'}
+				{$diffdata|html_entity_decode}
+			{else}
+				{$diffdata}
+			{/if}
+			
 		{/if}
 
 		{form}
