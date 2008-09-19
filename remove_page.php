@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/remove_page.php,v 1.10 2007/10/25 20:43:02 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/remove_page.php,v 1.11 2008/09/19 01:34:39 laetzer Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: remove_page.php,v 1.10 2007/10/25 20:43:02 squareing Exp $
+ * $Id: remove_page.php,v 1.11 2008/09/19 01:34:39 laetzer Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -33,7 +33,7 @@ if( isset( $_REQUEST["confirm"] ) ) {
 		header( "location: ".WIKI_PKG_URL );
 		die;
 	} else {
-		$gBitSystem->fatalError( "There was an error deleting the page: ".vc( $gContent->mErrors ));
+		$gBitSystem->fatalError( tra("There was an error deleting the page:") . ' ' . vc( $gContent->mErrors ));
 	}
 }
 
@@ -43,7 +43,8 @@ $formHash['page_id'] = $_REQUEST['page_id'];
 $msgHash = array(
 	'label' => tra( 'Delete WikiPage' ),
 	'confirm_item' => $gContent->getTitle(),
-	'warning' => tra( 'All previous versions of this page will be completely deleted.<br />This cannot be undone!' ),
+	'warning' => tra( 'All previous versions of this page will be completely deleted.' ),
+	'error' => tra( 'This cannot be undone!' ),
 );
 $gBitSystem->confirmDialog( $formHash,$msgHash );
 

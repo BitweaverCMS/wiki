@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.16 2008/06/25 22:21:29 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.17 2008/09/19 01:34:39 laetzer Exp $
  *
- * $Id: orphan_pages.php,v 1.16 2008/06/25 22:21:29 spiderr Exp $
+ * $Id: orphan_pages.php,v 1.17 2008/09/19 01:34:39 laetzer Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -46,7 +46,12 @@ if( isset( $_REQUEST["batch_submit"] ) && isset( $_REQUEST["checked"] ) && $_REQ
 			}
 			$formHash['input'][] = '<input type="hidden" name="checked[]" value="'.$del.'"/>'.$info;
 		}
-		$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to delete '.count($_REQUEST["checked"]).' pages?', 'error' => 'This cannot be undone!' ) );
+		$gBitSystem->confirmDialog( $formHash, 
+				array( 
+					'warning' => tra('Are you sure you want to delete these pages?') . ' (' . tra('Count: ') . count( $_REQUEST["checked"] ) . ')',				
+					'error' => tra('This cannot be undone!'),
+				)
+			);
 	} else {
 		foreach( $_REQUEST["checked"] as $deletepage ) {
 			$tmpPage = new BitPage( $deletepage );
