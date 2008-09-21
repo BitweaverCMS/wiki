@@ -6,6 +6,6 @@
     RewriteCond %{SCRIPT_FILENAME}/index.php    -f
     RewriteRule ^(.*)$            - [L]
 
-	RewriteRule ^view/(.*)$  index.php?page=$1  [L]
+    RewriteRule ^view/(.*)$  index.php?page=$1  [L,QSA]
     RewriteRule ^(.*)$       index.php?page=$1  [L,QSA]
 </IfModule>
