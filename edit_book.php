@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.13 2008/06/25 22:21:29 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.14 2008/10/02 22:23:06 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit_book.php,v 1.13 2008/06/25 22:21:29 spiderr Exp $
+ * $Id: edit_book.php,v 1.14 2008/10/02 22:23:06 wjames5 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -18,8 +18,6 @@
  */
 require_once( '../bit_setup_inc.php' );
 
-$gBitSystem->verifyPermission( 'p_wiki_edit_book' );
-
 if( isset( $_COOKIE['book_section'] ) && $_COOKIE['book_section'] == 'o' ) {
 	$book_section = 'block';
 } else {
@@ -27,11 +25,42 @@ if( isset( $_COOKIE['book_section'] ) && $_COOKIE['book_section'] == 'o' ) {
 }
 $gBitSmarty->assign( 'book_section',$book_section );
 
-include_once( WIKI_PKG_PATH.'lookup_page_inc.php');
 include_once( LIBERTY_PKG_PATH.'LibertyStructure.php');
 include_once( WIKI_PKG_PATH.'BitBook.php');
 
 global $gStructure;
+
+/**
+ * first pass at trying to bring books up to speed with modern perm checking
+ * we initialize an object here since books dont have an include 
+ **/
+// get a book instance
+global $gContent;
+if( @BitBase::verifyId( $_REQUEST["structure_id"] ) ) {
+	include_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
+	if( empty( $gContent ) ){
+		$gBitSystem->fatalError( 'Error: Invalid structure id, the book you requested could not be found.' );
+	}
+}else{
+	$gContent = new BitBook();
+	if( !empty( $_REQUEST['name'] ) ){
+		if( $pageId = $gContent->findByPageName( $_REQUEST['name'] ) ){
+			$gContent->mPageId = $pageId;
+			$gContent->load();
+		}elseif( empty( $_REQUEST["createstructure"] ) ){
+			$gBitSystem->fatalError( 'Error: Invalid name, the book you requested could not be found.' );
+		}
+	}
+}
+// end overly elaborate lookup now we can check the permission on the book.
+
+// this is what we're really interested in doing check if we can edit the book or create one
+if( $gContent->isValid() ){
+	$gContent->verifyEditPermission();
+}else{
+	// $gContent->verifyCreatePermission();
+	$gBitSystem->verifyPermission( 'p_wiki_edit_book' );
+}
 
 if( isset($_REQUEST["createstructure"]) ) {
 	if ((empty($_REQUEST['name']))) {
@@ -41,21 +70,21 @@ if( isset($_REQUEST["createstructure"]) ) {
 	}
 
 	//try to add a new structure
-	$bookPage = new BitBook();
-	$pageId = $bookPage->findByPageName( $_REQUEST['name'] );
+	$gContent = new BitBook();
+	$pageId = $gContent->findByPageName( $_REQUEST['name'] );
 	if( $pageId ) {
-		$bookPage->mPageId = $pageId;
-		$bookPage->load();
+		$gContent->mPageId = $pageId;
+		$gContent->load();
 	} else {
 		$params['title'] = $_REQUEST['name'];
 		$params['edit'] = '{toc}';
-		$bookPage->store( $params );
+		$gContent->store( $params );
 	}
 
-	if( $bookPage->isValid() ) {
+	if( $gContent->isValid() ) {
 		$gStructure = new LibertyStructure();
 		// alias => '' is a temporary setting until alias stuff has been removed
-		$structureHash = array( 'content_id' => $bookPage->mContentId, 'alias' => '' );
+		$structureHash = array( 'content_id' => $gContent->mContentId, 'alias' => '' );
 		$structure_id = $gStructure->storeNode( $structureHash );
 		//Cannot create a structure if a structure already exists
 		if (!isset($structure_id)) {
@@ -83,7 +112,7 @@ if( isset($_REQUEST["createstructure"]) ) {
 					$params['title'] = trim($chapterName);
 					$params['edit'] = '';
 					if( !$nodePage->store( $params ) ) {
-						$gBitSystem->fatalError( "There was an error storing the page: ".vc( $bookPage->mErrors ));
+						$gBitSystem->fatalError( "There was an error storing the page: ".vc( $gContent->mErrors ));
 					}
 				}
 				$nodeHash['content_id'] = $nodePage->mContentId;
@@ -92,7 +121,7 @@ if( isset($_REQUEST["createstructure"]) ) {
 		}
 		header( "location: ".WIKI_PKG_URL."edit_book.php?structure_id=".$structure_id );
 	}
-} elseif( @BitBase::verifyId( $_REQUEST["structure_id"] ) ) {
+} elseif( @BitBase::verifyId( $_REQUEST["structure_id"] ) && $gContent->isValid() ) {
 	// Get all wiki pages for the select box
 	$_REQUEST['content_type_guid'] = !isset( $_REQUEST['content_type_guid'] ) ? 'bitpage' : $_REQUEST['content_type_guid'];
 	// verify the book permission on structure load
@@ -109,6 +138,7 @@ if( isset($_REQUEST["createstructure"]) ) {
 	$mid = 'bitpackage:wiki/edit_book.tpl';
 	include_once( LIBERTY_PKG_PATH.'edit_structure_inc.php');
 } else {
+	// user is just trying to create a new book - give them the form
 	$gBitSystem->setBrowserTitle( 'Create Wiki Book' );
 	$mid = 'bitpackage:wiki/create_book.tpl';
 }
