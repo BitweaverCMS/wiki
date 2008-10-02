@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.24 2008/09/19 01:34:38 laetzer Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.25 2008/10/02 16:17:15 wjames5 Exp $
  *
- * $Id: list_pages.php,v 1.24 2008/09/19 01:34:38 laetzer Exp $
+ * $Id: list_pages.php,v 1.25 2008/10/02 16:17:15 wjames5 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -31,7 +31,7 @@ $gContent->invokeServices( 'content_list_function', $_REQUEST );
 if( isset( $_REQUEST["batch_submit"] ) && isset( $_REQUEST["checked"] ) && $_REQUEST["batch_submit"] == "remove_pages" ) {
 
 	// Now check permissions to remove the selected pages
-	$gContent->verifyPermission( 'p_wiki_remove_page' );
+	$gContent->verifyUserPermission( 'p_wiki_remove_page' );
 
 	if( !empty( $_REQUEST['cancel'] )) {
 		// user cancelled - just continue on, doing nothing

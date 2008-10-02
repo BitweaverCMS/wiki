@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.17 2008/09/19 01:34:39 laetzer Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.18 2008/10/02 16:17:15 wjames5 Exp $
  *
- * $Id: orphan_pages.php,v 1.17 2008/09/19 01:34:39 laetzer Exp $
+ * $Id: orphan_pages.php,v 1.18 2008/10/02 16:17:15 wjames5 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -30,7 +30,7 @@ $gContent->verifyViewPermission();
 if( isset( $_REQUEST["batch_submit"] ) && isset( $_REQUEST["checked"] ) && $_REQUEST["batch_submit"] == "remove_pages" ) {
 
 	// Now check permissions to remove the selected pages
-	$gContent->verifyPermission( 'p_wiki_remove_page' );
+	$gContent->verifyUserPermission( 'p_wiki_remove_page' );
 
 	if( !empty( $_REQUEST['cancel'] )) {
 		// user cancelled - just continue on, doing nothing
