@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.52 2008/10/03 17:20:16 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.53 2008/10/03 20:20:07 wjames5 Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.52 2008/10/03 17:20:16 wjames5 Exp $
+ * $Id: edit.php,v 1.53 2008/10/03 20:20:07 wjames5 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -21,8 +21,13 @@ include_once( WIKI_PKG_PATH.'BitBook.php' );
 
 $gBitSystem->verifyPackage( 'wiki' );
 
-
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
+
+$wiki_sandbox = FALSE;
+if( ( !empty( $_REQUEST['page'] ) && $_REQUEST['page'] == 'SandBox' ) || ( !empty( $_REQUEST['title'] ) && $_REQUEST['title'] == 'SandBox' ) ) {
+	$gContent->mInfo['title'] = 'SandBox';
+	$wiki_sandbox = TRUE;
+}
 
 if( $wiki_sandbox && !$gBitSystem->isFeatureActive( 'wiki_sandbox' ) ) {
 	$gBitSystem->fatalError( tra( "The SandBox is disabled" ));
@@ -45,12 +50,6 @@ if( $gBitSystem->isFeatureActive( 'wiki_comments' ) && !empty( $_REQUEST['page_i
 #edit preview needs this
 if( !isset( $_REQUEST['title'] ) && isset( $gContent->mInfo['title'] ) ) {
 	$_REQUEST['title'] = $gContent->mInfo['title'];
-}
-
-$wiki_sandbox = FALSE;
-if( ( !empty( $_REQUEST['page'] ) && $_REQUEST['page'] == 'SandBox' ) || ( !empty( $_REQUEST['title'] ) && $_REQUEST['title'] == 'SandBox' ) ) {
-	$gContent->mInfo['title'] = 'SandBox';
-	$wiki_sandbox = TRUE;
 }
 
 if( $gContent->isLocked() ) {
