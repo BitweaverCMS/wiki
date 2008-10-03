@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.111 2008/09/15 06:17:33 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.112 2008/10/03 17:20:16 wjames5 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.111 $ $Date: 2008/09/15 06:17:33 $ $Author: spiderr $
+ * @version $Revision: 1.112 $ $Date: 2008/10/03 17:20:16 $ $Author: wjames5 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.111 2008/09/15 06:17:33 spiderr Exp $
+ * $Id: BitPage.php,v 1.112 2008/10/03 17:20:16 wjames5 Exp $
  */
 
 /**
@@ -44,6 +44,7 @@ class BitPage extends LibertyMime {
 
 		// Permission setup
 		$this->mViewContentPerm  = 'p_wiki_view_page';
+		$this->mCreateContentPerm = 'p_wiki_create_page';
 		$this->mEditContentPerm  = 'p_wiki_edit_page';
 		$this->mAdminContentPerm = 'p_wiki_admin';
 	}
@@ -299,35 +300,6 @@ class BitPage extends LibertyMime {
 	function isValid() {
 		return( $this->verifyId( $this->mPageId ) );
 	}
-
-	/**
-	 * Function that determines if this content specified permission for the current gBitUser. 
-	 * Override LibertyContent method default $pCheckGlobalPerm=FALSE to enable shared editing
-	 * See LibertyContent method for defaults
-	*/
-	function hasUserPermission( $pPermName, $pVerifyAccessControl=TRUE, $pCheckGlobalPerm=TRUE ) {
-		return( parent::hasUserPermission( $pPermName, $pVerifyAccessControl, $pCheckGlobalPerm ) );
-	}
-
-	/**
-	 * Function that determines if this content specified permission for the current gBitUser. 
-	 * Override LibertyContent method default $pCheckGlobalPerm=FALSE to enable shared editing
-	 * See LibertyContent method for defaults
-	*/
-	function hasEditPermission( $pVerifyAccessControl=TRUE, $pCheckGlobalPerm=TRUE ) {
-		return( $this->hasUserPermission( $this->mEditContentPerm, $pVerifyAccessControl, $pCheckGlobalPerm ) && !$this->isLocked() );
-	}
-
-	// === verifyEditPermission
-	/**
-	 * Function that determines if this content specified permission for the current gBitUser. 
-	 * Override LibertyContent method default $pCheckGlobalPerm=FALSE to enable shared editing
-	 * See LibertyContent method for defaults
-	*/
-	function verifyEditPermission( $pVerifyAccessControl=TRUE, $pCheckGlobalPerm=TRUE ) {
-		return parent::verifyEditPermission( $pVerifyAccessControl, $pCheckGlobalPerm );
-	}
-
 
 	function isLocked() {
 		$ret = FALSE;
