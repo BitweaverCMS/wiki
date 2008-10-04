@@ -1,5 +1,5 @@
 {strip}
-{if $gContent->hasUserPermission( 'p_users_view_icons_and_tools' )}
+{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools')}
 	<div class="floaticon">
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$gContent->mInfo}
 
