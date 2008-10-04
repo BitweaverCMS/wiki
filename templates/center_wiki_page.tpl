@@ -1,7 +1,7 @@
 {strip}
 <div class="display wiki">
 	<div class="floaticon"> <!-- Actions -->
-		{if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
+		{if $gContent->hasEditPermission()}
 			<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$gContent->mInfo.page_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
 		{/if}
 		{if $gBitSystem->isPackageActive( 'pdf' ) && $gContent->hasUserPermission( 'p_pdf_generation' )}
