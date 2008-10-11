@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.43 2008/09/15 04:30:30 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.44 2008/10/11 07:50:40 laetzer Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 <div class="edit wiki">
@@ -56,7 +56,7 @@
 
 		{form enctype="multipart/form-data" id="editpageform"}
 			{jstabs}
-				{jstab title="$editLabel Body"}
+				{jstab title="Body"}
 					{legend legend="`$editLabel` Body"}
 						<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
 						<input type="hidden" name="content_id" value="{$pageInfo.content_id}" />
