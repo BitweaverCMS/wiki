@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.25 2008/06/25 22:21:29 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.26 2008/10/18 17:11:14 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.25 2008/06/25 22:21:29 spiderr Exp $
+ * $Id: lookup_page_inc.php,v 1.26 2008/10/18 17:11:14 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -85,60 +85,6 @@ if( $gContent->isValid() && $gBitSystem->isPackageActive( 'stickies' ) ) {
 	$gBitSmarty->assign_by_ref( 'stickyInfo', $gNote->mInfo );
 }
 
-// if we are looking up a page
-if( $gBitSystem->isFeatureActive( 'warn_on_edit' ) && $gContent->isValid() ) {
-	// Notice if a page is being edited or if it was being edited and not anymore
-	// print($GLOBALS["HTTP_REFERER"]);
-	// IF isset the referer and if the referer is editpage then unset taking the pagename from the
-	// query or homepage if not query
-	if (isset($_SERVER['HTTP_REFERER']) && (strstr($_SERVER['HTTP_REFERER'], WIKI_PKG_URL.'edit') ) ) {
-		$purl = parse_url($_SERVER['HTTP_REFERER']);
-
-		if (!isset($purl["query"])) {
-			$purl["query"] = '';
-		}
-
-		parse_str($purl["query"], $purlquery);
-
-		if (!isset($purlquery["page"])) {
-			$purlquery["page"] = $gBitSystem->getConfig( 'wiki_home_page' );
-		}
-
-		if (isset($_SESSION["edit_lock"])) {
-			// TODO - find out if this function is supposed to exist - wolff_borg
-			//$gBitUser->expungeSemaphore($purlquery["page"], $_SESSION["edit_lock"]);
-		}
-	}
-
-	if (strstr($_SERVER['REQUEST_URI'], WIKI_PKG_URL . 'edit')) {
-		$purl = parse_url($_SERVER['REQUEST_URI']);
-
-		if (!isset($purl["query"])) {
-			$purl["query"] = '';
-		}
-
-		parse_str($purl["query"], $purlquery);
-
-		// When WIKI_PKG_URL.'edit.php' is loading, check to see if there is an editing conflict
-		if( $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->getConfig( 'wiki_warn_on_edit_time' ) * 60 ) ) {
-			$gBitSmarty->assign('editpageconflict', 'y');
-		} else {
-			if (!(isset($lookupHash['save'])) && $gContent->isValid() ) {
-				$_SESSION["edit_lock"] = $gBitUser->storeSemaphore( $gContent->mContentId );
-				$gBitSmarty->assign('editpageconflict', 'n');
-			}
-		}
-	}
-
-	if( $semUser = $gBitUser->hasSemaphoreConflict( $gContent->mContentId, $gBitSystem->getConfig( 'wiki_warn_on_edit_time' ) * 60 ) ) {
-		$gContent->mErrors['edit_conflict'] = 'This page is being edited by '.$gBitUser->getDisplayName( TRUE, $semUser ).'. Proceed at your own peril';
-		$gBitSmarty->assign( 'semUser', $semUser );
-		$beingedited = 'y';
-	} else {
-		$beingedited = 'n';
-	}
-	$gBitSmarty->assign('beingEdited', $beingedited);
-}
 $gBitSmarty->clear_assign( 'gContent' );
 $gBitSmarty->assign_by_ref( 'gContent', $gContent );
 ?>

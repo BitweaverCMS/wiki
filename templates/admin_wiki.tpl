@@ -28,24 +28,6 @@
 			</div>
 
 			<div class="row">
-				{formlabel label="Warn on edit" for="warn_on_edit"}
-				{forminput}
-					{html_checkboxes name="warn_on_edit" values="y" checked=$gBitSystem->getConfig('warn_on_edit') labels=false id="warn_on_edit"}
-				{/forminput}
-				{forminput}
-					<select name="wiki_warn_on_edit_time">
-						<option value="1"  {if $gBitSystem->getConfig('wiki_warn_on_edit_time') eq 1}selected="selected"{/if}>{tr}1{/tr}</option>
-						<option value="2"  {if $gBitSystem->getConfig('wiki_warn_on_edit_time') eq 2}selected="selected"{/if}>{tr}2{/tr}</option>
-						<option value="5"  {if $gBitSystem->getConfig('wiki_warn_on_edit_time') eq 5}selected="selected"{/if}>{tr}5{/tr}</option>
-						<option value="10" {if $gBitSystem->getConfig('wiki_warn_on_edit_time') eq 10}selected="selected"{/if}>{tr}10{/tr}</option>
-						<option value="15" {if $gBitSystem->getConfig('wiki_warn_on_edit_time') eq 15}selected="selected"{/if}>{tr}15{/tr}</option>
-						<option value="30" {if $gBitSystem->getConfig('wiki_warn_on_edit_time') eq 30}selected="selected"{/if}>{tr}30{/tr}</option>
-					</select> {tr}minutes{/tr}
-					{formhelp note="Display a warning if someone has started editing a page within this time range and somebody else starts editing the same page."}
-				{/forminput}
-			</div>
-
-			<div class="row">
 				{formlabel label="Tables syntax" for="wiki_tables"}
 				{forminput}
 					<select name="wiki_tables" id="wiki_tables">
