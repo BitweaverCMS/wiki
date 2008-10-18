@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.53 2008/10/03 20:20:07 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.54 2008/10/18 15:48:07 squareing Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.53 2008/10/03 20:20:07 wjames5 Exp $
+ * $Id: edit.php,v 1.54 2008/10/18 15:48:07 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -448,9 +448,9 @@ if( isset( $_REQUEST["preview"] ) ) {
 		( !empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] : ( isset( $gContent->mInfo['format_guid'] ) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ))
 	);
 	$gContent->invokeServices( 'content_preview_function' );
+} else {
+	$gContent->invokeServices( 'content_edit_function' );
 }
-
-$gContent->invokeServices( 'content_edit_function' );
 
 if( $gContent->isInStructure() ) {
 	$gBitSmarty->assign( 'showstructs', $gContent->getStructures() );
