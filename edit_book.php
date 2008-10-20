@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.15 2008/10/03 17:20:16 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.16 2008/10/20 21:40:12 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit_book.php,v 1.15 2008/10/03 17:20:16 wjames5 Exp $
+ * $Id: edit_book.php,v 1.16 2008/10/20 21:40:12 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -56,7 +56,7 @@ if( @BitBase::verifyId( $_REQUEST["structure_id"] ) ) {
 
 // this is what we're really interested in doing check if we can edit the book or create one
 if( $gContent->isValid() ){
-	$gContent->verifyEditPermission();
+	$gContent->verifyUpdatePermission();
 }else{
 	$gContent->verifyCreatePermission();
 }

@@ -79,7 +79,7 @@ $gBitInstaller->registerSchemaSequences( WIKI_PKG_NAME, $sequences );
 $gBitInstaller->registerUserPermissions( WIKI_PKG_NAME, array(
 	array('p_wiki_admin_book', 'Can administer books', 'editors', WIKI_PKG_NAME),
 	array('p_wiki_admin', 'Can admin the wiki', 'admin', WIKI_PKG_NAME),
-	array('p_wiki_edit_book', 'Can edit books', 'registered', WIKI_PKG_NAME),
+	array('p_wiki_update_book', 'Can edit books', 'registered', WIKI_PKG_NAME),
 	array('p_wiki_create_book', 'Can create books', 'registered', WIKI_PKG_NAME),
 	array('p_wiki_edit_copyright', 'Can edit copyright notices', 'registered', WIKI_PKG_NAME),
 	array('p_wiki_edit_dynvar', 'Can edit dynamic variables', 'editors', WIKI_PKG_NAME),

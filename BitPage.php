@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.112 2008/10/03 17:20:16 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.113 2008/10/20 21:40:12 spiderr Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.112 $ $Date: 2008/10/03 17:20:16 $ $Author: wjames5 $
+ * @version $Revision: 1.113 $ $Date: 2008/10/20 21:40:12 $ $Author: spiderr $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.112 2008/10/03 17:20:16 wjames5 Exp $
+ * $Id: BitPage.php,v 1.113 2008/10/20 21:40:12 spiderr Exp $
  */
 
 /**
@@ -45,7 +45,7 @@ class BitPage extends LibertyMime {
 		// Permission setup
 		$this->mViewContentPerm  = 'p_wiki_view_page';
 		$this->mCreateContentPerm = 'p_wiki_create_page';
-		$this->mEditContentPerm  = 'p_wiki_edit_page';
+		$this->mUpdateContentPerm  = 'p_wiki_edit_page';
 		$this->mAdminContentPerm = 'p_wiki_admin';
 	}
 
