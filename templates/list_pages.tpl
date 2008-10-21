@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.25 2007/09/27 13:49:58 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.26 2008/10/21 01:35:51 wjames5 Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -94,7 +94,7 @@
 						<th>{smartlink ititle="Size" isort="size" icontrol=$listInfo}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
-					{if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
+					{if $gBitUser->hasPermission( 'p_wiki_update_page' )}
 						<th style="width:1px;">{tr}Actions{/tr}</th>
 						{counter name=cols assign=cols print=false}
 					{/if}
@@ -186,7 +186,7 @@
 						{if $gBitSystem->isFeatureActive( 'wiki_list_size' )}
 							<td style="text-align:right;">{$listpages[changes].len|display_bytes}</td>
 						{/if}
-						{if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
+						{if $gBitUser->hasPermission( 'p_wiki_update_page' )}
 							<td class="actionicon">
 								<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$listpages[changes].page_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
 								{if $checkboxes_on eq 'y'}

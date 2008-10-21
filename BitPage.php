@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.113 2008/10/20 21:40:12 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.114 2008/10/21 01:35:51 wjames5 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.113 $ $Date: 2008/10/20 21:40:12 $ $Author: spiderr $
+ * @version $Revision: 1.114 $ $Date: 2008/10/21 01:35:51 $ $Author: wjames5 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.113 2008/10/20 21:40:12 spiderr Exp $
+ * $Id: BitPage.php,v 1.114 2008/10/21 01:35:51 wjames5 Exp $
  */
 
 /**
@@ -45,7 +45,7 @@ class BitPage extends LibertyMime {
 		// Permission setup
 		$this->mViewContentPerm  = 'p_wiki_view_page';
 		$this->mCreateContentPerm = 'p_wiki_create_page';
-		$this->mUpdateContentPerm  = 'p_wiki_edit_page';
+		$this->mUpdateContentPerm  = 'p_wiki_update_page';
 		$this->mAdminContentPerm = 'p_wiki_admin';
 	}
 
@@ -467,7 +467,7 @@ class BitPage extends LibertyMime {
 				}
 				$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrl( $exists['title'] ).'">'.htmlspecialchars( $pPageName ).'</a>';
 			} else {
-				if( $gBitUser->hasPermission( 'p_wiki_edit_page' ) ) {
+				if( $gBitUser->hasPermission( 'p_wiki_create_page' ) ) {
 					$ret = '<a title="'.tra( "Create the page" ).': '.htmlspecialchars( $pPageName ).'" href="'.WIKI_PKG_URL.'edit.php?page='.urlencode( $pPageName ).'" class="create">'.htmlspecialchars( $pPageName ).'</a>';
 				} else {
 					$ret = $pPageName;

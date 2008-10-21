@@ -83,7 +83,7 @@ $gBitInstaller->registerUserPermissions( WIKI_PKG_NAME, array(
 	array('p_wiki_create_book', 'Can create books', 'registered', WIKI_PKG_NAME),
 	array('p_wiki_edit_copyright', 'Can edit copyright notices', 'registered', WIKI_PKG_NAME),
 	array('p_wiki_edit_dynvar', 'Can edit dynamic variables', 'editors', WIKI_PKG_NAME),
-	array('p_wiki_edit_page', 'Can edit pages', 'registered', WIKI_PKG_NAME),
+	array('p_wiki_update_page', 'Can edit pages', 'registered', WIKI_PKG_NAME),
 	array('p_wiki_create_page', 'Can create pages', 'registered', WIKI_PKG_NAME),
 	array('p_wiki_list_pages', 'Can list pages', 'registered', WIKI_PKG_NAME),
 	array('p_wiki_lock_page', 'Can lock pages', 'editors', WIKI_PKG_NAME),

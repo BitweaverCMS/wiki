@@ -7,13 +7,13 @@
 	{if $gBitSystem->isFeatureActive( 'wiki_list_pages' ) and $gBitUser->hasPermission( 'p_wiki_list_pages' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}list_pages.php">{biticon iname="format-justify-fill" iexplain="List Pages" ilocation=menu}</a></li>
 	{/if}
-	{if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
+	{if $gBitUser->hasPermission( 'p_wiki_create_page' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}edit.php">{biticon iname="document-new" iexplain="Create Page" ilocation=menu}</a></li>
 	{/if}
 	{if $gBitUser->hasPermission( 'p_wiki_view_page' ) and $gBitSystem->isFeatureActive( 'wiki_books' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}books.php">{biticon iname="folder-open" iexplain=$pkgNameWS|cat:"Books" ilocation=menu}</a></li>
 	{/if}
-	{if $gBitSystem->isFeatureActive( 'wiki_books' ) && $gBitUser->hasPermission( 'p_wiki_edit_book' )}
+	{if $gBitSystem->isFeatureActive( 'wiki_books' ) && $gBitUser->hasPermission( 'p_wiki_create_book' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}edit_book.php">{biticon iname="folder-new" iexplain="Create Book" ilocation=menu}</a></li>
 	{/if}
 	{if $gBitSystem->isFeatureActive( 'wiki_list_orphans' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
