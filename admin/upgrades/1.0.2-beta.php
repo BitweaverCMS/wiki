@@ -1,12 +1,23 @@
 <?php
 global $gBitInstaller;
 
-$gBitInstaller->registerPackageUpgrade( WIKI_PKG_NAME, '1.0.2-beta', array(
+$infoHash = array(
+	'package'     => WIKI_PKG_NAME,
+	'version'     => '1.0.2-beta',
+	'description' => "Creates a test table 'test_table_1'.",
+	'post_upgrade' => NULL,
+);
 
-array( 'ALTER' => array(
-	'something' => array(
-		'content_id' => array( '`content_id`', 'I4' ),
-	),
+
+$gBitInstaller->registerPackageUpgrade( $infoHash, array(
+
+array( 'DATADICT' => array(
+	array( 'CREATE' => array (
+		'test_table_1' => "
+			test_col_1 C(32) PRIMARY,
+			test_col_2 C(64)
+		",
+	)),
 )),
 
 ));
