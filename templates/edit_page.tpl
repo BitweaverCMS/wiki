@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.44 2008/10/11 07:50:40 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.45 2008/10/25 01:24:05 wjames5 Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 <div class="edit wiki">
@@ -25,6 +25,10 @@
 	{/if}
 
 	<div class="body">
+		{if $errors} 
+			{formfeedback warning='There were one or more errors trying to store the page. Please correct them and then try saving again.'}
+		{/if}
+
 		{if $translateFrom}
 			<div class="translate">
 				{include file="bitpackage:wiki/page_header.tpl" pageInfo=$translateFrom->mInfo}
