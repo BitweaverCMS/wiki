@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.16 2008/09/25 02:28:06 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_history.tpl,v 1.17 2008/11/05 15:34:49 laetzer Exp $ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">
@@ -26,7 +26,7 @@
 					<th></th>
 					<th width="50%">{tr}Current version{/tr}</td>
 				</tr>
-				<tr valign="top">
+				<tr class="aligntop">
 					<td><div class="content">{$diff_from}</div></td>
 					<td>&nbsp;</td>
 					<td><div class="content">{$diff_to}</div></td>
