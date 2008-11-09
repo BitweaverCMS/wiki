@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.26 2008/10/21 01:35:51 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.27 2008/11/09 07:32:25 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -58,6 +58,14 @@
 						{assign var='checkboxes_on' value='n'}
 					{/if}
 					{counter name=cols start=-1 print=false}
+					{if $gBitSystem->isFeatureActive( 'wiki_list_page_id' )}
+						<th>{smartlink ititle="Page ID" isort="page_id" icontrol=$listInfo}</th>
+						{counter name=cols assign=cols print=false}
+					{/if}
+					{if $gBitSystem->isFeatureActive( 'wiki_list_content_id' )}
+						<th>{smartlink ititle="Content ID" isort="content_id" icontrol=$listInfo}</th>
+						{counter name=cols assign=cols print=false}
+					{/if}
 					{if $gBitSystem->isFeatureActive( 'wiki_list_hits' )}
 						<th>{smartlink ititle="Hits" isort="hits" icontrol=$listInfo}</th>
 						{counter name=cols assign=cols print=false}
@@ -145,8 +153,14 @@
 					</tr>
 
 					<tr class="{cycle}">
+						{if $gBitSystem->isFeatureActive( 'wiki_list_page_id' )}
+							<td style="text-align:center;">{$listpages[changes].page_id}</td>
+						{/if}
+						{if $gBitSystem->isFeatureActive( 'wiki_list_content_id' )}
+							<td style="text-align:center;">{$listpages[changes].content_id}</td>
+						{/if}
 						{if $gBitSystem->isFeatureActive( 'wiki_list_hits' )}
-							<td style="text-align:center;">{$listpages[changes].hits}</td>
+							<td style="text-align:center;">{$listpages[changes].hits|default:0}</td>
 						{/if}
 						{if $gBitSystem->isFeatureActive( 'wiki_list_lastver' )}
 							<td style="text-align:center;">{$listpages[changes].version}</td>

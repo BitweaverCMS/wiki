@@ -1,10 +1,18 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.29 2008/06/25 22:21:30 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.30 2008/11/09 07:32:24 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 $formWikiLists = array(
+	"wiki_list_page_id" => array(
+		'label' => 'Page ID',
+		'note' => 'Page ID of the wikipage.',
+	),
+	"wiki_list_content_id" => array(
+		'label' => 'Content ID',
+		'note' => 'Content ID of the wikipage.',
+	),
 	"wiki_list_name" => array(
 		'label' => 'Name',
 		'note' => 'Name of the wikipage.',
@@ -131,8 +139,7 @@ $formWikiFeatures = array(
 );
 
 $gBitSmarty->assign( 'formWikiFeatures',$formWikiFeatures );
-if (isset($_REQUEST["wikifeatures"])) {
-
+if( !empty( $_REQUEST["wikifeatures"] )) {
 	foreach( $formWikiFeatures as $item => $data ) {
 		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
@@ -204,8 +211,7 @@ $formWikiInOut = array(
 );
 $gBitSmarty->assign( 'formWikiInOut',$formWikiInOut );
 
-if (isset($_REQUEST["wikiinout"])) {
-
+if( !empty( $_REQUEST["wikiinout"] )) {
 	foreach( $formWikiInOut as $item => $data ) {
 		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
@@ -235,8 +241,7 @@ $formWikiBooks = array(
 );
 $gBitSmarty->assign( 'formWikiBooks',$formWikiBooks );
 
-if (isset($_REQUEST["wikibooks"])) {
-
+if( !empty( $_REQUEST["wikibooks"] )) {
 	foreach( $formWikiBooks as $item => $data ) {
 		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
@@ -258,79 +263,36 @@ $formWikiWatch = array(
 );
 $gBitSmarty->assign( 'formWikiWatch',$formWikiWatch );
 
-if (isset($_REQUEST["wikiwatch"])) {
+if( !empty( $_REQUEST["wikiwatch"] )) {
 	foreach( $formWikiWatch  as $item => $data ) {
 		simple_set_toggle( $item, WIKI_PKG_NAME );
 	}
 }
 
-/*
-if (isset($_REQUEST["dump"])) {
-
-	include (UTIL_PKG_PATH."tar.class.php");
-	error_reporting (E_ERROR | E_WARNING);
-	$wikilib->dumpPages();
-}
-if( file_exists( $wikilib->getDumpFile() ) ) {
-	$gBitSmarty->assign('dumpUrl', $wikilib->getDumpUrl() );
-}
-if (isset($_REQUEST["createtag"])) {
-
-	// Check existance
-	if ($adminlib->tag_exists($_REQUEST["tagname"])) {
-		$gBitSmarty->assign('msg', tra("Tag already exists"));
-		$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'admin' ));
-		die;
-	}
-	$adminlib->create_tag($_REQUEST["tagname"]);
-}
-if (isset($_REQUEST["restoretag"])) {
-
-	// Check existance
-	if (!$adminlib->tag_exists($_REQUEST["restagname"])) {
-		$gBitSmarty->assign('msg', tra("Tag not found"));
-		$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'admin' ));
-		die;
-	}
-	$adminlib->restore_tag($_REQUEST["restagname"]);
-}
-if (isset($_REQUEST["removetag"])) {
-
-	// Check existance
-	$adminlib->remove_tag($_REQUEST["remtagname"]);
-}
-$tags = $wikilib->get_tags();
-$gBitSmarty->assign_by_ref("tags", $tags);
-
-$gBitSmarty->assign("wiki_max_versions", $gBitSystem->getConfig("wiki_max_versions", 0));
-$gBitSmarty->assign("wiki_min_versions", $gBitSystem->getConfig("wiki_min_versions", 1));
- */
-
-if (isset($_REQUEST["setwikihome"])) {
-
-	$gBitSystem->storeConfig('wiki_home_page', $_REQUEST["wiki_home_page"], WIKI_PKG_NAME);
+if( !empty( $_REQUEST["setwikihome"] )) {
+	$gBitSystem->storeConfig( 'wiki_home_page', $_REQUEST["wiki_home_page"], WIKI_PKG_NAME );
 	$gBitSmarty->assign('wiki_home_page', $_REQUEST["wiki_home_page"]);
 }
 
-if (isset($_REQUEST["setwikiregex"])) {
-	$gBitSystem->storeConfig('wiki_page_regex', $_REQUEST["wiki_page_regex"], WIKI_PKG_NAME);
+if( !empty( $_REQUEST["setwikiregex"] )) {
+	$gBitSystem->storeConfig( 'wiki_page_regex', $_REQUEST["wiki_page_regex"], WIKI_PKG_NAME );
 	$gBitSmarty->assign( 'wiki_page_regex', $_REQUEST["wiki_page_regex"] );
 } else {
-    $gBitSmarty->assign( 'wiki_page_regex', $gBitSystem->getConfig( 'wiki_page_regex', 'strict' ) );
+	$gBitSmarty->assign( 'wiki_page_regex', $gBitSystem->getConfig( 'wiki_page_regex', 'strict' ) );
 }
 
-if (isset($_REQUEST["wikisetcopyright"])) {
+if( !empty( $_REQUEST["wikisetcopyright"] )) {
 	simple_set_toggle( 'wiki_copyrights',WIKI_PKG_NAME );
-	if (isset($_REQUEST["wiki_license_page"])) {
+	if( !empty( $_REQUEST["wiki_license_page"] )) {
 		$gBitSystem->storeConfig("wiki_license_page", $_REQUEST["wiki_license_page"], WIKI_PKG_NAME);
-		$gBitSmarty->assign('wiki_license_page', $_REQUEST["wiki_license_page"]);
+		$gBitSmarty->assign( 'wiki_license_page', $_REQUEST["wiki_license_page"] );
 	}
-	if (isset($_REQUEST["wiki_submit_notice"])) {
+	if( !empty( $_REQUEST["wiki_submit_notice"] )) {
 		$gBitSystem->storeConfig("wiki_submit_notice", $_REQUEST["wiki_submit_notice"], WIKI_PKG_NAME);
-		$gBitSmarty->assign('wiki_submit_notice', $_REQUEST["wiki_submit_notice"]);
+		$gBitSmarty->assign( 'wiki_submit_notice', $_REQUEST["wiki_submit_notice"] );
 	}
 }
-$gBitSmarty->assign("wiki_copyrights", $gBitSystem->getConfig("wiki_copyrights"));
-$gBitSmarty->assign('wiki_license_page', $gBitSystem->getConfig("wiki_license_page"));
-$gBitSmarty->assign('wiki_submit_notice', $gBitSystem->getConfig("wiki_submit_notice"));
+$gBitSmarty->assign("wiki_copyrights", $gBitSystem->getConfig( "wiki_copyrights" ));
+$gBitSmarty->assign('wiki_license_page', $gBitSystem->getConfig( "wiki_license_page" ));
+$gBitSmarty->assign('wiki_submit_notice', $gBitSystem->getConfig( "wiki_submit_notice" ));
 ?>
