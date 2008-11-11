@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.30 2008/11/09 07:32:24 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.31 2008/11/11 22:21:46 wjames5 Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -153,8 +153,6 @@ if( !empty( $_REQUEST["wikifeatures"] )) {
 		$gBitSmarty->assign("warn_on_edit", 'n');
 	}
 	//$gBitSystem->storeConfig("wiki_link_type", $_REQUEST["link_type"], WIKI_PKG_NAME);
-	$gBitSystem->storeConfig("wiki_warn_on_edit_time", $_REQUEST["wiki_warn_on_edit_time"], WIKI_PKG_NAME);
-	$gBitSmarty->assign('wiki_warn_on_edit_time', $_REQUEST["wiki_warn_on_edit_time"]);
 
 	/* not sure if the following are still required */
 	$gBitSystem->storeConfig('wiki_tables', $_REQUEST['wiki_tables'], WIKI_PKG_NAME);
