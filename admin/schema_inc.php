@@ -3,7 +3,7 @@
 $tables = array(
 
 'wiki_footnotes' => "
-	user_id C(40) PRIMARY,
+	user_id I4 PRIMARY,
 	page_id I4 NOTNULL,
 	data X
 ",
