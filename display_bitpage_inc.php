@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.45 2008/10/20 21:40:12 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.46 2008/11/12 04:05:04 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: display_bitpage_inc.php,v 1.45 2008/10/20 21:40:12 spiderr Exp $
+ * $Id: display_bitpage_inc.php,v 1.46 2008/11/12 04:05:04 wjames5 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -54,7 +54,7 @@ if( $gBitSystem->isFeatureActive( 'users_count_admin_pageviews' ) || !$gBitUser-
 
 // Check if we have to lock / unlock this page
 if( !empty( $_REQUEST["action"] ) && ( $_REQUEST["action"] == 'lock' || $_REQUEST["action"] == 'unlock' )
-	&& $gContent->hasUserPermission( 'p_wiki_lock_page' ) && $gBitSystem->isFeatureActive( 'wiki_usrlock' )) {
+	&& ( $gContent->hasAdminPermission() || ($gContent->hasUserPermission( 'p_wiki_lock_page' ) && $gBitSystem->isFeatureActive( 'wiki_usrlock' )) ) ) {
 	$gContent->setLock( $_REQUEST["action"] == 'lock' ? 'L' : NULL );
 }
 
