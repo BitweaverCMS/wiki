@@ -2,6 +2,14 @@
 
 $tables = array(
 
+'wiki_pages' => "
+	page_id I4 PRIMARY,
+	content_id I4 NOTNULL,
+	wiki_page_size I4 DEFAULT 0,
+	edit_comment C(200),
+	flag C(1)
+",
+
 'wiki_footnotes' => "
 	user_id I4 PRIMARY,
 	page_id I4 NOTNULL,
