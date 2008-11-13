@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.115 2008/10/25 01:24:05 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.116 2008/11/13 09:39:03 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.115 $ $Date: 2008/10/25 01:24:05 $ $Author: wjames5 $
+ * @version $Revision: 1.116 $ $Date: 2008/11/13 09:39:03 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.115 2008/10/25 01:24:05 wjames5 Exp $
+ * $Id: BitPage.php,v 1.116 2008/11/13 09:39:03 squareing Exp $
  */
 
 /**
@@ -111,8 +111,7 @@ class BitPage extends LibertyMime {
 		}
 		return( count( $this->mInfo ) );
 	}
-	// }}}
-	// {{{ store
+
 	/**
 	* This is the ONLY method that should be called in order to store (create or update) a wiki page!
 	* It is very smart and will figure out what to do for you. It should be considered a black box.
@@ -187,10 +186,9 @@ class BitPage extends LibertyMime {
 		$this->mDb->CompleteTrans();
 		return( count( $this->mErrors ) == 0 );
 	}
-	// }}}
-	// {{{ verify
+
 	/**
-	* This function is responsible for data integrity and validation before any operations are performed with the $pParamHash
+	* verify This function is responsible for data integrity and validation before any operations are performed with the $pParamHash
 	* NOTE: This is a PRIVATE METHOD!!!! do not call outside this class, under penalty of death!
 	*
 	* @param array pParams reference to hash of values that will be used to store the page, they will be modified where necessary
@@ -350,12 +348,12 @@ class BitPage extends LibertyMime {
 	/**
 	 *  Store footnote
 	 */
-	function storeFootnote($pUserId, $data) {
+	function storeFootnote($pUserId, $pData) {
 		if( $this->verifyId( $this->mPageId ) ) {
 			$querydel = "delete from `".BIT_DB_PREFIX."wiki_footnotes` where `user_id`=? and `page_id`=?";
 			$this->mDb->query( $querydel, array( $pUserId, $this->mPageId ) );
 			$query = "insert into `".BIT_DB_PREFIX."wiki_footnotes`(`user_id`,`page_id`,`data`) values(?,?,?)";
-			$this->mDb->query( $query, array( $pUserId, $this->mPageId, $data ) );
+			$this->mDb->query( $query, array( $pUserId, $this->mPageId, $pData ) );
 		}
 	}
 
@@ -742,7 +740,7 @@ class BitPage extends LibertyMime {
 			$this->mErrors['page_id'] = "You must specify a where condition";
 			return false;
 		}
-		
+
 		$query = "update `".BIT_DB_PREFIX."liberty_content` lc
 			LEFT JOIN `".BIT_DB_PREFIX."wiki_pages` wp on (wp.`content_id`= lc.`content_id`)
 			SET ".implode(',', $set)."
@@ -752,22 +750,36 @@ class BitPage extends LibertyMime {
 	}
 
 	// ...page... functions
-	function countSubPages($data) {
-		// we always have at least one page
-		return( (preg_match_all( '/'.(defined('PAGE_SEP') ? preg_quote(PAGE_SEP) : '\.\.\.page\.\.\.').'/', $data, $matches ) + 1) );
+	function countSubPages( $pData ) {
+		return(( preg_match_all( '/'.( defined( 'PAGE_SEP' ) ? preg_quote( PAGE_SEP ) : '\.\.\.page\.\.\.').'/', $pData, $matches ) + 1 ));
 	}
 
-	function getSubPage($data, $i) {
+	/**
+	 * getSubPage 
+	 * 
+	 * @param array $pData 
+	 * @param array $pPageNumber 
+	 * @access public
+	 * @return string SubPage
+	 */
+	function getSubPage( $pData, $pPageNumber ) {
 		// Get slides
-		$parts = explode(defined('PAGE_SEP') ? PAGE_SEP : "...page...", $data);
-		if (substr($parts[$i - 1], 1, 5) == "<br/>")
-			$ret = substr($parts[$i - 1], 6);
-		else
-			$ret = $parts[$i - 1];
+		$parts = explode( defined( 'PAGE_SEP' ) ? PAGE_SEP : "...page...", $pData );
+		if( substr( $parts[$pPageNumber - 1], 1, 5 ) == "<br/>" ) {
+			$ret = substr( $parts[$pPageNumber - 1], 6 );
+		} else {
+			$ret = $parts[$pPageNumber - 1];
+		}
 		return $ret;
 	}
 
-	// Like pages are pages that share a word in common with the current page
+	/**
+	 * getLikePages Like pages are pages that share a word in common with the current page
+	 * 
+	 * @param array $pPageTitle 
+	 * @access public
+	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
+	 */
 	function getLikePages( $pPageTitle ) {
 		$ret = array();
 		if( !empty( $pPageName ) ) {
@@ -796,6 +808,12 @@ class BitPage extends LibertyMime {
 		return $ret;
 	}
 
+	/**
+	 * getStats getStats is always used by the stats package to display various stats of your package.
+	 * 
+	 * @access public
+	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
+	 */
 	function getStats() {
 		global $gBitSystem;
 		$ret = array();
@@ -857,393 +875,83 @@ class BitPage extends LibertyMime {
 
 		return $ret;
 	}
-}
 
-define('PLUGINS_DIR', WIKI_PKG_PATH.'plugins');
-/**
- * @package wiki
- */
-class WikiLib extends BitPage {
-	function WikiLib() {
-		BitPage::BitPage();
-	}
-
-	function wiki_page_graph(&$str, &$graph, $garg) {
-		$page = $str['name'];
-		$graph->addAttributes(array(
-			'nodesep' => (isset($garg['att']['nodesep']))?$garg['att']['nodesep']:".1",
-			'rankdir' => (isset($garg['att']['rankdir']))?$garg['att']['rankdir']:'LR',
-			'size' => (isset($garg['att']['size']))?$garg['att']['size']:'6',
-			'bgcolor' => (isset($garg['att']['bgcolor']))?$garg['att']['bgcolor']:'transparent',
-			'URL' => WIKI_PKG_URL.'index.php'
-		));
-		$graph->addNode("$page", array(
-			'URL' => WIKI_PKG_URL."index.php?page=" . urlencode(addslashes($page)),
-			'label' => "$page",
-			'fontname' => (isset($garg['node']['fontname']))?$garg['node']['fontname']:"Verdana",
-			'fontsize' => (isset($garg['node']['fontsize']))?$garg['node']['fontsize']:'10',
-			'shape' => (isset($garg['node']['shape']))?$garg['node']['shape']:'ellipse',
-			'color' => (isset($garg['node']['color']))?$garg['node']['color']:'#AAAAAA',
-			'style' => (isset($garg['node']['style']))?$garg['node']['style']:'filled',
-			'fillcolor' => (isset($garg['node']['fillcolor']))?$garg['node']['fillcolor']:'#FFFFFF',
-			'width' => (isset($garg['node']['width']))?$garg['node']['width']:'.5',
-			'height' => (isset($garg['node']['height']))?$garg['node']['height']:'.25'
-		));
-		//print("add node $page<br/>");
-		foreach ($str['pages'] as $neig) {
-			$this->wiki_page_graph($neig, $graph, $garg);
-			$graph->addEdge(array("$page" => $neig['name']), array(
-				'color' => (isset($garg['edge']['color']))?$garg['edge']['color']:'#998877',
-				'style' => (isset($garg['edge']['style']))?$garg['edge']['style']:'solid',
-			));
-			//print("add edge $page to ".$neig['name']."<br/>");
-		}
-	}
-
-	function get_graph_map($page, $level, $garg) {
-		include_once( UTIL_PKG_PATH.'GraphViz.php' );
-		$str = $this->wiki_get_link_structure($page, $level);
-		$graph = new Image_GraphViz();
-		$this->wiki_page_graph($str, $graph, $garg);
-		return $graph->fetch( 'cmap' );
-	}
-
-	function wiki_get_link_structure($page, $level) {
-		$query = "select lc2.`title` from `".BIT_DB_PREFIX."liberty_content_links` lcl
-			INNER JOIN liberty_content lc1 ON lc1.`content_id` = lcl.`from_content_id`
-			INNER JOIN liberty_content lc2 ON lc2.`content_id` = lcl.`to_content_id`
-			WHERE lc1.`title`=?";
-		$result = $this->mDb->query($query,array($page));
-		$aux['pages'] = array();
-		$aux['name'] = $page;
-		while ($res = $result->fetchRow()) {
-			if ($level) {
-				$aux['pages'][] = $this->wiki_get_link_structure($res['title'], $level - 1);
-			} else {
-				$inner['name'] = $res['title'];
-				$inner['pages'] = array();
-				$aux['pages'][] = $inner;
-			}
-		}
-		return $aux;
-	}
-
-	/*shared*/
-	function list_received_pages($offset, $max_records, $sort_mode = 'title_asc', $find) {
-		$bindvars = array();
-		if ($find) {
-			$findesc = '%'.strtoupper( $find ).'%';
-			$mid = " where (UPPER(`pagename`) like ? or UPPER(`data`) like ?)";
-			$bindvbars[] = $findesc;
-			$bindvbars[] = $findesc;
-		} else {
-			$mid = "";
-		}
-
-		$query = "select * from `".BIT_DB_PREFIX."wiki_received_pages` $mid order by ".$this->mDb->convertSortmode($sort_mode);
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."wiki_received_pages` $mid";
-		$cant = $this->mDb->getOne($query_cant,$bindvars);
-
-		# Check for offset out of range
-		if ( $offset < 0 ) {
-			$offset = 0;
-			}
-		elseif ( $offset > $cant ) {
-			$lastPageNumber = ceil ( $cant / $max_records ) - 1;
-			$offset = $max_records * $lastPageNumber;
-			}
-
-
-
-		$result = $this->mDb->query($query,$bindvars,$max_records,$offset);
-		$ret = array();
-
-		while ($res = $result->fetchRow()) {
-			if ($this->pageExists($res["title"])) {
-				$res["exists"] = 'y';
-			} else {
-				$res["exists"] = 'n';
-			}
-
-			$ret[] = $res;
-		}
-
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		return $retval;
-	}
-
-	/* =================================================================================================
-	 * =================================================================================================
-	 * =================================================================================================
-	 * ================================ all the stuff below here is obsoleete ==========================
-	 * =================================================================================================
-	 * =================================================================================================
-	 * =================================================================================================
-
-	function wiki_link_structure() {
-		$query = "select `title` from `".BIT_DB_PREFIX."wiki_pages` order by ".$this->mDb->convertSortmode("title_asc");
-		$result = $this->mDb->query($query);
-		while ($res = $result->fetchRow()) {
-			print ($res["title"] . " ");
-			$page = $res["title"];
-			$query2 = "select `to_page` from `".BIT_DB_PREFIX."liberty_content_links` where `from_page`=?";
-			$result2 = $this->mDb->query($query2, array( $page ) );
-			$pages = array();
-			while ($res2 = $result2->fetchRow()) {
-				if (($res2["to_page"] <> $res["title"]) && (!in_array($res2["to_page"], $pages))) {
-					$pages[] = $res2["to_page"];
-					print ($res2["to_page"] . " ");
-				}
-			}
-			print ("\n");
-		}
-	}
-
-	// This funcion return the $limit most accessed pages
-	// it returns title and hits for each page
-	function get_top_pages($limit) {
-		$query = "select `title` , `hits`
-		from `".BIT_DB_PREFIX."wiki_pages` JOIN `".BIT_DB_PREFIX."liberty_content_hits` 
-			on  `".BIT_DB_PREFIX."wiki_pages`.`content_id` = `".BIT_DB_PREFIX."liberty_content_hits`.`content_id`)
-		order by `hits` desc";
-
-		$result = $this->mDb->query($query, array(),$limit);
-		$ret = array();
-
-		while ($res = $result->fetchRow()) {
-		$aux["title"] = $res["title"];
-
-		$aux["hits"] = $res["hits"];
-		$ret[] = $aux;
-		}
-
-		return $ret;
-	}
-
-	// Returns the name of "n" random pages
-	function get_random_pages( $pNumPages=10 ) {
-		$ret = NULL;
-		$query = "select `content_id`, `title`  from `".BIT_DB_PREFIX."liberty_content` WHERE `content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' ORDER BY ".$this->mDb->convertSortmode( 'random' );
-		$rs = $this->mDb->query( $query, array(), $pNumPages );
-		while( $rs && !$rs->EOF ) {
-			$ret[$rs->fields['content_id']]['title'] = $rs->fields['title'];
-			$ret[$rs->fields['content_id']]['display_url'] = $this->getDisplayUrl( $rs->fields['title'] );
-			$rs->MoveNext();
-		}
-
-		return $ret;
-	}
-
-	function getDumpFile() {
-		global $gBitSystem;
-		return( $this->getStoragePath( $gBitSystem->getConfig( 'bitdomain' ), NULL, WIKI_PKG_NAME ).'dump.tar' );
-	}
-
-	function getDumpUrl() {
-		global $gBitSystem;
-		return( $this->getStorageUrl( $gBitSystem->getConfig( 'bitdomain' ), NULL, WIKI_PKG_NAME ).'dump.tar' );
-	}
-
-	// Dumps the database to dump/new.tar
-	// changed for virtualhost support
-	function dumpPages() {
-		global $wiki_home_page, $gBitSystem, $gBitUser;
-
-		$tar = new tar();
-		$tar->addFile( $gBitThemes->getStyleCss() );
-		// Foreach page
-		$query = "select * from `".BIT_DB_PREFIX."wiki_pages`";
-		$result = $this->mDb->query($query,array());
-
-		$dumpFile = $this->getDumpFile();
-		if( file_exists( $dumpFile ) ) {
-			unlink( $dumpFile );
-		}
-
-		while ($res = $result->fetchRow()) {
-			$title = $res["title"] . '.html';
-
-			$dat = $this->parseData($res);
-			// Now change index.php?page=foo to foo.html
-			// and index.php to HomePage.html
-			$dat = preg_replace("/index.php\?page=([^\'\"\$]+)/", "$1.html", $dat);
-			$dat = preg_replace("/edit.php\?page=([^\'\"\$]+)/", "", $dat);
-			//preg_match_all("/index.php\?page=([^ ]+)/",$dat,$cosas);
-			//print_r($cosas);
-			$data = "<html><head><title>" . $res["title"] . "</title><link rel='StyleSheet' href='".$gBitThemes->getStyleCss()."' type='text/css'></head><body><a class='wiki' href='$wiki_home_page.html'>home</a><br/><h1>" . $res["title"] . "</h1><div class='wikitext'>" . $dat . '</div></body></html>';
-			$tar->addData($title, $data, $res["last_modified"]);
-		}
-
-		$tar->toTar( $dumpFile, FALSE );
-		unset ($tar);
-		$action = "dump created";
-		$t = $gBitSystem->getUTCTime();
-		$query = "insert into `".BIT_DB_PREFIX."liberty_action_log`(`log_message`,`content_id`,`last_modified`,`user_id`,`ip`,`error_message`) values(?,?,?,?,?,?)";
-		$result = $this->mDb->query($query,array($action,1,$t,$gBitUser->mContentId,$_SERVER["REMOTE_ADDR"],''));
-	}
-
-	function list_extwiki($offset, $max_records, $sort_mode, $find) {
-		$bindvars=array();
-		if ($find) {
-			$findesc = '%' . $find . '%';
-
-			$mid = " where (`extwiki` like ? )";
-			$bindvars[]=$findesc;
-		} else {
-			$mid = "";
-		}
-
-		$query = "select * from `".BIT_DB_PREFIX."wiki_ext` $mid order by ".$this->mDb->convertSortmode($sort_mode);
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."wiki_ext` $mid";
-		$result = $this->mDb->query($query,$bindvars,$max_records,$offset);
-		$cant = $this->mDb->getOne($query_cant,$bindvars);
-		$ret = array();
-
-		while ($res = $result->fetchRow()) {
-			$ret[] = $res;
-		}
-
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		return $retval;
-	}
-
-	function replace_extwiki($extwiki_id, $extwiki, $name) {
-		// Check the name
-		if ($extwiki_id) {
-			$query = "update `".BIT_DB_PREFIX."wiki_ext` set `extwiki`=?,`name`=? where `extwiki_id`=?";
-			$result = $this->mDb->query($query,array($extwiki,$name,$extwiki_id));
-		} else {
-			$query = "delete from `".BIT_DB_PREFIX."wiki_ext` where `name`=? and `extwiki`=?";
-			$bindvars=array($name,$extwiki);
-			$result = $this->mDb->query($query,$bindvars);
-			$query = "insert into `".BIT_DB_PREFIX."wiki_ext`(`name`,`extwiki`)
-                		values(?,?)";
-			$result = $this->mDb->query($query,$bindvars);
-		}
-
-		// And now replace the perm if not created
-		$perm_name = 'bit_p_extwiki_' . $name;
-		$query = "delete from `".BIT_DB_PREFIX."users_permissions`where `perm_name`=?";
-		$this->mDb->query($query,array($perm_name));
-		$query = "insert into `".BIT_DB_PREFIX."users_permissions`(`perm_name`,`perm_desc`,`type`,`perm_level`) values
-    			(?,?,?,?)";
-		$this->mDb->query($query,array($perm_name,'Can use extwiki $extwiki','extwiki','editor'));
-		return true;
-	}
-
-	function remove_extwiki($extwiki_id) {
-		$info = $this->get_extwiki($extwiki_id);
-
-		$perm_name = 'bit_p_extwiki_' . $info['name'];
-		$query = "delete from `".BIT_DB_PREFIX."users_permissions` where `perm_name`=?";
-		$this->mDb->query($query,array($perm_name));
-		$query = "delete from `".BIT_DB_PREFIX."wiki_ext` where `extwiki_id`=?";
-		$this->mDb->query($query,array($extwiki_id));
-		return true;
-	}
-
-	function get_extwiki($extwiki_id) {
-		$query = "select * from `".BIT_DB_PREFIX."wiki_ext` where `extwiki_id`=?";
-
-		$result = $this->mDb->query($query,array($extwiki_id));
-
-		if (!$result->numRows())
-			return false;
-
-		$res = $result->fetchRow();
-		return $res;
-	}
-
-// ================== WIKI TAG FUNCTIONS ==============
-	function tag_exists($tag) {
-		$query = "select distinct `tag_name` from `".BIT_DB_PREFIX."wiki_tags` where `tag_name` = ?";
-
-		$result = $this->mDb->query($query,array($tag));
-		return $result->numRows($result);
-	}
-
-	function remove_tag($tagname) {
-		global $wiki_home_page, $gBitUser, $gBitSystem;
-
-		$this->mDb->StartTrans();
-		$query = "delete from `".BIT_DB_PREFIX."wiki_tags` where `tag_name`=?";
-		$result = $this->mDb->query($query,array($tagname));
-		$action = "removed tag: $tagname";
-		$t = $gBitSystem->getUTCTime();
-		$homeContentId = $this->mDb->getOne( "SELECT `content_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(wp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
-		$query = "insert into `".BIT_DB_PREFIX."liberty_action_log` (`content_id`, `log_message`, `last_modified`, `user_id`, `ip`, `error_message`) values ( ?,?,?,?,?,?,? )";
-		$result = $this->mDb->query($query,array($homeContentId, $action,$wiki_home_page,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
-		$this->mDb->CompleteTrans();
-		return true;
-	}
-
-	function get_tags() {
-		$query = "select distinct `tag_name` from `".BIT_DB_PREFIX."wiki_tags`";
-
-		$result = $this->mDb->query($query,array());
-		$ret = array();
-
-		while ($res = $result->fetchRow()) {
-			$ret[] = $res["tag_name"];
-		}
-
-		return $ret;
-	}
-
-	// This function can be used to store the set of actual pages in the "tags"
-	// table preserving the state of the wiki under a tag name.
-	function create_tag($tagname, $comment = '') {
-		global $wiki_home_page, $gBitUser, $gBitSystem;
-
-		$this->mDb->StartTrans();
-		$query = "select * from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON( wp.`content_id`=lc.`content_id` )";
-		$result = $this->mDb->query($query,array());
-
-		while ($res = $result->fetchRow()) {
-			$data = $res["data"];
-			$description = $res["description"];
-			$query = "delete from `".BIT_DB_PREFIX."wiki_tags`where `tag_name`=? and `page_id`=?";
-			$this->mDb->query($query,array($tagname,$res["page_id"]));
-			$query = "insert into `".BIT_DB_PREFIX."wiki_tags`(`page_id`,`tag_name`,`page_name`,`hits`,`data`,`last_modified`,`error_message`,`version`,`user_id`,`ip`,`flag`,`description`)
-                		values(?,?,?,?,?,?,?,?,?,?,?,?)";
-			$result2 = $this->mDb->query($query,array($res["page_id"],$tagname,$res["title"],$res["hits"],$data,$res["last_modified"],$res["edit_comment"],$res["version"],$res["user_id"],$res["ip"],$res["flag"],$description));
-		}
-
-		$homeContentId = $this->mDb->getOne( "SELECT `content_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(wp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
-		$action = "created tag: $tagname";
-		$t = $gBitSystem->getUTCTime();
-		$query = "insert into `".BIT_DB_PREFIX."liberty_action_log`(`content_id`,`log_message`,last_modified`,`user_id`,`ip`,`error_message`) values(?,?,?,?,?,?,?)";
-		$result = $this->mDb->query($query,array($homeContentId,$action,$wiki_home_page,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],$comment));
-		$this->mDb->CompleteTrans();
-		return true;
-	}
-
-	// This funcion recovers the state of the wiki using a tag_name from the
-	// tags table
-	function restore_tag($tagname) {
-		global $wiki_home_page, $gBitUser, $gBitSystem;
-		require_once( WIKI_PKG_PATH.'BitPage.php' );
-
-		$this->mDb->StartTrans();
-		$query = "update `".BIT_DB_PREFIX."wiki_pages` set `cache_timestamp`=0";
-		$this->mDb->query($query,array());
-		$query = "select *, `data` AS `edit`, `page_name` AS `title` FROM `".BIT_DB_PREFIX."wiki_tags` where `tag_name`=?";
-		$result = $this->mDb->query($query,array($tagname));
-
-		while ($res = $result->fetchRow()) {
-			$tagPage = new BitPage( $res["page_id"] );
-			$tagPage->store( $res );
-		}
-
-		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON(wp.`content_id`=lc.`content_id`) WHERE lc.`title`=?", array( $wiki_home_page ) );
-		$action = "recovered tag: $tagname";
-		$t = $gBitSystem->getUTCTime();
-	}
+	// {{{ ==================================== GraphViz wiki graph methods ====================================
+	/**
+	 * linkStructureGraph 
+	 * 
+	 * @param array $pLinkStructure 
+	 * @param array $pParams 
+	 * @param array $pGraphViz 
+	 * @access public
+	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */
+	function linkStructureGraph( $pLinkStructure = array(), $pParams = array(), &$pGraphViz ) {
+		if( !empty( $pLinkStructure ) && !empty( $pGraphViz )) {
+			$pParams['graph']['URL'] = WIKI_PKG_URL.'index.php';
+			$pGraphViz->addAttributes( $pParams['graph'] );
+
+			$pParams['node']['URL'] = $this->getDisplayUrl( $pLinkStructure['name'] );
+			$pGraphViz->addNode( $pLinkStructure['name'], $pParams['node'] );
+
+			foreach( $pLinkStructure['pages'] as $node ) {
+				$this->linkStructureGraph( $node, $pParams, $pGraphViz );
+				$pGraphViz->addEdge( array( $pLinkStructure['name'] => $node['name'] ), $pParams['node'] );
+			}
+		}
+	}
+
+	/**
+	 * linkStructureMap 
+	 * 
+	 * @param array $pPageName 
+	 * @param int $pLevel 
+	 * @param array $pParams 
+	 * @access public
+	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
+	 */
+	function linkStructureMap( $pPageName, $pLevel = 0, $pParams = array() ) {
+		if( !empty( $pPageName ) && @include_once( 'Image/GraphViz.php' )) {
+			$graph = new Image_GraphViz();
+			$this->linkStructureGraph( $this->getLinkStructure( $pPageName, $pLevel ), $pParams, $graph );
+			return $graph->fetch( 'cmap' );
+		}
+	}
+
+	/**
+	 * getLinkStructure 
+	 * 
+	 * @param array $pPageName 
+	 * @param float $pLevel 
+	 * @access public
+	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
+	 */
+	function getLinkStructure( $pPageName, $pLevel = 0 ) {
+		$query = "
+			SELECT lc2.`title`
+			FROM `".BIT_DB_PREFIX."liberty_content_links` lcl
+				INNER JOIN liberty_content lc1 ON( lc1.`content_id` = lcl.`from_content_id` )
+				INNER JOIN liberty_content lc2 ON( lc2.`content_id` = lcl.`to_content_id` )
+			WHERE lc1.`title` = ?";
+		$result = $this->mDb->query( $query, array( $pPageName ));
+
+		$ret['pages'] = array();
+		$ret['name']  = $pPageName;
+
+		while ($res = $result->fetchRow()) {
+			if( !empty( $pLevel )) {
+				$ret['pages'][] = $this->getLinkStructure( $res['title'], $pLevel - 1 );
+			} else {
+				$ret['pages'][] = array(
+					'name'  => $res['title'],
+					'pages' => array(),
+				);
+			}
+		}
+		return $ret;
+	}
+	// }}}
 }
 
+/* vim: :set fdm=marker : */
 ?>

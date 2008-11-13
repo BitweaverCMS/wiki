@@ -8,46 +8,6 @@ $tables = array(
 	data X
 ",
 
-'wiki_pages' => "
-	page_id I4 PRIMARY,
-	content_id I4 NOTNULL,
-	wiki_page_size I4 DEFAULT 0,
-	edit_comment C(200),
-	flag C(1)
-",
-
-'wiki_received_pages' => "
-	received_page_id I4 AUTO PRIMARY,
-	title C(160) NOTNULL,
-	data X,
-	description C(200),
-	received_comment C(200),
-	received_from_site C(200),
-	received_from_user C(200),
-	received_date I8
-",
-
-'wiki_tags' => "
-	page_id I4 PRIMARY,
-	tag_name C(80) PRIMARY,
-	title C(160),
-	user_id I4 NOTNULL,
-	hits I4,
-	description C(200),
-	data X,
-	last_modified I8,
-	tag_comment C(200),
-	version I4 NOTNULL,
-	ip C(15),
-	flag C(1)
-",
-
-'wiki_ext' => "
-	extwiki_id I4 AUTO PRIMARY,
-	name C(200) NOTNULL,
-	extwiki C(255)
-"
-
 );
 
 global $gBitInstaller;
@@ -166,8 +126,8 @@ if( defined( 'RSS_PKG_NAME' )) {
 }
 
 // ### Register content types
-$gBitInstaller->registerContentObjects( WIKI_PKG_NAME, array( 
-	'BitPage'=>WIKI_PKG_PATH.'BitPage.php',
-	'BitBook'=>WIKI_PKG_PATH.'BitBook.php',
+$gBitInstaller->registerContentObjects( WIKI_PKG_NAME, array(
+	'BitPage' => WIKI_PKG_PATH.'BitPage.php',
+	'BitBook' => WIKI_PKG_PATH.'BitBook.php',
 ));
 ?>
