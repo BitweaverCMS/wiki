@@ -33,12 +33,10 @@ array( 'DATADICT' => array(
 // copy data into new column
 array( 'QUERY' =>
 	// postgres > 8.2 needs to have the type cast
-	array( 'PGSQL' => array(
-		"UPDATE `".BIT_DB_PREFIX."wiki_footnotes` SET `user_id` = `temp_column`::integer",
-	)),
-	array( 'SQL92' => array(
-		"UPDATE `".BIT_DB_PREFIX."wiki_footnotes` SET `user_id` = `temp_column`",
-	)),
+	array(
+		'PGSQL' => array( "UPDATE `".BIT_DB_PREFIX."wiki_footnotes` SET `user_id` = `temp_column`::integer" ),
+		'SQL92' => array( "UPDATE `".BIT_DB_PREFIX."wiki_footnotes` SET `user_id` = `temp_column`" ),
+	),
 ),
 
 array( 'DATADICT' => array(
