@@ -7,7 +7,7 @@ global $gBitInstaller;
 $infoHash = array(
 	'package'      => WIKI_PKG_NAME,
 	'version'      => str_replace( '.php', '', basename( __FILE__ )),
-	'description'  => "Minor fix to table column type.",
+	'description'  => "Minor fix to user_id column type in wiki_footnotes.",
 	'post_upgrade' => NULL,
 );
 
