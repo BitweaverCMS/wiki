@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.16 2008/10/20 21:40:12 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit_book.php,v 1.17 2008/11/17 21:57:05 pppspoonman Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit_book.php,v 1.16 2008/10/20 21:40:12 spiderr Exp $
+ * $Id: edit_book.php,v 1.17 2008/11/17 21:57:05 pppspoonman Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -119,6 +119,11 @@ if( isset($_REQUEST["createstructure"]) ) {
 			}
 		}
 		header( "location: ".WIKI_PKG_URL."edit_book.php?structure_id=".$structure_id );
+	} else {
+		$gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
+		$gBitSmarty->assign( 'name', $_REQUEST['name']);
+		$gBitSmarty->assign( 'chapters', $_REQUEST['chapters']);
+		$mid = 'bitpackage:wiki/create_book.tpl';
 	}
 } elseif( @BitBase::verifyId( $_REQUEST["structure_id"] ) && $gContent->isValid() ) {
 	// Get all wiki pages for the select box

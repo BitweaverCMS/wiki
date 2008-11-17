@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/create_book.tpl,v 1.2 2005/10/29 17:57:43 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/create_book.tpl,v 1.3 2008/11/17 21:57:04 pppspoonman Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -13,7 +13,7 @@
 				{formfeedback error=`$errors.title`}
 				{formlabel label="Book Title" for="name"}
 				{forminput}
-					<input type="text" name="name" id="name" size="50" maxlength="240"/>
+					<input type="text" name="name" id="name" size="50" maxlength="240" value="{$name}"/>
 					{formhelp note="Enter the name of your WikiBook."}
 				{/forminput}
 			</div>
@@ -21,13 +21,13 @@
 			<div class="row">
 				{formlabel label="Table of Contents<br />(optional)" for="chapters"}
 				{forminput}
-					<textarea rows="10" cols="50" name="chapters" id="chapters"></textarea>
+					<textarea rows="10" cols="50" name="chapters" id="chapters">{$chapters}</textarea>
 					{formhelp note="To enter the table of contents manually, you can add WikiPage names on separate lines. Pages that don't exist will be added automagically and you can edit them later."}
 				{/forminput}
 			</div>
 
 			<div class="row submit">
-				<input type="submit" value="{tr}create new book{/tr}" name="createstructure" />
+				<input type="submit" value="{tr}Create new book{/tr}" name="createstructure" />
 			</div>
 		{/form}
 	</div><!-- end .body -->
