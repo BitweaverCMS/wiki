@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.26 2008/10/18 17:11:14 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.27 2008/12/18 22:06:29 pppspoonman Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.26 2008/10/18 17:11:14 squareing Exp $
+ * $Id: lookup_page_inc.php,v 1.27 2008/12/18 22:06:29 pppspoonman Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -33,6 +33,12 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 	$loadPage = (!empty( $lookupHash['page'] ) ? $lookupHash['page'] : NULL);
 	if( empty( $gContent->mPageId ) && empty( $gContent->mContentId )  ) {
 		//handle legacy forms that use plain 'page' form variable name
+		
+		//if page had some special enities they were changed to HTML for for security reasons.
+		//now we deal only with string so convert it back - so we can support this case:
+		//You&Me --(detoxify in kernel)--> You&amp;Me --(now)--> You&Me
+		//we could do htmlspecialchars_decode but it allows <> marks here, so we just transform &amp; to & - it's not so scary. 
+		$loadPage = str_replace("&amp;", "&", $loadPage );
 
 		if( $loadPage && $existsInfo = $gContent->pageExists( $loadPage ) ) {
 			if (count($existsInfo)) {
