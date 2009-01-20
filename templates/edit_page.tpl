@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.45 2008/10/25 01:24:05 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/edit_page.tpl,v 1.46 2009/01/20 22:18:07 dansut Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 <div class="edit wiki">
@@ -125,7 +125,7 @@
 
 						{include file="bitpackage:liberty/edit_content_alias_inc.tpl"}
 
-						{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_mini_tpl}
+						{include file="bitpackage:liberty/edit_services_inc.tpl" serviceFile="content_edit_mini_tpl"}
 
 						<div class="row submit">
 							<input type="submit" name="fCancel" value="{tr}Cancel{/tr}" />&nbsp;
@@ -139,7 +139,7 @@
 					{/legend}
 				{/jstab}
 
-				{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_tab_tpl}
+				{include file="bitpackage:liberty/edit_services_inc.tpl" serviceFile="content_edit_tab_tpl"}
 
 				{if $gBitSystem->isFeatureActive( 'wiki_attachments' ) && $gBitUser->hasPermission('p_liberty_attach_attachments')}
 					{jstab title="Attachments"}
