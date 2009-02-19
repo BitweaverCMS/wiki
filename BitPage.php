@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.116 2008/11/13 09:39:03 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.117 2009/02/19 16:36:37 tekimaki_admin Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.116 $ $Date: 2008/11/13 09:39:03 $ $Author: squareing $
+ * @version $Revision: 1.117 $ $Date: 2009/02/19 16:36:37 $ $Author: tekimaki_admin $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.116 2008/11/13 09:39:03 squareing Exp $
+ * $Id: BitPage.php,v 1.117 2009/02/19 16:36:37 tekimaki_admin Exp $
  */
 
 /**
@@ -433,7 +433,8 @@ class BitPage extends LibertyMime {
 		if( !empty( $pPageName )) {
 			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
 				$rewrite_tag = $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ? 'view/':'';
-				$ret = WIKI_PKG_URL.$rewrite_tag.urlencode( $pPageName );
+				$prettyPageName = preg_replace( '/ /', '+', $pPageName );
+				$ret = WIKI_PKG_URL.$rewrite_tag.$prettyPageName;
 			} else {
 				$ret = WIKI_PKG_URL.'index.php?page='.urlencode( $pPageName );
 			}
