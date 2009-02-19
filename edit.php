@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.55 2008/10/20 21:40:12 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.56 2009/02/19 16:56:31 spiderr Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.55 2008/10/20 21:40:12 spiderr Exp $
+ * $Id: edit.php,v 1.56 2009/02/19 16:56:31 spiderr Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -54,6 +54,236 @@ if( !isset( $_REQUEST['title'] ) && isset( $gContent->mInfo['title'] ) ) {
 
 if( $gContent->isLocked() ) {
 	$gBitSystem->fatalError( 'Cannot edit page because it is locked' );
+}
+
+
+$gContent->invokeServices( 'content_edit_function' );
+
+if( !empty( $gContent->mInfo ) ) {
+	$formInfo = $gContent->mInfo;
+	$data_to_edit = !empty( $gContent->mInfo['data'] ) ? $gContent->mInfo['data'] : '';
+	if (!empty($_REQUEST['section'])) {
+		$section = $_REQUEST['section'];
+		$data_to_edit = extract_section($data_to_edit,$section);
+		$formInfo['data'] = $data_to_edit;
+		$formInfo['edit_section'] = 1;
+		$formInfo['section'] = $_REQUEST['section'];
+	}
+
+	$formInfo['edit'] = $data_to_edit;
+	$formInfo['edit_comment'] = '';
+}
+
+$gBitSmarty->assign( 'footnote', '' );
+$gBitSmarty->assign( 'has_footnote', 'n' );
+if( $gBitSystem->isFeatureActive( 'wiki_footnotes' ) ) {
+	if( $gBitUser->mUserId ) {
+		$footnote = $gContent->getFootnote( $gBitUser->mUserId );
+		$gBitSmarty->assign( 'footnote', $footnote );
+		if( $footnote )
+			$gBitSmarty->assign( 'has_footnote', 'y' );
+		$gBitSmarty->assign( 'parsed_footnote', $gContent->parseData( $footnote ) );
+		if( isset( $_REQUEST['footnote'] ) ) {
+
+			$gBitSmarty->assign( 'parsed_footnote', $gContent->parseData( $_REQUEST['footnote'] ) );
+			$gBitSmarty->assign( 'footnote', $_REQUEST['footnote'] );
+			$gBitSmarty->assign( 'has_footnote', 'y' );
+			if( empty( $_REQUEST['footnote'] ) ) {
+				$gContent->expungeFootnote( $gBitUser->mUserId );
+			} else {
+				$gContent->storeFootnote( $gBitUser->mUserId, $_REQUEST['footnote'] );
+			}
+		}
+	}
+}
+if( isset( $_REQUEST["edit"] ) ) {
+	$formInfo['edit'] = $_REQUEST["edit"];
+}
+if(isset($_REQUEST["section"])) {
+	$formInfo['section'] = $_REQUEST["section"];
+	$formInfo['edit_section'] = 1;
+}
+if( isset( $_REQUEST['title'] ) ) {
+	$formInfo['title'] = $_REQUEST['title'];
+}
+if( isset( $_REQUEST["description"] ) ) {
+	$formInfo['description'] = $_REQUEST["description"];
+}
+if( isset( $_REQUEST["edit_comment"] ) ) {
+	$formInfo['edit_comment'] = $_REQUEST["edit_comment"];
+} else {
+	$formInfo['edit_comment'] = '';
+}
+
+$cat_obj_type = BITPAGE_CONTENT_TYPE_GUID;
+
+if( $gBitSystem->isFeatureActive( 'wiki_copyrights' ) ) {
+	if( isset( $_REQUEST['copyrightTitle'] ) ) {
+		$gBitSmarty->assign( 'copyrightTitle', $_REQUEST["copyrightTitle"] );
+	}
+	if( isset( $_REQUEST['copyrightYear'] ) ) {
+		$gBitSmarty->assign( 'copyrightYear', $_REQUEST["copyrightYear"] );
+	}
+	if( isset( $_REQUEST['copyrightAuthors'] ) ) {
+		$gBitSmarty->assign( 'copyrightAuthors', $_REQUEST["copyrightAuthors"] );
+	}
+}
+
+// Pro
+// Check if the page has changed
+if( isset( $_REQUEST["fCancel"] ) ) {
+	if( @BitBase::verifyId( $gContent->mContentId ) ) {
+		header( "Location: ".$gContent->getDisplayUrl() );
+	} else {
+		header( "Location: ".WIKI_PKG_URL );
+	}
+	die;
+} elseif( isset( $_REQUEST["fSavePage"] ) ) {
+
+	// Check if all Request values are delivered, and if not, set them
+	// to avoid error messages. This can happen if some features are
+	// disabled
+	// add permisions here otherwise return error!
+	if( $gBitSystem->isFeatureActive( 'wiki_copyrights' )
+		&& isset( $_REQUEST['copyrightAuthors'] )
+		&& !empty( $_REQUEST['copyrightYear'] )
+		&& !empty( $_REQUEST['copyrightTitle'] )
+	) {
+		require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
+		$copyrightYear = $_REQUEST['copyrightYear'];
+		$copyrightTitle = $_REQUEST['copyrightTitle'];
+		$copyrightAuthors = $_REQUEST['copyrightAuthors'];
+		$copyrightslib->add_copyright( $gContent->mPageId, $copyrightTitle, $copyrightYear, $copyrightAuthors, $gBitUser->mUserId );
+	}
+	// Parse $edit and eliminate image references to external URIs( make them internal )
+	if( $gBitSystem->isPackageActive( 'imagegals' ) ) {
+		include_once( IMAGEGALS_PKG_PATH.'imagegal_lib.php' );
+		$edit = $imagegallib->capture_images( $edit );
+	}
+
+	if( $gContent->mPageId )
+	{	if( isset( $_REQUEST['isminor'] ) && $_REQUEST['isminor']=='on' ) {
+			$_REQUEST['minor']=true;
+		} else {
+			$_REQUEST['minor']=false;
+//			$links = $gContent->get_links( $edit );
+//			$wikilib->cache_links( $links );
+//			$gContent->storeLinks( $links );
+		}
+	} else {
+//		$links = $gContent->get_links( $_REQUEST["edit"] );
+//		$notcachedlinks = $gContent->get_links_nocache( $_REQUEST["edit"] );
+//		$cachedlinks = array_diff( $links, $notcachedlinks );
+//		$gContent->cache_links( $cachedlinks );
+//		$gContent->storeLinks( $cachedlinks );
+	}
+
+	$data_to_parse = $formInfo['edit'];
+	if (!empty($formInfo['section']) && !empty($gContent->mInfo['data']) ) {
+		$full_page_data = $gContent->mInfo['data'];
+		$data_to_parse = replace_section($full_page_data,$formInfo['section'],$formInfo['edit']);
+		$_REQUEST["edit"] = $data_to_parse;
+	}
+
+	if( $gContent->store( $_REQUEST ) ) {
+		if( $gBitSystem->isFeatureActive( 'wiki_watch_author' ) ) {
+			$gBitUser->storeWatch( "wiki_page_changed", $gContent->mPageId, $gContent->mContentTypeGuid, $_REQUEST['title'], $gContent->getDisplayUrl() );
+		}
+
+		header( "Location: ".$gContent->getDisplayUrl() );
+		die;
+	} else {
+		$formInfo = $_REQUEST;
+		$formInfo['data'] = &$_REQUEST['edit'];
+	}
+} elseif( !empty( $_REQUEST['edit'] ) ) {
+	// perhaps we have a javascript non-saving form submit
+	$formInfo = $_REQUEST;
+	$formInfo['data'] = &$_REQUEST['edit'];
+}
+
+if( isset( $_REQUEST['format_guid'] ) && !isset( $gContent->mInfo['format_guid'] ) ) {
+	$formInfo['format_guid'] = $gContent->mInfo['format_guid'] = $_REQUEST['format_guid'];
+}
+
+if( isset( $_REQUEST["preview"] ) ) {
+	$gBitSmarty->assign( 'preview',1 );
+	$gBitSmarty->assign( 'title',!empty( $_REQUEST["title"] ) ? $_REQUEST["title"]:$gContent->mPageName );
+
+	if (!empty($formInfo['section'])) {
+		$formInfo['edit_section'] = 1;
+	}
+
+	$data_to_parse = $formInfo['edit'];
+	if( !empty( $formInfo['section'] ) && !empty( $gContent->mInfo['data'] )) {
+		$full_page_data = $gContent->mInfo['data'];
+	}
+
+
+	$formInfo['parsed_data'] = $gContent->parseData(
+		$data_to_parse,
+		( !empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] : ( isset( $gContent->mInfo['format_guid'] ) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ))
+	);
+	$gContent->invokeServices( 'content_preview_function' );
+}
+
+if( $gContent->isInStructure() ) {
+	$gBitSmarty->assign( 'showstructs', $gContent->getStructures() );
+}
+
+// Flag for 'page bar' that currently 'Edit' mode active
+// so no need to show comments & attachments, but need
+// to show 'wiki quick help'
+$gBitSmarty->assign( 'edit_page', 'y' );
+
+// formInfo might be set due to a error on submit
+if( empty( $formInfo ) ) {
+	$formInfo = &$gContent->mInfo;
+}
+
+// make original page title available for template
+$formInfo['original_title'] =( !empty( $gContent->mInfo['title'] ) ) ? $gContent->mInfo['title']  : "" ;
+
+$gBitSmarty->assign_by_ref( 'pageInfo', $formInfo );
+$gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
+
+$gBitSystem->display( 'bitpackage:wiki/edit_page.tpl', 'Edit: '.$gContent->getTitle() , array( 'display_mode' => 'edit' ));
+
+
+
+
+
+
+
+
+//******************* WIKI Edit Functions
+
+function htmldecode( $string ) {
+	$string = strtr( $string, array_flip( get_html_translation_table( HTML_ENTITIES ) ) );
+	$string = preg_replace( "/&#([0-9]+);/me", "chr('\\1')", $string );
+	return $string;
+}
+function parse_output( &$obj, &$parts,$i ) {
+	if( !empty( $obj->parts ) ) {
+		for( $i=0; $i<count( $obj->parts ); $i++ ) {
+			parse_output( $obj->parts[$i], $parts,$i );
+		}
+	} else {
+		$ctype = $obj->ctype_primary.'/'.$obj->ctype_secondary;
+		switch( $ctype ) {
+			case 'application/x-tikiwiki':
+				$aux["body"] = $obj->body;
+				$ccc=$obj->headers["content-type"];
+				$items = split( ';',$ccc );
+				foreach( $items as $item ) {
+					$portions = split( '=',$item );
+					if( isset( $portions[0] ) &&isset( $portions[1] ) ) {
+						$aux[trim( $portions[0] )]=trim( $portions[1] );
+					}
+				}
+				$parts[]=$aux;
+		}
+	}
 }
 
 function  extract_section($data,$section) {
@@ -251,226 +481,9 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 		$_REQUEST['edit'] .= $sdta;
 	}
 }
-//
 
-if( !empty( $gContent->mInfo ) ) {
-	$formInfo = $gContent->mInfo;
-	$data_to_edit = !empty( $gContent->mInfo['data'] ) ? $gContent->mInfo['data'] : '';
-	if (!empty($_REQUEST['section'])) {
-		$section = $_REQUEST['section'];
-		$data_to_edit = extract_section($data_to_edit,$section);
-		$formInfo['data'] = $data_to_edit;
-		$formInfo['edit_section'] = 1;
-		$formInfo['section'] = $_REQUEST['section'];
-	}
-
-	$formInfo['edit'] = $data_to_edit;
-	$formInfo['edit_comment'] = '';
-}
-
-$gBitSmarty->assign( 'footnote', '' );
-$gBitSmarty->assign( 'has_footnote', 'n' );
-if( $gBitSystem->isFeatureActive( 'wiki_footnotes' ) ) {
-	if( $gBitUser->mUserId ) {
-		$footnote = $gContent->getFootnote( $gBitUser->mUserId );
-		$gBitSmarty->assign( 'footnote', $footnote );
-		if( $footnote )
-			$gBitSmarty->assign( 'has_footnote', 'y' );
-		$gBitSmarty->assign( 'parsed_footnote', $gContent->parseData( $footnote ) );
-		if( isset( $_REQUEST['footnote'] ) ) {
-
-			$gBitSmarty->assign( 'parsed_footnote', $gContent->parseData( $_REQUEST['footnote'] ) );
-			$gBitSmarty->assign( 'footnote', $_REQUEST['footnote'] );
-			$gBitSmarty->assign( 'has_footnote', 'y' );
-			if( empty( $_REQUEST['footnote'] ) ) {
-				$gContent->expungeFootnote( $gBitUser->mUserId );
-			} else {
-				$gContent->storeFootnote( $gBitUser->mUserId, $_REQUEST['footnote'] );
-			}
-		}
-	}
-}
-if( isset( $_REQUEST["edit"] ) ) {
-	$formInfo['edit'] = $_REQUEST["edit"];
-}
-if(isset($_REQUEST["section"])) {
-	$formInfo['section'] = $_REQUEST["section"];
-	$formInfo['edit_section'] = 1;
-}
-if( isset( $_REQUEST['title'] ) ) {
-	$formInfo['title'] = $_REQUEST['title'];
-}
-if( isset( $_REQUEST["description"] ) ) {
-	$formInfo['description'] = $_REQUEST["description"];
-}
-if( isset( $_REQUEST["edit_comment"] ) ) {
-	$formInfo['edit_comment'] = $_REQUEST["edit_comment"];
-} else {
-	$formInfo['edit_comment'] = '';
-}
-
-$cat_obj_type = BITPAGE_CONTENT_TYPE_GUID;
-
-if( $gBitSystem->isFeatureActive( 'wiki_copyrights' ) ) {
-	if( isset( $_REQUEST['copyrightTitle'] ) ) {
-		$gBitSmarty->assign( 'copyrightTitle', $_REQUEST["copyrightTitle"] );
-	}
-	if( isset( $_REQUEST['copyrightYear'] ) ) {
-		$gBitSmarty->assign( 'copyrightYear', $_REQUEST["copyrightYear"] );
-	}
-	if( isset( $_REQUEST['copyrightAuthors'] ) ) {
-		$gBitSmarty->assign( 'copyrightAuthors', $_REQUEST["copyrightAuthors"] );
-	}
-}
+//***************************************
 
 
-function htmldecode( $string ) {
-	$string = strtr( $string, array_flip( get_html_translation_table( HTML_ENTITIES ) ) );
-	$string = preg_replace( "/&#([0-9]+);/me", "chr('\\1')", $string );
-	return $string;
-}
-function parse_output( &$obj, &$parts,$i ) {
-	if( !empty( $obj->parts ) ) {
-		for( $i=0; $i<count( $obj->parts ); $i++ ) {
-			parse_output( $obj->parts[$i], $parts,$i );
-		}
-	} else {
-		$ctype = $obj->ctype_primary.'/'.$obj->ctype_secondary;
-		switch( $ctype ) {
-			case 'application/x-tikiwiki':
-				$aux["body"] = $obj->body;
-				$ccc=$obj->headers["content-type"];
-				$items = split( ';',$ccc );
-				foreach( $items as $item ) {
-					$portions = split( '=',$item );
-					if( isset( $portions[0] ) &&isset( $portions[1] ) ) {
-						$aux[trim( $portions[0] )]=trim( $portions[1] );
-					}
-				}
-				$parts[]=$aux;
-		}
-	}
-}
 
-// Pro
-// Check if the page has changed
-if( isset( $_REQUEST["fCancel"] ) ) {
-	if( @BitBase::verifyId( $gContent->mContentId ) ) {
-		header( "Location: ".$gContent->getDisplayUrl() );
-	} else {
-		header( "Location: ".WIKI_PKG_URL );
-	}
-	die;
-} elseif( isset( $_REQUEST["fSavePage"] ) ) {
-
-	// Check if all Request values are delivered, and if not, set them
-	// to avoid error messages. This can happen if some features are
-	// disabled
-	// add permisions here otherwise return error!
-	if( $gBitSystem->isFeatureActive( 'wiki_copyrights' )
-		&& isset( $_REQUEST['copyrightAuthors'] )
-		&& !empty( $_REQUEST['copyrightYear'] )
-		&& !empty( $_REQUEST['copyrightTitle'] )
-	) {
-		require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
-		$copyrightYear = $_REQUEST['copyrightYear'];
-		$copyrightTitle = $_REQUEST['copyrightTitle'];
-		$copyrightAuthors = $_REQUEST['copyrightAuthors'];
-		$copyrightslib->add_copyright( $gContent->mPageId, $copyrightTitle, $copyrightYear, $copyrightAuthors, $gBitUser->mUserId );
-	}
-	// Parse $edit and eliminate image references to external URIs( make them internal )
-	if( $gBitSystem->isPackageActive( 'imagegals' ) ) {
-		include_once( IMAGEGALS_PKG_PATH.'imagegal_lib.php' );
-		$edit = $imagegallib->capture_images( $edit );
-	}
-
-	if( $gContent->mPageId )
-	{	if( isset( $_REQUEST['isminor'] ) && $_REQUEST['isminor']=='on' ) {
-			$_REQUEST['minor']=true;
-		} else {
-			$_REQUEST['minor']=false;
-//			$links = $gContent->get_links( $edit );
-//			$wikilib->cache_links( $links );
-//			$gContent->storeLinks( $links );
-		}
-	} else {
-//		$links = $gContent->get_links( $_REQUEST["edit"] );
-//		$notcachedlinks = $gContent->get_links_nocache( $_REQUEST["edit"] );
-//		$cachedlinks = array_diff( $links, $notcachedlinks );
-//		$gContent->cache_links( $cachedlinks );
-//		$gContent->storeLinks( $cachedlinks );
-	}
-
-	$data_to_parse = $formInfo['edit'];
-	if (!empty($formInfo['section']) && !empty($gContent->mInfo['data']) ) {
-		$full_page_data = $gContent->mInfo['data'];
-		$data_to_parse = replace_section($full_page_data,$formInfo['section'],$formInfo['edit']);
-		$_REQUEST["edit"] = $data_to_parse;
-	}
-
-	if( $gContent->store( $_REQUEST ) ) {
-		if( $gBitSystem->isFeatureActive( 'wiki_watch_author' ) ) {
-			$gBitUser->storeWatch( "wiki_page_changed", $gContent->mPageId, $gContent->mContentTypeGuid, $_REQUEST['title'], $gContent->getDisplayUrl() );
-		}
-
-		header( "Location: ".$gContent->getDisplayUrl() );
-		die;
-	} else {
-		$formInfo = $_REQUEST;
-		$formInfo['data'] = &$_REQUEST['edit'];
-	}
-} elseif( !empty( $_REQUEST['edit'] ) ) {
-	// perhaps we have a javascript non-saving form submit
-	$formInfo = $_REQUEST;
-	$formInfo['data'] = &$_REQUEST['edit'];
-}
-
-if( isset( $_REQUEST['format_guid'] ) && !isset( $gContent->mInfo['format_guid'] ) ) {
-	$formInfo['format_guid'] = $gContent->mInfo['format_guid'] = $_REQUEST['format_guid'];
-}
-
-if( isset( $_REQUEST["preview"] ) ) {
-	$gBitSmarty->assign( 'preview',1 );
-	$gBitSmarty->assign( 'title',!empty( $_REQUEST["title"] ) ? $_REQUEST["title"]:$gContent->mPageName );
-
-	if (!empty($formInfo['section'])) {
-		$formInfo['edit_section'] = 1;
-	}
-
-	$data_to_parse = $formInfo['edit'];
-	if( !empty( $formInfo['section'] ) && !empty( $gContent->mInfo['data'] )) {
-		$full_page_data = $gContent->mInfo['data'];
-	}
-
-
-	$formInfo['parsed_data'] = $gContent->parseData(
-		$data_to_parse,
-		( !empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] : ( isset( $gContent->mInfo['format_guid'] ) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ))
-	);
-	$gContent->invokeServices( 'content_preview_function' );
-} else {
-	$gContent->invokeServices( 'content_edit_function' );
-}
-
-if( $gContent->isInStructure() ) {
-	$gBitSmarty->assign( 'showstructs', $gContent->getStructures() );
-}
-
-// Flag for 'page bar' that currently 'Edit' mode active
-// so no need to show comments & attachments, but need
-// to show 'wiki quick help'
-$gBitSmarty->assign( 'edit_page', 'y' );
-
-// formInfo might be set due to a error on submit
-if( empty( $formInfo ) ) {
-	$formInfo = &$gContent->mInfo;
-}
-
-// make original page title available for template
-$formInfo['original_title'] =( !empty( $gContent->mInfo['title'] ) ) ? $gContent->mInfo['title']  : "" ;
-
-$gBitSmarty->assign_by_ref( 'pageInfo', $formInfo );
-$gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
-
-$gBitSystem->display( 'bitpackage:wiki/edit_page.tpl', 'Edit: '.$gContent->getTitle() , array( 'display_mode' => 'edit' ));
 ?>
