@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.27 2008/12/18 22:06:29 pppspoonman Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.28 2009/02/21 16:34:18 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: lookup_page_inc.php,v 1.27 2008/12/18 22:06:29 pppspoonman Exp $
+ * $Id: lookup_page_inc.php,v 1.28 2009/02/21 16:34:18 lsces Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -57,7 +57,9 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 			$gBitSmarty->assign('page', $loadPage);//to have the create page link in the error
 		}
 	}
-	if( !$gContent->load() && $loadPage ) {
+
+	$parse = ( !isset( $lookupHash['parse'] ) or $lookupHash['parse'] ) ? true : false;
+	if( $gContent->load( $parse ) && $loadPage ) {
 		$gContent->mInfo['title'] = $loadPage;
 	}
 }

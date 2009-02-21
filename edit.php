@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.56 2009/02/19 16:56:31 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.57 2009/02/21 16:34:18 lsces Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.56 2009/02/19 16:56:31 spiderr Exp $
+ * $Id: edit.php,v 1.57 2009/02/21 16:34:18 lsces Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -21,6 +21,10 @@ include_once( WIKI_PKG_PATH.'BitBook.php' );
 
 $gBitSystem->verifyPackage( 'wiki' );
 
+// bypass lookup_content_inc.php as we can't prevent it parsing faulty pages
+unset($_REQUEST['content_id']);
+// Disable parsing data if not asking to preview page
+$_REQUEST["parse"] = isset(  $_REQUEST["preview"] ) ? true : false;
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
 
 $wiki_sandbox = FALSE;
@@ -192,6 +196,7 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 
 		header( "Location: ".$gContent->getDisplayUrl() );
 		die;
+
 	} else {
 		$formInfo = $_REQUEST;
 		$formInfo['data'] = &$_REQUEST['edit'];
