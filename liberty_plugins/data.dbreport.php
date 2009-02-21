@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/liberty_plugins/Attic/data.dbreport.php,v 1.3 2009/02/21 13:20:26 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/liberty_plugins/Attic/data.dbreport.php,v 1.4 2009/02/21 16:27:29 lsces Exp $
  * @package  liberty
  * @subpackage plugins_data
  *
@@ -1454,7 +1454,6 @@ function data_dbreport_help() {
 function wikiplugin_dbreport($data, $params) {
 	// TikiWiki globals
 	global $tikilib, $user, $group, $page, $prefs;
-	global $wikiplugin_dbreport_errors, $wikiplugin_dbreport_fields;
 	// wikiplugin_dbreport globals
 	global $wikiplugin_dbreport_errors;
 	global $wikiplugin_dbreport_fields;
