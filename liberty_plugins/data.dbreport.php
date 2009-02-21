@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/liberty_plugins/Attic/data.dbreport.php,v 1.1 2009/02/21 10:24:13 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/liberty_plugins/Attic/data.dbreport.php,v 1.2 2009/02/21 13:04:45 lsces Exp $
  * @package  liberty
  * @subpackage plugins_data
  *
@@ -1406,6 +1406,13 @@ function wikiplugin_dbreport_message_box($msg) {
 	return $return;
 }
 
+function data_dbreport_csv_wrap( $item ) {
+	// In addition to wrap processing, this function could escape code, or modify dates
+	// is_numberic values could be left unwrapped
+	// trim white space created by some database fields
+    return  '"'.trim($item).'"';
+}
+
 function data_dbreport_help() {
 	$help =
 		'<table class="data help">'
@@ -1457,8 +1464,9 @@ function wikiplugin_dbreport($data, $params) {
 	$ret = '';
 	// extract parameters
 	extract ($params,EXTR_SKIP);
-	if ( !isset($wiki) ) $wiki = false;
+	if ( !isset($wiki) ) $wiki = true;
 	if ( !isset($debug) ) $debug = false;
+	if ( !isset($csv) ) $csv = false;
 	// debug plugin input
 	if( isset($debug_input) ) {
 		$msg = $_REQUEST['preview'] . ' ' . $_SESSION['s_prefs']['tiki_release'] . '<br/>';
@@ -1522,12 +1530,28 @@ function wikiplugin_dbreport($data, $params) {
 	} else {
 		return (tra('No DSN connection string found!'));
 	}
+
+	if($csv) {
+		// Temporary file for the moment - need to expand to proper file names for archiving
+		$csv_file = STORAGE_PKG_PATH.'export/EXPORT_REPORT.csv';
+		$file = fopen( $csv_file, 'w' );  // erase text data if it exists!!
+		$fp = fopen( $csv_file, "a+" );
+		$fields_enclosed_by = '"';
+		$fields_seperated_by = ',';
+		$column_data = ''; 
+	}
+	
 	// create an array of field names and their index	
 	$field_index = array();
 	$field_count = $query->FieldCount();
 	for($index = 0; $index<$field_count; $index++) {
 		$column =& $query->FetchField($index);
 		$field_index[$column->name] = $index;
+		if ($csv) {
+			if ($index == "0") {
+				$column_data = $fields_enclosed_by.$column->name.$fields_enclosed_by;} else {$column_data = $column_data.$fields_seperated_by.$fields_enclosed_by.$column->name.$fields_enclosed_by;
+			}
+		}
 	}
 	// go through the parsed fields and assign indexes
 	foreach($wikiplugin_dbreport_fields as $key => $value) {
@@ -1541,6 +1565,10 @@ function wikiplugin_dbreport($data, $params) {
 			return $ret;
 		}
 	}
+	if($csv) {
+		fwrite($fp,""."$column_data\n"); 
+	}
+	
 	// does the report have a table definition?
 	if(!isset($report->table)) {
 		// create a default definition from the data
@@ -1575,11 +1603,12 @@ function wikiplugin_dbreport($data, $params) {
 			$field =& new WikipluginDBReportField($column->name);
 			$field->index = $index;
 			$cell->contents[] =& $field;
-			$row->cells[] =& $cell; 
+			$row->cells[] =& $cell;
 		}
 	}
 	// are we debugging?
 	if($debug) $ret .= wikiplugin_dbreport_message_box("~np~<pre>".htmlspecialchars($report->code())."</pre>~/np~");
+	
 	// generate the report
 	if(!$wiki) $ret .= '~np~';
 	if(!$query->EOF) {
@@ -1608,6 +1637,14 @@ function wikiplugin_dbreport($data, $params) {
 				$next_row = $query->FetchRow();
 				$breaking = false;
 			}
+			// Output data as a csv line
+			if( $csv ) {
+				$csv_line = '';
+				foreach( $current_row as $value ) {
+					$csv_line .= data_dbreport_csv_wrap( $value ).$fields_seperated_by;
+				}
+				fwrite($fp, $csv_line."\n"); 
+			} 
 			$break_end = '';
 			$break_start = '';
 			// check group breaks
@@ -1636,6 +1673,10 @@ function wikiplugin_dbreport($data, $params) {
 	// close the database connection
 	$query->Close();
 	$ado->Close();
+	if ( $csv ) {
+		// Add a buuton for downloading csv file
+		$ret .= '<br/ ><h3><a href="'.BIT_ROOT_URL.'/storage/export/EXPORT_REPORT.csv">Right click and save as a local file name!</a></h3>';
+	}
 	// return the result
 	return $ret;
 }
