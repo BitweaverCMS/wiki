@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/liberty_plugins/Attic/data.dbreport.php,v 1.2 2009/02/21 13:04:45 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/liberty_plugins/Attic/data.dbreport.php,v 1.3 2009/02/21 13:20:26 lsces Exp $
  * @package  liberty
  * @subpackage plugins_data
  *
@@ -21,12 +21,12 @@ $pluginParams = array (
 
 	'auto_activate' => FALSE,
 	'requires_pair' => TRUE,
-	'syntax'        => '{dbreport dsn=dsnname  db=dbname  wiki=0|1 debug=0|1 }',
+	'syntax'        => '{dbreport dsn=dsnname  db=dbname  csv=0|1 wiki=0|1 debug=0|1 }',
 	'plugin_type'   => DATA_PLUGIN,
 
 	// display icon in quicktags bar
 	'biticon'       => '{biticon ilocation=quicktag iname=image-x-generic iexplain="DBReport"}',
-	'taginsert'     => '{dbreport dsn db= wiki= debug= }',
+	'taginsert'     => '{dbreport dsn= db= csv= wiki= debug= }',
 
 	// functions
 	'help_function' => 'data_dbreport_help',
@@ -1422,27 +1422,32 @@ function data_dbreport_help() {
 				.'<th>'.tra( "Comments" ).'</th>'
 			.'</tr>'
 			.'<tr class="odd">'
-				.'<td>dns</td>'
+				.'<td>dsn</td>'
 				.'<td>'.tra( "string").'<br />'.tra( "(required)" ).'</td>'
 				.'<td>'.tra( "A full DSN (Data Source Name) connection string. eg: mysql://user:pass@server/database" ).'</td>'
 			.'</tr>'
 			.'<tr class="even">'
 				.'<td>title</td>'
 				.'<td>'.tra( "string").'<br />'.tra( "(required)" ).'</td>'
-				.'<td>'.tra( "The name of a DSN connection defined by the Wiki administrator.").'</td>'
+				.'<td>'.tra( "The name of a DSN connection defined by the administrator.").'</td>'
 			.'</tr>'
 			.'<tr class="odd">'
 				.'<td>wiki</td>'
 				.'<td>'.tra( "numeric").'<br />'.tra( "(optional)" ).'</td>'
-				.'<td>'.tra( "0|1, parse wiki syntax within the report.").' '.tra( "Default").': 0</td>'
+				.'<td>'.tra( "0|1, parse wiki syntax within the report.").' '.tra( "Default").': 1</td>'
 			.'</tr>'
 			.'<tr class="even">'
 				.'<td>debug</td>'
 				.'<td>'.tra( "numeric").'<br />'.tra( "(optional)" ).'</td>'
-				.'<td>'.tra( "0|1, display the parsed report definition.").' '.tra( "Default").': 0</td>'
+				.'<td>'.tra( "0|1, display the parsed report definition for test purposes.").' '.tra( "Default").': 0</td>'
+			.'</tr>'
+			.'<tr class="odd">'
+				.'<td>csv</td>'
+				.'<td>'.tra( "numeric").'<br />'.tra( "(optional)" ).'</td>'
+				.'<td>'.tra( "0|1, generate a csv copy of the data for external download.").' '.tra( "Default").': 0</td>'
 			.'</tr>'
 			.'</table>'
-		.tra( "Example: " )."{dbreport dns=demo}SELECT * FROM DEMO{/dbreport}";
+		.tra( "Example: " )."{dbreport dsn=fully qualified dsn}SQL {SELECT * FROM DEMO } {/dbreport}";
 	return $help;
 }
 	
