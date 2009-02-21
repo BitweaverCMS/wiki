@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.118 2009/02/21 16:30:40 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.119 2009/02/21 17:23:00 tekimaki_admin Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.118 $ $Date: 2009/02/21 16:30:40 $ $Author: lsces $
+ * @version $Revision: 1.119 $ $Date: 2009/02/21 17:23:00 $ $Author: tekimaki_admin $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.118 2009/02/21 16:30:40 lsces Exp $
+ * $Id: BitPage.php,v 1.119 2009/02/21 17:23:00 tekimaki_admin Exp $
  */
 
 /**
@@ -66,7 +66,7 @@ class BitPage extends LibertyMime {
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
-	function load( $parse = true ) {
+	function load( $pParse = TRUE ) {
 		if( $this->verifyId( $this->mPageId ) || $this->verifyId( $this->mContentId ) ) {
 			global $gBitSystem;
 
@@ -104,7 +104,7 @@ class BitPage extends LibertyMime {
 					LibertyContent::load();
 				}
 
-				if ( $parse ) {
+				if ( $pParse ) {
 					$this->mInfo['parsed_data'] = $this->parseData();
 				}
 			} else {
