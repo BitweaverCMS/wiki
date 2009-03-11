@@ -1,6 +1,6 @@
 <?php
 /**
- * @version  $Revision: 1.3 $
+ * @version  $Revision: 1.4 $
  * @package  liberty
  * @subpackage plugins_data
  */
@@ -20,7 +20,7 @@ $pluginParams = array (
 	'load_function' => 'data_wikigraph',
 	'title'         => 'WikiGraph',
 	'help_page'     => 'DataPluginWikiGraph',
-	'description'   => tra( "Inserts a graph for visual navigation. The graph shows the page and every page that can be reached from that page." ),
+	'description'   => tra( "Inserts a graph for visual navigation. The graph shows the page and every page that can be reached from that page. It requies the Image_GraphViz pear plugin and graphviz to be installed: <strong>pear install Image_GraphViz</strong>" ),
 	'help_function' => 'data_wikigraph_help',
 	'syntax'        => "{wikigraph level= title= }".tra( "Wiki page name" )."{/wikigraph}",
 	'plugin_type'   => DATA_PLUGIN
@@ -69,6 +69,11 @@ function data_wikigraph_help() {
 function data_wikigraph( $pData, $pParams ) {
 	global $gContent, $gBitThemes;
 	$ret = " ";
+
+	// check to see if we have pear available.
+	if( $error = pear_check( "Image/GraphViz.php" )) {
+		return $error;
+	}
 
 	if( !empty( $gContent ) && is_object( $gContent )) {
 		$querystring = "";
