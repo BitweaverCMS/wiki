@@ -1,6 +1,6 @@
 <?php
 /**
- * @version  $Revision: 1.4 $
+ * @version  $Revision: 1.5 $
  * @package  liberty
  * @subpackage plugins_data
  */
@@ -46,7 +46,7 @@ function data_wikigraph_help() {
 				.'<td>'.tra( "string").'<br />'.tra( "(optional)" ).'</td>'
 				.'<td>'.tra( "Title of the graph.").' '.tra( "Default ").': Wiki-Graph</td>'
 			.'</tr>'
-			.'<tr class="even">'
+			.'<tr class="odd">'
 				.'<td>nodesep</td>'
 				.'<td>'.tra( "numeric").'<br />'.tra( "(optional)" ).'</td>'
 				.'<td>'.tra( "Distance between nodes in inches.").' '.tra( "Default").': 1.2</td>'
@@ -56,7 +56,7 @@ function data_wikigraph_help() {
 				.'<td>'.tra( "string").'<br />'.tra( "(optional)" ).'</td>'
 				.'<td>'.tra( "Direction of graph layout - can be Left to Right (LR), Right to Left (RL), Top to Bottom (TB), Bottom to Top (BT).").' '.tra( "Default").': TB</td>'
 			.'</tr>'
-			.'<tr class="even">'
+			.'<tr class="odd">'
 				.'<td>bgcolor</td>'
 				.'<td>'.tra( "html colour").'<br />'.tra( "(optional)" ).'</td>'
 				.'<td>'.tra( "Background colour of the graph.").' '.tra( "Default").': transparent</td>'
