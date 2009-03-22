@@ -1,10 +1,10 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.27 2008/11/09 07:32:25 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.28 2009/03/22 07:09:01 squareing Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
-<div class="admin wiki">
+<div class="listing wiki">
 	<div class="header">
-		<h1>{tr}WikiPages{/tr}</h1>
+		<h1>{tr}{$gBitSystem->getBrowserTitle()}{/tr}</h1>
 	</div>
 
 	{formfeedback error=$errors}
