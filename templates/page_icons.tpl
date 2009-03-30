@@ -15,7 +15,7 @@
 			{/if}
 		{else}
 			{assign var=format_guid value=$gContent->mInfo.format_guid}
-			{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y'}
+			{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y' or $gContent->hasAdminPermission()}
 				{if $gContent->hasUpdatePermission() or $gContent->mInfo.title eq 'SandBox'}
 					{if $gContent->hasAdminPermission() or ($gContent->isOwner() and $gContent->hasUserPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
 						<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;action=lock">{biticon ipackage="icons" iname="emblem-readonly" iexplain="Lock this page"}</a>
