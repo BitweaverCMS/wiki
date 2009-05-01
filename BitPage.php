@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.119 2009/02/21 17:23:00 tekimaki_admin Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.120 2009/05/01 15:53:16 wjames5 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.119 $ $Date: 2009/02/21 17:23:00 $ $Author: tekimaki_admin $
+ * @version $Revision: 1.120 $ $Date: 2009/05/01 15:53:16 $ $Author: wjames5 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitPage.php,v 1.119 2009/02/21 17:23:00 tekimaki_admin Exp $
+ * $Id: BitPage.php,v 1.120 2009/05/01 15:53:16 wjames5 Exp $
  */
 
 /**
@@ -383,7 +383,6 @@ class BitPage extends LibertyMime {
 
 	/**
 	* Generates a link to a wiki page within lists of pages
-	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
 	* @return the link to display the page.
 	*/
 	function getListLink( $pPageHash ) {
