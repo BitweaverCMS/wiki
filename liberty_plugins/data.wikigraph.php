@@ -1,6 +1,6 @@
 <?php
 /**
- * @version  $Revision: 1.5 $
+ * @version  $Revision: 1.6 $
  * @package  liberty
  * @subpackage plugins_data
  */
@@ -100,8 +100,8 @@ function data_wikigraph( $pData, $pParams ) {
 			$mapdata = $gContent->linkStructureMap( $pData, ( isset( $pParams['level'] ) ? $pParams['level'] : 0 ), $params );
 
 			$ret = "
-				<div align='center'>
-				<img border='0' src=\"".WIKI_PKG_URL."wiki_graph.php?page=".urlencode( $pData )."{$querystring}\" alt='{$title}' usemap='#$mapname' />
+				<div style='text-align:center'>
+				<img src=\"".WIKI_PKG_URL."wiki_graph.php?page=".urlencode( $pData )."{$querystring}\" alt='{$title}' usemap='#$mapname' />
 				<map name='$mapname'>$mapdata</map>
 				</div>";
 			$ret = preg_replace( "/\n|\r/", '', $ret );
