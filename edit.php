@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.58 2009/02/21 17:29:55 tekimaki_admin Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.59 2009/05/15 19:03:45 lsces Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: edit.php,v 1.58 2009/02/21 17:29:55 tekimaki_admin Exp $
+ * $Id: edit.php,v 1.59 2009/05/15 19:03:45 lsces Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -109,6 +109,8 @@ if(isset($_REQUEST["section"])) {
 }
 if( isset( $_REQUEST['title'] ) ) {
 	$formInfo['title'] = $_REQUEST['title'];
+} elseif( isset( $_REQUEST['page'] ) ) {
+	$formInfo['title'] = $_REQUEST['page'];
 }
 if( isset( $_REQUEST["description"] ) ) {
 	$formInfo['description'] = $_REQUEST["description"];
