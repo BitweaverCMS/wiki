@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/index.php,v 1.10 2006/12/23 16:43:49 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/index.php,v 1.11 2009/05/19 01:11:54 tekimaki_admin Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: index.php,v 1.10 2006/12/23 16:43:49 squareing Exp $
+ * $Id: index.php,v 1.11 2009/05/19 01:11:54 tekimaki_admin Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -24,8 +24,16 @@ require_once( WIKI_PKG_PATH.'BitPage.php' );
 if( !empty( $_REQUEST['structure_id'] ) ) {
 	include( LIBERTY_PKG_PATH.'display_structure_inc.php' );
 } else {
+	// if no page set
 	if ( !isset( $_REQUEST['page'] ) and !isset( $_REQUEST['page_id'] ) ) {
+		// if auto create home page disabled just get a list 
+		if( $gBitSystem->getConfig( 'wiki_disable_auto_home' ) ){
+			include( WIKI_PKG_PATH.'list_pages.php' );
+			die;
+		}
+		// auto fetch/create default home page
 		$_REQUEST['page'] = $gBitSystem->getConfig( 'wiki_home_page', 'HomePage' );
+
 	}
 	$gHome = new BitPage();
 	$wikiHome = $gBitSystem->getConfig( "wiki_home_page", 'HomePage' );
@@ -41,5 +49,3 @@ if( !empty( $_REQUEST['structure_id'] ) ) {
 	include( WIKI_PKG_PATH.'lookup_page_inc.php' );
 	include( WIKI_PKG_PATH.'display_bitpage_inc.php' );
 }
-
-?>

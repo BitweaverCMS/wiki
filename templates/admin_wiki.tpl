@@ -107,6 +107,14 @@
 			{legend legend="Wiki Home Page"}
 				<input type="hidden" name="page" value="{$page}" />
 				<div class="row">
+					{formlabel label="Disable Wiki Home Page" for="wiki_disable_auto_home"}
+					{forminput}
+						{html_checkboxes name="wiki_disable_auto_home" values="y" checked=$gBitSystem->getConfig('wiki_disable_auto_home') labels=false id="wiki_disabled_auto_home"}
+						{formhelp note="When checked the default wiki url will load a list of recently edited pages. This will disable the auto-fetching of the home page value below."}
+					{/forminput}
+				</div>
+
+				<div class="row">
 					{formlabel label="Wiki Home Page" for="wiki_home_page"}
 					{forminput}
 						<input type="text" name="wiki_home_page" id="wiki_home_page" size="25" value="{$gBitSystem->getConfig('wiki_home_page')|escape}" />

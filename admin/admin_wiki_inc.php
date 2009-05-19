@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.31 2008/11/11 22:21:46 wjames5 Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_wiki_inc.php,v 1.32 2009/05/19 01:11:55 tekimaki_admin Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -270,6 +270,10 @@ if( !empty( $_REQUEST["wikiwatch"] )) {
 if( !empty( $_REQUEST["setwikihome"] )) {
 	$gBitSystem->storeConfig( 'wiki_home_page', $_REQUEST["wiki_home_page"], WIKI_PKG_NAME );
 	$gBitSmarty->assign('wiki_home_page', $_REQUEST["wiki_home_page"]);
+
+	simple_set_toggle( 'wiki_disable_auto_home',WIKI_PKG_NAME );
+//	$gBitSystem->storeConfig( 'wiki_disable_auto_home', $_REQUEST["wiki_disable_auto_home"], WIKI_PKG_NAME );
+//	$gBitSmarty->assign('wiki_disable_auto_home', $_REQUEST["wiki_disable_auto_home"]);
 }
 
 if( !empty( $_REQUEST["setwikiregex"] )) {
