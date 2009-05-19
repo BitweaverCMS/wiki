@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.28 2009/03/22 07:09:01 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.29 2009/05/19 16:27:40 tekimaki_admin Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -166,7 +166,7 @@
 							<td style="text-align:center;">{$listpages[changes].version}</td>
 						{/if}
 						{if $gBitSystem->isFeatureActive( 'wiki_list_comment' )}
-							<td>{$listpages[changes].comment}</td>
+							<td>{$listpages[changes].edit_comment}</td>
 						{/if}
 						{if $gBitSystem->isFeatureActive( 'wiki_list_status' )}
 							<td style="text-align:center;">
