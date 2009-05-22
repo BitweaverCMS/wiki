@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.25 2008/10/02 16:17:15 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.26 2009/05/22 14:27:42 tekimaki_admin Exp $
  *
- * $Id: list_pages.php,v 1.25 2008/10/02 16:17:15 wjames5 Exp $
+ * $Id: list_pages.php,v 1.26 2009/05/22 14:27:42 tekimaki_admin Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -79,6 +79,7 @@ $listpages = $gContent->getList( $listHash );
 $listHash['listInfo']['parameters']['find_title']       = !empty( $listHash['find_title'] ) ? $listHash['find_title'] : '';
 $listHash['listInfo']['parameters']['find_author']      = !empty( $listHash['find_author'] ) ? $listHash['find_author'] : '';
 $listHash['listInfo']['parameters']['find_last_editor'] = !empty( $listHash['find_last_editor'] ) ? $listHash['find_last_editor'] : '';
+$listHash['listInfo']['ihash']['content_type_guid'] = BITPAGE_CONTENT_TYPE_GUID;
 
 $gBitSmarty->assign_by_ref( 'listpages', $listpages );
 $gBitSmarty->assign_by_ref( 'listInfo', $listHash['listInfo'] );
