@@ -49,8 +49,8 @@
 	{/if*}
 </div><!-- end .wiki -->
 
+{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='view' serviceHash=$gContent->mInfo}
+
 {if $comments_at_top_of_page ne 'y' and $print_page ne 'y' and $gBitSystem->isFeatureActive( 'wiki_comments' )}
 	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
-
-{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='view' serviceHash=$gContent->mInfo}
