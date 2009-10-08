@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.61 2009/10/01 14:17:07 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/edit.php,v 1.62 2009/10/08 19:39:49 wjames5 Exp $
  *
  * Copyright( c ) 2004 bitweaver.org
  * Copyright( c ) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id: edit.php,v 1.61 2009/10/01 14:17:07 wjames5 Exp $
+ * $Id: edit.php,v 1.62 2009/10/08 19:39:49 wjames5 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -46,7 +46,7 @@ if( $wiki_sandbox && !$gBitSystem->isFeatureActive( 'wiki_sandbox' ) ) {
 //make comment count for this page available for templates
 if( $gBitSystem->isFeatureActive( 'wiki_comments' ) && !empty( $_REQUEST['page_id'] ) ) {
 	require_once( LIBERTY_PKG_PATH.'LibertyComment.php' );
-	$gComment = new LibertyComment( NULL, $gContent->mContentId );
+	$gComment = new LibertyComment();
 	$numComments = $gComment->getNumComments($gContent->mContentId);
 	$gBitSmarty->assign('comments_count', $numComments);
 }
