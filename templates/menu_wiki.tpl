@@ -26,7 +26,7 @@
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}rankings.php">{biticon iname="format-justify-fill" iexplain=$pkgNameWS|cat:"Rankings" ilocation=menu}</a></li>
 	{/if}
 	{if $gBitSystem->isPackageActive( 'rss' )}
-		<a title="{tr}Wiki Update RSS Feed{/tr}" href="{$smarty.const.RSS_PKG_URL}index.php?pkg=wiki">{biticon iname="rss-16x16" ipackage=rss iexplain="Changes Feed" ilocation="menu"}</a>
+	<li><a title="{tr}Wiki Update RSS Feed{/tr}" href="{$smarty.const.RSS_PKG_URL}index.php?pkg=wiki">{biticon iname="rss-16x16" ipackage=rss iexplain="Changes Feed" ilocation=menu}</a></li>
 	{/if}
 	{if $gBitSystem->isFeatureActive( 'wiki_sandbox' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}edit.php?page=SandBox">{biticon iname=user-trash-full iexplain="Sandbox" ilocation=menu}</a></li>
