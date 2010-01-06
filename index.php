@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/index.php,v 1.13 2009/10/01 14:17:07 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/index.php,v 1.14 2010/01/06 20:37:59 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id: index.php,v 1.13 2009/10/01 14:17:07 wjames5 Exp $
+ * $Id: index.php,v 1.14 2010/01/06 20:37:59 squareing Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -26,8 +26,8 @@ if( !empty( $_REQUEST['structure_id'] ) ) {
 } else {
 	// if no page set
 	if ( !isset( $_REQUEST['page'] ) and !isset( $_REQUEST['page_id'] ) ) {
-		// if auto create home page disabled just get a list 
-		if( $gBitSystem->getConfig( 'wiki_disable_auto_home' ) ){
+		// if auto create home page disabled just get a list
+		if( $gBitSystem->isFeatureActive( 'wiki_disable_auto_home' ) ){
 			include( WIKI_PKG_PATH.'list_pages.php' );
 			die;
 		}
