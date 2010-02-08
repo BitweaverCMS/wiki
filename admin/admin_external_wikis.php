@@ -1,10 +1,10 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_external_wikis.php,v 1.6 2009/10/01 14:17:07 wjames5 Exp $
+// $Header: /cvsroot/bitweaver/_bit_wiki/admin/admin_external_wikis.php,v 1.7 2010/02/08 21:27:27 wjames5 Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See below for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details.
 // Initialization
-require_once( '../../bit_setup_inc.php' );
+require_once( '../../kernel/setup_inc.php' );
 include_once( KERNEL_PKG_PATH.'admin_lib.php' );
 if (!$gBitUser->isAdmin()) {
 	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));

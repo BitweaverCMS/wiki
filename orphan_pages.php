@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.19 2009/03/22 07:09:01 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.20 2010/02/08 21:27:27 wjames5 Exp $
  *
- * $Id: orphan_pages.php,v 1.19 2009/03/22 07:09:01 squareing Exp $
+ * $Id: orphan_pages.php,v 1.20 2010/02/08 21:27:27 wjames5 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -10,7 +10,7 @@
 /**
  * required setup
  */
-require_once( '../bit_setup_inc.php' );
+require_once( '../kernel/setup_inc.php' );
 include_once( WIKI_PKG_PATH.'BitPage.php' );
 
 // verify stuff

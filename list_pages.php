@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.26 2009/05/22 14:27:42 tekimaki_admin Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/list_pages.php,v 1.27 2010/02/08 21:27:27 wjames5 Exp $
  *
- * $Id: list_pages.php,v 1.26 2009/05/22 14:27:42 tekimaki_admin Exp $
+ * $Id: list_pages.php,v 1.27 2010/02/08 21:27:27 wjames5 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -10,7 +10,7 @@
 /**
  * required setup
  */
-require_once( '../bit_setup_inc.php' );
+require_once( '../kernel/setup_inc.php' );
 require_once( WIKI_PKG_PATH.'BitPage.php' );
 
 // verify stuff

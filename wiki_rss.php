@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.17 2007/07/08 07:56:41 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.18 2010/02/08 21:27:27 wjames5 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -8,7 +8,7 @@
 /**
  * Initialization
  */
-require_once( "../bit_setup_inc.php" );
+require_once( "../kernel/setup_inc.php" );
 
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyPackage( 'rss' );

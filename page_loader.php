@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/page_loader.php,v 1.4 2009/10/01 14:17:07 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/page_loader.php,v 1.5 2010/02/08 21:27:27 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id: page_loader.php,v 1.4 2009/10/01 14:17:07 wjames5 Exp $
+ * $Id: page_loader.php,v 1.5 2010/02/08 21:27:27 wjames5 Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -16,7 +16,7 @@
 /**
  * required setup
  */
-include_once( '../../bit_setup_inc.php' );
+include_once( '../../kernel/setup_inc.php' );
 include_once (HTML_PKG_PATH.'htmlpages_lib.php');
 $refresh = 1000 * $_REQUEST["refresh"];
 ?>
