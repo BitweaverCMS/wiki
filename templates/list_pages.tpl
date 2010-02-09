@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.29 2009/05/19 16:27:40 tekimaki_admin Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/list_pages.tpl,v 1.30 2010/02/09 17:21:22 wjames5 Exp $ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 
@@ -220,7 +220,7 @@
 				<div style="text-align:right;">
 					<script type="text/javascript">/* <![CDATA[ check / uncheck all */
 						document.write("<label for=\"switcher\">{tr}Select All{/tr}</label> ");
-						document.write("<input name=\"switcher\" id=\"switcher\" type=\"checkbox\" onclick=\"switchCheckboxes(this.form.id,'checked[]','switcher')\" />");
+						document.write("<input name=\"switcher\" id=\"switcher\" type=\"checkbox\" onclick=\"BitBase.switchCheckboxes(this.form.id,'checked[]','switcher')\" />");
 					/* ]]> */</script>
 					<br />
 					<select name="batch_submit" onchange="this.form.submit();">
