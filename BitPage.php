@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.123 2009/11/22 11:02:26 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.124 2010/02/11 10:16:39 squareing Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.123 $ $Date: 2009/11/22 11:02:26 $ $Author: lsces $
+ * @version $Revision: 1.124 $ $Date: 2010/02/11 10:16:39 $ $Author: squareing $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id: BitPage.php,v 1.123 2009/11/22 11:02:26 lsces Exp $
+ * $Id: BitPage.php,v 1.124 2010/02/11 10:16:39 squareing Exp $
  */
 
 /**
@@ -932,15 +932,15 @@ class BitPage extends LibertyMime {
 		$query = "
 			SELECT lc2.`title`
 			FROM `".BIT_DB_PREFIX."liberty_content_links` lcl
-				INNER JOIN liberty_content lc1 ON( lc1.`content_id` = lcl.`from_content_id` )
-				INNER JOIN liberty_content lc2 ON( lc2.`content_id` = lcl.`to_content_id` )
-			WHERE lc1.`title` = ?";
+			INNER JOIN liberty_content lc1 ON( lc1.`content_id` = lcl.`from_content_id` AND lc1.`content_status_id` > 49 )
+			INNER JOIN liberty_content lc2 ON( lc2.`content_id` = lcl.`to_content_id` AND lc2.`content_status_id` > 49 )
+			WHERE lc1.`title` = ? AND lcl.`from_content_id` <> lcl.`to_content_id`";
 		$result = $this->mDb->query( $query, array( $pPageName ));
 
 		$ret['pages'] = array();
 		$ret['name']  = $pPageName;
 
-		while ($res = $result->fetchRow()) {
+		while( $res = $result->fetchRow() ) {
 			if( !empty( $pLevel )) {
 				$ret['pages'][] = $this->getLinkStructure( $res['title'], $pLevel - 1 );
 			} else {
