@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.124 2010/02/11 10:16:39 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.125 2010/04/17 22:46:11 wjames5 Exp $
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.124 $ $Date: 2010/02/11 10:16:39 $ $Author: squareing $
+ * @version $Revision: 1.125 $ $Date: 2010/04/17 22:46:11 $ $Author: wjames5 $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id: BitPage.php,v 1.124 2010/02/11 10:16:39 squareing Exp $
+ * $Id: BitPage.php,v 1.125 2010/04/17 22:46:11 wjames5 Exp $
  */
 
 /**
@@ -32,7 +32,7 @@ class BitPage extends LibertyMime {
 		LibertyMime::LibertyMime();
 		$this->registerContentType( BITPAGE_CONTENT_TYPE_GUID, array(
 				'content_type_guid' => BITPAGE_CONTENT_TYPE_GUID,
-				'content_description' => 'Wiki Page',
+				'content_name' => 'Wiki Page',
 				'handler_class' => 'BitPage',
 				'handler_package' => 'wiki',
 				'handler_file' => 'BitPage.php',

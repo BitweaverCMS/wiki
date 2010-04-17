@@ -138,4 +138,8 @@ $gBitInstaller->registerContentObjects( WIKI_PKG_NAME, array(
 	'BitPage' => WIKI_PKG_PATH.'BitPage.php',
 	'BitBook' => WIKI_PKG_PATH.'BitBook.php',
 ));
-?>
+
+// Requirements
+$gBitInstaller->registerRequirements( WIKI_PKG_NAME, array(
+    'liberty' => array( 'min' => '2.1.4' ),
+));
