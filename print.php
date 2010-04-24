@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.24 2010/02/08 21:27:27 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/print.php,v 1.25 2010/04/24 08:11:22 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id: print.php,v 1.24 2010/02/08 21:27:27 wjames5 Exp $
+ * $Id: print.php,v 1.25 2010/04/24 08:11:22 lsces Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -37,9 +37,8 @@ if (isset($_REQUEST["action"])) {
 }
 
 // Now increment page hits since we are visiting this page
-if ($gBitSystem->isFeatureActive( 'users_count_admin_pageviews' ) || !$gBitUser->isAdmin()) {
-	$gContent->addHit();
-}
+$gContent->addHit();
+
 // Get page data
 $info = $gContent->mInfo;
 if ($gBitSystem->isFeatureActive( 'wiki_copyrights' ) && $gBitSystem->isFeatureActive( 'wiki_copyrights' ) && $gBitSystem->isFeatureActive( 'wiki_license_page' )) {
