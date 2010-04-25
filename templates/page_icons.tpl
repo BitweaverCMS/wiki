@@ -33,7 +33,7 @@
 			{/if}
 		{/if}
 
-		{if $gBitSystem->isPackageActive( 'stickies' ) && $gContent->hasUserPermission('p_stickies_edit') }
+		{if $gBitSystem->isPackageActive( 'stickies' ) && $gContent->hasUserPermission('p_stickies_create') }
 			{if ($structureInfo.structure_id)}
 				{assign var='stickyRequest' value="structure_id=`$structureInfo.structure_id`"}
 			{else}
