@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.49 2010/04/24 08:11:22 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/display_bitpage_inc.php,v 1.50 2010/04/25 15:25:10 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id: display_bitpage_inc.php,v 1.49 2010/04/24 08:11:22 lsces Exp $
+ * $Id: display_bitpage_inc.php,v 1.50 2010/04/25 15:25:10 lsces Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -148,6 +148,14 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 	if( $watch = $gBitUser->getEventWatches( 'wiki_page_changed', $gContent->mPageId ) ) {
 		$gBitSmarty->assign( 'user_watching_page', 'y' );
 	}
+}
+
+if( $gContent->isValid() && $gBitSystem->isPackageActive( 'stickies' ) ) {
+	require_once( STICKIES_PKG_PATH.'BitSticky.php' );
+	global $gNote;
+	$gNote = new BitSticky( NULL, NULL, $gContent->mContentId );
+	$gNote->load();
+	$gBitSmarty->assign_by_ref( 'stickyInfo', $gNote->mInfo );
 }
 
 // Display the Index Template

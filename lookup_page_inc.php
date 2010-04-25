@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.30 2009/10/01 14:17:07 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_wiki/lookup_page_inc.php,v 1.31 2010/04/25 15:25:10 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id: lookup_page_inc.php,v 1.30 2009/10/01 14:17:07 wjames5 Exp $
+ * $Id: lookup_page_inc.php,v 1.31 2010/04/25 15:25:10 lsces Exp $
  * @package wiki
  * @subpackage functions
  */
@@ -83,14 +83,6 @@ if( empty( $gStructure ) ) {
 	} else {
 		$gBitSmarty->assign('showstructs', $structs);
 	}
-}
-
-if( $gContent->isValid() && $gBitSystem->isPackageActive( 'stickies' ) ) {
-	require_once( STICKIES_PKG_PATH.'BitSticky.php' );
-	global $gNote;
-	$gNote = new BitSticky( NULL, NULL, $gContent->mContentId );
-	$gNote->load();
-	$gBitSmarty->assign_by_ref( 'stickyInfo', $gNote->mInfo );
 }
 
 $gBitSmarty->clear_assign( 'gContent' );
