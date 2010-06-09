@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/print_multi_pages.tpl,v 1.3 2006/03/25 20:55:09 squareing Exp $ *}
+{* $Header$ *}
 
 {include file="bitpackage:kernel/header.tpl"}
 <div id="printpage">

@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_wiki/orphan_pages.php,v 1.20 2010/02/08 21:27:27 wjames5 Exp $
+ * $Header$
  *
- * $Id: orphan_pages.php,v 1.20 2010/02/08 21:27:27 wjames5 Exp $
+ * $Id$
  * @package wiki
  * @subpackage functions
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/wiki_rss.php,v 1.18 2010/02/08 21:27:27 wjames5 Exp $
+ * @version $Header$
  * @package wiki
  * @subpackage functions
  */

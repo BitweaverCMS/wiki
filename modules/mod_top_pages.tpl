@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_top_pages.tpl,v 1.9 2007/01/17 20:16:24 spiderr Exp $ *}
+{* $Header$ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'wiki' ) && $modTopPages}
 	{bitmodule title="$moduleTitle" name="top_pages"}

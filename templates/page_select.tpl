@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_select.tpl,v 1.5 2007/09/27 13:49:58 spiderr Exp $ *}
+{* $Header$ *}
 
 <div class="header">
 	<h1>Multiple pages match "{$choose}"</h1>

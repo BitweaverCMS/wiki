@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/simple_plugin.tpl,v 1.1 2005/06/19 06:12:45 bitweaver Exp $ *}
+{* $Header$ *}
 
 {box title=$title}
 

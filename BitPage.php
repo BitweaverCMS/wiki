@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/BitPage.php,v 1.125 2010/04/17 22:46:11 wjames5 Exp $
+ * @version $Header$
  * @package wiki
  *
  * @author spider <spider@steelsun.com>
  *
- * @version $Revision: 1.125 $ $Date: 2010/04/17 22:46:11 $ $Author: wjames5 $
+ * @version $Revision$
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,7 +13,7 @@
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id: BitPage.php,v 1.125 2010/04/17 22:46:11 wjames5 Exp $
+ * $Id$
  */
 
 /**

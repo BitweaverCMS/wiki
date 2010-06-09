@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_wiki_last_comments.tpl,v 1.3 2006/03/25 20:55:08 squareing Exp $ *}
+{* $Header$ *}
 {if $lastComments}
 	{if $nonums eq 'y'}
 		{eval var="{tr}Last `$module_rows` wiki comments{/tr}" assign="tpl_module_title"}

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/modules/mod_quick_edit.tpl,v 1.2 2006/04/11 13:10:33 squareing Exp $ *}
+{* $Header$ *}
 {strip}
 {if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
 	{bitmodule title="$moduleTitle" name="quick_edit"}

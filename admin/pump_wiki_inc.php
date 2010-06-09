@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_wiki/admin/pump_wiki_inc.php,v 1.3 2008/01/22 08:52:00 moooooooo Exp $
+ * @version $Header$
  * @package install
  * @subpackage pumps
  */

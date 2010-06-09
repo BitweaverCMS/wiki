@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_wiki/templates/page_watches.tpl,v 1.1 2006/09/03 08:40:01 jht001 Exp $ *}
+{* $Header$ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">

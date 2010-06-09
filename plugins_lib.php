@@ -25,7 +25,7 @@
     * @package wiki
     * @subpackage PluginsLib
     * @author Claudio Bustos
-    * @version $Revision: 1.2 $
+    * @version $Revision$
     */
     class PluginsLib extends BitBase {
         var $_errors;
@@ -119,7 +119,7 @@
         function getVersion() {
             return tra("No version indicated");
             //return preg_replace("/[Revision: $]/", '',
-            //                    "\$Revision: 1.2 $");
+            //                    "\$Revision$");
         }
         /**
         * Returns the default arguments for the plugin
@@ -158,7 +158,7 @@
     * @package wiki
     * @subpackage PluginsLib
     * @author Claudio Bustos
-    * @version $Revision: 1.2 $
+    * @version $Revision$
     */
     class PluginsLibUtil {
         /**
