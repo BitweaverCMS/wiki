@@ -1,5 +1,3 @@
-{* $Header$ *}
-
 {box title=$title}
 
     {foreach key=t item=i from=$listcat}

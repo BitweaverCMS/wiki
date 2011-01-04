@@ -3,7 +3,7 @@
  * BitBook class
  *
  * @author   spider <spider@steelsun.com>
- * @version  $Revision$
+ * @version  $Revision: 1.14 $
  * @package  wiki
  */
 // +----------------------------------------------------------------------+
@@ -18,7 +18,7 @@
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: BitBook.php,v 1.14 2010/04/17 22:46:11 wjames5 Exp $
 
 
 /**
@@ -34,7 +34,7 @@ define('BITBOOK_CONTENT_TYPE_GUID', 'bitbook' );
  *
  * @abstract
  * @author   spider <spider@steelsun.com>
- * @version  $Revision$
+ * @version  $Revision: 1.14 $
  * @package  wiki
  */
 class BitBook extends BitPage {

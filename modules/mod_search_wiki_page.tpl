@@ -1,4 +1,3 @@
-{* $Header$ *}
 {strip}
 {if $gBitUser->hasPermission('p_wiki_view_page')}
 {bitmodule title="$moduleTitle" name="search_box"}

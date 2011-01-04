@@ -3,14 +3,11 @@
  * assigned_modules
  *
  * @author   spider <spider@steelsun.com>
- * @version  $Revision$
  * @package  wiki
  * @subpackage  functions
  * @copyright Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * @license Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details.
  */
-// $Header$
-// All Rights Reserved. See below for details and a complete list of authors.
 
 /**
  * required setup

@@ -1,8 +1,5 @@
 <?php
 /**
- * $Header$
- *
- * $Id$
  * @package wiki
  * @subpackage functions
  */

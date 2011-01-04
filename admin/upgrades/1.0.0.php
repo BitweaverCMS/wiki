@@ -1,6 +1,5 @@
 <?php
 /**
- * @version $Header$
  */
 global $gBitInstaller;
 

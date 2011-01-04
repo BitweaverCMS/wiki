@@ -1,4 +1,3 @@
-{* $Header$ *}
 {strip}
 {if $gBitUser->hasPermission( 'p_wiki_edit_page' )}
 	{bitmodule title="$moduleTitle" name="quick_edit"}

@@ -1,4 +1,3 @@
-{* $Header$ *}
 {if $lastComments}
 	{if $nonums eq 'y'}
 		{eval var="{tr}Last `$module_rows` wiki comments{/tr}" assign="tpl_module_title"}

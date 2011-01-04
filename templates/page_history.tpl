@@ -1,4 +1,3 @@
-{* $Header$ *}
 {strip}
 <div class="admin wiki">
 	<div class="header">

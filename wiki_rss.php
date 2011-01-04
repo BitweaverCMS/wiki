@@ -1,6 +1,5 @@
 <?php
 /**
- * @version $Header$
  * @package wiki
  * @subpackage functions
  */

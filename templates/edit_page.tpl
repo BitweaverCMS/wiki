@@ -1,4 +1,3 @@
-{* $Header$ *}
 {strip}
 <div class="floaticon">{bithelp}</div>
 <div class="edit wiki">

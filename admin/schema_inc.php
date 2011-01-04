@@ -122,7 +122,7 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	//array( WIKI_PKG_NAME, 'wiki_watch_author','n'),
 	//array( WIKI_PKG_NAME, 'wiki_watch_comments','n'),
 	//array( WIKI_PKG_NAME, 'wiki_watch_editor','n'),
-	//array( WIKI_PKG_NAME, 'wiki_words','y'),
+	array( WIKI_PKG_NAME, 'wiki_words','y'),
 	//array( WIKI_PKG_NAME, 'wikibook_hide_add_content','n'),
 	//array( WIKI_PKG_NAME, 'wikibook_use_icons','n'),
 ) );

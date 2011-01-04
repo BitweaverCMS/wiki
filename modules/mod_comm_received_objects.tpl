@@ -1,4 +1,3 @@
-{* $Header$ *}
 {if $gBitSystem->isFeatureActive( 'feature_comm' )}
 {bitmodule title="$moduleTitle" name="comm_received_objects"}
 	<table class="module box"><tr>

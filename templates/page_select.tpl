@@ -1,5 +1,3 @@
-{* $Header$ *}
-
 <div class="header">
 	<h1>Multiple pages match "{$choose}"</h1>
 </div>

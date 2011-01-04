@@ -1,5 +1,3 @@
-{* $Header$ *}
-
 {include file="bitpackage:kernel/header.tpl"}
 <div id="printpage">
 	<h1>Wiki Pages</h1>

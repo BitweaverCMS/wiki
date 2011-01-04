@@ -1,4 +1,3 @@
-{* $Header$ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'wiki' ) && $modRandomPages}
 	{bitmodule title="$moduleTitle" name="random_pages"}

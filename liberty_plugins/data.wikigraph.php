@@ -1,6 +1,6 @@
 <?php
 /**
- * @version  $Revision$
+ * @version  $Revision: 1.6 $
  * @package  liberty
  * @subpackage plugins_data
  */

@@ -1,4 +1,3 @@
-{* $Header$ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'wiki' ) && $modTopPages}
 	{bitmodule title="$moduleTitle" name="top_pages"}
