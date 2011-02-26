@@ -94,7 +94,6 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	array( WIKI_PKG_NAME, 'wiki_list_links','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_name','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_orphans','y'),
-	array( WIKI_PKG_NAME, 'wiki_list_pages','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_size','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_status','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_user','y'),

@@ -12,7 +12,6 @@ require_once( WIKI_PKG_PATH.'BitPage.php' );
 
 // verify stuff
 $gBitSystem->verifyPackage( 'wiki' );
-$gBitSystem->verifyFeature( 'wiki_list_pages' );
 $gBitSystem->verifyPermission( 'p_wiki_list_pages' );
 
 $gContent = new BitPage();

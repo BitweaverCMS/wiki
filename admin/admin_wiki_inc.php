@@ -91,10 +91,6 @@ $formWikiFeatures = array(
 		'label' => 'History',
 		'note' => 'Allow access to the page\'s history.',
 	),
-	"wiki_list_pages" => array(
-		'label' => 'List Pages',
-		'note' => 'Allow access to a listing of all wikipages.',
-	),
 	"wiki_list_orphans" => array(
 		'label' => 'List Orphans',
 		'note' => 'Allow access to a listing of all orphaned wikipages.',
