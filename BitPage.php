@@ -43,6 +43,15 @@ class BitPage extends LibertyMime {
 		$this->mAdminContentPerm = 'p_wiki_admin';
 	}
 
+	function findContentIdByPageId( $pPageId ) {
+		global $gBitDb;
+		$ret = NULL;
+		if( BitBase::verifyId( $pPageId ) ) {
+			$ret = $gBitDb->getOne( "SELECT `content_id` FROM`".BIT_DB_PREFIX."wiki_pages` WHERE `page_id`=?", array( (int)$pPageId ) );
+		}
+		return $ret;
+	}
+
 	function findByPageName( $pPageName, $pUserId=NULL ) {
 		$userWhere = '';
 		$bindVars = array( $pPageName, $this->mContentTypeGuid );
@@ -51,6 +60,39 @@ class BitPage extends LibertyMime {
 			array_push( $bindVars, $pUserId );
 		}
 		$ret = $this->mDb->getOne("select `page_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) where lc.`title`=? AND lc.`content_type_guid`=? $userWhere", $bindVars );
+		return $ret;
+	}
+
+	/**
+	 * Determines if a wiki page (row in wiki_pages) exists, and returns a hash of important info. If N pages exists with $pPageName, returned existsHash has a row for each unique pPageName row.
+	 * @param pPageName name of the wiki page
+	 * @param pCaseSensitive look for case sensitive names
+	 * @param pContentId if you insert the content id of the currently viewed content, non-existing links can be created immediately
+	 */
+	function pageExists( $pPageName, $pCaseSensitive=FALSE, $pContentId=NULL ) {
+		global $gBitSystem;
+		$ret = NULL;
+
+		if( $gBitSystem->isPackageActive( 'wiki' ) ) {
+			$columnExpression = $gBitSystem->mDb->getCaseLessColumn('lc.title');
+
+			$pageWhere = $pCaseSensitive ? 'lc.`title`' : $columnExpression;
+			$bindVars = array( ($pCaseSensitive ? $pPageName : strtoupper( $pPageName ) ) );
+			$query = "SELECT `page_id`, wp.`content_id`, lcds.`data` AS `summary`, lc.`last_modified`, lc.`title`
+				FROM `".BIT_DB_PREFIX."wiki_pages` wp
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id`=wp.`content_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
+				WHERE $pageWhere = ?";
+			if( !$ret = $gBitSystem->mDb->getAll( $query, $bindVars ) ) {
+				$query = "SELECT `page_id`, wp.`content_id`, lcds.`data` AS `summary`, lc.`last_modified`, lc.`title`, lal.`alias_title`
+					FROM `".BIT_DB_PREFIX."wiki_pages` wp
+						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id`=wp.`content_id`)
+						INNER JOIN `".BIT_DB_PREFIX."liberty_aliases` lal ON (lc.`content_id`=lal.`content_id`)
+						LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
+					WHERE ".$gBitSystem->mDb->getCaseLessColumn('lal.alias_title')." = ?";
+				$ret = $gBitSystem->mDb->getAll( $query, $bindVars );
+			}
+		}
 		return $ret;
 	}
 
