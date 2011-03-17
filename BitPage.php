@@ -47,7 +47,7 @@ class BitPage extends LibertyMime {
 		global $gBitDb;
 		$ret = NULL;
 		if( BitBase::verifyId( $pPageId ) ) {
-			$ret = $gBitDb->getOne( "SELECT `content_id` FROM`".BIT_DB_PREFIX."wiki_pages` WHERE `page_id`=?", array( (int)$pPageId ) );
+			$ret = $gBitDb->getOne( "SELECT `content_id` FROM `".BIT_DB_PREFIX."wiki_pages` WHERE `page_id`=?", array( (int)$pPageId ) );
 		}
 		return $ret;
 	}
