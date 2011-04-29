@@ -33,17 +33,10 @@
 			{/if}
 		{/if}
 
-		{if $gBitSystem->isPackageActive( 'stickies' ) && $gContent->hasUserPermission('p_stickies_create') }
-			{if ($structureInfo.structure_id)}
-				{assign var='stickyRequest' value="structure_id=`$structureInfo.structure_id`"}
-			{else}
-				{assign var='stickyRequest' value="notated_content_id=`$gContent->mInfo.content_id`"}
-			{/if}
-			<a href="{$smarty.const.STICKIES_PKG_URL}edit.php?{$stickyRequest}">{biticon ipackage=stickies iname="sticky_note" iexplain="Add sticky note"}</a>
-		{/if}
-
 		{if ($structureInfo.structure_id) && ($gStructure->mInfo.creator_user_id == $gBitUser->mUserId || $gContent->hasUserPermission( 'p_wiki_admin_book' ))}
 			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$structureInfo.structure_id}">{biticon ipackage="icons" iname="emblem-system" iexplain="Edit book"}</a>
+		{elseif is_a($gContent,'BitBook')}
+			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?content_id={$gContent->mContentId}">{biticon ipackage="icons" iname="emblem-system" iexplain="Edit book"}</a>
 		{/if}
 
 		{if $gBitSystem->isFeatureActive( 'wiki_uses_s5' )}

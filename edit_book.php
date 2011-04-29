@@ -33,10 +33,18 @@ global $gStructure;
  **/
 // get a book instance
 global $gContent;
-if( @BitBase::verifyId( $_REQUEST["structure_id"] ) ) {
+if( @BitBase::verifyId( $_REQUEST["structure_id"] ) || @BitBase::verifyId( $_REQUEST["content_id"] ) ) {
 	include_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
-	if( empty( $gContent ) ){
+	if( empty( $gContent ) ) {
 		$gBitSystem->fatalError( 'Error: Invalid structure id, the book you requested could not be found.' );
+	} elseif( empty( $_REQUEST["structure_id"] ) ) {
+		// we were passed a valid content_id. Make sure the root node exists, and if not, create it.
+		$newStructure = new LibertyStructure();
+		// alias => '' is a temporary setting until alias stuff has been removed
+		if( !$newStructure->getNode( NULL, $gContent->mContentId ) ) {
+			$structureHash = array( 'content_id' => $gContent->mContentId, 'alias' => '' );
+			$_REQUEST["structure_id"] = $newStructure->storeNode( $structureHash );
+		}
 	}
 }else{
 	$gContent = new BitBook();
@@ -122,7 +130,7 @@ if( isset($_REQUEST["createstructure"]) ) {
 		$gBitSmarty->assign( 'chapters', $_REQUEST['chapters']);
 		$mid = 'bitpackage:wiki/create_book.tpl';
 	}
-} elseif( @BitBase::verifyId( $_REQUEST["structure_id"] ) && $gContent->isValid() ) {
+} elseif( $gContent->isValid() ) {
 	// Get all wiki pages for the select box
 	$_REQUEST['content_type_guid'] = !isset( $_REQUEST['content_type_guid'] ) ? 'bitpage' : $_REQUEST['content_type_guid'];
 	// verify the book permission on structure load
@@ -143,7 +151,7 @@ if( isset($_REQUEST["createstructure"]) ) {
 	$gBitSystem->setBrowserTitle( 'Create Wiki Book' );
 	$mid = 'bitpackage:wiki/create_book.tpl';
 }
-$gBitSystem->setBrowserTitle( !empty($gStructure) ? 'Edit Wiki Book:'.$gStructure->mInfo["title"] : NULL );
+$gBitSystem->setBrowserTitle( !empty($gStructure) && $gStructure->isValid() ? 'Edit Wiki Book:'.$gStructure->getField( 'title' ) : NULL );
 // Display the template
 $gBitSystem->display( $mid , NULL, array( 'display_mode' => 'edit' ));
 ?>
