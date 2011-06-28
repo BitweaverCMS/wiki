@@ -140,6 +140,7 @@ class BitPage extends LibertyMime {
 					LibertyContent::load();
 				}
 
+				$this->mInfo['parsed_data'] = NULL;
 				if ( $pParse ) {
 					$this->mInfo['parsed_data'] = $this->parseData();
 				}
