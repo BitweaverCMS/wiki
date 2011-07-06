@@ -14,14 +14,13 @@
  * required setup
  */
 require_once( '../kernel/setup_inc.php' );
-include_once( WIKI_PKG_PATH.'BitPage.php');
-
 $gBitSystem->verifyPackage( 'wiki' );
-$gContent->verifyViewPermission();
 
-// If the page doesn't exist then display an error
 $requirePage = TRUE;
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
+
+// If the page doesn't exist then display an error
+$gContent->verifyViewPermission();
 
 // Check if we have to perform an action for this page
 // for example lock/unlock
