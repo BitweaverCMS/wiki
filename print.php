@@ -45,7 +45,7 @@ if ($gBitSystem->isFeatureActive( 'wiki_copyrights' ) && $gBitSystem->isFeatureA
 	$_REQUEST['copyrightpage'] = $page;
 }
 // Verify lock status
-if ($info["flag"] == 'L') {
+if( !empty( $info['flag'] ) && $info['flag'] == 'L') {
 	$gBitSmarty->assign('lock', true);
 } else {
 	$gBitSmarty->assign('lock', false);
