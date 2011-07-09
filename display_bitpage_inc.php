@@ -73,7 +73,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_uses_slides' )) {
 }
 
 // ...page... stuff - TODO: this is cumbersome and should be cleaned up
-$pages = $gContent->countSubPages( $gContent->mInfo['parsed_data'] );
+$pages = $gContent->countSubPages( $gContent->getField( 'parsed_data' ) );
 if( $pages > 1 ) {
 	if( !isset( $_REQUEST['pagenum'] )) {
 		$_REQUEST['pagenum'] = 1;
