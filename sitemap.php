@@ -1,0 +1,47 @@
+<?php
+
+require_once( '../kernel/setup_inc.php' );
+
+require_once( WIKI_PKG_PATH.'BitBook.php' );
+
+$book = new BitBook();
+$gSiteMapHash = array();
+
+
+if( $bookList = $book->getList() ) {
+	foreach( $bookList['data'] as $bookHash ) {
+		$bookStructure = new LibertyStructure( $bookHash['structure_id'] );
+		$listBook = $bookStructure->buildTreeToc( $bookHash['structure_id'] );
+		process_book_list( $listBook );
+	}
+}
+
+
+function process_book_list( $pList, $pDepth = 1 ) {
+	global $gSiteMapHash;
+	foreach( array_keys( $pList ) as $key ) {
+		if( !empty( $pList[$key]['display_url'] ) ) {
+			$hash = array();
+			$hash['loc'] =  BIT_BASE_URI.$pList[$key]['display_url'];
+			$hash['lastmod'] = date( 'Y-m-d', $pList[$key]['last_modified'] );
+			if( (time() - $pList[$key]['last_modified']) < 86400 ) {
+				$freq = 'daily';
+			} elseif( (time() - $pList[$key]['last_modified']) < (86400 * 7) ) {
+				$freq = 'weekly';
+			} else {
+				$freq = 'monthly';
+			}
+			
+			$hash['changefreq'] = $freq;
+			$hash['priority'] = 1 - ($pDepth * .5 * .1);
+			$gSiteMapHash[$pList[$key]['content_id']] = $hash;
+		}
+		if( !empty( $pList[$key]['sub'] ) ) {
+			process_book_list( $pList[$key]['sub'], ($pDepth + 1) );
+		}
+	}
+}
+
+$gBitSmarty->assign_by_ref( 'gSiteMapHash', $gSiteMapHash );
+$gBitThemes->setFormatHeader( 'xml' );
+print $gBitSmarty->display( 'bitpackage:kernel/sitemap.tpl' );
