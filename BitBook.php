@@ -60,6 +60,7 @@ class BitBook extends BitPage {
 
 	function getList( &$pListHash ) {
 		$struct = new LibertyStructure();
+		$pListHash['content_type_guid'] = $this->mContentTypeGuid;
 		return $struct->getList( $pListHash );
 	}
 
