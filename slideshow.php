@@ -28,8 +28,7 @@ if (!isset($_SESSION["thedate"])) {
 require_once ( WIKI_PKG_PATH.'lookup_page_inc.php' );
 // If the page doesn't exist then display an error
 if (!$gContent->isValid()) {
-	$gBitSystem->setHttpStatus( 404 );
-	$gBitSystem->fatalError(tra("Page cannot be found"));
+	$gBitSystem->fatalError( tra("Page cannot be found"), NULL, NULL, HttpStatusCodes::HTTP_NOT_FOUND );
 }
 
 // Now check permissions to access this page
