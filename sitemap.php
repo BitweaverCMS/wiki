@@ -7,8 +7,9 @@ require_once( WIKI_PKG_PATH.'BitBook.php' );
 $book = new BitBook();
 $gSiteMapHash = array();
 
+$listHash = array();
 
-if( $bookList = $book->getList() ) {
+if( $bookList = $book->getList( $listHash ) ) {
 	foreach( $bookList['data'] as $bookHash ) {
 		$bookStructure = new LibertyStructure( $bookHash['structure_id'] );
 		$listBook = $bookStructure->buildTreeToc( $bookHash['structure_id'] );
