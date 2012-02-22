@@ -19,8 +19,7 @@ require_once( WIKI_PKG_PATH.'BitPage.php' );
 $gBitSystem->verifyFeature( 'wiki_multiprint' );
 
 if (!isset($_REQUEST["printpages"])) {
-	$gBitSystem->setHttpStatus( 404 );
-	$gBitSystem->fatalError( tra( "No pages indicated" ) );
+	$gBitSystem->fatalError( tra( "No pages indicated" ), NULL, NULL, HttpStatusCodes::HTTP_NOT_FOUND );
 } else {
 	$printpages = unserialize(urldecode($_REQUEST["printpages"]));
 }
