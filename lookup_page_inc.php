@@ -58,14 +58,16 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 
 	if( !empty( $loadContentId ) ) {
 		$gContent = LibertyBase::getLibertyObject( $loadContentId );
-	} else {
+	}
+
+	if( empty( $gContent ) || !is_object( $gContent ) ) {
 		$gContent = new BitPage();
 	}
 
 }
 
 // we weren't passed a structure, but maybe this page belongs to one. let's check...
-if( empty( $gStructure ) ) {
+if( $gContent->isValid() && empty( $gStructure ) ) {
 	//Get the structures this page is a member of
 	if( !empty($lookupHash['structure']) ) {
 		$structure=$lookupHash['structure'];
