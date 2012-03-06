@@ -8,14 +8,14 @@ $tables = array(
 	wiki_page_size I4 DEFAULT 0,
 	edit_comment C(200),
 	flag C(1)
-	CONSTRAINTS ', CONSTRAINT `wiki_pages_content_ref` FOREIGN KEY (`content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content`( `content_id` )'
+	CONSTRAINT ', CONSTRAINT `wiki_pages_content_ref` FOREIGN KEY (`content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content`( `content_id` )'
 ",
 
 'wiki_footnotes' => "
 	user_id I4 PRIMARY,
 	page_id I4 NOTNULL,
 	data X
-	CONSTRAINTS ', CONSTRAINT `wiki_footnotes_page_ref` FOREIGN KEY (`page_id`) REFERENCES `".BIT_DB_PREFIX."wiki_pages`( `page_id` )'
+	CONSTRAINT ', CONSTRAINT `wiki_footnotes_page_ref` FOREIGN KEY (`page_id`) REFERENCES `".BIT_DB_PREFIX."wiki_pages`( `page_id` )'
 ",
 
 );
