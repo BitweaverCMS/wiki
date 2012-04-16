@@ -23,7 +23,7 @@
 					<li><a href="{$smarty.const.WIKI_PKG_URL}page_permissions.php?page_id={$pageInfo.page_id}">{tr}Permissions{/tr}</a></li>
 				{/if}
 				{if $gBitSystem->isFeatureActive( 'wiki_history' ) and $gContent->hasUserPermission('p_wiki_view_history')}
-					<li><a href="{$smarty.const.WIKI_PKG_URL}page_history.php?page_id={$pageInfo.page_id}">{tr}History{/tr}</a></li>
+					<li><a href="{$smarty.const.WIKI_PKG_URL}page_history.php?page_id={$pageInfo.page_id}" rel="nofollow">{tr}History{/tr}</a></li>
 				{/if}
 			{/if}
 			{if $gBitSystem->isFeatureActive( 'wiki_like_pages' )}
