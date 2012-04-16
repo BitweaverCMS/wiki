@@ -38,7 +38,7 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 		//we could do htmlspecialchars_decode but it allows <> marks here, so we just transform &amp; to & - it's not so scary. 
 		$loadPage = str_replace("&amp;", "&", $lookupHash['page'] );
 
-		if( $loadPage && $existsInfo = BitPage::pageExists( $loadPage ) ) {
+		if( $loadPage && $existsInfo = $gContent->pageExists( $loadPage ) ) {
 			if (count($existsInfo)) {
 				if (count($existsInfo) > 1) {
 					// Display page so user can select which wiki page they want (there are multiple that share this name)

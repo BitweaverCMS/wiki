@@ -102,12 +102,12 @@ class BitPage extends LibertyMime {
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
-	function load( $pParse = TRUE ) {
+	function load( $pContentId=NULL, $pPluginParams = TRUE ) {
 		if( $this->verifyId( $this->mPageId ) || $this->verifyId( $this->mContentId ) ) {
 			global $gBitSystem;
 
 			$lookupColumn = @BitBase::verifyId( $this->mPageId ) ? 'page_id' : 'content_id';
-
+			$parse = ( !isset( $pPluginParams['parse'] ) or $pPluginParams['parse'] ) ? true : false;
 			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
 			array_push( $bindVars, $lookupId = @BitBase::verifyId( $this->mPageId )? $this->mPageId : $this->mContentId );
 			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
@@ -126,7 +126,7 @@ class BitPage extends LibertyMime {
 				$this->mContentId = $this->mInfo['content_id'];
 				$this->mPageId = $this->mInfo['page_id'];
 				$this->mPageName = $this->mInfo['title'];
-				$this->mInfo['display_url'] = $this->getDisplayUrl();
+				$this->mInfo['display_url'] = self::getDisplayUrl($this->mPageName);
 
 				// TODO: this is a bad habbit and should not be done BitUser::getDisplayName sorts out what name to display
 				$this->mInfo['creator'] = (isset( $this->mInfo['creator_real_name'] ) ? $this->mInfo['creator_real_name'] : $this->mInfo['creator_user'] );
@@ -140,8 +140,7 @@ class BitPage extends LibertyMime {
 					LibertyContent::load();
 				}
 
-				$this->mInfo['parsed_data'] = NULL;
-				if ( $pParse ) {
+				if ( $parse ) {
 					$this->mInfo['parsed_data'] = $this->parseData();
 				}
 			} else {
@@ -423,7 +422,7 @@ class BitPage extends LibertyMime {
 	* @return the link to display the page.
 	*/
 	function getListLink( $pPageHash ) {
-		return BitPage::getDisplayLink( $pPageHash['title'], NULL );
+		return BitPage::getPageLink( $pPageHash['title'], NULL );
 	}
 
 
@@ -458,14 +457,16 @@ class BitPage extends LibertyMime {
 	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
 	* @return the link to display the page.
 	*/
-	function getDisplayUrl( $pPageName = NULL, $pPageHash = NULL ) {
+	public static function getDisplayUrl( $pPageName = NULL, $pPageHash = NULL ) {
 		global $gBitSystem;
-		if( empty( $this ) || (empty( $this->mPageName ) && !empty( $pPageHash['title'] )) ) {
-			$pPageName = $pPageHash['title'];
-		}
+		if( !empty( $this )) {
+			if( empty( $this ) || (empty( $this->mPageName ) && !empty( $pPageHash['title'] )) ) {
+				$pPageName = $pPageHash['title'];
+			}
 
-		if( empty( $pPageName ) && !empty( $this->mPageName )) {
-			$pPageName = $this->mPageName;
+			if( empty( $pPageName ) && !empty( $this->mPageName )) {
+				$pPageName = $this->mPageName;
+			}
 		}
 
 		if( !empty( $pPageName )) {
@@ -484,20 +485,32 @@ class BitPage extends LibertyMime {
 	}
 
 	/**
+	* Generates the URL to this wiki page
+	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
+	* @return the link to display the page.
+	*/
+	public function getContentUrl( $pPageName = NULL ) {
+		if( !$pPageName && !@$this->verifyId() ) {
+			$pPageName = $this->mPageName;
+		}
+		return self::getDisplayUrl( $pPageName );
+	}
+
+	/**
 	* Returns HTML link to display a page if it exists, or to create if not
 	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
 	* @return the link to display the page.
 	*/
-	function getDisplayLink( $pPageName, $pExistsHash ) {
+	public static function getPageLink( $pLinkText=NULL, $pMixed=NULL, $pAnchor=NULL ) {
 		global $gBitSystem, $gBitUser;
-		$ret = $pPageName;
+		$ret = $pLinkText;
 		if( $gBitSystem->isPackageActive( 'wiki' ) ) {
-			if( !empty( $pExistsHash ) && is_array( $pExistsHash ) ) {
-				if( is_array( current( $pExistsHash ) ) ) {
-					$exists = $pExistsHash[0];
+			if( !empty( $pMixed ) && is_array( $pMixed ) ) {
+				if( is_array( current( $pMixed ) ) ) {
+					$exists = $pMixed[0];
 					$multiple = TRUE;
 				} else {
-					$exists = $pExistsHash;
+					$exists = $pMixed;
 					$multiple = FALSE;
 				}
 
@@ -507,12 +520,12 @@ class BitPage extends LibertyMime {
 				} else {
 					$desc = empty( $exists['summary'] ) ? $exists['title'] : $exists['summary'];
 				}
-				$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrl( $exists['title'] ).'">'.htmlspecialchars( $pPageName ).'</a>';
+				$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrl( $exists['title'] ).'">'.htmlspecialchars( $exists['title'] ).'</a>';
 			} else {
 				if( $gBitUser->hasPermission( 'p_wiki_create_page' ) ) {
-					$ret = '<a title="'.tra( "Create the page" ).': '.htmlspecialchars( $pPageName ).'" href="'.WIKI_PKG_URL.'edit.php?page='.urlencode( $pPageName ).'" class="create">'.htmlspecialchars( $pPageName ).'</a>';
+					$ret = '<a title="'.tra( "Create the page" ).': '.htmlspecialchars( $pLinkText ).'" href="'.WIKI_PKG_URL.'edit.php?page='.urlencode( $pLinkText ).'" class="create">'.htmlspecialchars( $pLinkText ).'</a>';
 				} else {
-					$ret = $pPageName;
+					$ret = $pLinkText;
 				}
 			}
 		}
@@ -635,7 +648,7 @@ class BitPage extends LibertyMime {
 		}
 
 		if( empty( $pListHash['orphans_only'] )) {
-			$query = "SELECT 
+			$query = "SELECT
 					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
 					wp.`page_id`, wp.`wiki_page_size` as `len`, lcds.`data` AS `summary`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
 					lc.`title`, lc.`format_guid`, lc.`last_modified`, lc.`created`, lc.`ip`, lc.`version`,
@@ -659,7 +672,7 @@ class BitPage extends LibertyMime {
 				WHERE lc.`content_type_guid`=? $whereSql
 				";
 		} else {
-			$query = "SELECT 
+			$query = "SELECT
 					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
 					wp.`page_id`, wp.`wiki_page_size` AS `len`,lcds.`data` AS `summary`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
 					lc.`title`, lc.`format_guid`, lc.`last_modified`, lc.`created`, lc.`ip`, lc.`version`,
@@ -714,7 +727,7 @@ class BitPage extends LibertyMime {
 			$aux['creator'] = (isset( $res['creator_real_name'] ) ? $res['creator_real_name'] : $res['creator_user'] );
 			$aux['editor'] = (isset( $res['modifier_real_name'] ) ? $res['modifier_real_name'] : $res['modifier_user'] );
 			$aux['flag'] = $res["flag"] == 'L' ? 'locked' : 'unlocked';
-			$aux['display_url'] = $this->getDisplayUrl( $aux['title'], $aux );
+			$aux['display_url'] = self::getDisplayUrl( $aux['title'], $aux );
 			// display_link does not seem to be used when getList is called
 			//$aux['display_link'] = $this->getDisplayLink( $aux['title'] ); //WIKI_PKG_URL."index.php?page_id=".$res['page_id'];
 			if( !empty( $pListHash['extras'] )) {
@@ -930,7 +943,7 @@ class BitPage extends LibertyMime {
 			$pParams['graph']['URL'] = WIKI_PKG_URL.'index.php';
 			$pGraphViz->addAttributes( $pParams['graph'] );
 
-			$pParams['node']['URL'] = $this->getDisplayUrl( $pLinkStructure['name'] );
+			$pParams['node']['URL'] = self::getDisplayUrl( $pLinkStructure['name'] );
 			$pGraphViz->addNode( $pLinkStructure['name'], $pParams['node'] );
 
 			foreach( $pLinkStructure['pages'] as $node ) {

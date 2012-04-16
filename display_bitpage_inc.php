@@ -40,7 +40,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_creator_admin' ) && $gContent->isOwner()
 
 // Get the backlinks for the page "page"
 if( $gBitSystem->isFeatureActive( 'wiki_backlinks' )) {
-	$gBitSmarty->assign_by_ref( 'backlinks', $gContent->getBacklinks() );
+	$gBitSmarty->assign( 'backlinks', $gContent->getBacklinks() );
 }
 
 // Now increment page hits since we are visiting this page
@@ -132,7 +132,7 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 	if( !empty( $_REQUEST['watch_event'] ) ) {
 		if( $gBitUser->isRegistered() ) {
 			if( $_REQUEST['watch_action']=='add' ) {
-				$gBitUser->storeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'], $gContent->mContentTypeGuid, $gContent->mPageName, $gContent->getDisplayUrl() );
+				$gBitUser->storeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'], $gContent->mContentTypeGuid, $gContent->mPageName, $gContent->getContentUrl() );
 			} else {
 				$gBitUser->expungeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'] );
 			}
