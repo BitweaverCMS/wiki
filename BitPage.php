@@ -69,7 +69,7 @@ class BitPage extends LibertyMime {
 	 * @param pCaseSensitive look for case sensitive names
 	 * @param pContentId if you insert the content id of the currently viewed content, non-existing links can be created immediately
 	 */
-	function pageExists( $pPageName, $pCaseSensitive=FALSE, $pContentId=NULL ) {
+	public static function pageExists( $pPageName, $pCaseSensitive=FALSE, $pContentId=NULL ) {
 		global $gBitSystem;
 		$ret = NULL;
 
@@ -459,16 +459,9 @@ class BitPage extends LibertyMime {
 	*/
 	public static function getDisplayUrl( $pPageName = NULL, $pPageHash = NULL ) {
 		global $gBitSystem;
-		if( !empty( $this )) {
-			if( empty( $this ) || (empty( $this->mPageName ) && !empty( $pPageHash['title'] )) ) {
-				$pPageName = $pPageHash['title'];
-			}
-
-			if( empty( $pPageName ) && !empty( $this->mPageName )) {
-				$pPageName = $this->mPageName;
-			}
+		if( !empty( $pPageHash['title'] ) ) {
+			$pPageName = $pPageHash['title'];
 		}
-
 		if( !empty( $pPageName )) {
 			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
 				$rewrite_tag = $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ? 'view/':'';

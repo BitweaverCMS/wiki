@@ -35,10 +35,10 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 		//if page had some special enities they were changed to HTML for for security reasons.
 		//now we deal only with string so convert it back - so we can support this case:
 		//You&Me --(detoxify in kernel)--> You&amp;Me --(now)--> You&Me
-		//we could do htmlspecialchars_decode but it allows <> marks here, so we just transform &amp; to & - it's not so scary. 
+		//we could do htmlspecialchars_decode but it allows <> marks here, so we just transform &amp; to & - it's not so scary.
 		$loadPage = str_replace("&amp;", "&", $lookupHash['page'] );
 
-		if( $loadPage && $existsInfo = $gContent->pageExists( $loadPage ) ) {
+		if( $loadPage && $existsInfo = BitPage::pageExists( $loadPage ) ) {
 			if (count($existsInfo)) {
 				if (count($existsInfo) > 1) {
 					// Display page so user can select which wiki page they want (there are multiple that share this name)
