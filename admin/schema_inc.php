@@ -15,7 +15,8 @@ $tables = array(
 	user_id I4 PRIMARY,
 	page_id I4 NOTNULL,
 	data X
-	CONSTRAINT ', CONSTRAINT `wiki_footnotes_page_ref` FOREIGN KEY (`page_id`) REFERENCES `".BIT_DB_PREFIX."wiki_pages`( `page_id` )'
+	CONSTRAINT ', CONSTRAINT `wiki_footnotes_page_ref` FOREIGN KEY (`page_id`) REFERENCES `".BIT_DB_PREFIX."wiki_pages` (`page_id`)
+  				, CONSTRAINT `wiki_footnotes_user_ref` FOREIGN KEY (`user_id`) REFERENCES `".BIT_DB_PREFIX."users_users` (`user_id`)'
 ",
 
 );
