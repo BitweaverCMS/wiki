@@ -126,7 +126,7 @@ class BitPage extends LibertyMime {
 				$this->mContentId = $this->mInfo['content_id'];
 				$this->mPageId = $this->mInfo['page_id'];
 				$this->mPageName = $this->mInfo['title'];
-				$this->mInfo['display_url'] = self::getDisplayUrlFromHash($this->mPageName);
+				$this->mInfo['display_url'] = self::getDisplayUrl();
 
 				// TODO: this is a bad habbit and should not be done BitUser::getDisplayName sorts out what name to display
 				$this->mInfo['creator'] = (isset( $this->mInfo['creator_real_name'] ) ? $this->mInfo['creator_real_name'] : $this->mInfo['creator_user'] );
@@ -421,8 +421,8 @@ class BitPage extends LibertyMime {
 	* Generates a link to a wiki page within lists of pages
 	* @return the link to display the page.
 	*/
-	function getListLink( $pPageHash ) {
-		return BitPage::getPageLink( $pPageHash['title'], NULL );
+	function getListLink( $pParamHash ) {
+		return BitPage::getPageLink( $pParamHash['title'], NULL );
 	}
 
 
@@ -457,36 +457,21 @@ class BitPage extends LibertyMime {
 	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
 	* @return the link to display the page.
 	*/
-	public static function getDisplayUrlFromHash( $pPageName = NULL, $pPageHash = NULL ) {
+	public static function getDisplayUrlFromHash( &$pParamHash ) {
 		global $gBitSystem;
-		if( !empty( $pPageHash['title'] ) ) {
-			$pPageName = $pPageHash['title'];
-		}
-		if( !empty( $pPageName )) {
+		if( !empty( $pParamHash['title'] ) ) {
 			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
 				$rewrite_tag = $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ? 'view/':'';
-				$prettyPageName = preg_replace( '/ /', '+', $pPageName );
+				$prettyPageName = preg_replace( '/ /', '+', $pParamHash['title'] );
 				$ret = WIKI_PKG_URL.$rewrite_tag.$prettyPageName;
 			} else {
-				$ret = WIKI_PKG_URL.'index.php?page='.urlencode( $pPageName );
+				$ret = WIKI_PKG_URL.'index.php?page='.urlencode( $pParamHash['title'] );
 			}
 		} else {
-			$ret = LibertyContent::getDisplayUrlFromHash( NULL, $pPageHash );
+			$ret = parent::getDisplayUrlFromHash( $pParamHash );
 		}
 
 		return $ret;
-	}
-
-	/**
-	* Generates the URL to this wiki page
-	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
-	* @return the link to display the page.
-	*/
-	public function getContentUrl( $pPageName = NULL ) {
-		if( !$pPageName && !@$this->verifyId() ) {
-			$pPageName = $this->mPageName;
-		}
-		return self::getDisplayUrlFromHash( $pPageName );
 	}
 
 	/**
