@@ -43,7 +43,7 @@ class BitPage extends LibertyMime {
 		$this->mAdminContentPerm = 'p_wiki_admin';
 	}
 
-	function findContentIdByPageId( $pPageId ) {
+	public static function findContentIdByPageId( $pPageId ) {
 		global $gBitDb;
 		$ret = NULL;
 		if( BitBase::verifyId( $pPageId ) ) {
