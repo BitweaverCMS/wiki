@@ -132,7 +132,7 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 	if( !empty( $_REQUEST['watch_event'] ) ) {
 		if( $gBitUser->isRegistered() ) {
 			if( $_REQUEST['watch_action']=='add' ) {
-				$gBitUser->storeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'], $gContent->mContentTypeGuid, $gContent->mPageName, $gContent->getContentUrl() );
+				$gBitUser->storeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'], $gContent->mContentTypeGuid, $gContent->mPageName, $gContent->getDisplayUrl() );
 			} else {
 				$gBitUser->expungeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'] );
 			}

@@ -126,7 +126,7 @@ class BitPage extends LibertyMime {
 				$this->mContentId = $this->mInfo['content_id'];
 				$this->mPageId = $this->mInfo['page_id'];
 				$this->mPageName = $this->mInfo['title'];
-				$this->mInfo['display_url'] = self::getDisplayUrl();
+				$this->mInfo['display_url'] = $this->getDisplayUrl( $this->mPageName );
 
 				// TODO: this is a bad habbit and should not be done BitUser::getDisplayName sorts out what name to display
 				$this->mInfo['creator'] = (isset( $this->mInfo['creator_real_name'] ) ? $this->mInfo['creator_real_name'] : $this->mInfo['creator_user'] );
@@ -705,7 +705,7 @@ class BitPage extends LibertyMime {
 			$aux['creator'] = (isset( $res['creator_real_name'] ) ? $res['creator_real_name'] : $res['creator_user'] );
 			$aux['editor'] = (isset( $res['modifier_real_name'] ) ? $res['modifier_real_name'] : $res['modifier_user'] );
 			$aux['flag'] = $res["flag"] == 'L' ? 'locked' : 'unlocked';
-			$aux['display_url'] = self::getDisplayUrlFromHash( $aux['title'], $aux );
+			$aux['display_url'] = self::getDisplayUrlFromHash( $aux );
 			// display_link does not seem to be used when getList is called
 			//$aux['display_link'] = $this->getDisplayLink( $aux['title'] ); //WIKI_PKG_URL."index.php?page_id=".$res['page_id'];
 			if( !empty( $pListHash['extras'] )) {
@@ -920,8 +920,8 @@ class BitPage extends LibertyMime {
 		if( !empty( $pLinkStructure ) && !empty( $pGraphViz )) {
 			$pParams['graph']['URL'] = WIKI_PKG_URL.'index.php';
 			$pGraphViz->addAttributes( $pParams['graph'] );
-
-			$pParams['node']['URL'] = self::getDisplayUrlFromHash( $pLinkStructure['name'] );
+			$pLinkStructure['title'] = $pLinkStructure['name'];
+			$pParams['node']['URL'] = self::getDisplayUrlFromHash( $pLinkStructure );
 			$pGraphViz->addNode( $pLinkStructure['name'], $pParams['node'] );
 
 			foreach( $pLinkStructure['pages'] as $node ) {

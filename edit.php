@@ -136,7 +136,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_copyrights' ) ) {
 // Check if the page has changed
 if( isset( $_REQUEST["fCancel"] ) ) {
 	if( @BitBase::verifyId( $gContent->mContentId ) ) {
-		header( "Location: ".$gContent->getContentUrl() );
+		header( "Location: ".$gContent->getDisplayUrl() );
 	} else {
 		header( "Location: ".WIKI_PKG_URL );
 	}
@@ -190,10 +190,10 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 
 	if( $gContent->store( $_REQUEST ) ) {
 		if( $gBitSystem->isFeatureActive( 'wiki_watch_author' ) ) {
-			$gBitUser->storeWatch( "wiki_page_changed", $gContent->mPageId, $gContent->mContentTypeGuid, $_REQUEST['title'], $gContent->getContentUrl() );
+			$gBitUser->storeWatch( "wiki_page_changed", $gContent->mPageId, $gContent->mContentTypeGuid, $_REQUEST['title'], $gContent->getDisplayUrl() );
 		}
 
-		header( "Location: ".$gContent->getContentUrl( $gContent->mPageName ) );
+		header( "Location: ".$gContent->getDisplayUrl( $gContent->mPageName ) );
 		die;
 
 	} else {
