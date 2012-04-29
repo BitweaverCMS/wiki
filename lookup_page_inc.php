@@ -31,7 +31,7 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 		$loadContentId = $lookupHash['content_id'];
 	} elseif( !empty( $lookupHash['page'] ) ) {
 		//handle legacy forms that use plain 'page' form variable name
-		
+
 		//if page had some special enities they were changed to HTML for for security reasons.
 		//now we deal only with string so convert it back - so we can support this case:
 		//You&Me --(detoxify in kernel)--> You&amp;Me --(now)--> You&Me
@@ -63,7 +63,6 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 	if( empty( $gContent ) || !is_object( $gContent ) ) {
 		$gContent = new BitPage();
 	}
-
 }
 
 // we weren't passed a structure, but maybe this page belongs to one. let's check...

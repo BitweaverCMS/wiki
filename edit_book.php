@@ -35,7 +35,7 @@ global $gStructure;
 global $gContent;
 if( @BitBase::verifyId( $_REQUEST["structure_id"] ) || @BitBase::verifyId( $_REQUEST["content_id"] ) ) {
 	include_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
-	if( empty( $gContent ) ) {
+	if( empty( $gContent ) ){
 		$gBitSystem->fatalError( 'Error: Invalid structure id, the book you requested could not be found.' );
 	} elseif( empty( $_REQUEST["structure_id"] ) ) {
 		// we were passed a valid content_id. Make sure the root node exists, and if not, create it.

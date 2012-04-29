@@ -97,8 +97,8 @@ class BitPage extends LibertyMime {
 	}
 
 	/**
-	 * load 
-	 * 
+	 * load
+	 *
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
@@ -301,7 +301,7 @@ class BitPage extends LibertyMime {
 				unset( $pParamHash['minor'] );
 			}
 		}
-		
+
 		// if we have an error we get them all by checking parent classes for additional errors
 		if( count( $this->mErrors ) > 0 ){
 			parent::verify( $pParamHash );
@@ -352,11 +352,11 @@ class BitPage extends LibertyMime {
 		}
 		return( $ret );
 	}
-	
+
 	function isCommentable() {
 		global $gBitSystem;
 		return( $gBitSystem->isFeatureActive( 'wiki_comments' ));
-	}	
+	}
 
 	function setLock( $pLock, $pModUserId=NULL ) {
 		if( $this->verifyId( $this->mPageId ) ) {
@@ -438,14 +438,14 @@ class BitPage extends LibertyMime {
 	/**
 	 * Returns the center template for the view selected
 	 */
-	function getViewTemplate( $pAction ){				
+	function getViewTemplate( $pAction ){
 		$ret = null;
 		switch ( $pAction ){
 			case "view":
-				$ret = "bitpackage:wiki/center_wiki_page.tpl"; 
+				$ret = "bitpackage:wiki/center_wiki_page.tpl";
 				break;
 			case "list":
-				$ret = "bitpackage:liberty/center_".$pAction."_generic.tpl"; 
+				$ret = "bitpackage:liberty/center_".$pAction."_generic.tpl";
 				break;
 		}
 		return $ret;
@@ -546,8 +546,8 @@ class BitPage extends LibertyMime {
 	}
 
 	/**
-	 * getList 
-	 * 
+	 * getList
+	 *
 	 * @param array $pListHash array of list parameters
 	 * @param boolean $pListHash['orphans_only'] only return orphan wiki pages
 	 * @param boolean $pListHash['extras'] load extra infrmation such as backlinks and links
@@ -785,10 +785,10 @@ class BitPage extends LibertyMime {
 	}
 
 	/**
-	 * getSubPage 
-	 * 
-	 * @param array $pData 
-	 * @param array $pPageNumber 
+	 * getSubPage
+	 *
+	 * @param array $pData
+	 * @param array $pPageNumber
 	 * @access public
 	 * @return string SubPage
 	 */
@@ -805,8 +805,8 @@ class BitPage extends LibertyMime {
 
 	/**
 	 * getLikePages Like pages are pages that share a word in common with the current page
-	 * 
-	 * @param array $pPageTitle 
+	 *
+	 * @param array $pPageTitle
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */
@@ -840,7 +840,7 @@ class BitPage extends LibertyMime {
 
 	/**
 	 * getStats getStats is always used by the stats package to display various stats of your package.
-	 * 
+	 *
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */
@@ -908,11 +908,11 @@ class BitPage extends LibertyMime {
 
 	// {{{ ==================================== GraphViz wiki graph methods ====================================
 	/**
-	 * linkStructureGraph 
-	 * 
-	 * @param array $pLinkStructure 
-	 * @param array $pParams 
-	 * @param array $pGraphViz 
+	 * linkStructureGraph
+	 *
+	 * @param array $pLinkStructure
+	 * @param array $pParams
+	 * @param array $pGraphViz
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */
@@ -932,11 +932,11 @@ class BitPage extends LibertyMime {
 	}
 
 	/**
-	 * linkStructureMap 
-	 * 
-	 * @param array $pPageName 
-	 * @param int $pLevel 
-	 * @param array $pParams 
+	 * linkStructureMap
+	 *
+	 * @param array $pPageName
+	 * @param int $pLevel
+	 * @param array $pParams
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */
@@ -949,10 +949,10 @@ class BitPage extends LibertyMime {
 	}
 
 	/**
-	 * getLinkStructure 
-	 * 
-	 * @param array $pPageName 
-	 * @param float $pLevel 
+	 * getLinkStructure
+	 *
+	 * @param array $pPageName
+	 * @param float $pLevel
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */
