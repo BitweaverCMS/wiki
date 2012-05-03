@@ -705,7 +705,7 @@ class BitPage extends LibertyMime {
 			$aux['creator'] = (isset( $res['creator_real_name'] ) ? $res['creator_real_name'] : $res['creator_user'] );
 			$aux['editor'] = (isset( $res['modifier_real_name'] ) ? $res['modifier_real_name'] : $res['modifier_user'] );
 			$aux['flag'] = $res["flag"] == 'L' ? 'locked' : 'unlocked';
-			$aux['display_url'] = self::getDisplayUrlFromHash( $aux );
+			$aux['display_url'] = static::getDisplayUrlFromHash( $aux );
 			// display_link does not seem to be used when getList is called
 			//$aux['display_link'] = $this->getDisplayLink( $aux['title'] ); //WIKI_PKG_URL."index.php?page_id=".$res['page_id'];
 			if( !empty( $pListHash['extras'] )) {
@@ -921,7 +921,7 @@ class BitPage extends LibertyMime {
 			$pParams['graph']['URL'] = WIKI_PKG_URL.'index.php';
 			$pGraphViz->addAttributes( $pParams['graph'] );
 			$pLinkStructure['title'] = $pLinkStructure['name'];
-			$pParams['node']['URL'] = self::getDisplayUrlFromHash( $pLinkStructure );
+			$pParams['node']['URL'] = static::getDisplayUrlFromHash( $pLinkStructure );
 			$pGraphViz->addNode( $pLinkStructure['name'], $pParams['node'] );
 
 			foreach( $pLinkStructure['pages'] as $node ) {
