@@ -20,7 +20,7 @@ require_once( WIKI_PKG_PATH.'BitPage.php' );
  */
 class ExportLib extends BitBase {
 	function ExportLib() {
-		BitBase::BitBase();
+		parent::__construct();
 	}
 
 	function MakeWikiZip( $pExportFile ) {

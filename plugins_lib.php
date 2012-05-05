@@ -52,7 +52,7 @@
         * Constructor
         */
         function PluginsLib() {
-			BitBase::BitBase();
+			parent::__construct();
         }
         /**
         * Process the params, in this order:
