@@ -23,7 +23,7 @@ class BitPage extends LibertyMime {
 	var $mPageName;
 
 	function BitPage( $pPageId=NULL, $pContentId=NULL ) {
-		LibertyMime::LibertyMime();
+		parent::__construct();
 		$this->registerContentType( BITPAGE_CONTENT_TYPE_GUID, array(
 				'content_type_guid' => BITPAGE_CONTENT_TYPE_GUID,
 				'content_name' => 'Wiki Page',
