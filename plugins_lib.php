@@ -48,12 +48,7 @@
         */
         var $aInfoPresetNames = array(
         "hits" => "Hits", "last_modified" => "Last mod", "user" => "Last author", "len" => "Size", "comment" => "Com", "creator" => "Creator", "version" => "Last ver", "flag" => "Status", "versions" => "Vers", "links" => "Links", "backlinks" => "Backlinks");
-        /**
-        * Constructor
-        */
-        function PluginsLib() {
-			parent::__construct();
-        }
+
         /**
         * Process the params, in this order:
         * - default values, asigned on {@link PluginsLib::getDefaultArguments()}

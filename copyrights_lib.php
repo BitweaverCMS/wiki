@@ -14,9 +14,6 @@
  * @subpackage CopyrightsLib
  */
 class CopyrightsLib extends BitBase {
-	function CopyrightsLib() {
-		parent::__construct();
-	}
 	function list_copyrights( $pPageId ) {
 		$query = "select * from `".BIT_DB_PREFIX."liberty_copyrights` WHERE `page_id`=? order by ".$this->mDb->convertSortmode( "copyright_order_asc" );
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."liberty_copyrights` WHERE `page_id`=?";
