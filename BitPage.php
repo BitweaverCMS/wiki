@@ -498,7 +498,7 @@ class BitPage extends LibertyMime {
 				} else {
 					$desc = empty( $exists['summary'] ) ? $exists['title'] : $exists['summary'];
 				}
-				$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrlFromHash( $exists['title'] ).'">'.htmlspecialchars( $exists['title'] ).'</a>';
+				$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrlFromHash( $exists ).'">'.htmlspecialchars( $exists['title'] ).'</a>';
 			} else {
 				if( $gBitUser->hasPermission( 'p_wiki_create_page' ) ) {
 					$ret = '<a title="'.tra( "Create the page" ).': '.htmlspecialchars( $pLinkText ).'" href="'.WIKI_PKG_URL.'edit.php?page='.urlencode( $pLinkText ).'" class="create">'.htmlspecialchars( $pLinkText ).'</a>';
