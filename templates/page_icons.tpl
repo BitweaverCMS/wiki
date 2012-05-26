@@ -57,12 +57,12 @@
 		{/if}
 
 		{if $gBitSystem->isFeatureActive( 'users_watches' ) and $gContent->hasUserPermission('p_users_admin')}
-			<a href="{$smarty.const.WIKI_PKG_URL}page_watches.php?page_id={$gContent->mInfo.page_id}">{tr}Watches{/tr}</a>
+			<a href="{$smarty.const.WIKI_PKG_URL}page_watches.php?page_id={$gContent->mInfo.page_id}">{biticon ipackage="icons" iname="system-search" iexplain="Watches"}</a>
 		{/if}
 
-{* seem to be broken 
+{* seem to be broken
 		{if $gBitUser->hasPermission( 'p_wiki_admin' )}
-			<li><a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php?page_id={$gContent->mInfo.page_id}">{tr}Export{/tr}</a></li>
+			<li><a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php?page_id={$gContent->mInfo.page_id}">{biticon ipackage="icons" iname="go-up" iexplain="Export"}</a></li>
 		{/if}
 *}
 
