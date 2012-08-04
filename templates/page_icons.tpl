@@ -29,7 +29,7 @@
 			{/if}
 
 			{if $gBitSystem->isFeatureActive( 'wiki_history' ) and $gContent->hasUserPermission('p_wiki_view_history')}
-				<a href="{$smarty.const.WIKI_PKG_URL}page_history.php?page_id={$gContent->mInfo.page_id}">{biticon ipackage=icons iname="appointment-new" iexplain=History}</a>
+				<a href="{$smarty.const.WIKI_PKG_URL}page_history.php?page_id={$gContent->mInfo.page_id}" rel="nofollow">{biticon ipackage=icons iname="appointment-new" iexplain=History}</a>
 			{/if}
 		{/if}
 
