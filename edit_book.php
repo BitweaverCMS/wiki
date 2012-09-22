@@ -29,7 +29,7 @@ global $gStructure;
 
 /**
  * first pass at trying to bring books up to speed with modern perm checking
- * we initialize an object here since books dont have an include 
+ * we initialize an object here since books dont have an include
  **/
 // get a book instance
 global $gContent;
@@ -41,9 +41,11 @@ if( @BitBase::verifyId( $_REQUEST["structure_id"] ) || @BitBase::verifyId( $_REQ
 		// we were passed a valid content_id. Make sure the root node exists, and if not, create it.
 		$newStructure = new LibertyStructure();
 		// alias => '' is a temporary setting until alias stuff has been removed
-		if( !$newStructure->getNode( NULL, $gContent->mContentId ) ) {
+		if( !$node = $newStructure->getNode( NULL, $gContent->mContentId ) ) {
 			$structureHash = array( 'content_id' => $gContent->mContentId, 'alias' => '' );
 			$_REQUEST["structure_id"] = $newStructure->storeNode( $structureHash );
+		} else {
+			$_REQUEST["structure_id"] = $node['structure_id'];
 		}
 	}
 }else{
