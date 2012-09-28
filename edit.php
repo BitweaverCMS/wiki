@@ -32,12 +32,14 @@ if( ( !empty( $_REQUEST['page'] ) && $_REQUEST['page'] == 'SandBox' ) || ( !empt
 
 if( $wiki_sandbox && !$gBitSystem->isFeatureActive( 'wiki_sandbox' ) ) {
 	$gBitSystem->fatalError( tra( "The SandBox is disabled" ));
-} elseif( !$wiki_sandbox ){
+} elseif( !$wiki_sandbox && $gBitUser->mUserId > 0 ){
 	if( $gContent->isValid() ) {
 		$gContent->verifyUpdatePermission();
 	} else {
 		$gContent->verifyCreatePermission();
 	}
+} else {
+	$gBitSystem->fatalPermission( $gContent->mUpdateContentPerm );
 }
 
 //make comment count for this page available for templates
