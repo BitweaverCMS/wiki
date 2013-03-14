@@ -44,5 +44,8 @@ if( !empty( $_REQUEST['structure_id'] ) ) {
 	}
 
 	include( WIKI_PKG_PATH.'lookup_page_inc.php' );
+	if( $gContent->isValid() ) {
+		$gBitSystem->setCanonicalLink( $gContent->getDisplayUri() );
+	}
 	include( WIKI_PKG_PATH.'display_bitpage_inc.php' );
 }
