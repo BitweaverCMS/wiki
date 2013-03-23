@@ -1,5 +1,6 @@
 <?php
 global $moduleParams, $gContent;
+vd( $moduleParams ); vd( $gContent );
 // Load up the correct wiki page
 $lookupHash['page_id']    = ( !empty( $moduleParams['module_params']['page_id'] )    ? $moduleParams['module_params']['page_id'] : NULL );
 $lookupHash['content_id'] = ( !empty( $moduleParams['module_params']['content_id'] ) ? $moduleParams['module_params']['content_id'] : NULL );

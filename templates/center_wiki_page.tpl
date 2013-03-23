@@ -1,4 +1,5 @@
 {strip}
+{if $gContent}
 <div class="display wiki">
 	<div class="floaticon"> <!-- Actions -->
 		{if $gContent->hasUpdatePermission()}
@@ -22,4 +23,5 @@
 		</div>
 	</div>
 </div>
+{/if}
 {/strip}
