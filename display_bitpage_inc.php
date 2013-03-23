@@ -21,7 +21,7 @@ $gContent->verifyViewPermission();
 
 // Check permissions to access this page
 if( !$gContent->isValid() ) {
-	$gBitSystem->fatalError( tra( 'Page cannot be found' ), NULL, NULL, HttpStatusCodes::HTTP_NOT_FOUND );
+	$gBitSystem->fatalError( tra( 'Page cannot be found' ), NULL, NULL, HttpStatusCodes::HTTP_GONE );
 }
 
 $displayHash = array( 'perm_name' => 'p_wiki_view_page' );
