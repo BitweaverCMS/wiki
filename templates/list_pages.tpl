@@ -20,24 +20,22 @@
 		{/form}
 
 		{form id="checkform"}
-			<div class="navbar">
-				<ul>
-					<li>{biticon ipackage="icons" iname="emblem-symbolic-link" iexplain="sort by"}</li>
-					{if $gBitSystem->isFeatureActive( 'wiki_list_name' )}
-						<li>{smartlink ititle="Page Name" isort="title" icontrol=$listInfo}</li>
-					{/if}
-					{if $gBitSystem->isFeatureActive( 'wiki_list_lastmodif' )}
-						<li>{smartlink ititle="Last Modified" iorder="desc" idefault=1 isort="last_modified" icontrol=$listInfo}</li>
-					{/if}
-					{if $gBitSystem->isFeatureActive( 'wiki_list_creator' )}
-						<li>{smartlink ititle="Author" isort="creator_user" icontrol=$listInfo}</li>
-					{/if}
-					{if $gBitSystem->isFeatureActive( 'wiki_list_user' )}
-						<li>{smartlink ititle="Last Editor" isort="modifier_user" icontrol=$listInfo}</li>
-					{/if}
-					{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='list_sort' serviceHash=$gContent->mInfo}
-				</ul>
-			</div>
+			<ul class="inline navbar">
+				<li>{biticon ipackage="icons" iname="emblem-symbolic-link" iexplain="sort by"}</li>
+				{if $gBitSystem->isFeatureActive( 'wiki_list_name' )}
+					<li>{smartlink ititle="Page Name" isort="title" icontrol=$listInfo}</li>
+				{/if}
+				{if $gBitSystem->isFeatureActive( 'wiki_list_lastmodif' )}
+					<li>{smartlink ititle="Last Modified" iorder="desc" idefault=1 isort="last_modified" icontrol=$listInfo}</li>
+				{/if}
+				{if $gBitSystem->isFeatureActive( 'wiki_list_creator' )}
+					<li>{smartlink ititle="Author" isort="creator_user" icontrol=$listInfo}</li>
+				{/if}
+				{if $gBitSystem->isFeatureActive( 'wiki_list_user' )}
+					<li>{smartlink ititle="Last Editor" isort="modifier_user" icontrol=$listInfo}</li>
+				{/if}
+				{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='list_sort' serviceHash=$gContent->mInfo}
+			</ul>
 
 			<input type="hidden" name="offset" value="{$offset}" />
 			<input type="hidden" name="sort_mode" value="{$sort_mode}" />
