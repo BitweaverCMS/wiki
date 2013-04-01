@@ -11,4 +11,4 @@ include( WIKI_PKG_PATH."lookup_page_inc.php" );
 if( !empty( $moduleParams['title'] )) {
 	$gContent->mInfo['title'] = $moduleParams['title'];
 }
-?>
+
