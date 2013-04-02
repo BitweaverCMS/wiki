@@ -42,7 +42,7 @@
 					<a href="{$smarty.const.BITHELP_PKG_URL}/{$channels[ix].title|escape}/index.html">{biticon ipackage="icons" iname="help-contents" iexplain="view webhelp"}</a>
 				{/if*}
 				{if ($channels[ix].creator_user_id == $gBitUser->mUserId) || $gBitUser->hasPermission( 'p_wiki_admin_book' )}
-					<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?action=remove&structure_id={$channels[ix].structure_id}">{biticon ipackage="icons" iname="edit-delete" iexplain="remove"}</a>
+					<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?action=remove&structure_id={$channels[ix].structure_id}">{booticon iname="icon-trash" ipackage="icons" iexplain="remove"}</a>
 				{/if}
 			</td>
 		</tr>

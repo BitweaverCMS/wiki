@@ -4,23 +4,23 @@
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$gContent->mInfo}
 
 		{if $gBitSystem->isFeatureActive( 'wiki_like_pages' )}
-			<a href="{$smarty.const.WIKI_PKG_URL}like_pages.php?page_id={$gContent->mInfo.page_id}">{biticon ipackage="icons" iname="edit-copy" iexplain="Similar Pages"}</a>
+			<a href="{$smarty.const.WIKI_PKG_URL}like_pages.php?page_id={$gContent->mInfo.page_id}">{booticon iname="icon-copy" ipackage="icons" iexplain="Similar Pages"}</a>
 		{/if}
 
 		{if $gContent->isLocked()}
 			{if $gContent->hasAdminPermission() or ($gContent->isOwner() and $gContent->hasUserPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
-				<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;action=unlock">{biticon ipackage="icons" iname="emblem-readonly" iexplain="Unlock this page"}</a>
+				<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;action=unlock">{booticon iname="icon-lock" ipackage="icons" iexplain="Unlock this page"}</a>
 			{else}
-				{biticon ipackage="icons" iname="emblem-readonly" iexplain="Locked"}
+				{booticon iname="icon-lock" ipackage="icons" iexplain="Locked"}
 			{/if}
 		{else}
 			{assign var=format_guid value=$gContent->mInfo.format_guid}
 			{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y' or $gContent->hasAdminPermission()}
 				{if $gContent->hasUpdatePermission() or $gContent->mInfo.title eq 'SandBox'}
 					{if $gContent->hasAdminPermission() or ($gContent->isOwner() and $gContent->hasUserPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
-						<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;action=lock">{biticon ipackage="icons" iname="emblem-readonly" iexplain="Lock this page"}</a>
+						<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;action=lock">{booticon iname="icon-lock" ipackage="icons" iexplain="Lock this page"}</a>
 					{/if}
-					<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$gContent->mInfo.page_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="Edit"}</a>
+					<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$gContent->mInfo.page_id}">{booticon iname="icon-edit" ipackage="icons" iexplain="Edit"}</a>
 				{/if}
 			{/if}
 
@@ -29,7 +29,7 @@
 			{/if}
 
 			{if $gBitSystem->isFeatureActive( 'wiki_history' ) and $gContent->hasUserPermission('p_wiki_view_history')}
-				<a href="{$smarty.const.WIKI_PKG_URL}page_history.php?page_id={$gContent->mInfo.page_id}" rel="nofollow">{biticon ipackage=icons iname="appointment-new" iexplain=History}</a>
+				<a href="{$smarty.const.WIKI_PKG_URL}page_history.php?page_id={$gContent->mInfo.page_id}" rel="nofollow">{booticon iname="icon-time" ipackage="icons" iexplain=History}</a>
 			{/if}
 		{/if}
 
@@ -62,7 +62,7 @@
 
 {* seem to be broken
 		{if $gBitUser->hasPermission( 'p_wiki_admin' )}
-			<li><a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php?page_id={$gContent->mInfo.page_id}">{biticon ipackage="icons" iname="go-up" iexplain="Export"}</a></li>
+			<li><a href="{$smarty.const.WIKI_PKG_URL}export_wiki_pages.php?page_id={$gContent->mInfo.page_id}">{booticon iname="icon-cloud-upload" ipackage="icons" iexplain="Export"}</a></li>
 		{/if}
 *}
 
@@ -76,7 +76,7 @@
 
 		{if $gContent->mInfo.title ne 'SandBox' && !$gContent->isLocked()}
 			{if $gContent->isOwner() || $gContent->hasUserPermission( 'p_wiki_remove_page' )}
-				<a title="{tr}remove this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}remove_page.php?page_id={$gContent->mInfo.page_id}&amp;version=last">{biticon ipackage="icons" iname="edit-delete" iexplain="Delete"}</a>
+				<a title="{tr}remove this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}remove_page.php?page_id={$gContent->mInfo.page_id}&amp;version=last">{booticon iname="icon-trash" ipackage="icons" iexplain="Delete"}</a>
 			{/if}
 		{/if}
 
