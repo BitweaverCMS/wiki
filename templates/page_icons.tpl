@@ -34,9 +34,9 @@
 		{/if}
 
 		{if ($structureInfo.structure_id) && ($gStructure->mInfo.creator_user_id == $gBitUser->mUserId || $gContent->hasUserPermission( 'p_wiki_admin_book' ))}
-			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$structureInfo.structure_id}">{biticon ipackage="icons" iname="emblem-system" iexplain="Edit book"}</a>
+			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$structureInfo.structure_id}">{booticon iname="icon-cogs"  ipackage="icons"  iexplain="Edit book"}</a>
 		{elseif is_a($gContent,'BitBook')}
-			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?content_id={$gContent->mContentId}">{biticon ipackage="icons" iname="emblem-system" iexplain="Edit book"}</a>
+			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?content_id={$gContent->mContentId}">{booticon iname="icon-cogs"  ipackage="icons"  iexplain="Edit book"}</a>
 		{/if}
 
 		{if $gBitSystem->isFeatureActive( 'wiki_uses_s5' )}

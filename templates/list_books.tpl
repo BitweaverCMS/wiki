@@ -24,7 +24,7 @@
 			</td>
 			<td class="actionicon">
 				{if ($channels[ix].creator_user_id == $gBitUser->mUserId) || $gBitUser->hasPermission( 'p_wiki_admin_book' )}
-					<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$channels[ix].structure_id}">{biticon ipackage="icons" iname="emblem-system" iexplain="edit book"}</a>
+					<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$channels[ix].structure_id}">{booticon iname="icon-cogs"  ipackage="icons"  iexplain="edit book"}</a>
 				{/if}
 {* remove for now because it's broken, and I can't find reason to fix - spiderr
 				<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?action=export&structure_id={$channels[ix].structure_id}">{biticon ipackage="icons" iname="document-save-as" iexplain="export pages"}</a>
