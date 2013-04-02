@@ -11,7 +11,7 @@
 	<div class="body">
 		{form class="minifind" legend="find in entries"}
 			<input type="hidden" name="sort_mode" value="{$sort_mode}" />
-			{biticon ipackage="icons" iname="edit-find" iexplain="Search"} &nbsp;
+			{booticon iname="icon-search"  ipackage="icons"  iexplain="Search"} &nbsp;
 			<label>{tr}Title{/tr}:&nbsp;<input size="16" type="text" name="find_title" value="{$find_title|default:$smarty.request.find_title|escape}" /></label> &nbsp;
 			<label>{tr}Author{/tr}:&nbsp;<input size="10" type="text" name="find_author" value="{$find_author|default:$smarty.request.find_author|escape}" /></label> &nbsp;
 			<label>{tr}Last Editor{/tr}:&nbsp;<input size="10" type="text" name="find_last_editor" value="{$find_last_editor|default:$smarty.request.find_last_editor|escape}" /></label> &nbsp;

@@ -20,7 +20,7 @@
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}orphan_pages.php">{booticon iname="icon-search" iexplain="Orphan Pages" ilocation=menu}</a></li>
 	{/if}
 	{if $gBitSystem->isFeatureActive( 'wiki_multiprint' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
-		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}print_pages.php">{biticon iname="document-print" iexplain="Print" ilocation=menu}</a></li>
+		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}print_pages.php">{booticon iname="icon-print"   iexplain="Print" ilocation=menu}</a></li>
 	{/if}
 	{if $gBitUser->hasPermission( 'p_wiki_list_pages' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}rankings.php">{booticon iname="icon-list" iexplain=$pkgNameWS|cat:"Rankings" ilocation=menu}</a></li>
