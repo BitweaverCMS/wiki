@@ -32,7 +32,7 @@
 *}
 				{if $gBitUser->isAdmin()}
 					{if $gBitSystem->isPackageActive( 'nexus' )}
-						<a href="{$smarty.const.NEXUS_PKG_URL}menus.php?structure_id={$channels[ix].structure_id}&amp;action=convert_structure">{biticon ipackage="icons" iname="folder-remote" iexplain="create menu from structure"}</a>
+						<a href="{$smarty.const.NEXUS_PKG_URL}menus.php?structure_id={$channels[ix].structure_id}&amp;action=convert_structure">{booticon iname="icon-sitemap"  ipackage="icons"  iexplain="create menu from structure"}</a>
 					{/if}
 					{* remove this feature for now - needs fixing or 'real' removal
 					<a href="{$smarty.const.WIKI_PKG_URL}create_webhelp.php?structure_id={$channels[ix].structure_id}">{biticon ipackage="icons" iname="help-browser" iexplain="create webhelp"}</a>
