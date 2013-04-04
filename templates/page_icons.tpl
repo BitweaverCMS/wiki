@@ -16,9 +16,9 @@
 		{else}
 			{assign var=format_guid value=$gContent->mInfo.format_guid}
 			{if $gLibertySystem->mPlugins.$format_guid.is_active eq 'y' or $gContent->hasAdminPermission()}
-				{if $gContent->hasUpdatePermission() or $gContent->mInfo.title eq 'SandBox'}
+				{if $gContent->hasUpdatePermission()}
 					{if $gContent->hasAdminPermission() or ($gContent->isOwner() and $gContent->hasUserPermission( 'p_wiki_lock_page' ) and $gBitSystem->isFeatureActive( 'wiki_usrlock' ))}
-						<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;action=lock">{booticon iname="icon-lock" ipackage="icons" iexplain="Lock this page"}</a>
+						<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;action=lock">{booticon iname="icon-unlock" ipackage="icons" iexplain="Lock this page"}</a>
 					{/if}
 					<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$gContent->mInfo.page_id}">{booticon iname="icon-edit" ipackage="icons" iexplain="Edit"}</a>
 				{/if}
@@ -35,7 +35,7 @@
 
 		{if ($structureInfo.structure_id) && ($gStructure->mInfo.creator_user_id == $gBitUser->mUserId || $gContent->hasUserPermission( 'p_wiki_admin_book' ))}
 			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$structureInfo.structure_id}">{booticon iname="icon-cogs"  ipackage="icons"  iexplain="Edit book"}</a>
-		{elseif is_a($gContent,'BitBook')}
+		{elseif is_a($gContent,'BitBook') && $gContent->hasUpdatePermission()}
 			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?content_id={$gContent->mContentId}">{booticon iname="icon-cogs"  ipackage="icons"  iexplain="Edit book"}</a>
 		{/if}
 
