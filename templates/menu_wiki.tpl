@@ -31,12 +31,5 @@
 	{if $gBitSystem->isFeatureActive( 'wiki_sandbox' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}edit.php?page=SandBox">{booticon iname="icon-lightbulb" iexplain="Sandbox" ilocation=menu}</a></li>
 	{/if}
-
-	{*if $gBitUser->hasPermission( 'p_xmlrpc_send_content' ) and $gBitSystem->isFeatureActive( 'feature_comm' )}
-		<li><a class="item" href="{$smarty.const.XMLRPC_PKG_URL}send_objects.php">{biticon ipackage=liberty iname=spacer iexplain="Send pages" ilocation=menu}</a></li>
-	{/if}
-	{if $gBitUser->hasPermission( 'p_xmlrpc_admin_content' ) and $gBitSystem->isFeatureActive( 'feature_comm' )}
-		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}received_pages.php">{biticon ipackage=liberty iname=spacer iexplain="Recieved pages" ilocation=menu}</a></li>
-	{/if*}
 </ul>
 {/strip}
