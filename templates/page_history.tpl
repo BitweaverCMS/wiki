@@ -109,7 +109,7 @@
 
 			{if $gBitUser->hasPermission( 'p_wiki_remove_page' )}
 				<div style="text-align:right;">
-					<input type="submit" name="delete" value="{tr}Delete selected versions{/tr}" />
+					<input type="submit" class="btn" name="delete" value="{tr}Delete selected versions{/tr}" />
 				</div>
 			{/if}
 		{/form}

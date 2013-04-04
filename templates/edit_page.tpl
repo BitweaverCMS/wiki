@@ -57,7 +57,7 @@
 			<div class="admin box">{tr}The SandBox is a page where you can practice your editing skills, use the preview feature to preview the appeareance of the page, no versions are stored for this page.{/tr}</div>
 		{/if}
 
-		{form enctype="multipart/form-data" id="editpageform"}
+		{form class="form-horizontal" enctype="multipart/form-data" id="editpageform"}
 			{jstabs}
 				{jstab title="Body"}
 					{legend legend="`$editLabel` Body"}
@@ -69,7 +69,7 @@
 							{formlabel label="$conDescr Title" for="title"}
 							{forminput}
 								{if $gBitUser->hasPermission( 'p_wiki_rename_page' ) || !$pageInfo.page_id}
-									<input type="text" size="50" maxlength="200" name="title" id="title" value="{$pageInfo.title|escape}" />
+									<input type="text" class="input-block-level" size="50" maxlength="200" name="title" id="title" value="{$pageInfo.title|escape}" />
 								{else}
 									{$page} {$pageInfo.title|escape}
 								{/if}
@@ -80,7 +80,7 @@
 							<div class="control-group">
 								{formlabel label="Summary" for="summary"}
 								{forminput}
-									<input size="50" type="text" name="summary" id="summary" value="{$pageInfo.summary|escape:html}" />
+									<input size="50" type="text" class="input-block-level" name="summary" id="summary" value="{$pageInfo.summary|escape:html}" />
 									{formhelp note="Brief description of the page. This is visible when you hover over a link to this page and just below the title of the wiki page."}
 								{/forminput}
 							</div>
@@ -96,7 +96,7 @@
 							<div class="control-group">
 								{formlabel label="Footnotes" for="footnote"}
 								{forminput}
-									<textarea name="footnote" id="footnote" rows="8" cols="50">{$footnote|escape}</textarea>
+									<textarea class="input-block-level" name="footnote" id="footnote" rows="8">{$footnote|escape}</textarea>
 									{formhelp note=""}
 								{/forminput}
 							</div>
@@ -106,7 +106,7 @@
 							<div class="control-group">
 								{formlabel label="Comment" for="edit_comment"}
 								{forminput}
-									<input size="50" type="text" name="edit_comment" id="edit_comment" value="{$pageInfo.edit_comment}" />
+									<input size="50" type="text" class="input-block-level" name="edit_comment" id="edit_comment" value="{$pageInfo.edit_comment}" />
 									{formhelp note="Add a comment to illustrate your most recent changes."}
 								{/forminput}
 							</div>
@@ -125,12 +125,6 @@
 						{include file="bitpackage:liberty/edit_content_alias_inc.tpl"}
 
 						{include file="bitpackage:liberty/edit_services_inc.tpl" serviceFile="content_edit_mini_tpl"}
-
-						<div class="control-group submit">
-							<input type="submit" name="fCancel" value="{tr}Cancel{/tr}" />&nbsp;
-							<input type="submit" name="preview" value="{tr}Preview{/tr}" />&nbsp;
-							<input type="submit" name="fSavePage" value="{tr}Save{/tr}" />
-						</div>
 
 						{if $gBitSystem->isFeatureActive( 'wiki_attachments' )}
 							{include file="bitpackage:liberty/edit_storage_list.tpl"}
@@ -155,21 +149,21 @@
 								<div class="control-group">
 									{formlabel label="Title" for="copyrightTitle"}
 									{forminput}
-										<input size="40" type="text" name="copyrightTitle" id="copyrightTitle" value="{$copyrightTitle|escape}" />
+										<input size="40" type="text" class="input-block-level" name="copyrightTitle" id="copyrightTitle" value="{$copyrightTitle|escape}" />
 									{/forminput}
 								</div>
 
 								<div class="control-group">
 									{formlabel label="Authors" for="copyrightAuthors"}
 									{forminput}
-										<input size="40" type="text" name="copyrightAuthors" id="copyrightAuthors" value="{$copyrightAuthors|escape}" />
+										<input size="40" type="text" class="input-block-level" name="copyrightAuthors" id="copyrightAuthors" value="{$copyrightAuthors|escape}" />
 									{/forminput}
 								</div>
 
 								<div class="control-group">
 									{formlabel label="Year" for="copyrightYear"}
 									{forminput}
-										<input size="4" type="text" name="copyrightYear" id="copyrightYear" value="{$copyrightYear|escape}" />
+										<input size="4" type="text" class="input-block-level" name="copyrightYear" id="copyrightYear" value="{$copyrightYear|escape}" />
 									{/forminput}
 								</div>
 
@@ -201,7 +195,7 @@
 							<div class="control-group">
 								{formlabel label="Import HTML from URL" for="suck_url"}
 								{forminput}
-									<input type="text" size="50" name="suck_url" id="suck_url" value="{$suck_url|escape}" />
+									<input type="text" class="input-block-level" size="50" name="suck_url" id="suck_url" value="{$suck_url|escape}" />
 									{formhelp note=""}
 								{/forminput}
 							</div>
@@ -225,12 +219,18 @@
 						*}
 
 							<div class="control-group submit">
-								<input type="submit" name="do_suck" value="{tr}Import{/tr}" />
+								<input type="submit" class="btn" name="do_suck" value="{tr}Import{/tr}" />
 							</div>
 						{/legend}
 					{/jstab}
 				{/if}
 			{/jstabs}
+			<div class="control-group submit">
+				{forminput}
+					<input type="submit" class="btn btn-primary" name="fSavePage" value="{tr}Save{/tr}" /> <input type="submit" class="btn pull-right" name="fCancel" value="{tr}Cancel{/tr}" /> <input type="submit" class="btn" name="preview" value="{tr}Preview{/tr}" />
+				{/forminput}
+			</div>
+
 		{/form}
 	</div><!-- end .body -->
 </div><!-- end .admin -->

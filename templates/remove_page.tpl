@@ -34,7 +34,7 @@
 			</div>
 
 			<div class="control-group submit">
-				<input type="submit" name="remove" value="{tr}remove{/tr}" />
+				<input type="submit" class="btn" name="remove" value="{tr}remove{/tr}" />
 			</div>
 		{/form}
 	</div> <!-- end .body -->

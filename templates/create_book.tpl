@@ -26,7 +26,7 @@
 			</div>
 
 			<div class="control-group submit">
-				<input type="submit" value="{tr}Create new book{/tr}" name="createstructure" />
+				<input type="submit" class="btn" value="{tr}Create new book{/tr}" name="createstructure" />
 			</div>
 		{/form}
 	</div><!-- end .body -->
