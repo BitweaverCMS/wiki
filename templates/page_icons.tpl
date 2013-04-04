@@ -81,12 +81,18 @@
 		{/if}
 
 		{if $gBitSystem->isFeatureActive( 'wiki_backlinks' ) and $backlinks}
-			<select id="sel-backlinks" name="page" onchange="javascript:BitBase.go(this)">
-				<option value="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}">{tr}Backlinks{/tr} &hellip;</option>
+
+<div class="btn-group">
+    <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+      <i class="icon-link"></i>
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
 				{foreach key=contentId item=backPage from=$backlinks}
-					<option value="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$contentId}">{$backPage|truncate:30:"&hellip":true}</option>
+					<li><a href="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$contentId}">{$backPage|escape|truncate:30:"&hellip":true}</a></li>
 				{/foreach}
-			</select>
+    </ul>
+  </div>
 		{/if}
 
 		{if count($showstructs) gt 0}
