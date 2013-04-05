@@ -81,18 +81,17 @@
 		{/if}
 
 		{if $gBitSystem->isFeatureActive( 'wiki_backlinks' ) and $backlinks}
-
-<div class="btn-group">
-    <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
-      <i class="icon-link"></i>
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-				{foreach key=contentId item=backPage from=$backlinks}
-					<li><a href="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$contentId}">{$backPage|escape|truncate:30:"&hellip":true}</a></li>
-				{/foreach}
-    </ul>
-  </div>
+			<div class="btn-group">
+				<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+				  <i class="icon-link"></i>
+				  <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu pull-right">
+					{foreach key=contentId item=backPage from=$backlinks}
+						<li><a href="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$contentId}">{$backPage|escape|truncate:30:"&hellip":true}</a></li>
+					{/foreach}
+				</ul>
+			  </div>
 		{/if}
 
 		{if count($showstructs) gt 0}
