@@ -7,10 +7,10 @@
 
 			{foreach from=$formWikiFeatures key=item item=output}
 				<div class="control-group">
-					{formlabel label=`$output.label` for=$item}
+					{formlabel label=$output.label for=$item}
 					{forminput}
 						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
-						{formhelp note=`$output.note` page=`$output.page`}
+						{formhelp note=$output.note page=$output.page}
 					{/forminput}
 				</div>
 			{/foreach}
@@ -50,10 +50,10 @@
 
 			{foreach from=$formWikiBooks key=item item=output}
 				<div class="control-group">
-					{formlabel label=`$output.label` for=$item}
+					{formlabel label=$output.label for=$item}
 					{forminput}
 						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
-						{formhelp note=`$output.note` page=`$output.page`}
+						{formhelp note=$output.note page=$output.page}
 					{/forminput}
 				</div>
 			{/foreach}
@@ -69,10 +69,10 @@
 
 			{foreach from=$formWikiInOut key=item item=output}
 				<div class="control-group">
-					{formlabel label=`$output.label` for=$item}
+					{formlabel label=$output.label for=$item}
 					{forminput}
 						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
-						{formhelp note=`$output.note` page=`$output.page`}
+						{formhelp note=$output.note page=$output.page}
 					{/forminput}
 				</div>
 			{/foreach}
@@ -88,10 +88,10 @@
 
 			{foreach from=$formWikiLists key=item item=output}
 				<div class="control-group">
-					{formlabel label=`$output.label` for=$item}
+					{formlabel label=$output.label for=$item}
 					{forminput}
 						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
-						{formhelp note=`$output.note` page=`$output.page`}
+						{formhelp note=$output.note page=$output.page}
 					{/forminput}
 				</div>
 			{/foreach}
@@ -182,10 +182,10 @@
 
 				{foreach from=$formWikiWatch key=item item=output}
 					<div class="control-group">
-						{formlabel label=`$output.label` for=$item}
+						{formlabel label=$output.label for=$item}
 						{forminput}
 							{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
-							{formhelp note=`$output.note` page=`$output.page`}
+							{formhelp note=$output.note page=$output.page}
 						{/forminput}
 					</div>
 				{/foreach}

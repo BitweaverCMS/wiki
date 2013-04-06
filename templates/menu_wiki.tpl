@@ -1,6 +1,6 @@
 {strip}
-{assign var=pkgNameWS value=$gBitSystem->getConfig(wiki_menu_text)|default:"Wiki"|cat:" "}
-<ul>
+<a class="dropdown-toggle" data-toggle="dropdown" href="#"> {tr}{$packageMenuTitle}{/tr} <b class="caret"></b></a>
+<ul class="dropdown-menu">
 	{if $gBitUser->hasPermission( 'p_wiki_view_page' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}index.php">{booticon iname="icon-home" iexplain=$pkgNameWS|cat:"Home" ilocation=menu}</a></li>
 	{/if}

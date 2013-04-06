@@ -9,7 +9,7 @@
 	<div class="body">
 		{form legend="Create new Wiki Book"}
 			<div class="control-group">
-				{formfeedback error=`$errors.title`}
+				{formfeedback error=$errors.title}
 				{formlabel label="Book Title" for="name"}
 				{forminput}
 					<input type="text" name="name" id="name" size="50" maxlength="240" value="{$name}"/>

@@ -71,7 +71,7 @@
 				<tr class="odd">
 					<td colspan="4">
 						<a href="{$gContent->mInfo.display_url}">{tr}Current{/tr}</a>
-						&nbsp;&bull;&nbsp;{smartlink ititle="Source" page_id=`$gContent->mPageId` source="current"}
+						&nbsp;&bull;&nbsp;{smartlink ititle="Source" page_id=$gContent->mPageId source="current"}
 					</td>
 				</tr>
 
@@ -84,12 +84,12 @@
 					</tr>
 					<tr class="{cycle values='even,odd'}">
 						<td colspan="3">
-							{smartlink ititle="View" page_id=`$gContent->mPageId` preview=`$item.version`}
-							&nbsp;&bull;&nbsp;{smartlink ititle="Compare" page_id=`$gContent->mPageId` compare=`$item.version`}
-							&nbsp;&bull;&nbsp;{smartlink ititle="Difference" page_id=`$gContent->mPageId` diff2=`$item.version`}
-							&nbsp;&bull;&nbsp;{smartlink ititle="Source" page_id=`$gContent->mPageId` source=`$item.version`}
+							{smartlink ititle="View" page_id=$gContent->mPageId preview=$item.version}
+							&nbsp;&bull;&nbsp;{smartlink ititle="Compare" page_id=$gContent->mPageId compare=$item.version}
+							&nbsp;&bull;&nbsp;{smartlink ititle="Difference" page_id=$gContent->mPageId diff2=$item.version}
+							&nbsp;&bull;&nbsp;{smartlink ititle="Source" page_id=$gContent->mPageId source=$item.version}
 							{if $gBitUser->hasPermission( 'p_wiki_rollback' )}
-								&nbsp;&bull;&nbsp;{smartlink ititle="Rollback" page_id=`$gContent->mPageId` rollback=`$item.version`}
+								&nbsp;&bull;&nbsp;{smartlink ititle="Rollback" page_id=$gContent->mPageId rollback=$item.version}
 							{/if}
 						</td>
 						<td style="text-align:right;">
