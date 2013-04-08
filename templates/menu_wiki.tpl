@@ -1,5 +1,4 @@
 {strip}
-=======
 <a class="dropdown-toggle" data-toggle="dropdown" href="#"> {tr}{$packageMenuTitle}{/tr} <b class="caret"></b></a>
 <ul class="dropdown-menu">
 	{if $gBitUser->hasPermission( 'p_wiki_view_page' )}
