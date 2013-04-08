@@ -1,6 +1,7 @@
 {strip}
-<a accesskey="{$key|truncate:1:""}" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} selected{/if}" href="{$menu.index_url}">{tr}{$menu.menu_title}{/tr}</a>
-<ul>
+=======
+<a class="dropdown-toggle" data-toggle="dropdown" href="#"> {tr}{$packageMenuTitle}{/tr} <b class="caret"></b></a>
+<ul class="dropdown-menu">
 	{if $gBitUser->hasPermission( 'p_wiki_view_page' )}
 		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}index.php">{booticon iname="icon-home" iexplain="`$smarty.const.WIKI_PKG_DIR` Home" ilocation=menu}</a></li>
 	{/if}
