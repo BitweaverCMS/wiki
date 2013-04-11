@@ -26,6 +26,6 @@ if( $gBitUser->hasPermission( 'p_wiki_view_page' ) ) {
 		'user_id' => !empty( $module_params['user_pages'] ) ? $gQueryUser->mUserId : NULL,
 	);
 	$modRank = $modWiki->getList( $listHash );
-	$gBitSmarty->assign( 'modTopPages', $modRank );
+	$_template->tpl_vars['modTopPages'] = new Smarty_variable( $modRank );
 }
 ?>
