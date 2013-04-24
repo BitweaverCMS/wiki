@@ -32,7 +32,7 @@
 <br />
 
 {if $result eq 'y'}
-<table class="data">
+<table class="table data">
 <tr>
   <th>{tr}Page{/tr}</th>
   <th>{tr}version{/tr}</th>

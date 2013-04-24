@@ -110,7 +110,6 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	//array( WIKI_PKG_NAME, 'wiki_preserve_leading_blanks','n'),
 	//array( WIKI_PKG_NAME, 'wiki_ranking','n'),
 	array( WIKI_PKG_NAME, 'wiki_rankings','y'),
-	array( WIKI_PKG_NAME, 'wiki_sandbox','y'),
 	//array( WIKI_PKG_NAME, 'wiki_section_edit','n'),
 	//array( WIKI_PKG_NAME, 'wiki_submit_notice',''),
 	array( WIKI_PKG_NAME, 'wiki_tables','new'),

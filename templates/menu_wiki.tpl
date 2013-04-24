@@ -28,8 +28,5 @@
 	{if $gBitSystem->isPackageActive( 'rss' )}
 	<li><a title="{tr}Wiki Update RSS Feed{/tr}" href="{$smarty.const.RSS_PKG_URL}index.php?pkg=wiki">{booticon iname="icon-rss" ipackage=rss iexplain="Changes Feed" ilocation=menu}</a></li>
 	{/if}
-	{if $gBitSystem->isFeatureActive( 'wiki_sandbox' ) and $gBitUser->hasPermission( 'p_wiki_view_page' )}
-		<li><a class="item" href="{$smarty.const.WIKI_PKG_URL}edit.php?page=SandBox">{booticon iname="icon-lightbulb" iexplain="Sandbox" ilocation=menu}</a></li>
-	{/if}
 </ul>
 {/strip}

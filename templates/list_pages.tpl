@@ -44,7 +44,7 @@
 
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='list_options'}
 
-			<table class="data">
+			<table class="table data">
 				<caption>{tr}WikiPages Listing{/tr} <span class="total">[ {$listInfo.total_records} ]</span></caption>
 				<tr>
 					{*  at the moment, the only working option to use the checkboxes for is deleting pages. so for now the checkboxes are visible iff $p_wiki_remove_page is set. Other applications make sense as well (categorize, convert to pdf, etc). Add necessary corresponding permission here: *}

@@ -18,7 +18,7 @@
 </form>
 
 <h2>{tr}External Wiki{/tr}</h2>
-<table class="data">
+<table class="table data">
 <tr>
 <th><a href="{$smarty.const.WIKI_PKG_URL}admin/admin_external_wikis.php?offset={$offset}&amp;sort_mode={if $sort_mode eq 'name_desc'}name_asc{else}name_desc{/if}">{tr}name{/tr}</a></th>
 <th><a href="{$smarty.const.WIKI_PKG_URL}admin/admin_external_wikis.php?offset={$offset}&amp;sort_mode={if $sort_mode eq 'extwiki_desc'}extwiki_asc{else}extwiki_desc{/if}">{tr}extwiki{/tr}</a></th>
