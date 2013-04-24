@@ -25,7 +25,7 @@
 			{/if}
 
 			{if $gBitSystem->isFeatureActive( 'wiki_undo' ) and $gContent->hasUserPermission('p_wiki_rollback')}
-				<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;undo=1">{biticon ipackage=icons iname=edit-undo iexplain="Undo last edit"}</a>
+				<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;undo=1">{booticon ipackage=icons iname=icon-undo iexplain="Undo last edit"}</a>
 			{/if}
 
 			{if $gBitSystem->isFeatureActive( 'wiki_history' ) and $gContent->hasUserPermission('p_wiki_view_history')}
@@ -40,7 +40,7 @@
 		{/if}
 
 		{if $gBitSystem->isFeatureActive( 'wiki_uses_s5' )}
-			<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;s5=1">{biticon ipackage="icons" iname="x-office-presentation" iexplain="s5 slideshow"}</a>
+			<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;s5=1">{booticon ipackage="icons" iname="icon-facetime-video" iexplain="s5 slideshow"}</a>
 		{/if}
 
 		{* we hide this link from browsers that can interpret css since we use css to determine what is printed and what not *}
@@ -50,14 +50,14 @@
 
 		{if $gBitUser->isRegistered() and $gBitUser->mUserId && $gBitSystem->isFeatureActive( 'users_watches' ) }
 			{if $user_watching_page eq 'y'}
-				<a title="{tr}stop monitoring this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;watch_event=wiki_page_changed&amp;watch_object={$gContent->mInfo.page_id}&amp;watch_action=remove">{biticon ipackage="icons" iname="weather-clear-night" iexplain="Stop monitoring"}</a>
+				<a title="{tr}stop monitoring this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;watch_event=wiki_page_changed&amp;watch_object={$gContent->mInfo.page_id}&amp;watch_action=remove">{booticon ipackage="icons" iname="icon-eye-close" iexplain="Stop monitoring"}</a>
 			{else}
-				<a title="{tr}monitor this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;watch_event=wiki_page_changed&amp;watch_object={$gContent->mInfo.page_id}&amp;watch_action=add">{booticon iname="icon-asterisk"  ipackage="icons"  iexplain="Monitor"}</a>
+				<a title="{tr}monitor this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;watch_event=wiki_page_changed&amp;watch_object={$gContent->mInfo.page_id}&amp;watch_action=add">{booticon iname="icon-eye"  ipackage="icons"  iexplain="Monitor"}</a>
 			{/if}
 		{/if}
 
 		{if $gBitSystem->isFeatureActive( 'users_watches' ) and $gContent->hasUserPermission('p_users_admin')}
-			<a href="{$smarty.const.WIKI_PKG_URL}page_watches.php?page_id={$gContent->mInfo.page_id}">{biticon ipackage="icons" iname="system-search" iexplain="Watches"}</a>
+			<a href="{$smarty.const.WIKI_PKG_URL}page_watches.php?page_id={$gContent->mInfo.page_id}">{booticon ipackage="icons" iname="icon-user" iexplain="Watches"}</a>
 		{/if}
 
 {* seem to be broken
@@ -68,9 +68,9 @@
 
 		{if $gBitSystem->isFeatureActive( 'wiki_uses_slides' )}
 			{if $show_slideshow eq 'y'}
-				<a href="{$smarty.const.WIKI_PKG_URL}slideshow.php?page_id={$gContent->mInfo.page_id}">{biticon ipackage="icons" iname="x-office-presentation" iexplain="Slideshow"}</a>
+				<a href="{$smarty.const.WIKI_PKG_URL}slideshow.php?page_id={$gContent->mInfo.page_id}">{booticon ipackage="icons" iname="icon-facetime-video" iexplain="Slideshow"}</a>
 			{elseif $structure eq 'y'}
-				<a href="{$smarty.const.WIKI_PKG_URL}slideshow2.php?structure_id={$page_info.structure_id}">{biticon ipackage="icons" iname="x-office-presentation" iexplain="Slideshow"}</a>
+				<a href="{$smarty.const.WIKI_PKG_URL}slideshow2.php?structure_id={$page_info.structure_id}">{booticon ipackage="icons" iname="icon-facetime-video" iexplain="Slideshow"}</a>
 			{/if}
 		{/if}
 

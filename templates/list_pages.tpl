@@ -170,7 +170,7 @@
 								{if $listpages[changes].flag eq 'locked'}
 									{booticon iname="icon-lock" ipackage="icons" iexplain="locked"}
 								{else}
-									{biticon ipackage="icons" iname="emblem-default" iexplain="unlocked"}
+									{booticon ipackage="icons" iname="icon-asterisk" iexplain="unlocked"}
 								{/if}
 							</td>
 						{/if}
