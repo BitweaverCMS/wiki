@@ -2,22 +2,22 @@
 <div class="floaticon">{bithelp}</div>
 
 <div class="listing wiki">
-	<div class="header">
+	<header>
+		<div class="floaticon">
+		{form class="form-inline" }
+			<input type="hidden" name="sort_mode" value="{$sort_mode}" />
+			{booticon iname="icon-search"  ipackage="icons"  iexplain="Search"}  
+			<label>{tr}Title{/tr}: <input class="input-small" type="text" name="find_title" value="{$find_title|default:$smarty.request.find_title|escape}" /></label>  <label>{tr}Author{/tr}: <input class="input-small" type="text" name="find_author" value="{$find_author|default:$smarty.request.find_author|escape}" /></label> <label>{tr}Last Editor{/tr}: <input class="input-small" type="text" name="find_last_editor" value="{$find_last_editor|default:$smarty.request.find_last_editor|escape}" /></label>  <input type="submit" class="btn btn-mini" name="search" value="{tr}Find{/tr}" /> 
+		{/form}
+		</div>
 		<h1>{tr}{$gBitSystem->getBrowserTitle()}{/tr}</h1>
-	</div>
+	</header>
+
+	{pagination}
 
 	{formfeedback error=$errors}
 
 	<div class="body">
-		{form class="minifind" legend="find in entries"}
-			<input type="hidden" name="sort_mode" value="{$sort_mode}" />
-			{booticon iname="icon-search"  ipackage="icons"  iexplain="Search"} &nbsp;
-			<label>{tr}Title{/tr}:&nbsp;<input size="16" type="text" name="find_title" value="{$find_title|default:$smarty.request.find_title|escape}" /></label> &nbsp;
-			<label>{tr}Author{/tr}:&nbsp;<input size="10" type="text" name="find_author" value="{$find_author|default:$smarty.request.find_author|escape}" /></label> &nbsp;
-			<label>{tr}Last Editor{/tr}:&nbsp;<input size="10" type="text" name="find_last_editor" value="{$find_last_editor|default:$smarty.request.find_last_editor|escape}" /></label> &nbsp;
-			<input type="submit" class="btn" name="search" value="{tr}Find{/tr}" />&nbsp;
-			<input type="button" onclick="location.href='{$smarty.server.SCRIPT_NAME}{if $hidden}?{/if}{foreach from=$hidden item=value key=name}{$name}={$value}&amp;{/foreach}'" value="{tr}Reset{/tr}" />
-		{/form}
 
 		{form id="checkform"}
 			<ul class="inline navbar">
@@ -200,9 +200,7 @@
 						{if $gBitUser->hasPermission( 'p_wiki_update_page' )}
 							<td class="actionicon">
 								<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$listpages[changes].page_id}">{booticon iname="icon-edit" ipackage="icons" iexplain="edit"}</a>
-								{if $checkboxes_on eq 'y'}
-									<input type="checkbox" name="checked[]" value="{$listpages[changes].page_id}" />
-								{/if}
+								{if $checkboxes_on eq 'y'} <input type="checkbox" name="checked[]" value="{$listpages[changes].page_id}" /> {/if}
 							</td>
 						{/if}
 					</tr>
@@ -216,8 +214,7 @@
 			{if $checkboxes_on eq 'y'}
 				<div style="text-align:right;">
 					<script type="text/javascript">/* <![CDATA[ check / uncheck all */
-						document.write("<label for=\"switcher\">{tr}Select All{/tr}</label> ");
-						document.write("<input name=\"switcher\" id=\"switcher\" type=\"checkbox\" onclick=\"BitBase.switchCheckboxes(this.form.id,'checked[]','switcher')\" />");
+						document.write("<label for=\"switcher\">{tr}Select All{/tr} <input name=\"switcher\" id=\"switcher\" type=\"checkbox\" onclick=\"BitBase.switchCheckboxes(this.form.id,'checked[]','switcher')\" /></label>");
 					/* ]]> */</script>
 					<br />
 					<select name="batch_submit" onchange="this.form.submit();">
@@ -234,7 +231,6 @@
 			{/if}
 		{/form}
 
-		{pagination}
 	</div><!-- end .body -->
 </div><!-- end .wiki -->
 {/strip}
