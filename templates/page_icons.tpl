@@ -43,11 +43,6 @@
 			<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;s5=1">{biticon ipackage="icons" iname="x-office-presentation" iexplain="s5 slideshow"}</a>
 		{/if}
 
-		{* we hide this link from browsers that can interpret css since we use css to determine what is printed and what not *}
-		{if $gContent->hasUserPermission( 'p_liberty_print' )}
-			<a title="{tr}print{/tr}" style="display:none;" href="{$smarty.const.WIKI_PKG_URL}print.php?{if $structureInfo.root_structure_id}structure_id={$structureInfo.root_structure_id}{else}page_id={$gContent->mInfo.page_id}{/if}">{biticon ipackage="icons" iname="document-print" iexplain="Print"}</a>
-		{/if}
-
 		{if $gBitUser->isRegistered() and $gBitUser->mUserId && $gBitSystem->isFeatureActive( 'users_watches' ) }
 			{if $user_watching_page eq 'y'}
 				<a title="{tr}stop monitoring this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;watch_event=wiki_page_changed&amp;watch_object={$gContent->mInfo.page_id}&amp;watch_action=remove">{biticon ipackage="icons" iname="weather-clear-night" iexplain="Stop monitoring"}</a>
