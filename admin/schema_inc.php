@@ -116,7 +116,6 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	//array( WIKI_PKG_NAME, 'wiki_undo','n'),
 	//array( WIKI_PKG_NAME, 'wiki_url_import','n'),
 	//array( WIKI_PKG_NAME, 'wiki_user_versions','n'),
-	//array( WIKI_PKG_NAME, 'wiki_uses_s5','n'),
 	//array( WIKI_PKG_NAME, 'wiki_uses_slides','n'),
 	//array( WIKI_PKG_NAME, 'wiki_usrlock','n'),
 	array( WIKI_PKG_NAME, 'wiki_warn_on_edit_time','2'),

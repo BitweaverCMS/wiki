@@ -189,10 +189,6 @@ $formWikiInOut = array(
 		'label' => 'Use Slideshows',
 		'note' => 'If a wikipage is plit into a number of pages, this can be viewed as a slideshow, without menus or excess data on the page. can be useful for presentations and the like.',
 	),
-	"wiki_uses_s5" => array(
-		'label' => 'Use S5 Slideshows',
-		'note' => 'Any WikiPage can be turned into a full featured slideshow. Slides are separated at every H1 heading ( ! - wiki syntax ) and can be viewed using Firefox ( requires javascript ) or Opera ( need to press F11 to start the show ). Further information can be found at <a href="http://www.meyerweb.com/eric/tools/s5/">S5</a>',
-	),
 	"wiki_multiprint" => array(
 		'label' => 'Print Multiple Pages',
 		'note' => 'Allow joining of pages for printing purposes.',
