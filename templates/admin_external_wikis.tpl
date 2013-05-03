@@ -13,12 +13,12 @@
 <table class="panel">
 <tr><td>{tr}name{/tr}:</td><td><input type="text" maxlength="255" size="10" name="name" value="{$info.name|escape}" /></td></tr>
 <tr><td>{tr}URL (use $page to be replaced by the page name in the URL example: http://www.example.com/{$smarty.const.WIKI_PKG_URL}index.php?page=$page){/tr}:</td><td><input type="text" maxlength="255" size="40" name="extwiki" value="{$info.extwiki|escape}" /></td></tr>
-<tr class="panelsubmitrow"><td colspan="2"><input type="submit" name="save" value="{tr}Save{/tr}" /></td></tr>
+<tr class="panelsubmitrow"><td colspan="2"><input type="submit" class="btn" name="save" value="{tr}Save{/tr}" /></td></tr>
 </table>
 </form>
 
 <h2>{tr}External Wiki{/tr}</h2>
-<table class="data">
+<table class="table data">
 <tr>
 <th><a href="{$smarty.const.WIKI_PKG_URL}admin/admin_external_wikis.php?offset={$offset}&amp;sort_mode={if $sort_mode eq 'name_desc'}name_asc{else}name_desc{/if}">{tr}name{/tr}</a></th>
 <th><a href="{$smarty.const.WIKI_PKG_URL}admin/admin_external_wikis.php?offset={$offset}&amp;sort_mode={if $sort_mode eq 'extwiki_desc'}extwiki_asc{else}extwiki_desc{/if}">{tr}extwiki{/tr}</a></th>
@@ -30,8 +30,8 @@
 <td>{$channels[user].name}</td>
 <td>{$channels[user].extwiki}</td>
 <td>
-   &nbsp;&nbsp;<a href="{$smarty.const.WIKI_PKG_URL}admin/admin_external_wikis.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].extwiki_id}" onclick="return confirm('{tr}Are you sure you want to delete this external wiki?{/tr}')" title="Click here to delete this external wiki">{biticon ipackage="icons" iname="edit-delete" iexplain="remove"}</a>&nbsp;&nbsp;
-   <a href="{$smarty.const.WIKI_PKG_URL}admin/admin_external_wikis.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;extwiki_id={$channels[user].extwiki_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
+   &nbsp;&nbsp;<a href="{$smarty.const.WIKI_PKG_URL}admin/admin_external_wikis.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].extwiki_id}" onclick="return confirm('{tr}Are you sure you want to delete this external wiki?{/tr}')" title="Click here to delete this external wiki">{booticon iname="icon-trash" ipackage="icons" iexplain="remove"}</a>&nbsp;&nbsp;
+   <a href="{$smarty.const.WIKI_PKG_URL}admin/admin_external_wikis.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;extwiki_id={$channels[user].extwiki_id}">{booticon iname="icon-edit" ipackage="icons" iexplain="edit"}</a>
 </td>
 </tr>
 {sectionelse}

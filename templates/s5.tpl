@@ -7,7 +7,7 @@
 	<title>{$gContent->mInfo.title|escape}</title>
 	<meta name="generator" content="S5" />
 	<meta name="version" content="S5 1.0" />
-	<meta name="author" content="{displayname user_id=`$gContent->mInfo.user_id` nolink='yes'}" />
+	<meta name="author" content="{displayname user_id=$gContent->mInfo.user_id nolink='yes'}" />
 	<meta name="company" content="" />
 	<meta name="defaultView" content="slideshow" />
 	<meta name="controlVis" content="hidden" />

@@ -24,7 +24,7 @@
 	<input checked="checked" type="radio" name="remo" value="n" /> {tr}no{/tr}</td>
 </tr>
 <tr class="panelsubmitrow">
-  <td colspan="2"><input type="submit" name="import" value="{tr}Import{/tr}" /></td>
+  <td colspan="2"><input type="submit" class="btn" name="import" value="{tr}Import{/tr}" /></td>
 </tr>
 </table>
 </form>
@@ -32,7 +32,7 @@
 <br />
 
 {if $result eq 'y'}
-<table class="data">
+<table class="table data">
 <tr>
   <th>{tr}Page{/tr}</th>
   <th>{tr}version{/tr}</th>

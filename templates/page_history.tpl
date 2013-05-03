@@ -18,7 +18,7 @@
 		{/if}
 
 		{if $compare eq 'y'}
-			<table class="data">
+			<table class="table data">
 				<caption>{tr}Comparing versions{/tr}</caption>
 				<tr>
 					<th width="50%">{tr}Version {$version_from}{/tr}</td>
@@ -48,7 +48,7 @@
 			<input type="hidden" name="page_id" value="{$gContent->mInfo.page_id}" />
 			<input type="hidden" name="page" value="{$page}" />
 
-			<table class="data">
+			<table class="table data">
 				<caption>{tr}Page History{/tr}</caption>
 				<tr>
 					<th style="width:70%;">{tr}Date{/tr}/{tr}Comment{/tr}</th>
@@ -71,7 +71,7 @@
 				<tr class="odd">
 					<td colspan="4">
 						<a href="{$gContent->mInfo.display_url}">{tr}Current{/tr}</a>
-						&nbsp;&bull;&nbsp;{smartlink ititle="Source" page_id=`$gContent->mPageId` source="current"}
+						&nbsp;&bull;&nbsp;{smartlink ititle="Source" page_id=$gContent->mPageId source="current"}
 					</td>
 				</tr>
 
@@ -84,12 +84,12 @@
 					</tr>
 					<tr class="{cycle values='even,odd'}">
 						<td colspan="3">
-							{smartlink ititle="View" page_id=`$gContent->mPageId` preview=`$item.version`}
-							&nbsp;&bull;&nbsp;{smartlink ititle="Compare" page_id=`$gContent->mPageId` compare=`$item.version`}
-							&nbsp;&bull;&nbsp;{smartlink ititle="Difference" page_id=`$gContent->mPageId` diff2=`$item.version`}
-							&nbsp;&bull;&nbsp;{smartlink ititle="Source" page_id=`$gContent->mPageId` source=`$item.version`}
+							{smartlink ititle="View" page_id=$gContent->mPageId preview=$item.version}
+							&nbsp;&bull;&nbsp;{smartlink ititle="Compare" page_id=$gContent->mPageId compare=$item.version}
+							&nbsp;&bull;&nbsp;{smartlink ititle="Difference" page_id=$gContent->mPageId diff2=$item.version}
+							&nbsp;&bull;&nbsp;{smartlink ititle="Source" page_id=$gContent->mPageId source=$item.version}
 							{if $gBitUser->hasPermission( 'p_wiki_rollback' )}
-								&nbsp;&bull;&nbsp;{smartlink ititle="Rollback" page_id=`$gContent->mPageId` rollback=`$item.version`}
+								&nbsp;&bull;&nbsp;{smartlink ititle="Rollback" page_id=$gContent->mPageId rollback=$item.version}
 							{/if}
 						</td>
 						<td style="text-align:right;">
@@ -109,7 +109,7 @@
 
 			{if $gBitUser->hasPermission( 'p_wiki_remove_page' )}
 				<div style="text-align:right;">
-					<input type="submit" name="delete" value="{tr}Delete selected versions{/tr}" />
+					<input type="submit" class="btn" name="delete" value="{tr}Delete selected versions{/tr}" />
 				</div>
 			{/if}
 		{/form}

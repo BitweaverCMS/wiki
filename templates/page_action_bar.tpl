@@ -47,10 +47,8 @@
 			{/if}
 	{/strip}{/capture}
 	{if $smarty.capture.navbarlist ne ''}
-		<div class="navbar">
-			<ul>
-				{$smarty.capture.navbarlist}
-			</ul>
-		</div>
+		<ul class="inline navbar">
+			{$smarty.capture.navbarlist}
+		</ul>
 	{/if}
 {/if}

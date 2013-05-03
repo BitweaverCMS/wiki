@@ -103,10 +103,6 @@ $formWikiFeatures = array(
 		'label' => 'Comments',
 		'note' => 'Allow the addition of user comments at the end of every wikipage.',
 	),
-	"wiki_sandbox" => array(
-		'label' => 'Sandbox',
-		'note' => 'The Sandbox is a wikipage that can be modified by any user to practise the wiki syntax. This page has no history nor is the contents searchable.',
-	),
 	"wiki_undo" => array(
 		'label' => 'Undo',
 		'note' => 'Reverts a wikipage to the previous version held in its page history.',

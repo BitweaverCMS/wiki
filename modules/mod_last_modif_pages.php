@@ -27,7 +27,7 @@ if( $gBitUser->hasPermission( 'p_wiki_view_page' ) ) {
 	);
 	$modLastModif = $wp->getList( $listHash );
 
-	$gBitSmarty->assign( 'modLastModif', $modLastModif );
-	$gBitSmarty->assign( 'maxlen', isset( $params["maxlen"] ) ? $params["maxlen"] : 0 );
+	$_template->tpl_vars['modLastModif'] = new Smarty_variable( $modLastModif );
+	$_template->tpl_vars['maxlen'] = new Smarty_variable( isset( $params["maxlen"] ) );
 }
 ?>

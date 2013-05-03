@@ -11,7 +11,7 @@
 			<input type="hidden" name="page_id" value="{$gContent->mInfo.page_id}" />
 			<input type="hidden" name="tab" value="email" />
 
-			<div class="row">
+			<div class="control-group">
 				{formlabel label="Email"}
 				{forminput}
 					<input type="text" name="email" size="35" />
@@ -19,8 +19,8 @@
 				{/forminput}
 			</div>
 
-			<div class="row submit">
-				<input type="submit" name="addemail" value="{tr}Add email address{/tr}" />
+			<div class="control-group submit">
+				<input type="submit" class="btn" name="addemail" value="{tr}Add email address{/tr}" />
 			</div>
 		{/form}
 
@@ -28,7 +28,7 @@
 			<h2>{tr}Existing requests for email notification{/tr}</h2>
 			<ul>
 				{section name=ix loop=$emails}
-					<li>{$emails[ix]} <a href="{$smarty.const.WIKI_PKG_URL}page_permissions.php?page_id={$gContent->mInfo.page_id}&amp;removeemail={$emails[ix]}&amp;tab=email">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a></li>
+					<li>{$emails[ix]} <a href="{$smarty.const.WIKI_PKG_URL}page_permissions.php?page_id={$gContent->mInfo.page_id}&amp;removeemail={$emails[ix]}&amp;tab=email">{booticon iname="icon-trash" ipackage="icons" iexplain="delete"}</a></li>
 				{/section}
 			</ul>
 		{/if}

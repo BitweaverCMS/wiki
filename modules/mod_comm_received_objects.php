@@ -16,5 +16,5 @@
 require_once( WIKI_PKG_PATH.'BitPage.php' );
 $wikilib = new WikiLib();
 $ranking = $wikilib->list_received_pages(0, -1, $sort_mode = 'title_asc', '');
-$gBitSmarty->assign('modReceivedPages', $ranking["cant"]);
+$_template->tpl_vars['modReceivedPages'] = new Smarty_variable( $ranking["cant"]);
 ?>

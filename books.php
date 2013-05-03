@@ -16,6 +16,10 @@
 require_once( '../kernel/setup_inc.php' );
 include_once( WIKI_PKG_PATH.'BitBook.php');
 
+// verify stuff
+$gBitSystem->verifyPackage( 'wiki' );
+$gBitSystem->verifyPermission( 'p_wiki_list_pages' );
+
 $book = new BitBook();
 
 $listHash = array();

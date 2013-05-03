@@ -8,8 +8,8 @@
 
 	<div class="body">
 		{form legend="Create new Wiki Book"}
-			<div class="row">
-				{formfeedback error=`$errors.title`}
+			<div class="control-group">
+				{formfeedback error=$errors.title}
 				{formlabel label="Book Title" for="name"}
 				{forminput}
 					<input type="text" name="name" id="name" size="50" maxlength="240" value="{$name}"/>
@@ -17,7 +17,7 @@
 				{/forminput}
 			</div>
 
-			<div class="row">
+			<div class="control-group">
 				{formlabel label="Table of Contents<br />(optional)" for="chapters"}
 				{forminput}
 					<textarea rows="10" cols="50" name="chapters" id="chapters">{$chapters}</textarea>
@@ -25,8 +25,8 @@
 				{/forminput}
 			</div>
 
-			<div class="row submit">
-				<input type="submit" value="{tr}Create new book{/tr}" name="createstructure" />
+			<div class="control-group submit">
+				<input type="submit" class="btn" value="{tr}Create new book{/tr}" name="createstructure" />
 			</div>
 		{/form}
 	</div><!-- end .body -->
