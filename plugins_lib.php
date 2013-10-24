@@ -25,7 +25,7 @@
     * @package wiki
     * @subpackage PluginsLib
     * @author Claudio Bustos
-    * @version $Revision: 1.2 $
+    * @version $Revision$
     */
     class PluginsLib extends BitBase {
         var $_errors;
@@ -48,12 +48,7 @@
         */
         var $aInfoPresetNames = array(
         "hits" => "Hits", "last_modified" => "Last mod", "user" => "Last author", "len" => "Size", "comment" => "Com", "creator" => "Creator", "version" => "Last ver", "flag" => "Status", "versions" => "Vers", "links" => "Links", "backlinks" => "Backlinks");
-        /**
-        * Constructor
-        */
-        function PluginsLib() {
-			BitBase::BitBase();
-        }
+
         /**
         * Process the params, in this order:
         * - default values, asigned on {@link PluginsLib::getDefaultArguments()}
@@ -119,7 +114,7 @@
         function getVersion() {
             return tra("No version indicated");
             //return preg_replace("/[Revision: $]/", '',
-            //                    "\$Revision: 1.2 $");
+            //                    "\$Revision$");
         }
         /**
         * Returns the default arguments for the plugin
@@ -158,7 +153,7 @@
     * @package wiki
     * @subpackage PluginsLib
     * @author Claudio Bustos
-    * @version $Revision: 1.2 $
+    * @version $Revision$
     */
     class PluginsLibUtil {
         /**

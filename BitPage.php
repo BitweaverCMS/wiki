@@ -23,7 +23,7 @@ class BitPage extends LibertyMime {
 	var $mPageName;
 
 	function BitPage( $pPageId=NULL, $pContentId=NULL ) {
-		LibertyMime::LibertyMime();
+		parent::__construct();
 		$this->registerContentType( BITPAGE_CONTENT_TYPE_GUID, array(
 				'content_type_guid' => BITPAGE_CONTENT_TYPE_GUID,
 				'content_name' => 'Wiki Page',
@@ -43,6 +43,15 @@ class BitPage extends LibertyMime {
 		$this->mAdminContentPerm = 'p_wiki_admin';
 	}
 
+	public static function findContentIdByPageId( $pPageId ) {
+		global $gBitDb;
+		$ret = NULL;
+		if( BitBase::verifyId( $pPageId ) ) {
+			$ret = $gBitDb->getOne( "SELECT `content_id` FROM `".BIT_DB_PREFIX."wiki_pages` WHERE `page_id`=?", array( (int)$pPageId ) );
+		}
+		return $ret;
+	}
+
 	function findByPageName( $pPageName, $pUserId=NULL ) {
 		$userWhere = '';
 		$bindVars = array( $pPageName, $this->mContentTypeGuid );
@@ -55,17 +64,50 @@ class BitPage extends LibertyMime {
 	}
 
 	/**
-	 * load 
-	 * 
+	 * Determines if a wiki page (row in wiki_pages) exists, and returns a hash of important info. If N pages exists with $pPageName, returned existsHash has a row for each unique pPageName row.
+	 * @param pPageName name of the wiki page
+	 * @param pCaseSensitive look for case sensitive names
+	 * @param pContentId if you insert the content id of the currently viewed content, non-existing links can be created immediately
+	 */
+	public static function pageExists( $pPageName, $pCaseSensitive=FALSE, $pContentId=NULL ) {
+		global $gBitSystem;
+		$ret = NULL;
+
+		if( $gBitSystem->isPackageActive( 'wiki' ) ) {
+			$columnExpression = $gBitSystem->mDb->getCaseLessColumn('lc.title');
+
+			$pageWhere = $pCaseSensitive ? 'lc.`title`' : $columnExpression;
+			$bindVars = array( ($pCaseSensitive ? $pPageName : strtoupper( $pPageName ) ) );
+			$query = "SELECT `page_id`, wp.`content_id`, lcds.`data` AS `summary`, lc.`last_modified`, lc.`title`
+				FROM `".BIT_DB_PREFIX."wiki_pages` wp
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id`=wp.`content_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
+				WHERE $pageWhere = ?";
+			if( !$ret = $gBitSystem->mDb->getAll( $query, $bindVars ) ) {
+				$query = "SELECT `page_id`, wp.`content_id`, lcds.`data` AS `summary`, lc.`last_modified`, lc.`title`, lal.`alias_title`
+					FROM `".BIT_DB_PREFIX."wiki_pages` wp
+						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id`=wp.`content_id`)
+						INNER JOIN `".BIT_DB_PREFIX."liberty_aliases` lal ON (lc.`content_id`=lal.`content_id`)
+						LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
+					WHERE ".$gBitSystem->mDb->getCaseLessColumn('lal.alias_title')." = ?";
+				$ret = $gBitSystem->mDb->getAll( $query, $bindVars );
+			}
+		}
+		return $ret;
+	}
+
+	/**
+	 * load
+	 *
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
-	function load( $pParse = TRUE ) {
+	function load( $pContentId=NULL, $pPluginParams = TRUE ) {
 		if( $this->verifyId( $this->mPageId ) || $this->verifyId( $this->mContentId ) ) {
 			global $gBitSystem;
 
 			$lookupColumn = @BitBase::verifyId( $this->mPageId ) ? 'page_id' : 'content_id';
-
+			$parse = ( !isset( $pPluginParams['parse'] ) or $pPluginParams['parse'] ) ? true : false;
 			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
 			array_push( $bindVars, $lookupId = @BitBase::verifyId( $this->mPageId )? $this->mPageId : $this->mContentId );
 			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
@@ -84,7 +126,7 @@ class BitPage extends LibertyMime {
 				$this->mContentId = $this->mInfo['content_id'];
 				$this->mPageId = $this->mInfo['page_id'];
 				$this->mPageName = $this->mInfo['title'];
-				$this->mInfo['display_url'] = $this->getDisplayUrl();
+				$this->mInfo['display_url'] = $this->getDisplayUrl( $this->mPageName );
 
 				// TODO: this is a bad habbit and should not be done BitUser::getDisplayName sorts out what name to display
 				$this->mInfo['creator'] = (isset( $this->mInfo['creator_real_name'] ) ? $this->mInfo['creator_real_name'] : $this->mInfo['creator_user'] );
@@ -98,7 +140,7 @@ class BitPage extends LibertyMime {
 					LibertyContent::load();
 				}
 
-				if ( $pParse ) {
+				if ( $parse ) {
 					$this->mInfo['parsed_data'] = $this->parseData();
 				}
 			} else {
@@ -259,7 +301,7 @@ class BitPage extends LibertyMime {
 				unset( $pParamHash['minor'] );
 			}
 		}
-		
+
 		// if we have an error we get them all by checking parent classes for additional errors
 		if( count( $this->mErrors ) > 0 ){
 			parent::verify( $pParamHash );
@@ -310,11 +352,11 @@ class BitPage extends LibertyMime {
 		}
 		return( $ret );
 	}
-	
+
 	function isCommentable() {
 		global $gBitSystem;
 		return( $gBitSystem->isFeatureActive( 'wiki_comments' ));
-	}	
+	}
 
 	function setLock( $pLock, $pModUserId=NULL ) {
 		if( $this->verifyId( $this->mPageId ) ) {
@@ -379,8 +421,8 @@ class BitPage extends LibertyMime {
 	* Generates a link to a wiki page within lists of pages
 	* @return the link to display the page.
 	*/
-	function getListLink( $pPageHash ) {
-		return BitPage::getDisplayLink( $pPageHash['title'], NULL );
+	function getListLink( $pParamHash ) {
+		return BitPage::getPageLink( $pParamHash['title'], NULL );
 	}
 
 
@@ -396,14 +438,14 @@ class BitPage extends LibertyMime {
 	/**
 	 * Returns the center template for the view selected
 	 */
-	function getViewTemplate( $pAction ){				
+	function getViewTemplate( $pAction ){
 		$ret = null;
 		switch ( $pAction ){
 			case "view":
-				$ret = "bitpackage:wiki/center_wiki_page.tpl"; 
+				$ret = "bitpackage:wiki/center_wiki_page.tpl";
 				break;
 			case "list":
-				$ret = "bitpackage:liberty/center_".$pAction."_generic.tpl"; 
+				$ret = "bitpackage:liberty/center_".$pAction."_generic.tpl";
 				break;
 		}
 		return $ret;
@@ -415,26 +457,18 @@ class BitPage extends LibertyMime {
 	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
 	* @return the link to display the page.
 	*/
-	function getDisplayUrl( $pPageName = NULL, $pPageHash = NULL ) {
+	public static function getDisplayUrlFromHash( &$pParamHash ) {
 		global $gBitSystem;
-		if( empty( $this ) || (empty( $this->mPageName ) && !empty( $pPageHash['title'] )) ) {
-			$pPageName = $pPageHash['title'];
-		}
-
-		if( empty( $pPageName ) && !empty( $this->mPageName )) {
-			$pPageName = $this->mPageName;
-		}
-
-		if( !empty( $pPageName )) {
+		if( !empty( $pParamHash['title'] ) ) {
 			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
 				$rewrite_tag = $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ? 'view/':'';
-				$prettyPageName = preg_replace( '/ /', '+', $pPageName );
+				$prettyPageName = preg_replace( '/ /', '+', $pParamHash['title'] );
 				$ret = WIKI_PKG_URL.$rewrite_tag.$prettyPageName;
 			} else {
-				$ret = WIKI_PKG_URL.'index.php?page='.urlencode( $pPageName );
+				$ret = WIKI_PKG_URL.'index.php?page='.urlencode( $pParamHash['title'] );
 			}
 		} else {
-			$ret = LibertyContent::getDisplayUrl( NULL, $pPageHash );
+			$ret = parent::getDisplayUrlFromHash( $pParamHash );
 		}
 
 		return $ret;
@@ -445,16 +479,16 @@ class BitPage extends LibertyMime {
 	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
 	* @return the link to display the page.
 	*/
-	function getDisplayLink( $pPageName, $pExistsHash ) {
+	public static function getPageLink( $pLinkText=NULL, $pMixed=NULL, $pAnchor=NULL ) {
 		global $gBitSystem, $gBitUser;
-		$ret = $pPageName;
+		$ret = $pLinkText;
 		if( $gBitSystem->isPackageActive( 'wiki' ) ) {
-			if( !empty( $pExistsHash ) && is_array( $pExistsHash ) ) {
-				if( is_array( current( $pExistsHash ) ) ) {
-					$exists = $pExistsHash[0];
+			if( !empty( $pMixed ) && is_array( $pMixed ) ) {
+				if( is_array( current( $pMixed ) ) ) {
+					$exists = $pMixed[0];
 					$multiple = TRUE;
 				} else {
-					$exists = $pExistsHash;
+					$exists = $pMixed;
 					$multiple = FALSE;
 				}
 
@@ -464,12 +498,12 @@ class BitPage extends LibertyMime {
 				} else {
 					$desc = empty( $exists['summary'] ) ? $exists['title'] : $exists['summary'];
 				}
-				$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrl( $exists['title'] ).'">'.htmlspecialchars( $pPageName ).'</a>';
+				$ret = '<a title="'.htmlspecialchars( $desc ).'" href="'.BitPage::getDisplayUrlFromHash( $exists ).'">'.htmlspecialchars( $exists['title'] ).'</a>';
 			} else {
 				if( $gBitUser->hasPermission( 'p_wiki_create_page' ) ) {
-					$ret = '<a title="'.tra( "Create the page" ).': '.htmlspecialchars( $pPageName ).'" href="'.WIKI_PKG_URL.'edit.php?page='.urlencode( $pPageName ).'" class="create">'.htmlspecialchars( $pPageName ).'</a>';
+					$ret = '<a title="'.tra( "Create the page" ).': '.htmlspecialchars( $pLinkText ).'" href="'.WIKI_PKG_URL.'edit.php?page='.urlencode( $pLinkText ).'" class="create">'.htmlspecialchars( $pLinkText ).'</a>';
 				} else {
-					$ret = $pPageName;
+					$ret = $pLinkText;
 				}
 			}
 		}
@@ -512,8 +546,8 @@ class BitPage extends LibertyMime {
 	}
 
 	/**
-	 * getList 
-	 * 
+	 * getList
+	 *
 	 * @param array $pListHash array of list parameters
 	 * @param boolean $pListHash['orphans_only'] only return orphan wiki pages
 	 * @param boolean $pListHash['extras'] load extra infrmation such as backlinks and links
@@ -592,7 +626,7 @@ class BitPage extends LibertyMime {
 		}
 
 		if( empty( $pListHash['orphans_only'] )) {
-			$query = "SELECT 
+			$query = "SELECT
 					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
 					wp.`page_id`, wp.`wiki_page_size` as `len`, lcds.`data` AS `summary`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
 					lc.`title`, lc.`format_guid`, lc.`last_modified`, lc.`created`, lc.`ip`, lc.`version`,
@@ -616,7 +650,7 @@ class BitPage extends LibertyMime {
 				WHERE lc.`content_type_guid`=? $whereSql
 				";
 		} else {
-			$query = "SELECT 
+			$query = "SELECT
 					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
 					wp.`page_id`, wp.`wiki_page_size` AS `len`,lcds.`data` AS `summary`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
 					lc.`title`, lc.`format_guid`, lc.`last_modified`, lc.`created`, lc.`ip`, lc.`version`,
@@ -671,7 +705,7 @@ class BitPage extends LibertyMime {
 			$aux['creator'] = (isset( $res['creator_real_name'] ) ? $res['creator_real_name'] : $res['creator_user'] );
 			$aux['editor'] = (isset( $res['modifier_real_name'] ) ? $res['modifier_real_name'] : $res['modifier_user'] );
 			$aux['flag'] = $res["flag"] == 'L' ? 'locked' : 'unlocked';
-			$aux['display_url'] = $this->getDisplayUrl( $aux['title'], $aux );
+			$aux['display_url'] = static::getDisplayUrlFromHash( $aux );
 			// display_link does not seem to be used when getList is called
 			//$aux['display_link'] = $this->getDisplayLink( $aux['title'] ); //WIKI_PKG_URL."index.php?page_id=".$res['page_id'];
 			if( !empty( $pListHash['extras'] )) {
@@ -751,10 +785,10 @@ class BitPage extends LibertyMime {
 	}
 
 	/**
-	 * getSubPage 
-	 * 
-	 * @param array $pData 
-	 * @param array $pPageNumber 
+	 * getSubPage
+	 *
+	 * @param array $pData
+	 * @param array $pPageNumber
 	 * @access public
 	 * @return string SubPage
 	 */
@@ -771,8 +805,8 @@ class BitPage extends LibertyMime {
 
 	/**
 	 * getLikePages Like pages are pages that share a word in common with the current page
-	 * 
-	 * @param array $pPageTitle 
+	 *
+	 * @param array $pPageTitle
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */
@@ -806,7 +840,7 @@ class BitPage extends LibertyMime {
 
 	/**
 	 * getStats getStats is always used by the stats package to display various stats of your package.
-	 * 
+	 *
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */
@@ -874,11 +908,11 @@ class BitPage extends LibertyMime {
 
 	// {{{ ==================================== GraphViz wiki graph methods ====================================
 	/**
-	 * linkStructureGraph 
-	 * 
-	 * @param array $pLinkStructure 
-	 * @param array $pParams 
-	 * @param array $pGraphViz 
+	 * linkStructureGraph
+	 *
+	 * @param array $pLinkStructure
+	 * @param array $pParams
+	 * @param array $pGraphViz
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */
@@ -886,8 +920,8 @@ class BitPage extends LibertyMime {
 		if( !empty( $pLinkStructure ) && !empty( $pGraphViz )) {
 			$pParams['graph']['URL'] = WIKI_PKG_URL.'index.php';
 			$pGraphViz->addAttributes( $pParams['graph'] );
-
-			$pParams['node']['URL'] = $this->getDisplayUrl( $pLinkStructure['name'] );
+			$pLinkStructure['title'] = $pLinkStructure['name'];
+			$pParams['node']['URL'] = static::getDisplayUrlFromHash( $pLinkStructure );
 			$pGraphViz->addNode( $pLinkStructure['name'], $pParams['node'] );
 
 			foreach( $pLinkStructure['pages'] as $node ) {
@@ -898,11 +932,11 @@ class BitPage extends LibertyMime {
 	}
 
 	/**
-	 * linkStructureMap 
-	 * 
-	 * @param array $pPageName 
-	 * @param int $pLevel 
-	 * @param array $pParams 
+	 * linkStructureMap
+	 *
+	 * @param array $pPageName
+	 * @param int $pLevel
+	 * @param array $pParams
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */
@@ -915,10 +949,10 @@ class BitPage extends LibertyMime {
 	}
 
 	/**
-	 * getLinkStructure 
-	 * 
-	 * @param array $pPageName 
-	 * @param float $pLevel 
+	 * getLinkStructure
+	 *
+	 * @param array $pPageName
+	 * @param float $pLevel
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */

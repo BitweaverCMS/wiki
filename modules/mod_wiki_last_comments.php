@@ -20,8 +20,9 @@ global $gQueryUserId, $moduleParams;
 if( $gBitUser->hasPermission( 'p_wiki_view_page' ) ) {
 	require_once( LIBERTY_PKG_PATH.'LibertyComment.php' );
 	$cmt = new LibertyComment();
-	$lastComments = $cmt->getList( array( 'max_records' => $moduleParams['module_rows'], 'user_id' => $gQueryUserId, 'content_type_guid' => BITPAGE_CONTENT_TYPE_GUID ) );
-	$gBitSmarty->assign('lastComments', $lastComments);
-	$gBitSmarty->assign('moretooltips', isset($module_params["moretooltips"]) ? $module_params["moretooltips"] : 'n');
+	$listHash = array( 'max_records' => $moduleParams['module_rows'], 'user_id' => $gQueryUserId, 'content_type_guid' => BITPAGE_CONTENT_TYPE_GUID );
+	$lastComments = $cmt->getList( $listHash );
+	$_template->tpl_vars['lastComments'] = new Smarty_variable( $lastComments);
+	$_template->tpl_vars['moretooltips'] = new Smarty_variable( isset($module_params["moretooltips"]) ? $module_params["moretooltips"] : 'n');
 }
 ?>

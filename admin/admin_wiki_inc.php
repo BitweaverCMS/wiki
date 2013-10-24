@@ -91,10 +91,6 @@ $formWikiFeatures = array(
 		'label' => 'History',
 		'note' => 'Allow access to the page\'s history.',
 	),
-	"wiki_list_pages" => array(
-		'label' => 'List Pages',
-		'note' => 'Allow access to a listing of all wikipages.',
-	),
 	"wiki_list_orphans" => array(
 		'label' => 'List Orphans',
 		'note' => 'Allow access to a listing of all orphaned wikipages.',
@@ -106,10 +102,6 @@ $formWikiFeatures = array(
 	"wiki_comments" => array(
 		'label' => 'Comments',
 		'note' => 'Allow the addition of user comments at the end of every wikipage.',
-	),
-	"wiki_sandbox" => array(
-		'label' => 'Sandbox',
-		'note' => 'The Sandbox is a wikipage that can be modified by any user to practise the wiki syntax. This page has no history nor is the contents searchable.',
 	),
 	"wiki_undo" => array(
 		'label' => 'Undo',
@@ -196,10 +188,6 @@ $formWikiInOut = array(
 	"wiki_uses_slides" => array(
 		'label' => 'Use Slideshows',
 		'note' => 'If a wikipage is plit into a number of pages, this can be viewed as a slideshow, without menus or excess data on the page. can be useful for presentations and the like.',
-	),
-	"wiki_uses_s5" => array(
-		'label' => 'Use S5 Slideshows',
-		'note' => 'Any WikiPage can be turned into a full featured slideshow. Slides are separated at every H1 heading ( ! - wiki syntax ) and can be viewed using Firefox ( requires javascript ) or Opera ( need to press F11 to start the show ). Further information can be found at <a href="http://www.meyerweb.com/eric/tools/s5/">S5</a>',
 	),
 	"wiki_multiprint" => array(
 		'label' => 'Print Multiple Pages',

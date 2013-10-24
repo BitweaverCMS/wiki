@@ -19,9 +19,6 @@ require_once( WIKI_PKG_PATH.'BitPage.php' );
  * @subpackage ExportLib
  */
 class ExportLib extends BitBase {
-	function ExportLib() {
-		BitBase::BitBase();
-	}
 
 	function MakeWikiZip( $pExportFile ) {
 		global $gBitUser,$gBitSystem;

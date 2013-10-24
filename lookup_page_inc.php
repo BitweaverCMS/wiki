@@ -25,19 +25,20 @@ if( empty( $lookupHash )) {
 
 // if we already have a gContent, we assume someone else created it for us, and has properly loaded everything up.
 if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gContent ) ) != 'bitpage' ) {
-	$gContent = new BitPage( @BitBase::verifyId( $lookupHash['page_id'] ) ? $lookupHash['page_id'] : NULL, @BitBase::verifyId( $lookupHash['content_id'] ) ? $lookupHash['content_id'] : NULL );
-
-	$loadPage = (!empty( $lookupHash['page'] ) ? $lookupHash['page'] : NULL);
-	if( empty( $gContent->mPageId ) && empty( $gContent->mContentId )  ) {
+	if( !empty( $lookupHash['page_id'] ) )  {
+		$loadContentId = BitPage::findContentIdByPageId( $lookupHash['page_id'] );
+	} elseif( !empty( $lookupHash['content_id'] ) ) {
+		$loadContentId = $lookupHash['content_id'];
+	} elseif( !empty( $lookupHash['page'] ) ) {
 		//handle legacy forms that use plain 'page' form variable name
-		
+
 		//if page had some special enities they were changed to HTML for for security reasons.
 		//now we deal only with string so convert it back - so we can support this case:
 		//You&Me --(detoxify in kernel)--> You&amp;Me --(now)--> You&Me
-		//we could do htmlspecialchars_decode but it allows <> marks here, so we just transform &amp; to & - it's not so scary. 
-		$loadPage = str_replace("&amp;", "&", $loadPage );
+		//we could do htmlspecialchars_decode but it allows <> marks here, so we just transform &amp; to & - it's not so scary.
+		$loadPage = str_replace("&amp;", "&", $lookupHash['page'] );
 
-		if( $loadPage && $existsInfo = $gContent->pageExists( $loadPage ) ) {
+		if( $loadPage && $existsInfo = BitPage::pageExists( $loadPage ) ) {
 			if (count($existsInfo)) {
 				if (count($existsInfo) > 1) {
 					// Display page so user can select which wiki page they want (there are multiple that share this name)
@@ -46,8 +47,8 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 					$gBitSystem->display('bitpackage:wiki/page_select.tpl', NULL, array( 'display_mode' => 'display' ));
 					die;
 				} else {
-					$gContent->mPageId = $existsInfo[0]['page_id'];
-					$gContent->mContentId = $existsInfo[0]['content_id'];
+					$loadPageId = $existsInfo[0]['page_id'];
+					$loadContentId = $existsInfo[0]['content_id'];
 				}
 			}
 		} elseif( $loadPage ) {
@@ -55,14 +56,17 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 		}
 	}
 
-	$parse = ( !isset( $lookupHash['parse'] ) or $lookupHash['parse'] ) ? true : false;
-	if( $gContent->load( $parse ) && $loadPage ) {
-		$gContent->mInfo['title'] = $loadPage;
+	if( !empty( $loadContentId ) ) {
+		$gContent = LibertyBase::getLibertyObject( $loadContentId );
+	}
+
+	if( empty( $gContent ) || !is_object( $gContent ) ) {
+		$gContent = new BitPage();
 	}
 }
 
 // we weren't passed a structure, but maybe this page belongs to one. let's check...
-if( empty( $gStructure ) ) {
+if( $gContent->isValid() && empty( $gStructure ) ) {
 	//Get the structures this page is a member of
 	if( !empty($lookupHash['structure']) ) {
 		$structure=$lookupHash['structure'];

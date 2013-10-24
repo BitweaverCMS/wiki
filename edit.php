@@ -24,20 +24,10 @@ unset($_REQUEST['content_id']);
 $_REQUEST["parse"] = false;
 include( WIKI_PKG_PATH.'lookup_page_inc.php' );
 
-$wiki_sandbox = FALSE;
-if( ( !empty( $_REQUEST['page'] ) && $_REQUEST['page'] == 'SandBox' ) || ( !empty( $_REQUEST['title'] ) && $_REQUEST['title'] == 'SandBox' ) ) {
-	$gContent->mInfo['title'] = 'SandBox';
-	$wiki_sandbox = TRUE;
-}
-
-if( $wiki_sandbox && !$gBitSystem->isFeatureActive( 'wiki_sandbox' ) ) {
-	$gBitSystem->fatalError( tra( "The SandBox is disabled" ));
-} elseif( !$wiki_sandbox ){
-	if( $gContent->isValid() ) {
-		$gContent->verifyUpdatePermission();
-	} else {
-		$gContent->verifyCreatePermission();
-	}
+if( $gContent->isValid() ) {
+	$gContent->verifyUpdatePermission();
+} else {
+	$gContent->verifyCreatePermission();
 }
 
 //make comment count for this page available for templates
@@ -193,7 +183,7 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 			$gBitUser->storeWatch( "wiki_page_changed", $gContent->mPageId, $gContent->mContentTypeGuid, $_REQUEST['title'], $gContent->getDisplayUrl() );
 		}
 
-		header( "Location: ".$gContent->getDisplayUrl() );
+		header( "Location: ".$gContent->getDisplayUrl( $gContent->mPageName ) );
 		die;
 
 	} else {
@@ -417,7 +407,7 @@ function walk_and_parse( &$c, &$src, &$p ) {
 	}
 }
 if( isset( $_REQUEST["suck_url"] ) ) {
-	if( $wiki_sandbox && !$gBitSystem->isFeatureActive( 'wiki_url_import' ) ) {
+	if( !$gBitSystem->isFeatureActive( 'wiki_url_import' ) ) {
 		$gBitSystem->fatalError( tra( "Importing remote URLs is disabled" ));
 	}
 	// Suck another page and append to the end of current

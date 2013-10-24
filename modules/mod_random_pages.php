@@ -22,6 +22,6 @@ if( $gBitUser->hasPermission( 'p_wiki_view_page' ) ) {
 		'max_records' => $moduleParams['module_rows'],
 	);
 	$pages = $wp->getList( $listHash );
-	$gBitSmarty->assign( 'modRandomPages', $pages );
+	$_template->tpl_vars['modRandomPages'] = new Smarty_variable( $pages );
 }
 ?>

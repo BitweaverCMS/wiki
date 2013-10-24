@@ -21,8 +21,7 @@ $gContent->verifyViewPermission();
 
 // Check permissions to access this page
 if( !$gContent->isValid() ) {
-	$gBitSystem->setHttpStatus( 404 );
-	$gBitSystem->fatalError( tra( 'Page cannot be found' ));
+	$gBitSystem->fatalError( tra( 'Page cannot be found' ), NULL, NULL, HttpStatusCodes::HTTP_GONE );
 }
 
 $displayHash = array( 'perm_name' => 'p_wiki_view_page' );
@@ -41,7 +40,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_creator_admin' ) && $gContent->isOwner()
 
 // Get the backlinks for the page "page"
 if( $gBitSystem->isFeatureActive( 'wiki_backlinks' )) {
-	$gBitSmarty->assign_by_ref( 'backlinks', $gContent->getBacklinks() );
+	$gBitSmarty->assign( 'backlinks', $gContent->getBacklinks() );
 }
 
 // Now increment page hits since we are visiting this page
@@ -73,7 +72,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_uses_slides' )) {
 }
 
 // ...page... stuff - TODO: this is cumbersome and should be cleaned up
-$pages = $gContent->countSubPages( $gContent->mInfo['parsed_data'] );
+$pages = $gContent->countSubPages( $gContent->getField( 'parsed_data' ) );
 if( $pages > 1 ) {
 	if( !isset( $_REQUEST['pagenum'] )) {
 		$_REQUEST['pagenum'] = 1;

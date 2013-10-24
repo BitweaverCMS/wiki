@@ -8,12 +8,15 @@ $tables = array(
 	wiki_page_size I4 DEFAULT 0,
 	edit_comment C(200),
 	flag C(1)
+	CONSTRAINT ', CONSTRAINT `wiki_pages_content_ref` FOREIGN KEY (`content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content`( `content_id` )'
 ",
 
 'wiki_footnotes' => "
 	user_id I4 PRIMARY,
 	page_id I4 NOTNULL,
 	data X
+	CONSTRAINT ', CONSTRAINT `wiki_footnotes_page_ref` FOREIGN KEY (`page_id`) REFERENCES `".BIT_DB_PREFIX."wiki_pages` (`page_id`)
+  				, CONSTRAINT `wiki_footnotes_user_ref` FOREIGN KEY (`user_id`) REFERENCES `".BIT_DB_PREFIX."users_users` (`user_id`)'
 ",
 
 );
@@ -94,7 +97,6 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	array( WIKI_PKG_NAME, 'wiki_list_links','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_name','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_orphans','y'),
-	array( WIKI_PKG_NAME, 'wiki_list_pages','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_size','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_status','y'),
 	array( WIKI_PKG_NAME, 'wiki_list_user','y'),
@@ -108,14 +110,12 @@ $gBitInstaller->registerPreferences( WIKI_PKG_NAME, array(
 	//array( WIKI_PKG_NAME, 'wiki_preserve_leading_blanks','n'),
 	//array( WIKI_PKG_NAME, 'wiki_ranking','n'),
 	array( WIKI_PKG_NAME, 'wiki_rankings','y'),
-	array( WIKI_PKG_NAME, 'wiki_sandbox','y'),
 	//array( WIKI_PKG_NAME, 'wiki_section_edit','n'),
 	//array( WIKI_PKG_NAME, 'wiki_submit_notice',''),
 	array( WIKI_PKG_NAME, 'wiki_tables','new'),
 	//array( WIKI_PKG_NAME, 'wiki_undo','n'),
 	//array( WIKI_PKG_NAME, 'wiki_url_import','n'),
 	//array( WIKI_PKG_NAME, 'wiki_user_versions','n'),
-	//array( WIKI_PKG_NAME, 'wiki_uses_s5','n'),
 	//array( WIKI_PKG_NAME, 'wiki_uses_slides','n'),
 	//array( WIKI_PKG_NAME, 'wiki_usrlock','n'),
 	array( WIKI_PKG_NAME, 'wiki_warn_on_edit_time','2'),
