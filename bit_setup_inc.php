@@ -16,7 +16,6 @@ if( $gBitSystem->isPackageActive( 'wiki' )) {
 			'package_name'       => WIKI_PKG_NAME,
 			'index_url'          => WIKI_PKG_URL.'index.php',
 			'menu_template'      => 'bitpackage:wiki/menu_wiki.tpl',
-			'admin_comments_url' => KERNEL_PKG_URL.'admin/index.php?page=wiki',
 		);
 		$gBitSystem->registerAppMenu( $menuHash );
 	}
