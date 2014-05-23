@@ -39,7 +39,7 @@
 			</div>
 
 			<div class="control-group submit">
-				<input type="submit" class="btn" name="wikifeatures" value="{tr}Change preferences{/tr}" />
+				<input type="submit" class="btn btn-default" name="wikifeatures" value="{tr}Change preferences{/tr}" />
 			</div>
 		{/form}
 	{/jstab}
@@ -58,7 +58,7 @@
 				</div>
 			{/foreach}
 			<div class="control-group submit">
-				<input type="submit" class="btn" name="wikibooks" value="{tr}Change preferences{/tr}" />
+				<input type="submit" class="btn btn-default" name="wikibooks" value="{tr}Change preferences{/tr}" />
 			</div>
 		{/form}
 	{/jstab}
@@ -77,7 +77,7 @@
 				</div>
 			{/foreach}
 			<div class="control-group submit">
-				<input type="submit" class="btn" name="wikiinout" value="{tr}Change preferences{/tr}" />
+				<input type="submit" class="btn btn-default" name="wikiinout" value="{tr}Change preferences{/tr}" />
 			</div>
 		{/form}
 	{/jstab}
@@ -97,7 +97,7 @@
 			{/foreach}
 
 			<div class="control-group submit">
-				<input type="submit" class="btn" name="wikilistconf" value="{tr}Change preferences{/tr}" />
+				<input type="submit" class="btn btn-default" name="wikilistconf" value="{tr}Change preferences{/tr}" />
 			</div>
 		{/form}
 	{/jstab}
@@ -123,7 +123,7 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" class="btn" name="setwikihome" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn btn-default" name="setwikihome" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 
@@ -146,7 +146,7 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" class="btn" name="setwikiregex" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn btn-default" name="setwikiregex" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 
@@ -173,7 +173,7 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" class="btn" name="wikisetcopyright" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn btn-default" name="wikisetcopyright" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 
@@ -191,7 +191,7 @@
 				{/foreach}
 
 				<div class="control-group submit">
-					<input type="submit" class="btn" name="wikiwatch" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn btn-default" name="wikiwatch" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 		{/form}

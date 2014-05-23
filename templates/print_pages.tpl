@@ -25,14 +25,14 @@
 					{formlabel label="Filter" for="find"}
 					{forminput}
 						<input type="text" name="find" id="find" value="{$find|escape}" />
-						&nbsp;<input type="submit" class="btn" name="filter" value="{tr}filter{/tr}" />
+						&nbsp;<input type="submit" class="btn btn-default" name="filter" value="{tr}filter{/tr}" />
 						{formhelp note="To find specific pages more easily, you can apply a filter here."}
 					{/forminput}
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" class="btn" name="addpage" value="{tr}add page{/tr}" />
-					&nbsp;<input type="submit" class="btn" name="clearpages" value="{tr}clear pages{/tr}" />
+					<input type="submit" class="btn btn-default" name="addpage" value="{tr}add page{/tr}" />
+					&nbsp;<input type="submit" class="btn btn-default" name="clearpages" value="{tr}clear pages{/tr}" />
 				</div>
 			{/form}
 
@@ -48,7 +48,7 @@
 				</div>
 				
 				<div class="control-group submit">
-					<input type="submit" class="btn" name="print" value="{tr}print{/tr}" />
+					<input type="submit" class="btn btn-default" name="print" value="{tr}print{/tr}" />
 				</div>
 			{/form}
 	</div><!-- end .body -->

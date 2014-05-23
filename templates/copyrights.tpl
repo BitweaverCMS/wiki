@@ -34,7 +34,7 @@
 				<div class="control-group submit">
 					<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
 					<input type="hidden" name="copyright_id" value="{$copyrights[i].copyright_id|escape}" />
-					<input type="submit" class="btn" name="editcopyright" value="{tr}edit{/tr}" />
+					<input type="submit" class="btn btn-default" name="editcopyright" value="{tr}edit{/tr}" />
 					<a href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=up&amp;copyright_id={$copyrights[i].copyright_id}">{booticon iname="icon-cloud-upload" ipackage="icons" iexplain="move up"}</a>
 					<a href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=down&amp;copyright_id={$copyrights[i].copyright_id}">{booticon iname="icon-cloud-download"  ipackage="icons"  iexplain="move down"}</a>
 					<a title="{tr}Delete this copyright{/tr}" href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=delete&amp;copyright_id={$copyrights[i].copyright_id}" 
@@ -71,7 +71,7 @@
 			</div>
 
 			<div class="control-group submit">
-				<input type="submit" class="btn" name="addcopyright" value="{tr}add{/tr}" />
+				<input type="submit" class="btn btn-default" name="addcopyright" value="{tr}add{/tr}" />
 			</div>
 		{/form}
 	</div><!-- end .body -->

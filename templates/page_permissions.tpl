@@ -20,7 +20,7 @@
 			</div>
 
 			<div class="control-group submit">
-				<input type="submit" class="btn" name="addemail" value="{tr}Add email address{/tr}" />
+				<input type="submit" class="btn btn-default" name="addemail" value="{tr}Add email address{/tr}" />
 			</div>
 		{/form}
 
