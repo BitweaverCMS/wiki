@@ -7,7 +7,7 @@
 		{form class="form-inline" }
 			<input type="hidden" name="sort_mode" value="{$sort_mode}" />
 			{booticon iname="icon-search"  ipackage="icons"  iexplain="Search"}  
-			<label>{tr}Title{/tr}: <input class="input-small" type="text" name="find_title" value="{$find_title|default:$smarty.request.find_title|escape}" /></label>  <label>{tr}Author{/tr}: <input class="input-small" type="text" name="find_author" value="{$find_author|default:$smarty.request.find_author|escape}" /></label> <label>{tr}Last Editor{/tr}: <input class="input-small" type="text" name="find_last_editor" value="{$find_last_editor|default:$smarty.request.find_last_editor|escape}" /></label>  <input type="submit" class="btn btn-mini" name="search" value="{tr}Find{/tr}" /> 
+			<label>{tr}Title{/tr}: <input class="input-small" type="text" name="find_title" value="{$find_title|default:$smarty.request.find_title|escape}" /></label>  <label>{tr}Author{/tr}: <input class="input-small" type="text" name="find_author" value="{$find_author|default:$smarty.request.find_author|escape}" /></label> <label>{tr}Last Editor{/tr}: <input class="input-small" type="text" name="find_last_editor" value="{$find_last_editor|default:$smarty.request.find_last_editor|escape}" /></label>  <input type="submit" class="btn btn-xs" name="search" value="{tr}Find{/tr}" /> 
 		{/form}
 		</div>
 		<h1>{tr}{$gBitSystem->getBrowserTitle()}{/tr}</h1>

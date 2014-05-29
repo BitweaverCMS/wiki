@@ -73,7 +73,7 @@
 
 		{if $gBitSystem->isFeatureActive( 'wiki_backlinks' ) and $backlinks}
 			<div class="btn-group">
-				<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+				<button class="btn btn-xs dropdown-toggle" data-toggle="dropdown">
 				  <i class="icon-link"></i>
 				  <span class="caret"></span>
 				</button>
