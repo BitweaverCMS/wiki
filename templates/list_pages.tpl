@@ -20,7 +20,7 @@
 	<div class="body">
 
 		{form id="checkform"}
-			<ul class="inline navbar">
+			<ul class="list-inline navbar">
 				<li>{booticon iname="icon-circle-arrow-right"  ipackage="icons"  iexplain="sort by"}</li>
 				{if $gBitSystem->isFeatureActive( 'wiki_list_name' )}
 					<li>{smartlink ititle="Page Name" isort="title" icontrol=$listInfo}</li>
