@@ -37,6 +37,8 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 		//You&Me --(detoxify in kernel)--> You&amp;Me --(now)--> You&Me
 		//we could do htmlspecialchars_decode but it allows <> marks here, so we just transform &amp; to & - it's not so scary.
 		$loadPage = str_replace("&amp;", "&", $lookupHash['page'] );
+		// Fix nignx mapping of '+' sign when doing rewrite
+		$loadPage = str_replace("+", " ", $loadPage );
 
 		if( $loadPage && $existsInfo = BitPage::pageExists( $loadPage ) ) {
 			if (count($existsInfo)) {
