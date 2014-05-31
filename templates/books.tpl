@@ -1,6 +1,6 @@
 {strip}
 {if count($showstructs) ne 0}
-	<div class="control-group">
+	<div class="control-group column-group gutters">
 		{formlabel label="Structures"}
 		{forminput}
 			<a id="show_strct" style="display:block;" href="javascript:show('showstructs');show('hide_strct');hide('show_strct')">{tr}show books{/tr}</a>

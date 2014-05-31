@@ -11,7 +11,7 @@
 				<tr><td>
 						{tr}New name{/tr}:</td><td>
 						<input type="text" name="newpage" value="{$page|escape}" size="35" />
-						<input type="submit" class="btn btn-default" name="rename" value="{tr}Rename{/tr}" />
+						<input type="submit" class="ink-button" name="rename" value="{tr}Rename{/tr}" />
 				</td></tr>
 			</table>
 		</form>

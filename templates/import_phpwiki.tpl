@@ -24,7 +24,7 @@
 	<input checked="checked" type="radio" name="remo" value="n" /> {tr}no{/tr}</td>
 </tr>
 <tr class="panelsubmitrow">
-  <td colspan="2"><input type="submit" class="btn btn-default" name="import" value="{tr}Import{/tr}" /></td>
+  <td colspan="2"><input type="submit" class="ink-button" name="import" value="{tr}Import{/tr}" /></td>
 </tr>
 </table>
 </form>
