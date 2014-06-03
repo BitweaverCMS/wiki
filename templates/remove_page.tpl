@@ -12,21 +12,21 @@
 
 			{formfeedback warning="These actions are permanent and cannot be undone"}
 
-			<div class="control-group column-group gutters">
+			<div class="control-group">
 				{formlabel label="Page to remove"}
 				{forminput}
 					{$page}
 				{/forminput}
 			</div>
 
-			<div class="control-group column-group gutters">
+			<div class="control-group">
 				{formlabel label="Version"}
 				{forminput}
 					{$version}
 				{/forminput}
 			</div>
 
-			<div class="control-group column-group gutters">
+			<div class="control-group">
 				{formlabel label="Remove all versions" for="all"}
 				{forminput}
 					<input type="checkbox" name="all" id="all" />
@@ -34,7 +34,7 @@
 			</div>
 
 			<div class="control-group submit">
-				<input type="submit" class="ink-button" name="remove" value="{tr}remove{/tr}" />
+				<input type="submit" class="btn btn-default" name="remove" value="{tr}remove{/tr}" />
 			</div>
 		{/form}
 	</div> <!-- end .body -->

@@ -4,6 +4,6 @@
 <form action="{$smarty.const.WIKI_PKG_URL}rollback.php" method="post">
 <input type="hidden"  name="content_id" value="{$gContent->mContentId}" />
 <input type="hidden" name="version" value="{$version|escape}" />
-<input type="submit" class="ink-button" name="rollback" value="{tr}rollback{/tr}" />
+<input type="submit" class="btn btn-default" name="rollback" value="{tr}rollback{/tr}" />
 </form>
 </div>

@@ -47,6 +47,7 @@ if( $gContent->isLocked() ) {
 	$gBitSystem->fatalError( 'Cannot edit page because it is locked' );
 }
 
+
 $gContent->invokeServices( 'content_edit_function' );
 
 if( !empty( $gContent->mInfo ) ) {

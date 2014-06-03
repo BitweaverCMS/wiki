@@ -34,9 +34,9 @@
 		{/if}
 
 		{if ($structureInfo.structure_id) && ($gStructure->mInfo.creator_user_id == $gBitUser->mUserId || $gContent->hasUserPermission( 'p_wiki_admin_book' ))}
-			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$structureInfo.structure_id}">{booticon iname="icon-book"  ipackage="icons"  iexplain="Edit book"}</a>
+			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$structureInfo.structure_id}">{booticon iname="icon-cogs"  ipackage="icons"  iexplain="Edit book"}</a>
 		{elseif is_a($gContent,'BitBook') && $gContent->hasUpdatePermission()}
-			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?content_id={$gContent->mContentId}">{booticon iname="icon-book-edit"  ipackage="icons"  iexplain="Edit book"}</a>
+			<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?content_id={$gContent->mContentId}">{booticon iname="icon-cogs"  ipackage="icons"  iexplain="Edit book"}</a>
 		{/if}
 
 		{if $gBitUser->isRegistered() and $gBitUser->mUserId && $gBitSystem->isFeatureActive( 'users_watches' ) }
@@ -72,14 +72,17 @@
 		{/if}
 
 		{if $gBitSystem->isFeatureActive( 'wiki_backlinks' ) and $backlinks}
-			<div class="ink-dropdown">
-				<button class="ink-button toggle" data-target="#bldropdown">Backlinks<span class="icon-arrow-left"></span></button>
-				<ul class="dropdown-menu" id="bldropdown">
+			<div class="btn-group">
+				<button class="btn btn-xs dropdown-toggle" data-toggle="dropdown">
+				  <i class="icon-link"></i>
+				  <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu pull-right">
 					{foreach key=contentId item=backPage from=$backlinks}
 						<li><a href="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$contentId}">{$backPage|escape|truncate:30:"&hellip":true}</a></li>
 					{/foreach}
 				</ul>
-			</div>
+			  </div>
 		{/if}
 
 		{if count($showstructs) gt 0}

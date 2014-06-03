@@ -24,7 +24,7 @@ Here you can generate static HTML files from Wiki Book.
   	<td><input type="text" name="top" value="{$struct_info.title|escape}" /></td>
   </tr>
   <tr>
-  	<td colspan="2"><input type="submit" class="ink-button" name="create" value="{tr}Create{/tr}" /></td>
+  	<td colspan="2"><input type="submit" class="btn btn-default" name="create" value="{tr}Create{/tr}" /></td>
   </tr>
 </table>
 </form>

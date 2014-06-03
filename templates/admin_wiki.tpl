@@ -6,7 +6,7 @@
 			<input type="hidden" name="page" value="{$page}" />
 
 			{foreach from=$formWikiFeatures key=item item=output}
-				<div class="control-group column-group gutters">
+				<div class="control-group">
 					{formlabel label=$output.label for=$item}
 					{forminput}
 						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
@@ -15,7 +15,7 @@
 				</div>
 			{/foreach}
 
-			<div class="control-group column-group gutters">
+			<div class="control-group">
 				{formlabel label="Edit Page Sections" for="wiki_section_edit"}
 				{forminput}
 					<select name="wiki_section_edit" id="wiki_section_edit">
@@ -27,7 +27,7 @@
 				{/forminput}
 			</div>
 
-			<div class="control-group column-group gutters">
+			<div class="control-group">
 				{formlabel label="Tables syntax" for="wiki_tables"}
 				{forminput}
 					<select name="wiki_tables" id="wiki_tables">
@@ -39,7 +39,7 @@
 			</div>
 
 			<div class="control-group submit">
-				<input type="submit" class="ink-button" name="wikifeatures" value="{tr}Change preferences{/tr}" />
+				<input type="submit" class="btn btn-default" name="wikifeatures" value="{tr}Change preferences{/tr}" />
 			</div>
 		{/form}
 	{/jstab}
@@ -49,7 +49,7 @@
 			<input type="hidden" name="page" value="{$page}" />
 
 			{foreach from=$formWikiBooks key=item item=output}
-				<div class="control-group column-group gutters">
+				<div class="control-group">
 					{formlabel label=$output.label for=$item}
 					{forminput}
 						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
@@ -58,7 +58,7 @@
 				</div>
 			{/foreach}
 			<div class="control-group submit">
-				<input type="submit" class="ink-button" name="wikibooks" value="{tr}Change preferences{/tr}" />
+				<input type="submit" class="btn btn-default" name="wikibooks" value="{tr}Change preferences{/tr}" />
 			</div>
 		{/form}
 	{/jstab}
@@ -68,7 +68,7 @@
 			<input type="hidden" name="page" value="{$page}" />
 
 			{foreach from=$formWikiInOut key=item item=output}
-				<div class="control-group column-group gutters">
+				<div class="control-group">
 					{formlabel label=$output.label for=$item}
 					{forminput}
 						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
@@ -77,7 +77,7 @@
 				</div>
 			{/foreach}
 			<div class="control-group submit">
-				<input type="submit" class="ink-button" name="wikiinout" value="{tr}Change preferences{/tr}" />
+				<input type="submit" class="btn btn-default" name="wikiinout" value="{tr}Change preferences{/tr}" />
 			</div>
 		{/form}
 	{/jstab}
@@ -87,7 +87,7 @@
 			<input type="hidden" name="page" value="{$page}" />
 
 			{foreach from=$formWikiLists key=item item=output}
-				<div class="control-group column-group gutters">
+				<div class="control-group">
 					{formlabel label=$output.label for=$item}
 					{forminput}
 						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
@@ -97,7 +97,7 @@
 			{/foreach}
 
 			<div class="control-group submit">
-				<input type="submit" class="ink-button" name="wikilistconf" value="{tr}Change preferences{/tr}" />
+				<input type="submit" class="btn btn-default" name="wikilistconf" value="{tr}Change preferences{/tr}" />
 			</div>
 		{/form}
 	{/jstab}
@@ -106,7 +106,7 @@
 		{form}
 			{legend legend="Wiki Home Page"}
 				<input type="hidden" name="page" value="{$page}" />
-				<div class="control-group column-group gutters">
+				<div class="control-group">
 					{formlabel label="Disable Wiki Home Page" for="wiki_disable_auto_home"}
 					{forminput}
 						{html_checkboxes name="wiki_disable_auto_home" values="y" checked=$gBitSystem->getConfig('wiki_disable_auto_home') labels=false id="wiki_disabled_auto_home"}
@@ -114,7 +114,7 @@
 					{/forminput}
 				</div>
 
-				<div class="control-group column-group gutters">
+				<div class="control-group">
 					{formlabel label="Wiki Home Page" for="wiki_home_page"}
 					{forminput}
 						<input type="text" name="wiki_home_page" id="wiki_home_page" size="25" value="{$gBitSystem->getConfig('wiki_home_page')|escape}" />
@@ -123,12 +123,12 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" class="ink-button" name="setwikihome" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn btn-default" name="setwikihome" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 
 			{legend legend="Wiki Link Format"}
-				<div class="control-group column-group gutters">
+				<div class="control-group">
 					{formlabel label="Wiki Link Format" for="wiki_page_regex"}
 					{forminput}
 						<select name="wiki_page_regex" id="wiki_page_regex">
@@ -146,26 +146,26 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" class="ink-button" name="setwikiregex" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn btn-default" name="setwikiregex" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 
 			{legend legend="Copyright Management"}
-				<div class="control-group column-group gutters">
+				<div class="control-group">
 					{formlabel label="Enable Feature" for="wiki_copyrights"}
 					{forminput}
 						{html_checkboxes name="wiki_copyrights" values="y" checked=$gBitSystem->getConfig('wiki_copyrights') labels=false id="wiki_copyrights"}
 					{/forminput}
 				</div>
 
-				<div class="control-group column-group gutters">
+				<div class="control-group">
 					{formlabel label="License Page" for="wiki_license_page"}
 					{forminput}
 						<input type="text" name="wiki_license_page" id="wiki_license_page" value="{$wiki_license_page|escape}" />
 					{/forminput}
 				</div>
 
-				<div class="control-group column-group gutters">
+				<div class="control-group">
 					{formlabel label="Submit Notice" for="wiki_submit_notice"}
 					{forminput}
 						<input type="text" name="wiki_submit_notice" id="wiki_submit_notice" value="{$wiki_submit_notice|escape}" />
@@ -173,7 +173,7 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" class="ink-button" name="wikisetcopyright" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn btn-default" name="wikisetcopyright" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 
@@ -181,7 +181,7 @@
 				{formfeedback warning="This feature has been disabled for now since it's not functional."}
 
 				{foreach from=$formWikiWatch key=item item=output}
-					<div class="control-group column-group gutters">
+					<div class="control-group">
 						{formlabel label=$output.label for=$item}
 						{forminput}
 							{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
@@ -191,7 +191,7 @@
 				{/foreach}
 
 				<div class="control-group submit">
-					<input type="submit" class="ink-button" name="wikiwatch" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn btn-default" name="wikiwatch" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 		{/form}
