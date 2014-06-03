@@ -8,7 +8,7 @@
 					{/if}
 				{/if}
 				{if $page ne 'SandBox' && $gBitUser->hasPermission( 'p_wiki_remove_page' )}
-					<li><a title="{tr}remove this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}remove_page.php?page_id={$pageInfo.page_id}&amp;version=last">{tr}Remove{/tr}</a></li>
+					<li><a title="{tr}Remove this page{/tr}" href="{$smarty.const.WIKI_PKG_URL}remove_page.php?page_id={$pageInfo.page_id}&amp;version=last">{tr}Remove{/tr}</a></li>
 				{/if}
 			{/if}
 			{if $page ne 'SandBox'}
