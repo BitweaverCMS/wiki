@@ -11,7 +11,7 @@
 			<input type="hidden" name="page_id" value="{$gContent->mInfo.page_id}" />
 			<input type="hidden" name="tab" value="email" />
 
-			<div class="control-group">
+			<div class="form-group">
 				{formlabel label="Email"}
 				{forminput}
 					<input type="text" name="email" size="35" />
@@ -19,7 +19,7 @@
 				{/forminput}
 			</div>
 
-			<div class="control-group submit">
+			<div class="form-group submit">
 				<input type="submit" class="btn btn-default" name="addemail" value="{tr}Add email address{/tr}" />
 			</div>
 		{/form}
