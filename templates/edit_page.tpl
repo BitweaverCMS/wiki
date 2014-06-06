@@ -64,7 +64,7 @@
 						<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
 						<input type="hidden" name="content_id" value="{$pageInfo.content_id}" />
 
-						<div class="control-group">
+						<div class="form-group">
 							{formfeedback warning=$errors.title}
 							{formlabel label="$conDescr Title"}
 							{forminput}
@@ -77,7 +77,7 @@
 						</div>
 
 						{if $gBitSystem->isFeatureActive( 'wiki_description' )}
-							<div class="control-group">
+							<div class="form-group">
 								{formlabel label="Summary" for="summary"}
 								{forminput}
 									<input size="50" type="text" class="input-block-level" name="summary" id="summary" value="{$pageInfo.summary|escape:html}" />
@@ -93,7 +93,7 @@
 						{textarea edit=$pageInfo.data}
 
 						{if $footnote}
-							<div class="control-group">
+							<div class="form-group">
 								{formlabel label="Footnotes" for="footnote"}
 								{forminput}
 									<textarea class="input-block-level" name="footnote" id="footnote" rows="8">{$footnote|escape}</textarea>
@@ -103,7 +103,7 @@
 						{/if}
 
 						{if $page ne 'SandBox'}
-							<div class="control-group">
+							<div class="form-group">
 								{formlabel label="Comment" for="edit_comment"}
 								{forminput}
 									<input size="50" type="text" class="input-block-level" name="edit_comment" id="edit_comment" value="{$pageInfo.edit_comment}" />
@@ -113,7 +113,7 @@
 						{/if}
 
 						{if $gBitUser->hasPermission( 'p_wiki_save_minor' )}
-							<div class="control-group">
+							<div class="form-group">
 								{forminput}
 								<label class="checkbox">
 									<input type="checkbox" name="isminor" id="isminor" value="on" {if $pageInfo.isminor}checked="checked" {/if}/>Minor save
@@ -145,30 +145,30 @@
 
 				{if $gBitSystem->isFeatureActive( 'wiki_copyrights' )}
 					{jstab title="Copyright"}
-						<div class="control-group">
+						<div class="form-group">
 							{legend legend="Copyright Settings" for="copyrightTitle"}
-								<div class="control-group">
+								<div class="form-group">
 									{formlabel label="Title" for="copyrightTitle"}
 									{forminput}
 										<input size="40" type="text" class="input-block-level" name="copyrightTitle" id="copyrightTitle" value="{$copyrightTitle|escape}" />
 									{/forminput}
 								</div>
 
-								<div class="control-group">
+								<div class="form-group">
 									{formlabel label="Authors" for="copyrightAuthors"}
 									{forminput}
 										<input size="40" type="text" class="input-block-level" name="copyrightAuthors" id="copyrightAuthors" value="{$copyrightAuthors|escape}" />
 									{/forminput}
 								</div>
 
-								<div class="control-group">
+								<div class="form-group">
 									{formlabel label="Year" for="copyrightYear"}
 									{forminput}
 										<input size="4" type="text" class="input-block-level" name="copyrightYear" id="copyrightYear" value="{$copyrightYear|escape}" />
 									{/forminput}
 								</div>
 
-								<div class="control-group">
+								<div class="form-group">
 									{formlabel label="License"}
 									{forminput}
 										<a href="{$smarty.const.WIKI_PKG_URL}index.php?page={$wiki_license_page}">{tr}{$wiki_license_page}{/tr}</a>
@@ -177,7 +177,7 @@
 								</div>
 
 								{if $wiki_submit_notice neq ""}
-									<div class="control-group">
+									<div class="form-group">
 										{formlabel label="Important"}
 										{forminput}
 											{$wiki_submit_notice}
@@ -193,7 +193,7 @@
 				{if $gBitSystem->isFeatureActive( 'wiki_url_import' )}
 					{jstab title="Import HMTL"}
 						{legend legend="Import HMTL"}
-							<div class="control-group">
+							<div class="form-group">
 								{formlabel label="Import HTML from URL" for="suck_url"}
 								{forminput}
 									<input type="text" class="input-block-level" size="50" name="suck_url" id="suck_url" value="{$suck_url|escape}" />
@@ -201,7 +201,7 @@
 								{/forminput}
 							</div>
 
-							<div class="control-group">
+							<div class="form-group">
 								{forminput}
 								<label class="checkbox">
 									<input type="checkbox" name="parsehtml" id="parsehtml" {if $parsehtml eq 'y'}checked="checked"{/if} />Try to convert HTML to wiki
@@ -220,14 +220,14 @@
 							{/if} { * end upload file row * }
 						*}
 
-							<div class="control-group submit">
+							<div class="form-group submit">
 								<input type="submit" class="btn btn-default" name="do_suck" value="{tr}Import{/tr}" />
 							</div>
 						{/legend}
 					{/jstab}
 				{/if}
 			{/jstabs}
-			<div class="control-group submit">
+			<div class="form-group submit">
 				{forminput}
 					<input type="submit" class="btn btn-primary" name="fSavePage" value="{tr}Save{/tr}" /> <input type="submit" class="btn pull-right" name="fCancel" value="{tr}Cancel{/tr}" /> <input type="submit" class="btn btn-default" name="preview" value="{tr}Preview{/tr}" />
 				{/forminput}

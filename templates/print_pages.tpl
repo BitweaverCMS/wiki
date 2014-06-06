@@ -9,7 +9,7 @@
 				<input type="hidden" name="sendarticles" value="{$form_sendarticles|escape}" />
 				<input type="hidden" name="printpages" value="{$form_printpages|escape}" />
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Wiki Pages" for="pages"}
 					{forminput}
 						<select name="title" id="pages">
@@ -21,7 +21,7 @@
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Filter" for="find"}
 					{forminput}
 						<input type="text" name="find" id="find" value="{$find|escape}" />
@@ -30,7 +30,7 @@
 					{/forminput}
 				</div>
 
-				<div class="control-group submit">
+				<div class="form-group submit">
 					<input type="submit" class="btn btn-default" name="addpage" value="{tr}add page{/tr}" />
 					&nbsp;<input type="submit" class="btn btn-default" name="clearpages" value="{tr}clear pages{/tr}" />
 				</div>
@@ -39,7 +39,7 @@
 			{form legend="Selected Wiki Pages" ipackage="wiki" ifile="print_multi_pages.php"}
 				<input type="hidden" name="printpages" value="{$form_printpages|escape}" />
 				
-				<div class="control-group">
+				<div class="form-group">
 					<ul>
 						{section name=ix loop=$printpages}
 							<li>{$printpages[ix]}</li>
@@ -47,7 +47,7 @@
 					</ul>
 				</div>
 				
-				<div class="control-group submit">
+				<div class="form-group submit">
 					<input type="submit" class="btn btn-default" name="print" value="{tr}print{/tr}" />
 				</div>
 			{/form}

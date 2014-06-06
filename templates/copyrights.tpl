@@ -7,7 +7,7 @@
 	{legend legend="Copyright settings"}
 		{section name=i loop=$copyrights}
 			{form}
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Title" for="copyleft-title"}
 					{forminput}
 						<input size="40" type="text" name="copyrightTitle" id="copyleft-title" value="{$copyrights[i].title|escape}" />
@@ -15,7 +15,7 @@
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Authors" for="copyleft-authors"}
 					{forminput}
 						<input size="40" type="text" name="copyrightAuthors" id="copyleft-authors" value="{$copyrights[i].authors|escape}" />
@@ -23,7 +23,7 @@
 					{/forminput}
 				</div>
 				
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Year" for="copyleft-year"}
 					{forminput}
 						<input size="4" type="text" name="copyrightYear" id="copyleft-year" value="{$copyrights[i].year|escape}" />
@@ -31,7 +31,7 @@
 					{/forminput}
 				</div>
 
-				<div class="control-group submit">
+				<div class="form-group submit">
 					<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
 					<input type="hidden" name="copyright_id" value="{$copyrights[i].copyright_id|escape}" />
 					<input type="submit" class="btn btn-default" name="editcopyright" value="{tr}edit{/tr}" />
@@ -46,7 +46,7 @@
 
 		{form legend="Add a new copyright setting"}
 			<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
-			<div class="control-group">
+			<div class="form-group">
 				{formlabel label="Title" for="copyleft-tit"}
 				{forminput}
 					<input size="40" type="text" name="copyrightTitle" id="copyleft-tit" />
@@ -54,7 +54,7 @@
 				{/forminput}
 			</div>
 
-			<div class="control-group">
+			<div class="form-group">
 				{formlabel label="Authors" for="copyleft-aut"}
 				{forminput}
 					<input size="40" type="text" name="copyrightAuthors" id="copyleft-aut" />
@@ -62,7 +62,7 @@
 				{/forminput}
 			</div>
 			
-			<div class="control-group">
+			<div class="form-group">
 				{formlabel label="Year" for="copyleft-yyyy"}
 				{forminput}
 					<input size="4" type="text" name="copyrightYear" id="copyleft-yyyy" />
@@ -70,7 +70,7 @@
 				{/forminput}
 			</div>
 
-			<div class="control-group submit">
+			<div class="form-group submit">
 				<input type="submit" class="btn btn-default" name="addcopyright" value="{tr}add{/tr}" />
 			</div>
 		{/form}
