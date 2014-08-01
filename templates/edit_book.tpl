@@ -2,7 +2,7 @@
 
 <div class="edit structure">
 	<div class="header">
-		<h1>{tr}Edit Wiki Book{/tr}</h1>
+		<h1>{tr}Edit{/tr} {$gContent->getContentTypeName()}: {$gContent->getTitle()}</h1>
 	</div>
 
 	<div class="body">

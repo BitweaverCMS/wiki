@@ -138,16 +138,12 @@ if( isset($_REQUEST["createstructure"]) ) {
 	// verify the book permission on structure load
 	$verifyStructurePermission = 'p_wiki_admin_book';
 
-	// we need to load some javascript and css for this page
-	$gBitThemes->loadCss( UTIL_PKG_PATH.'javascript/libs/mygosu/DynamicTree.css' );
-	if( $gSniffer->_browser_info['browser'] == 'ie' && $gSniffer->_browser_info['maj_ver'] == 5 ) {
-		$gBitThemes->loadJavascript( UTIL_PKG_PATH.'javascript/libs/mygosu/ie5.js' );
-	}
-	$gBitThemes->loadJavascript( UTIL_PKG_PATH.'javascript/libs/mygosu/DynamicTreeBuilder.js' );
-
 	// set the correct display template
 	$mid = 'bitpackage:wiki/edit_book.tpl';
 	include_once( LIBERTY_PKG_PATH.'edit_structure_inc.php');
+	if( $gBitThemes->isAjaxRequest() ) {
+		$gBitSmarty->display( 'bitpackage:kernel/feedback_inc.tpl' );
+	}
 } else {
 	// user is just trying to create a new book - give them the form
 	$gBitSystem->setBrowserTitle( 'Create Wiki Book' );
