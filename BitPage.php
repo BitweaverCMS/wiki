@@ -585,8 +585,12 @@ class BitPage extends LibertyMime {
 
 		$whereSql = $joinSql = $selectSql = '';
 		$bindVars = array();
-		array_push( $bindVars, $this->mContentTypeGuid );
 		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars, NULL, $pListHash );
+
+		if ( !empty( $pListHash['content_type_guid'] ) ) {
+			$whereSql .= " AND lc.`content_type_guid`=? ";
+			$bindVars[] = $pListHash['content_type_guid'];
+		}
 
 		// make find_title compatible with {minifind}
 		if( empty( $pListHash['find_title'] )) {
@@ -626,6 +630,7 @@ class BitPage extends LibertyMime {
 		}
 
 		if( empty( $pListHash['orphans_only'] )) {
+			$whereSql =  preg_replace('/^ AND */',' WHERE ', $whereSql);
 			$query = "SELECT
 					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
 					wp.`page_id`, wp.`wiki_page_size` as `len`, lcds.`data` AS `summary`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
@@ -638,7 +643,7 @@ class BitPage extends LibertyMime {
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
 					$joinSql
-				WHERE lc.`content_type_guid`=? $whereSql
+				$whereSql
 				ORDER BY ".$this->mDb->convertSortmode( $pListHash['sort_mode'] );
 			$query_cant = "
 				SELECT COUNT(*)
@@ -647,9 +652,11 @@ class BitPage extends LibertyMime {
 					INNER JOIN `".BIT_DB_PREFIX."users_users` uuc ON ( uuc.`user_id` = lc.`user_id` )
 					INNER JOIN `".BIT_DB_PREFIX."users_users` uue ON ( uue.`user_id` = lc.`modifier_user_id` )
 					$joinSql
-				WHERE lc.`content_type_guid`=? $whereSql
+				$whereSql
 				";
 		} else {
+			$whereSql .= ' AND lcl.`to_content_id` is NULL ';
+			$whereSql =  preg_replace('/^ AND */',' WHERE ', $whereSql);
 			$query = "SELECT
 					uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name, uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name,
 					wp.`page_id`, wp.`wiki_page_size` AS `len`,lcds.`data` AS `summary`, wp.`edit_comment`, wp.`content_id`, wp.`flag`,
@@ -663,9 +670,7 @@ class BitPage extends LibertyMime {
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
 					$joinSql
-				WHERE lc.`content_type_guid`=?
-					AND lcl.`to_content_id` is NULL
-					$whereSql
+				$whereSql
 				ORDER BY ".$this->mDb->convertSortmode( $pListHash['sort_mode'] );
 			$query_cant = "
 				SELECT COUNT(*)
@@ -673,9 +678,7 @@ class BitPage extends LibertyMime {
 					LEFT JOIN `".BIT_DB_PREFIX."liberty_content_links` lcl ON (wp.`content_id` = lcl.`to_content_id`)
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`)
 					$joinSql
-				WHERE lc.`content_type_guid`=?
-					AND lcl.`to_content_id` IS NULL
-					$whereSql";
+				$whereSql";
 		}
 
 		// If sort mode is versions then offset is 0, max_records is -1 (again) and sort_mode is nil
