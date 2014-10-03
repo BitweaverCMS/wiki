@@ -69,7 +69,7 @@
 							{formlabel label="$conDescr Title"}
 							{forminput}
 								{if $gBitUser->hasPermission( 'p_wiki_rename_page' ) || !$pageInfo.page_id}
-									<input type="text" class="input-block-level" size="50" maxlength="200" name="title" id="title" value="{$pageInfo.title|escape}" />
+									<input type="text" class="form-control" maxlength="200" name="title" id="title" value="{$pageInfo.title|escape}" />
 								{else}
 									{$page} {$pageInfo.title|escape}
 								{/if}
@@ -80,7 +80,7 @@
 							<div class="form-group">
 								{formlabel label="Summary" for="summary"}
 								{forminput}
-									<input size="50" type="text" class="input-block-level" name="summary" id="summary" value="{$pageInfo.summary|escape:html}" />
+									<input type="text" class="form-control" name="summary" id="summary" value="{$pageInfo.summary|escape:html}" />
 									{formhelp note="Brief description of the page. This is visible when you hover over a link to this page and just below the title of the wiki page."}
 								{/forminput}
 							</div>
@@ -96,7 +96,7 @@
 							<div class="form-group">
 								{formlabel label="Footnotes" for="footnote"}
 								{forminput}
-									<textarea class="input-block-level" name="footnote" id="footnote" rows="8">{$footnote|escape}</textarea>
+									<textarea class="form-control" name="footnote" id="footnote" rows="8">{$footnote|escape}</textarea>
 									{formhelp note=""}
 								{/forminput}
 							</div>
@@ -106,7 +106,7 @@
 							<div class="form-group">
 								{formlabel label="Comment" for="edit_comment"}
 								{forminput}
-									<input size="50" type="text" class="input-block-level" name="edit_comment" id="edit_comment" value="{$pageInfo.edit_comment}" />
+									<input type="text" class="form-control" name="edit_comment" id="edit_comment" value="{$pageInfo.edit_comment}" />
 									{formhelp note="Add a comment to illustrate your most recent changes."}
 								{/forminput}
 							</div>
@@ -150,21 +150,21 @@
 								<div class="form-group">
 									{formlabel label="Title" for="copyrightTitle"}
 									{forminput}
-										<input size="40" type="text" class="input-block-level" name="copyrightTitle" id="copyrightTitle" value="{$copyrightTitle|escape}" />
+										<input type="text" class="form-control" name="copyrightTitle" id="copyrightTitle" value="{$copyrightTitle|escape}" />
 									{/forminput}
 								</div>
 
 								<div class="form-group">
 									{formlabel label="Authors" for="copyrightAuthors"}
 									{forminput}
-										<input size="40" type="text" class="input-block-level" name="copyrightAuthors" id="copyrightAuthors" value="{$copyrightAuthors|escape}" />
+										<input type="text" class="form-control" name="copyrightAuthors" id="copyrightAuthors" value="{$copyrightAuthors|escape}" />
 									{/forminput}
 								</div>
 
 								<div class="form-group">
 									{formlabel label="Year" for="copyrightYear"}
 									{forminput}
-										<input size="4" type="text" class="input-block-level" name="copyrightYear" id="copyrightYear" value="{$copyrightYear|escape}" />
+										<input type="text" class="form-control" name="copyrightYear" id="copyrightYear" value="{$copyrightYear|escape}" />
 									{/forminput}
 								</div>
 
@@ -196,7 +196,7 @@
 							<div class="form-group">
 								{formlabel label="Import HTML from URL" for="suck_url"}
 								{forminput}
-									<input type="text" class="input-block-level" size="50" name="suck_url" id="suck_url" value="{$suck_url|escape}" />
+									<input type="text" class="form-control" name="suck_url" id="suck_url" value="{$suck_url|escape}" />
 									{formhelp note=""}
 								{/forminput}
 							</div>
