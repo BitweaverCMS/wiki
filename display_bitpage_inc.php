@@ -20,7 +20,7 @@ $gBitSystem->verifyPackage( 'wiki' );
 $gContent->verifyViewPermission();
 
 // Check permissions to access this page
-if( !$gContent->isValid() ) {
+if( !$gContent->isValid() || !is_a( $gContent, 'BitPage' ) ) {
 	$gBitSystem->fatalError( tra( 'Page cannot be found' ), NULL, NULL, HttpStatusCodes::HTTP_GONE );
 }
 
