@@ -125,7 +125,7 @@ if( isset($_REQUEST["createstructure"]) ) {
 				$nodeHash['after_ref_id'] = $gStructure->storeNode( $nodeHash );
 			}
 		}
-		bit_redirect( .WIKI_PKG_URL."edit_book.php?structure_id=".$structure_id );
+		bit_redirect( WIKI_PKG_URL."edit_book.php?structure_id=".$structure_id );
 	} else {
 		$gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 		$gBitSmarty->assign( 'name', $_REQUEST['name']);
