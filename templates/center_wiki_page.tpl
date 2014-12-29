@@ -10,7 +10,7 @@
 		{/if}
 	</div> <!-- End Actions -->
 
-	{if $gContent->mInfo.title}
+	{if $showTitle && $gContent->mInfo.title}
 		<div class="header"><h1>{$gContent->mInfo.title|escape}</h1></div>
 	{/if}
 

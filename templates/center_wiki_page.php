@@ -8,8 +8,12 @@ $lookupHash['page']       = ( !empty( $moduleParams['module_params']['page'] )  
 // make sure gContent doesn't hold any information in case this is included multiple times
 $gContent = NULL;
 include( WIKI_PKG_PATH."lookup_page_inc.php" );
-if( !empty( $moduleParams['title'] )) {
+$showTitle = TRUE;
+if( !empty( $moduleParams['module_params']['notitle'] ) ) {
+	$showTitle = FALSE;
+} elseif( !empty( $moduleParams['title'] )) {
 	$gContent->mInfo['title'] = $moduleParams['title'];
 }
 
+$_template->tpl_vars['showTitle'] = $showTitle;
 $_template->tpl_vars['gContent'] = new Smarty_variable( $gContent );
