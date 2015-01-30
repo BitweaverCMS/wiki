@@ -14,6 +14,5 @@ if( !empty( $moduleParams['module_params']['notitle'] ) ) {
 } elseif( !empty( $moduleParams['title'] )) {
 	$gContent->mInfo['title'] = $moduleParams['title'];
 }
-
-$_template->tpl_vars['showTitle'] = $showTitle;
+$_template->tpl_vars['showTitle'] = new Smarty_variable( $showTitle );
 $_template->tpl_vars['gContent'] = new Smarty_variable( $gContent );
