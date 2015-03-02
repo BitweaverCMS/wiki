@@ -7,9 +7,8 @@
 
 			{foreach from=$formWikiFeatures key=item item=output}
 				<div class="form-group">
-					{formlabel label=$output.label for=$item}
-					{forminput}
-						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
+					{forminput label="checkbox"}
+						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item} {tr}{$output.label}{/tr}
 						{formhelp note=$output.note page=$output.page}
 					{/forminput}
 				</div>
@@ -18,7 +17,7 @@
 			<div class="form-group">
 				{formlabel label="Edit Page Sections" for="wiki_section_edit"}
 				{forminput}
-					<select name="wiki_section_edit" id="wiki_section_edit">
+					<select class="form-control" name="wiki_section_edit" id="wiki_section_edit">
 						<option value="0" {if $gBitSystem->getConfig('wiki_section_edit') eq 0}selected="selected"{/if}>{tr}Disabled{/tr}</option>
 						<option value="1" {if $gBitSystem->getConfig('wiki_section_edit') eq 1}selected="selected"{/if}>h1</option>
 						<option value="2" {if $gBitSystem->getConfig('wiki_section_edit') eq 2}selected="selected"{/if}>h2</option>
@@ -30,7 +29,7 @@
 			<div class="form-group">
 				{formlabel label="Tables syntax" for="wiki_tables"}
 				{forminput}
-					<select name="wiki_tables" id="wiki_tables">
+					<select class="form-control" name="wiki_tables" id="wiki_tables">
 						<option value="old" {if $gBitSystem->getConfig('wiki_tables') eq 'old'}selected="selected"{/if}>{tr}|| for rows{/tr}</option>
 						<option value="new" {if $gBitSystem->getConfig('wiki_tables') eq 'new'}selected="selected"{/if}>{tr}\n for rows{/tr}</option>
 					</select>
@@ -50,9 +49,8 @@
 
 			{foreach from=$formWikiBooks key=item item=output}
 				<div class="form-group">
-					{formlabel label=$output.label for=$item}
-					{forminput}
-						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
+					{forminput label="checkbox"}
+						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item} {tr}{$output.label}{/tr}
 						{formhelp note=$output.note page=$output.page}
 					{/forminput}
 				</div>
@@ -69,9 +67,8 @@
 
 			{foreach from=$formWikiInOut key=item item=output}
 				<div class="form-group">
-					{formlabel label=$output.label for=$item}
-					{forminput}
-						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
+					{forminput label="checkbox"}
+						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item} {tr}{$output.label}{/tr}
 						{formhelp note=$output.note page=$output.page}
 					{/forminput}
 				</div>
@@ -88,9 +85,8 @@
 
 			{foreach from=$formWikiLists key=item item=output}
 				<div class="form-group">
-					{formlabel label=$output.label for=$item}
-					{forminput}
-						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
+					{forminput label="checkbox"}
+						{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item} {tr}{$output.label}{/tr}
 						{formhelp note=$output.note page=$output.page}
 					{/forminput}
 				</div>
@@ -107,9 +103,8 @@
 			{legend legend="Wiki Home Page"}
 				<input type="hidden" name="page" value="{$page}" />
 				<div class="form-group">
-					{formlabel label="Disable Wiki Home Page" for="wiki_disable_auto_home"}
-					{forminput}
-						{html_checkboxes name="wiki_disable_auto_home" values="y" checked=$gBitSystem->getConfig('wiki_disable_auto_home') labels=false id="wiki_disabled_auto_home"}
+					{forminput label="checkbox"}
+						{html_checkboxes name="wiki_disable_auto_home" values="y" checked=$gBitSystem->getConfig('wiki_disable_auto_home') labels=false id="wiki_disabled_auto_home"} {tr}Disable Wiki Home Page{/tr}
 						{formhelp note="When checked the default wiki url will load a list of recently edited pages. This will disable the auto-fetching of the home page value below."}
 					{/forminput}
 				</div>
@@ -117,7 +112,7 @@
 				<div class="form-group">
 					{formlabel label="Wiki Home Page" for="wiki_home_page"}
 					{forminput}
-						<input type="text" name="wiki_home_page" id="wiki_home_page" size="25" value="{$gBitSystem->getConfig('wiki_home_page')|escape}" />
+						<input type="text" class="form-control" name="wiki_home_page" id="wiki_home_page" size="25" value="{$gBitSystem->getConfig('wiki_home_page')|escape}" />
 						{formhelp note="When the wiki is accessed, this is the page that will be displayed as the first page."}
 					{/forminput}
 				</div>
@@ -131,7 +126,7 @@
 				<div class="form-group">
 					{formlabel label="Wiki Link Format" for="wiki_page_regex"}
 					{forminput}
-						<select name="wiki_page_regex" id="wiki_page_regex">
+						<select class="form-control" name="wiki_page_regex" id="wiki_page_regex">
 							<option value="strict"   {if $gBitSystem->getConfig('wiki_page_regex') eq 'strict'}selected="selected"{/if}>{tr}English{/tr}</option>
 							<option value="full"     {if $gBitSystem->getConfig('wiki_page_regex') eq 'full'}selected="selected"{/if}>{tr}Latin{/tr}</option>
 							<option value="complete" {if $gBitSystem->getConfig('wiki_page_regex') eq 'complete'}selected="selected"{/if}>{tr}Complete{/tr}</option>
@@ -152,23 +147,22 @@
 
 			{legend legend="Copyright Management"}
 				<div class="form-group">
-					{formlabel label="Enable Feature" for="wiki_copyrights"}
-					{forminput}
-						{html_checkboxes name="wiki_copyrights" values="y" checked=$gBitSystem->getConfig('wiki_copyrights') labels=false id="wiki_copyrights"}
+					{forminput label="checkbox"}
+						{html_checkboxes name="wiki_copyrights" values="y" checked=$gBitSystem->getConfig('wiki_copyrights') labels=false id="wiki_copyrights"} {tr}Enable Feature{/tr}
 					{/forminput}
 				</div>
 
 				<div class="form-group">
 					{formlabel label="License Page" for="wiki_license_page"}
 					{forminput}
-						<input type="text" name="wiki_license_page" id="wiki_license_page" value="{$wiki_license_page|escape}" />
+						<input type="text" class="form-control" name="wiki_license_page" id="wiki_license_page" value="{$wiki_license_page|escape}" />
 					{/forminput}
 				</div>
 
 				<div class="form-group">
 					{formlabel label="Submit Notice" for="wiki_submit_notice"}
 					{forminput}
-						<input type="text" name="wiki_submit_notice" id="wiki_submit_notice" value="{$wiki_submit_notice|escape}" />
+						<input type="text" class="form-control" name="wiki_submit_notice" id="wiki_submit_notice" value="{$wiki_submit_notice|escape}" />
 					{/forminput}
 				</div>
 
@@ -182,9 +176,8 @@
 
 				{foreach from=$formWikiWatch key=item item=output}
 					<div class="form-group">
-						{formlabel label=$output.label for=$item}
-						{forminput}
-							{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
+						{forminput label="checkbox"}
+							{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item} {tr}{$output.label}{/tr}
 							{formhelp note=$output.note page=$output.page}
 						{/forminput}
 					</div>
