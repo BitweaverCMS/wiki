@@ -241,6 +241,10 @@ $formInfo['original_title'] =( !empty( $gContent->mInfo['title'] ) ) ? $gContent
 $gBitSmarty->assign_by_ref( 'pageInfo', $formInfo );
 $gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 
+if( $gBitSystem->isPackageActive( 'ckeditor' ) ) {
+	loadCkEditor();
+}
+
 $gBitSystem->display( 'bitpackage:wiki/edit_page.tpl', 'Edit: '.$gContent->getTitle() , array( 'display_mode' => 'edit' ));
 
 
