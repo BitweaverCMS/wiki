@@ -37,7 +37,7 @@ if (isset($_REQUEST["print"])) {
 		}
 	}
 }
-$gBitSmarty->assign_by_ref('pages', $pages);
+$gBitSmarty->assignByRef('pages', $pages);
 
 // Display the template
 $gBitSmarty->display("bitpackage:wiki/print_multi_pages.tpl");

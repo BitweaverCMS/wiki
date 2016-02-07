@@ -88,6 +88,6 @@ if( $gContent->isValid() && empty( $gStructure ) ) {
 	}
 }
 
-$gBitSmarty->clear_assign( 'gContent' );
-$gBitSmarty->assign_by_ref( 'gContent', $gContent );
+$gBitSmarty->clearAssign( 'gContent' );
+$gBitSmarty->assignByRef( 'gContent', $gContent );
 ?>

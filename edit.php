@@ -238,11 +238,11 @@ if( empty( $formInfo ) ) {
 // make original page title available for template
 $formInfo['original_title'] =( !empty( $gContent->mInfo['title'] ) ) ? $gContent->mInfo['title']  : "" ;
 
-$gBitSmarty->assign_by_ref( 'pageInfo', $formInfo );
-$gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
+$gBitSmarty->assignByRef( 'pageInfo', $formInfo );
+$gBitSmarty->assignByRef( 'errors', $gContent->mErrors );
 
 if( $gBitSystem->isPackageActive( 'ckeditor' ) ) {
-	loadCkEditor();
+//	loadCkEditor();
 }
 
 $gBitSystem->display( 'bitpackage:wiki/edit_page.tpl', 'Edit: '.$gContent->getTitle() , array( 'display_mode' => 'edit' ));

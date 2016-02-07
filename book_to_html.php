@@ -63,7 +63,7 @@ if( !$gBitUser->isAdmin() ) {
 }
 
 $struct_info = $structlib->s_get_structure_info($_REQUEST['struct']);
-$gBitSmarty->assign_by_ref('struct_info',$struct_info);
+$gBitSmarty->assignByRef('struct_info',$struct_info);
 
 $gBitSmarty->assign('generated','y');
 if(isset($_REQUEST['create'])) {

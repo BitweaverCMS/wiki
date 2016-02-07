@@ -49,7 +49,7 @@ $listHash = array(
 	'find' => $find,
 );
 $pages = $gContent->getList( $listHash );
-$gBitSmarty->assign_by_ref('pages', $pages);
+$gBitSmarty->assignByRef('pages', $pages);
 
 // Display the template
 $gBitSystem->display( 'bitpackage:wiki/print_pages.tpl', NULL, array( 'display_mode' => 'display' ));
