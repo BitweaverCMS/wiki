@@ -63,6 +63,43 @@ class BitPage extends LibertyMime {
 		return $ret;
 	}
 
+	public static function lookupObject( $pLookupHash ) {
+		if( !empty( $pLookupHash['page_id'] ) )  {
+			$loadContentId = BitPage::findContentIdByPageId( $pLookupHash['page_id'] );
+		} elseif( !empty( $pLookupHash['content_id'] ) ) {
+			$loadContentId = $pLookupHash['content_id'];
+		} elseif( !empty( $pLookupHash['page'] ) ) {
+			//handle legacy forms that use plain 'page' form variable name
+
+			//if page had some special enities they were changed to HTML for for security reasons.
+			//now we deal only with string so convert it back - so we can support this case:
+			//You&Me --(detoxify in kernel)--> You&amp;Me --(now)--> You&Me
+			//we could do htmlspecialchars_decode but it allows <> marks here, so we just transform &amp; to & - it's not so scary.
+			$loadPage = str_replace("&amp;", "&", $pLookupHash['page'] );
+			// Fix nignx mapping of '+' sign when doing rewrite
+			$loadPage = str_replace("+", " ", $loadPage );
+
+			if( $loadPage && $existsInfo = self::pageExists( $loadPage ) ) {
+				if (count($existsInfo)) {
+					if (count($existsInfo) > 1) {
+						// Perhaps something should be done on page conflicts
+					}
+					$loadPageId = $existsInfo[0]['page_id'];
+					$loadContentId = $existsInfo[0]['content_id'];
+				}
+			}
+		}
+
+		if( !empty( $loadContentId ) ) {
+			$ret = LibertyBase::getLibertyObject( $loadContentId );
+		}
+
+		if( empty( $ret ) || !is_object( $ret ) ) {
+			$ret = new self();
+		}
+		return $ret;
+	}
+
 	/**
 	 * Determines if a wiki page (row in wiki_pages) exists, and returns a hash of important info. If N pages exists with $pPageName, returned existsHash has a row for each unique pPageName row.
 	 * @param pPageName name of the wiki page
