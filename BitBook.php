@@ -41,7 +41,7 @@ class BitBook extends BitPage {
 	var $mPageId;
 	var $mPageName;
 	function BitBook( $pPageId=NULL, $pContentId=NULL ) {
-		BitPage::BitPage( $pPageId, $pContentId );
+		parent::__construct( $pPageId, $pContentId );
 		$this->registerContentType( BITBOOK_CONTENT_TYPE_GUID, array(
 			'content_type_guid' => BITBOOK_CONTENT_TYPE_GUID,
 			'content_name' => 'Wiki Book',
