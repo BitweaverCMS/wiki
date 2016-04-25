@@ -90,7 +90,7 @@
 							<input type="hidden" name="section" value="{$pageInfo.section}" />
 						{/if}
 
-						{textarea edit=$pageInfo.data}
+						{textarea edit=$pageInfo.data formatguid=$pageInfo.format_guid langcode=$pageInfo.lang_code}
 
 						{if $footnote}
 							<div class="form-group">
