@@ -59,7 +59,7 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 	}
 
 	if( !empty( $loadContentId ) ) {
-		$gContent = LibertyBase::getLibertyObject( $loadContentId );
+		$gContent = BitPage::getLibertyObject( $loadContentId );
 	}
 
 	if( empty( $gContent ) || !is_object( $gContent ) ) {

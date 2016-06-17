@@ -18,11 +18,11 @@ require_once( LIBERTY_PKG_PATH.'LibertyMime.php' );
 /**
  * @package wiki
  */
-class BitPage extends LibertyMime {
+class BitPage extends LibertyMime implements BitCacheable {
 	var $mPageId;
 	var $mPageName;
 
-	function BitPage( $pPageId=NULL, $pContentId=NULL ) {
+	function __construct( $pPageId=NULL, $pContentId=NULL ) {
 		parent::__construct();
 		$this->registerContentType( BITPAGE_CONTENT_TYPE_GUID, array(
 				'content_type_guid' => BITPAGE_CONTENT_TYPE_GUID,
@@ -41,6 +41,22 @@ class BitPage extends LibertyMime {
 		$this->mCreateContentPerm = 'p_wiki_create_page';
 		$this->mUpdateContentPerm  = 'p_wiki_update_page';
 		$this->mAdminContentPerm = 'p_wiki_admin';
+	}
+
+	public static function isCacheableClass() {
+		return true;
+	}
+
+	public function isCacheableObject() {
+		return true;
+	}
+
+	public static function getCacheClass() {
+		return 'BitPage';
+	}
+
+	public function __sleep() {
+		return array_merge( parent::__sleep(), array( 'mPageId', 'mPageName' ) );
 	}
 
 	public static function findContentIdByPageId( $pPageId ) {
@@ -79,7 +95,7 @@ class BitPage extends LibertyMime {
 			// Fix nignx mapping of '+' sign when doing rewrite
 			$loadPage = str_replace("+", " ", $loadPage );
 
-			if( $loadPage && $existsInfo = self::pageExists( $loadPage ) ) {
+			if( $loadPage && $existsInfo = static::pageExists( $loadPage ) ) {
 				if (count($existsInfo)) {
 					if (count($existsInfo) > 1) {
 						// Perhaps something should be done on page conflicts
