@@ -214,7 +214,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 	* @access public
 	**/
 	function store( &$pParamHash ) {
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 
 		if( $this->verify( $pParamHash ) && LibertyMime::store( $pParamHash ) ) {
 			$pParamHash['page_store']['wiki_page_size'] = !empty( $pParamHash['edit'] ) ? strlen( $pParamHash['edit'] ) : 0;
@@ -274,7 +274,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 				}
 			}
 		}
-		$this->mDb->CompleteTrans();
+		$this->CompleteTrans();
 		return( count( $this->mErrors ) == 0 );
 	}
 
@@ -369,13 +369,13 @@ class BitPage extends LibertyMime implements BitCacheable {
 	function expunge() {
 		$ret = FALSE;
 		if( $this->isValid() ) {
-			$this->mDb->StartTrans();
+			$this->StartTrans();
 			$this->expungeVersion(); // will nuke all versions
 			$query = "DELETE FROM `".BIT_DB_PREFIX."wiki_pages` WHERE `content_id` = ?";
 			$result = $this->mDb->query( $query, array( $this->mContentId ) );
 			if( LibertyMime::expunge() ) {
 				$ret = TRUE;
-				$this->mDb->CompleteTrans();
+				$this->CompleteTrans();
 			} else {
 				$this->mDb->RollbackTrans();
 			}
@@ -739,7 +739,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 		// If sort mode is backlinks then offset is 0, max_records is -1 (again) and sort_mode is nil
 
 		$ret = array();
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 
 		# get count of total number of items available
 		$cant = $this->mDb->getOne( $query_cant, $bindVars );
@@ -754,7 +754,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 		}
 
 		$result = $this->mDb->query( $query, $bindVars, $pListHash['max_records'], $pListHash['offset'] );
-		$this->mDb->CompleteTrans();
+		$this->CompleteTrans();
 		while( $res = $result->fetchRow() ) {
 			$aux = array();
 			$aux = $res;
