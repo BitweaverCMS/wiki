@@ -19,8 +19,8 @@ require_once( LIBERTY_PKG_PATH.'LibertyMime.php' );
  * @package wiki
  */
 class BitPage extends LibertyMime implements BitCacheable {
-	var $mPageId;
-	var $mPageName;
+	public $mPageId;
+	public $mPageName;
 
 	function __construct( $pPageId=NULL, $pContentId=NULL ) {
 		parent::__construct();

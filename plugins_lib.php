@@ -28,25 +28,25 @@
     * @version $Revision$
     */
     class PluginsLib extends BitBase {
-        var $_errors;
-        var $_data;
-        var $_params;
+        public $_errors;
+        public $_data;
+        public $_params;
         /**
         * Array of params to be expanded as arrays. Explode the string with {@link $separator}
         * @var array
         */
-        var $expanded_params = array();
+        public $expanded_params = array();
         /**
         * Separator used to explote params listed on {@link $expanded_params}
         * @var string
         */
-        var $separator = "|";
+        public $separator = "|";
         /**
         * List of fields retrieved from {@link BitBase::list_pages()}
         * Keys are the name of the fields and values the names for tra();
         * @var array
         */
-        var $aInfoPresetNames = array(
+        public $aInfoPresetNames = array(
         "hits" => "Hits", "last_modified" => "Last mod", "user" => "Last author", "len" => "Size", "comment" => "Com", "creator" => "Creator", "version" => "Last ver", "flag" => "Status", "versions" => "Vers", "links" => "Links", "backlinks" => "Backlinks");
 
         /**
