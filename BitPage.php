@@ -107,7 +107,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 		}
 
 		if( !empty( $loadContentId ) ) {
-			$ret = LibertyBase::getLibertyObject( $loadContentId );
+			$ret = static::getLibertyObject( $loadContentId );
 		}
 
 		if( empty( $ret ) || !is_object( $ret ) ) {
