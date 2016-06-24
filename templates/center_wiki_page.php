@@ -15,4 +15,4 @@ if( !empty( $moduleParams['module_params']['notitle'] ) ) {
 	$modulePage->mInfo['title'] = $moduleParams['title'];
 }
 $_template->tpl_vars['showTitle'] = new Smarty_variable( $showTitle );
-$_template->tpl_vars['gContent'] = new Smarty_variable( $modulePage );
+$_template->tpl_vars['wikiPage'] = new Smarty_variable( $modulePage );
