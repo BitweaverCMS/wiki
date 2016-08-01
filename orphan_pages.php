@@ -57,13 +57,13 @@ if( isset( $_REQUEST["batch_submit"] ) && isset( $_REQUEST["checked"] ) && $_REQ
 			}
 		}
 		if( !empty( $errors )) {
-			$gBitSmarty->assign_by_ref( 'errors', $errors );
+			$gBitSmarty->assignByRef( 'errors', $errors );
 		}
 	}
 }
 
 $gContent = new BitPage();
-$gBitSmarty->assign_by_ref( "gContent", $gContent );
+$gBitSmarty->assignByRef( "gContent", $gContent );
 
 if( !empty( $_REQUEST['sort_mode'] )) {
 	$listHash['sort_mode'] = preg_replace( '/^user_/', 'creator_user_', $_REQUEST['sort_mode'] );
@@ -78,8 +78,8 @@ $listHash['listInfo']['parameters']['find_title']       = !empty( $listHash['fin
 $listHash['listInfo']['parameters']['find_author']      = !empty( $listHash['find_author'] ) ? $listHash['find_author'] : '';
 $listHash['listInfo']['parameters']['find_last_editor'] = !empty( $listHash['find_last_editor'] ) ? $listHash['find_last_editor'] : '';
 
-$gBitSmarty->assign_by_ref( 'listpages', $listpages );
-$gBitSmarty->assign_by_ref( 'listInfo', $listHash['listInfo'] );
+$gBitSmarty->assignByRef( 'listpages', $listpages );
+$gBitSmarty->assignByRef( 'listInfo', $listHash['listInfo'] );
 
 // Display the template
 $gBitSystem->display( 'bitpackage:wiki/orphan_pages.tpl', tra( 'Orphan Pages' ), array( 'display_mode' => 'list' ));

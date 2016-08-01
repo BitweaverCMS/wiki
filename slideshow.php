@@ -97,13 +97,13 @@ $current_slide = $_REQUEST["slide"] + 1;
 $gBitSmarty->assign('total_slides', $total_slides);
 $gBitSmarty->assign('current_slide', $current_slide);
 
-//$gBitSmarty->assign_by_ref('last_modified',date("l d of F, Y  [H:i:s]",$info["last_modified"]));
-$gBitSmarty->assign_by_ref('last_modified', $info["last_modified"]);
+//$gBitSmarty->assignByRef('last_modified',date("l d of F, Y  [H:i:s]",$info["last_modified"]));
+$gBitSmarty->assignByRef('last_modified', $info["last_modified"]);
 
 if (empty($info["user"])) {
 	$info["user"] = 'anonymous';
 }
 
-$gBitSmarty->assign_by_ref('lastUser', $info["user"]);
+$gBitSmarty->assignByRef('lastUser', $info["user"]);
 $gBitSmarty->display("bitpackage:wiki/slideshow.tpl");
 ?>

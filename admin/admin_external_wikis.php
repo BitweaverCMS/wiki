@@ -40,7 +40,7 @@ if (empty( $_REQUEST["sort_mode"] )) {
 } else {
 	$sort_mode = $_REQUEST["sort_mode"];
 }
-$gBitSmarty->assign_by_ref('sort_mode', $sort_mode);
+$gBitSmarty->assignByRef('sort_mode', $sort_mode);
 if (!isset($_REQUEST["offset"])) {
 	$offset = 0;
 } else {
@@ -50,17 +50,17 @@ if (isset($_REQUEST['page'])) {
 	$page = &$_REQUEST['page'];
 	$offset = ($page - 1) * $max_records;
 }
-$gBitSmarty->assign_by_ref('offset', $offset);
+$gBitSmarty->assignByRef('offset', $offset);
 if (isset($_REQUEST["find"])) {
 	$find = $_REQUEST["find"];
 } else {
 	$find = '';
 }
-$gBitSmarty->assign_by_ref('find', $find);
+$gBitSmarty->assignByRef('find', $find);
 
 $channels = $adminlib->list_extwiki($offset, $max_records, $sort_mode, $find);
 $cant_pages = ceil($channels["cant"] / $max_records);
-$gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
+$gBitSmarty->assignByRef('cant_pages', $cant_pages);
 $gBitSmarty->assign('actual_page', 1 + ($offset / $max_records));
 if ($channels["cant"] > ($offset + $max_records)) {
 	$gBitSmarty->assign('next_offset', $offset + $max_records);
@@ -73,7 +73,7 @@ if ($offset > 0) {
 } else {
 	$gBitSmarty->assign('prev_offset', -1);
 }
-$gBitSmarty->assign_by_ref('channels', $channels["data"]);
+$gBitSmarty->assignByRef('channels', $channels["data"]);
 
 // Display the template
 $gBitSystem->display( 'bitpackage:wiki/admin_external_wikis.tpl', NULL, array( 'display_mode' => 'admin' ));

@@ -23,7 +23,7 @@ if (!isset($_REQUEST["page"])) {
 	$gBitSystem->fatalError(tra("No page indicated"));
 } else {
 	$page = $_REQUEST["page"];
-	$gBitSmarty->assign_by_ref('page', $_REQUEST["page"]);
+	$gBitSmarty->assignByRef('page', $_REQUEST["page"]);
 }
 
 // Now check permissions to access this page
@@ -35,7 +35,7 @@ if( !$gContent->pageExists( $page )) {
 }
 // Get the backlinks for the page "page"
 $backlinks = $gContent->getBacklinks();
-$gBitSmarty->assign_by_ref('backlinks', $backlinks);
+$gBitSmarty->assignByRef('backlinks', $backlinks);
 
 // Display the template
 $gBitSystem->display( 'bitpackage:wiki/backlinks.tpl', NULL, array( 'display_mode' => 'display' ));

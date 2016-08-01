@@ -18,11 +18,11 @@ require_once( LIBERTY_PKG_PATH.'LibertyMime.php' );
 /**
  * @package wiki
  */
-class BitPage extends LibertyMime {
-	var $mPageId;
-	var $mPageName;
+class BitPage extends LibertyMime implements BitCacheable {
+	public $mPageId;
+	public $mPageName;
 
-	function BitPage( $pPageId=NULL, $pContentId=NULL ) {
+	function __construct( $pPageId=NULL, $pContentId=NULL ) {
 		parent::__construct();
 		$this->registerContentType( BITPAGE_CONTENT_TYPE_GUID, array(
 				'content_type_guid' => BITPAGE_CONTENT_TYPE_GUID,
@@ -43,6 +43,22 @@ class BitPage extends LibertyMime {
 		$this->mAdminContentPerm = 'p_wiki_admin';
 	}
 
+	public static function isCacheableClass() {
+		return true;
+	}
+
+	public function isCacheableObject() {
+		return true;
+	}
+
+	public static function getCacheClass() {
+		return 'BitPage';
+	}
+
+	public function __sleep() {
+		return array_merge( parent::__sleep(), array( 'mPageId', 'mPageName' ) );
+	}
+
 	public static function findContentIdByPageId( $pPageId ) {
 		global $gBitDb;
 		$ret = NULL;
@@ -60,6 +76,43 @@ class BitPage extends LibertyMime {
 			array_push( $bindVars, $pUserId );
 		}
 		$ret = $this->mDb->getOne("select `page_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) where lc.`title`=? AND lc.`content_type_guid`=? $userWhere", $bindVars );
+		return $ret;
+	}
+
+	public static function lookupObject( $pLookupHash ) {
+		if( !empty( $pLookupHash['page_id'] ) )  {
+			$loadContentId = BitPage::findContentIdByPageId( $pLookupHash['page_id'] );
+		} elseif( !empty( $pLookupHash['content_id'] ) ) {
+			$loadContentId = $pLookupHash['content_id'];
+		} elseif( !empty( $pLookupHash['page'] ) ) {
+			//handle legacy forms that use plain 'page' form variable name
+
+			//if page had some special enities they were changed to HTML for for security reasons.
+			//now we deal only with string so convert it back - so we can support this case:
+			//You&Me --(detoxify in kernel)--> You&amp;Me --(now)--> You&Me
+			//we could do htmlspecialchars_decode but it allows <> marks here, so we just transform &amp; to & - it's not so scary.
+			$loadPage = str_replace("&amp;", "&", $pLookupHash['page'] );
+			// Fix nignx mapping of '+' sign when doing rewrite
+			$loadPage = str_replace("+", " ", $loadPage );
+
+			if( $loadPage && $existsInfo = static::pageExists( $loadPage ) ) {
+				if (count($existsInfo)) {
+					if (count($existsInfo) > 1) {
+						// Perhaps something should be done on page conflicts
+					}
+					$loadPageId = $existsInfo[0]['page_id'];
+					$loadContentId = $existsInfo[0]['content_id'];
+				}
+			}
+		}
+
+		if( !empty( $loadContentId ) ) {
+			$ret = static::getLibertyObject( $loadContentId );
+		}
+
+		if( empty( $ret ) || !is_object( $ret ) ) {
+			$ret = new self();
+		}
 		return $ret;
 	}
 
@@ -161,7 +214,7 @@ class BitPage extends LibertyMime {
 	* @access public
 	**/
 	function store( &$pParamHash ) {
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 
 		if( $this->verify( $pParamHash ) && LibertyMime::store( $pParamHash ) ) {
 			$pParamHash['page_store']['wiki_page_size'] = !empty( $pParamHash['edit'] ) ? strlen( $pParamHash['edit'] ) : 0;
@@ -221,7 +274,7 @@ class BitPage extends LibertyMime {
 				}
 			}
 		}
-		$this->mDb->CompleteTrans();
+		$this->CompleteTrans();
 		return( count( $this->mErrors ) == 0 );
 	}
 
@@ -316,13 +369,13 @@ class BitPage extends LibertyMime {
 	function expunge() {
 		$ret = FALSE;
 		if( $this->isValid() ) {
-			$this->mDb->StartTrans();
+			$this->StartTrans();
 			$this->expungeVersion(); // will nuke all versions
 			$query = "DELETE FROM `".BIT_DB_PREFIX."wiki_pages` WHERE `content_id` = ?";
 			$result = $this->mDb->query( $query, array( $this->mContentId ) );
 			if( LibertyMime::expunge() ) {
 				$ret = TRUE;
-				$this->mDb->CompleteTrans();
+				$this->CompleteTrans();
 			} else {
 				$this->mDb->RollbackTrans();
 			}
@@ -686,7 +739,7 @@ class BitPage extends LibertyMime {
 		// If sort mode is backlinks then offset is 0, max_records is -1 (again) and sort_mode is nil
 
 		$ret = array();
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 
 		# get count of total number of items available
 		$cant = $this->mDb->getOne( $query_cant, $bindVars );
@@ -701,7 +754,7 @@ class BitPage extends LibertyMime {
 		}
 
 		$result = $this->mDb->query( $query, $bindVars, $pListHash['max_records'], $pListHash['offset'] );
-		$this->mDb->CompleteTrans();
+		$this->CompleteTrans();
 		while( $res = $result->fetchRow() ) {
 			$aux = array();
 			$aux = $res;

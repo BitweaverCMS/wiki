@@ -40,8 +40,8 @@ if( !empty( $gContent->mPageId ) ) {
 
     $event = 'wiki_page_changed';    
     $watches = $gBitUser->get_event_watches($event, $gContent->mPageId);
-    $gBitSmarty->assign_by_ref('watches', $watches);
-    $gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
+    $gBitSmarty->assignByRef('watches', $watches);
+    $gBitSmarty->assignByRef( 'pageInfo', $gContent->mInfo );
     }
 
 // Display the template

@@ -26,7 +26,7 @@ if( !$gContent->isValid() ) {
 }
 
 $likepages = $gContent->getLikePages( $gContent->mInfo['title'] );
-$gBitSmarty->assign_by_ref( 'likepages', $likepages );
+$gBitSmarty->assignByRef( 'likepages', $likepages );
 
 // Display the template
 $gBitSystem->display( 'bitpackage:wiki/like_pages.tpl', NULL, array( 'display_mode' => 'display' ));

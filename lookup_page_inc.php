@@ -59,7 +59,7 @@ if( empty( $gContent ) || !is_object( $gContent ) || strtolower( get_class( $gCo
 	}
 
 	if( !empty( $loadContentId ) ) {
-		$gContent = LibertyBase::getLibertyObject( $loadContentId );
+		$gContent = BitPage::getLibertyObject( $loadContentId );
 	}
 
 	if( empty( $gContent ) || !is_object( $gContent ) ) {
@@ -88,6 +88,6 @@ if( $gContent->isValid() && empty( $gStructure ) ) {
 	}
 }
 
-$gBitSmarty->clear_assign( 'gContent' );
-$gBitSmarty->assign_by_ref( 'gContent', $gContent );
+$gBitSmarty->clearAssign( 'gContent' );
+$gBitSmarty->assignByRef( 'gContent', $gContent );
 ?>

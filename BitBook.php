@@ -38,10 +38,10 @@ define('BITBOOK_CONTENT_TYPE_GUID', 'bitbook' );
  * @package  wiki
  */
 class BitBook extends BitPage {
-	var $mPageId;
-	var $mPageName;
-	function BitBook( $pPageId=NULL, $pContentId=NULL ) {
-		BitPage::BitPage( $pPageId, $pContentId );
+	public $mPageId;
+	public $mPageName;
+	function __construct( $pPageId=NULL, $pContentId=NULL ) {
+		parent::__construct( $pPageId, $pContentId );
 		$this->registerContentType( BITBOOK_CONTENT_TYPE_GUID, array(
 			'content_type_guid' => BITBOOK_CONTENT_TYPE_GUID,
 			'content_name' => 'Wiki Book',

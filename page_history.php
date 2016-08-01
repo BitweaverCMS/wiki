@@ -30,7 +30,7 @@ if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {
 $gContent->verifyViewPermission();
 $gContent->verifyUserPermission( 'p_wiki_view_history' );
 
-$gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
+$gBitSmarty->assignByRef( 'pageInfo', $gContent->mInfo );
 
 if (!empty( $_REQUEST['rollback_preview'] )) {
 	$gBitSmarty->assign( 'rollback_preview', $_REQUEST['rollback_preview']);
@@ -49,10 +49,10 @@ if( !empty( $_REQUEST['list_page'] )) {
 
 $offset = ( $page - 1 ) * $gBitSystem->getConfig( 'max_records' );
 $history = $gContent->getHistory( NULL, NULL, $offset, $gBitSystem->getConfig( 'max_records' ) );
-$gBitSmarty->assign_by_ref( 'data', $history['data'] );
-$gBitSmarty->assign_by_ref( 'listInfo', $history['listInfo'] );
+$gBitSmarty->assignByRef( 'data', $history['data'] );
+$gBitSmarty->assignByRef( 'listInfo', $history['listInfo'] );
 
 // Display the template
-$gBitSmarty->assign_by_ref( 'gContent', $gContent );
+$gBitSmarty->assignByRef( 'gContent', $gContent );
 $gBitSystem->display( 'bitpackage:wiki/page_history.tpl' , NULL, array( 'display_mode' => 'display' ));
 ?>

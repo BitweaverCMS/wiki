@@ -35,7 +35,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_creator_admin' ) && $gContent->isOwner()
 
 // doesn't seem to be used - xing - Tuesday Oct 07, 2008   17:52:42 CEST
 //if( isset( $_REQUEST["copyrightpage"] )) {
-//	$gBitSmarty->assign_by_ref( 'copyrightpage', $_REQUEST["copyrightpage"] );
+//	$gBitSmarty->assignByRef( 'copyrightpage', $_REQUEST["copyrightpage"] );
 //}
 
 // Get the backlinks for the page "page"
@@ -151,11 +151,11 @@ if( $gContent->isValid() && $gBitSystem->isPackageActive( 'stickies' ) ) {
 	global $gNote;
 	$gNote = new BitSticky( NULL, NULL, $gContent->mContentId );
 	$gNote->load();
-	$gBitSmarty->assign_by_ref( 'stickyInfo', $gNote->mInfo );
+	$gBitSmarty->assignByRef( 'stickyInfo', $gNote->mInfo );
 }
 
 // Display the Index Template
-$gBitSmarty->assign_by_ref( 'pageInfo', $gContent->mInfo );
+$gBitSmarty->assignByRef( 'pageInfo', $gContent->mInfo );
 
 // S5 slideshows
 if( isset( $_REQUEST['s5'] )) {
