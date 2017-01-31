@@ -43,10 +43,6 @@
 			{/if}
 		</p>
 	{/if}
-
-	{* all page actions have been moved to icons if $print_page ne 'y'}
-		{include file="bitpackage:wiki/page_action_bar.tpl"}
-	{/if*}
 </div><!-- end .wiki -->
 
 {include file="bitpackage:liberty/services_inc.tpl" serviceLocation='view' serviceHash=$gContent->mInfo}
