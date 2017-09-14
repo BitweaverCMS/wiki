@@ -25,8 +25,12 @@ $listHash = array();
 if( $bookList = $book->getList( $listHash ) ) {
 	foreach( $bookList['data'] as $bookHash ) {
 		$bookStructure = new LibertyStructure( $bookHash['structure_id'] );
-		$listBook = $bookStructure->buildTreeToc( $bookHash['structure_id'] );
-		process_book_list( $listBook );
+		if( $rootObject = LibertyContent::getLibertyObject( $bookStructure->getField( 'content_id' ), $bookStructure->getField( 'content_type_guid' ) ) ) {
+			if( $rootObject->isPublic() ) {
+				$listBook = $bookStructure->buildTreeToc( $bookHash['structure_id'] );
+				process_book_list( $listBook );
+			}
+		}
 	}
 }
 
