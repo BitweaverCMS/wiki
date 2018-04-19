@@ -201,6 +201,8 @@ if( isset( $_REQUEST['format_guid'] ) && !isset( $gContent->mInfo['format_guid']
 }
 
 if( isset( $_REQUEST["preview"] ) ) {
+	// Chrome does not like seeing the page source in the page itself.
+	header("X-XSS-Protection: 0");
 	$gBitSmarty->assign( 'preview',1 );
 	$gBitSmarty->assign( 'title',!empty( $_REQUEST["title"] ) ? $_REQUEST["title"]:$gContent->mPageName );
 
