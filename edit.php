@@ -417,7 +417,7 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 		$gBitSystem->fatalError( tra( "Importing remote URLs is disabled" ));
 	}
 	// Suck another page and append to the end of current
-	require_once( UTIL_PKG_PATH.'htmlparser/html_parser_inc.php' );
+	require_once( UTIL_PKG_INC.'htmlparser/html_parser_inc.php' );
 	$suck_url = isset( $_REQUEST["suck_url"] ) ? $_REQUEST["suck_url"] : '';
 	$parsehtml = isset( $_REQUEST["parsehtml"] ) ? ( $_REQUEST["parsehtml"] == 'on' ? 'y' : 'n' ): 'n';
 	if( isset( $_REQUEST['do_suck'] ) && strlen( $suck_url ) > 0 ) {
@@ -447,7 +447,7 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 		// Need to parse HTML?
 		if( $parsehtml == 'y' ) {
 			// Read compiled( serialized ) grammar
-			$grammarfile = UTIL_PKG_PATH.'htmlparser/htmlgrammar.cmp';
+			$grammarfile = UTIL_PKG_INC.'htmlparser/htmlgrammar.cmp';
 			if( !$fp = @fopen( $grammarfile,'r' ) ) {
 				$gBitSystem->fatalError( tra( "Can't parse remote HTML page" ));
 			}

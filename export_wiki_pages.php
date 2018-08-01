@@ -14,7 +14,7 @@
  * required setup
  */
 require_once( '../kernel/setup_inc.php' );
-include_once( UTIL_PKG_PATH.'zip_lib.php' );
+include_once( UTIL_PKG_INC.'zip_lib.php' );
 include_once( WIKI_PKG_PATH.'export_lib.php' );
 if (!$gBitUser->hasPermission( 'p_wiki_admin' ))
 	die;
