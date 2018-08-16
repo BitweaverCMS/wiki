@@ -154,13 +154,16 @@ if( $gContent->isValid() && $gBitSystem->isPackageActive( 'stickies' ) ) {
 	$gBitSmarty->assignByRef( 'stickyInfo', $gNote->mInfo );
 }
 
+$pageInfo = $gContent->mInfo;
+$pageInfo['title'] = $gContent->getTitle();
+
 // Display the Index Template
-$gBitSmarty->assignByRef( 'pageInfo', $gContent->mInfo );
+$gBitSmarty->assignByRef( 'pageInfo', $pageInfo );
 
 // S5 slideshows
 if( isset( $_REQUEST['s5'] )) {
 	include_once( WIKI_PKG_PATH.'s5.php');
 }
 
-$gBitSystem->display( 'bitpackage:wiki/show_page.tpl', $gContent->mInfo['title'], array( 'display_mode' => 'display' ));
+$gBitSystem->display( 'bitpackage:wiki/show_page.tpl', $pageInfo['title'], array( 'display_mode' => 'display' ));
 ?>

@@ -506,6 +506,28 @@ class BitPage extends LibertyMime implements BitCacheable {
 
 
 	/**
+	 * Create the generic title for a content item
+	 *
+	 * This will normally be overwriten by extended classes to provide
+	 * an appropriate title string
+	 * @return string Descriptive title for the page
+	 */
+	function getTitle() {
+		$ret = $this->getField('title');
+		if( $this->isValid() ) {
+			$ret = static::getTitleFromHash( $this->mInfo );
+			$requestPage = strtoupper( self::getParameter( $_REQUEST, 'page' ) );
+			if( $requestPage && $requestPage != strtoupper( $this->mInfo['title'] ) ) {
+				$aliases = $this->getAliases( TRUE );
+				if( in_array( $requestPage, $aliases ) ) {
+					$ret = $_REQUEST['page'];
+				}
+			}
+		}
+		return $ret;
+	}
+
+	/**
 	* Generates the URL to this wiki page
 	* @param pExistsHash the hash that was returned by LibertyContent::pageExists
 	* @return the link to display the page.
