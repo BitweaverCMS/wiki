@@ -85,7 +85,7 @@
 			  </div>
 		{/if}
 
-		{if count($showstructs) gt 0}
+		{if $showstructs && (count($showstructs) gt 0)}
 			<select id="sel-structures" name="page" onchange="javascript:BitBase.go(this)">
 				<option value="">{tr}Wiki Books{/tr} &hellip;</option>
 				{section name=struct loop=$showstructs}
