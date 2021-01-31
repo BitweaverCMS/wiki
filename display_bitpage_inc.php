@@ -116,7 +116,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_comments' )) {
 // Footnotes
 if( $gBitSystem->isFeatureActive( 'wiki_footnotes' ) && $gBitUser->isValid() ) {
 	if( $footnote = $gContent->getFootnote( $gBitUser->mUserId ) ) {
-		$gBitSmarty->assign( 'footnote', $gContent->parseData( $footnote ) );
+		$gBitSmarty->assign( 'footnote', LibertyContent::parseDataHash( $footnote ) );
 	}
 }
 

@@ -194,7 +194,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 				}
 
 				if ( $parse ) {
-					$this->mInfo['parsed_data'] = $this->parseData();
+					$this->getParsedData();
 				}
 			} else {
 				$this->mPageId = NULL;

@@ -72,7 +72,7 @@ if (isset($reqs[1][$_REQUEST["slide"]])) {
 	$slide_title = '';
 }
 
-$slide_data = $gContent->parseData( $slides[$_REQUEST["slide"] + 1] );
+$slide_data = LibertyContent::parseDataHash( $slides[$_REQUEST["slide"] + 1] );
 
 if (isset($reqs[1][$_REQUEST["slide"] - 1])) {
 	$slide_prev_title = $reqs[1][$_REQUEST["slide"] - 1];

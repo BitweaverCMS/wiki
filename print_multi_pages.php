@@ -31,9 +31,8 @@ if (isset($_REQUEST["print"])) {
 		$page = new BitPage( NULL, $contentId );
 		if( $page->load() ) {
 			$page->verifyViewPermission();
-			$page_info = $page->mInfo;
-			$page_info["parsed"] = $page->parseData( $page_info );
-			$pages[] = $page_info;
+			$page->getParsedData();
+			$pages[] = $page->mInfo;
 		}
 	}
 }

@@ -73,10 +73,10 @@ if( $gBitSystem->isFeatureActive( 'wiki_footnotes' ) ) {
 		$gBitSmarty->assign( 'footnote', $footnote );
 		if( $footnote )
 			$gBitSmarty->assign( 'has_footnote', 'y' );
-		$gBitSmarty->assign( 'parsed_footnote', $gContent->parseData( $footnote ) );
+		$gBitSmarty->assign( 'parsed_footnote', LibertyContent::parseDataHash( $footnote ) );
 		if( isset( $_REQUEST['footnote'] ) ) {
 
-			$gBitSmarty->assign( 'parsed_footnote', $gContent->parseData( $_REQUEST['footnote'] ) );
+			$gBitSmarty->assign( 'parsed_footnote', LibertyContent::parseDataHash( $_REQUEST['footnote'] ) );
 			$gBitSmarty->assign( 'footnote', $_REQUEST['footnote'] );
 			$gBitSmarty->assign( 'has_footnote', 'y' );
 			if( empty( $_REQUEST['footnote'] ) ) {
@@ -210,16 +210,12 @@ if( isset( $_REQUEST["preview"] ) ) {
 		$formInfo['edit_section'] = 1;
 	}
 
-	$data_to_parse = $formInfo['edit'];
+	$data_to_parse['data'] = $formInfo['edit'];
 	if( !empty( $formInfo['section'] ) && !empty( $gContent->mInfo['data'] )) {
 		$full_page_data = $gContent->mInfo['data'];
 	}
 
-
-	$formInfo['parsed_data'] = $gContent->parseData(
-		$data_to_parse,
-		( !empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] : ( isset( $gContent->mInfo['format_guid'] ) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ))
-	);
+	$formInfo['parsed_data'] = LibertyContent::parseDataHash( $data_to_parse );
 	$gContent->invokeServices( 'content_preview_function' );
 }
 
