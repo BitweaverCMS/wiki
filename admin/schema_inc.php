@@ -135,8 +135,8 @@ if( defined( 'RSS_PKG_NAME' )) {
 
 // ### Register content types
 $gBitInstaller->registerContentObjects( WIKI_PKG_NAME, array(
-	'BitPage' => WIKI_PKG_PATH.'BitPage.php',
-	'BitBook' => WIKI_PKG_PATH.'BitBook.php',
+	'BitPage' => WIKI_PKG_CLASS_PATH.'BitPage.php',
+	'BitBook' => WIKI_PKG_CLASS_PATH.'BitBook.php',
 ));
 
 // Requirements

@@ -147,7 +147,7 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 }
 
 if( $gContent->isValid() && $gBitSystem->isPackageActive( 'stickies' ) ) {
-	require_once( STICKIES_PKG_PATH.'BitSticky.php' );
+	require_once( STICKIES_PKG_CLASS_PATH.'BitSticky.php' );
 	global $gNote;
 	$gNote = new BitSticky( NULL, NULL, $gContent->mContentId );
 	$gNote->load();
