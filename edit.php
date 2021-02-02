@@ -14,7 +14,7 @@
  * required setup
  */
 require_once( '../kernel/setup_inc.php' );
-include_once( WIKI_PKG_PATH.'BitBook.php' );
+include_once( WIKI_PKG_CLASS_PATH.'BitBook.php' );
 
 $gBitSystem->verifyPackage( 'wiki' );
 
@@ -22,7 +22,7 @@ $gBitSystem->verifyPackage( 'wiki' );
 unset($_REQUEST['content_id']);
 // Disable parsing data if not asking to preview page
 $_REQUEST["parse"] = false;
-include( WIKI_PKG_PATH.'lookup_page_inc.php' );
+include( WIKI_PKG_INCLUDE_PATH.'lookup_page_inc.php' );
 
 if( $gContent->isValid() ) {
 	$gContent->verifyUpdatePermission();
@@ -142,7 +142,7 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 		&& !empty( $_REQUEST['copyrightYear'] )
 		&& !empty( $_REQUEST['copyrightTitle'] )
 	) {
-		require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
+		require_once( WIKI_PKG_INCLUDE_PATH.'copyrights_lib.php' );
 		$copyrightYear = $_REQUEST['copyrightYear'];
 		$copyrightTitle = $_REQUEST['copyrightTitle'];
 		$copyrightAuthors = $_REQUEST['copyrightAuthors'];

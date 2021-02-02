@@ -43,9 +43,9 @@ if( !empty( $_REQUEST['structure_id'] ) ) {
 		$gHome->store( $homeHash );
 	}
 
-	include( WIKI_PKG_PATH.'lookup_page_inc.php' );
+	include( WIKI_PKG_INCLUDE_PATH.'lookup_page_inc.php' );
 	if( $gContent->isValid() ) {
 		$gBitSystem->setCanonicalLink( $gContent->getDisplayUrl() );
 	}
-	include( WIKI_PKG_PATH.'display_bitpage_inc.php' );
+	include( WIKI_PKG_INCLUDE_PATH.'display_bitpage_inc.php' );
 }

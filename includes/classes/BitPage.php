@@ -484,7 +484,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 	* @return the fully specified path to file to be included
 	*/
 	function getRenderFile() {
-		return WIKI_PKG_PATH."display_bitpage_inc.php";
+		return WIKI_PKG_INCLUDE_PATH."display_bitpage_inc.php";
 	}
 
 

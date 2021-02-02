@@ -20,7 +20,7 @@ $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyFeature( 'wiki_history' );
 
 // Get the page from the request var or default it to HomePage
-include( WIKI_PKG_PATH.'lookup_page_inc.php' );
+include( WIKI_PKG_INCLUDE_PATH.'lookup_page_inc.php' );
 
 //vd($gContent->mPageId);vd($gContent->mInfo);
 if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {

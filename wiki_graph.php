@@ -14,8 +14,8 @@
  * required setup
  */
 include_once( '../kernel/setup_inc.php' );
-include_once( WIKI_PKG_PATH.'BitPage.php');
-include_once( WIKI_PKG_PATH.'lookup_page_inc.php');
+include_once( WIKI_PKG_CLASS_PATH.'BitPage.php');
+include_once( WIKI_PKG_INCLUDE_PATH.'lookup_page_inc.php');
 include_once( 'Image/GraphViz.php' );
 $graph = new Image_GraphViz();
 

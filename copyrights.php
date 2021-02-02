@@ -17,8 +17,8 @@ require_once( '../kernel/setup_inc.php' );
 $gBitSystem->isFeatureActive( 'wiki_copyrights', tra("The copyright management feature is not enabled.") );
 
 $gBitUser->hasPermission( 'p_wiki_edit_copyright' );
-require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
-require_once( WIKI_PKG_PATH.'lookup_page_inc.php' );
+require_once( WIKI_PKG_INCLUDE_PATH.'copyrights_lib.php' );
+require_once( WIKI_PKG_INCLUDE_PATH.'lookup_page_inc.php' );
 
 if (isset($_REQUEST['addcopyright'])) {
 	if ($gBitSystem->isFeatureActive( 'wiki_copyrights' ) && isset($_REQUEST['copyrightTitle']) && isset($_REQUEST['copyrightYear'])

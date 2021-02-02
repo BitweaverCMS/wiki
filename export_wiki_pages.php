@@ -15,7 +15,7 @@
  */
 require_once( '../kernel/setup_inc.php' );
 include_once( UTIL_PKG_INC.'zip_lib.php' );
-include_once( WIKI_PKG_PATH.'export_lib.php' );
+include_once( WIKI_PKG_INCLUDE_PATH.'export_lib.php' );
 if (!$gBitUser->hasPermission( 'p_wiki_admin' ))
 	die;
 if (!isset($_REQUEST["page_id"])) {

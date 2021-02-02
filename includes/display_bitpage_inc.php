@@ -122,7 +122,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_footnotes' ) && $gBitUser->isValid() ) {
 
 // Copyrights
 if( $gBitSystem->isFeatureActive( 'wiki_copyrights' ) ) {
-	require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
+	require_once( WIKI_PKG_INCLUDE_PATH.'copyrights_lib.php' );
 	$copyrights = $copyrightslib->list_copyrights( $gContent->mPageId );
 	$gBitSmarty->assign('pageCopyrights', $copyrights["data"]);
 }
