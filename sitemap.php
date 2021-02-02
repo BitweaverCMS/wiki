@@ -15,7 +15,7 @@
  */
 require_once( '../kernel/setup_inc.php' );
 
-require_once( WIKI_PKG_PATH.'BitBook.php' );
+require_once( WIKI_PKG_CLASS_PATH.'BitBook.php' );
 
 $book = new BitBook();
 $gSiteMapHash = array();

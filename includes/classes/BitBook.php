@@ -24,7 +24,7 @@
 /**
  * required setup
  */
-require_once( WIKI_PKG_PATH.'BitPage.php' );
+require_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
 require_once( LIBERTY_PKG_PATH.'LibertyStructure.php' );
 
 define('BITBOOK_CONTENT_TYPE_GUID', 'bitbook' );

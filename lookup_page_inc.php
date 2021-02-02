@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-require_once( WIKI_PKG_PATH.'BitBook.php');
+require_once( WIKI_PKG_CLASS_PATH.'BitBook.php');
 
 global $gContent;
 include_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );

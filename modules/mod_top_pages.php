@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-require_once( WIKI_PKG_PATH.'BitPage.php' );
+require_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
 global $gQueryUser, $module_rows, $module_params;
 
 extract( $moduleParams );

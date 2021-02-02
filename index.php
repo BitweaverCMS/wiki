@@ -16,7 +16,7 @@
 require_once( '../kernel/setup_inc.php' );
 
 $gBitSystem->verifyPackage( 'wiki' );
-require_once( WIKI_PKG_PATH.'BitPage.php' );
+require_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
 
 if( !empty( $_REQUEST['structure_id'] ) ) {
 	include( LIBERTY_PKG_PATH.'display_structure_inc.php' );

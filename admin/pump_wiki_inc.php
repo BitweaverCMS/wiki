@@ -7,7 +7,7 @@
 /**
  * required setup
  */
-require_once( WIKI_PKG_PATH.'BitPage.php' );
+require_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
 
 $tutorial_intro = '^This tutorial does not contain any direct links to any particular pages. This is to help you understand how to navigate bitweaver. If you don\'t feel confident about finding your way back to this page, it might be useful to open a second browser window to carry out these instructions or print this page before continuing.
 

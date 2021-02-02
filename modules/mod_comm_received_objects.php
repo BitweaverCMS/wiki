@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-require_once( WIKI_PKG_PATH.'BitPage.php' );
+require_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
 $wikilib = new WikiLib();
 $ranking = $wikilib->list_received_pages(0, -1, $sort_mode = 'title_asc', '');
 $_template->tpl_vars['modReceivedPages'] = new Smarty_variable( $ranking["cant"]);

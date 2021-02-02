@@ -13,7 +13,7 @@
  * required setup
  */
 require_once( KERNEL_PKG_PATH.'BitBase.php' );
-require_once( WIKI_PKG_PATH.'BitPage.php' );
+require_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
 /**
  * @package wiki
  * @subpackage ExportLib

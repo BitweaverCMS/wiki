@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-include_once( WIKI_PKG_PATH.'BitBook.php');
+include_once( WIKI_PKG_CLASS_PATH.'BitBook.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
 
