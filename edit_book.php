@@ -22,8 +22,8 @@ if( isset( $_COOKIE['book_section'] ) && $_COOKIE['book_section'] == 'o' ) {
 }
 $gBitSmarty->assign( 'book_section',$book_section );
 
-include_once( LIBERTY_PKG_PATH.'LibertyStructure.php');
-include_once( WIKI_PKG_PATH.'BitBook.php');
+include_once( LIBERTY_PKG_CLASS_PATH.'LibertyStructure.php');
+include_once( WIKI_PKG_CLASS_PATH.'BitBook.php');
 
 global $gStructure;
 
@@ -34,7 +34,7 @@ global $gStructure;
 // get a book instance
 global $gContent;
 if( @BitBase::verifyId( $_REQUEST["structure_id"] ) || @BitBase::verifyId( $_REQUEST["content_id"] ) ) {
-	include_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
+	include_once( LIBERTY_PKG_INCLUDE_PATH.'lookup_content_inc.php' );
 	if( empty( $gContent ) ){
 		$gBitSystem->fatalError( 'Error: Invalid structure id, the book you requested could not be found.' );
 	} elseif( empty( $_REQUEST["structure_id"] ) ) {
@@ -140,7 +140,7 @@ if( isset($_REQUEST["createstructure"]) ) {
 
 	// set the correct display template
 	$mid = 'bitpackage:wiki/edit_book.tpl';
-	include_once( LIBERTY_PKG_PATH.'edit_structure_inc.php');
+	include_once( LIBERTY_PKG_INCLUDE_PATH.'edit_structure_inc.php');
 	if( $gBitThemes->isAjaxRequest() ) {
 		$gBitSmarty->display( 'bitpackage:kernel/feedback_inc.tpl' );
 	}

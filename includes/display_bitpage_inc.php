@@ -110,7 +110,7 @@ if( $gBitSystem->isFeatureActive( 'wiki_comments' )) {
 			$comments_return_url .= '&amp;comments_maxComments=1';
 		}
 	}
-	include_once( LIBERTY_PKG_PATH.'comments_inc.php' );
+	include_once( LIBERTY_PKG_INCLUDE_PATH.'comments_inc.php' );
 }
 
 // Footnotes

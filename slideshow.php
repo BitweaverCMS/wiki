@@ -25,7 +25,7 @@ if (!isset($_SESSION["thedate"])) {
 	$thedate = $_SESSION["thedate"];
 }
 
-require_once ( WIKI_PKG_PATH.'lookup_page_inc.php' );
+require_once ( WIKI_PKG_INCLUDE_PATH.'lookup_page_inc.php' );
 // If the page doesn't exist then display an error
 if (!$gContent->isValid()) {
 	$gBitSystem->fatalError( tra("Page cannot be found"), NULL, NULL, HttpStatusCodes::HTTP_NOT_FOUND );
@@ -35,7 +35,7 @@ if (!$gContent->isValid()) {
 $gContent->verifyViewPermission();
 
 // Get page data
-include( WIKI_PKG_PATH.'lookup_page_inc.php' );
+include( WIKI_PKG_INCLUDE_PATH.'lookup_page_inc.php' );
 $info = $gContent->mInfo;
 
 // If not locked and last version is user version then can undo

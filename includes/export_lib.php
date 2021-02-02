@@ -22,7 +22,7 @@ class ExportLib extends BitBase {
 
 	function MakeWikiZip( $pExportFile ) {
 		global $gBitUser,$gBitSystem;
-		include_once (UTIL_PKG_INC."tar.class.php");
+		include_once (UTIL_PKG_INCLUDE_PATH."tar.class.php");
 		$tar = new tar();
 		$query = "SELECT wp.`page_id` from `".BIT_DB_PREFIX."wiki_pages` wp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) 
 				  ORDER BY lc.".$this->mDb->convertSortmode("title_asc");

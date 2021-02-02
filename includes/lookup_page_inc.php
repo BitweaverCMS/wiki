@@ -16,7 +16,7 @@
 require_once( WIKI_PKG_CLASS_PATH.'BitBook.php');
 
 global $gContent;
-include_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
+include_once( LIBERTY_PKG_INCLUDE_PATH.'lookup_content_inc.php' );
 
 // this is needed when the center module is applied to avoid abusing $_REQUEST
 if( empty( $lookupHash )) {

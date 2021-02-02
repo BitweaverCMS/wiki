@@ -13,8 +13,8 @@ $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyPackage( 'rss' );
 $gBitSystem->verifyFeature( 'wiki_rss' );
 
-require_once( WIKI_PKG_PATH."BitPage.php" );
-require_once( RSS_PKG_PATH."rss_inc.php" );
+require_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
+require_once( RSS_PKG_INCLUDE_PATH.'rss_inc.php' );
 
 $rss->title = $gBitSystem->getConfig( 'wiki_rss_title', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'Wiki' ) );
 $rss->description = $gBitSystem->getConfig( 'wiki_rss_description', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'RSS Feed' ) );

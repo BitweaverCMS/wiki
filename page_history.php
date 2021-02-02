@@ -39,7 +39,7 @@ if (!empty( $_REQUEST['rollback_preview'] )) {
 // set up stuff to get history working
 $smartyContentRef = 'pageInfo';
 $rollbackPerm     = 'p_wiki_rollback';
-include_once( LIBERTY_PKG_PATH.'content_history_inc.php' );
+include_once( LIBERTY_PKG_INCLUDE_PATH.'content_history_inc.php' );
 
 // pagination stuff
 $gBitSmarty->assign( 'page', $page = !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : 1 );

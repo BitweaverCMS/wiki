@@ -84,7 +84,7 @@ array( 'ALTER' => array(
 // STEP 3
 array( 'PHP' => '
 	global $gBitSystem;
-	require_once( WIKI_PKG_PATH."BitPage.php" );
+	require_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
 	$max = $gBitSystem->mDb->getOne( "SELECT MAX(`page_id`) FROM `'.BIT_DB_PREFIX.'tiki_pages`" );
 	$gBitSystem->mDb->CreateSequence( "tiki_pages_page_id_seq", $max + 1 );
 	$query = "SELECT uu.`user_id`, uu2.`user_id` AS modifier_user_id, tp.`lastModif` AS created, tp.`lastModif` AS `last_modified`, tp.`data`, tp.`pageName` AS `title`, tp.`ip`, tp.`hits`
@@ -225,8 +225,8 @@ array( 'QUERY' =>
 // STEP 5
 array( 'PHP' => '
 	global $gBitSystem;
-	require_once( LIBERTY_PKG_PATH."LibertyStructure.php" );
-	require_once( WIKI_PKG_PATH."BitBook.php" );
+	require_once( LIBERTY_PKG_CLASS_PATH.'LibertyStructure.php' );
+	require_once( WIKI_PKG_CLASS_PATH.'BitBook.php' );
 	$query = "SELECT `structure_id`, `content_id` FROM `".BIT_DB_PREFIX."tiki_structures` WHERE `parent_id` IS NULL OR `parent_id`=0";
 	$roots = $gBitSystem->mDb->getAssoc( $query );
 	$s = new LibertyStructure();

@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-require_once( LIBERTY_PKG_PATH.'LibertyMime.php' );
+require_once( LIBERTY_PKG_CLASS_PATH.'LibertyMime.php' );
 
 /**
  * @package wiki
