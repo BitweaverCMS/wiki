@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-require_once( '../kernel/setup_inc.php' );
+require_once( '../kernel/includes/setup_inc.php' );
 
 if( isset( $_COOKIE['book_section'] ) && $_COOKIE['book_section'] == 'o' ) {
 	$book_section = 'block';

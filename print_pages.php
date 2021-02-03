@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-require_once( '../kernel/setup_inc.php' );
+require_once( '../kernel/includes/setup_inc.php' );
 require_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
 if( !$gBitSystem->isFeatureActive( 'wiki_multiprint' ) ) {
 	$gBitSystem->fatalError( tra("This feature is disabled").": wiki_multiprint" );

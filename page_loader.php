@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-include_once( '../../kernel/setup_inc.php' );
+include_once( '../../kernel/includes/setup_inc.php' );
 include_once (HTML_PKG_PATH.'htmlpages_lib.php');
 $refresh = 1000 * $_REQUEST["refresh"];
 ?>

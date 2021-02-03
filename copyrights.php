@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-require_once( '../kernel/setup_inc.php' );
+require_once( '../kernel/includes/setup_inc.php' );
 $gBitSystem->isFeatureActive( 'wiki_copyrights', tra("The copyright management feature is not enabled.") );
 
 $gBitUser->hasPermission( 'p_wiki_edit_copyright' );

@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-require_once( '../kernel/setup_inc.php' );
+require_once( '../kernel/includes/setup_inc.php' );
 include_once( UTIL_PKG_INCLUDE_PATH.'zip_lib.php' );
 include_once( WIKI_PKG_INCLUDE_PATH.'export_lib.php' );
 if (!$gBitUser->hasPermission( 'p_wiki_admin' ))
