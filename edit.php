@@ -148,11 +148,6 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 		$copyrightAuthors = $_REQUEST['copyrightAuthors'];
 		$copyrightslib->add_copyright( $gContent->mPageId, $copyrightTitle, $copyrightYear, $copyrightAuthors, $gBitUser->mUserId );
 	}
-	// Parse $edit and eliminate image references to external URIs( make them internal )
-	if( $gBitSystem->isPackageActive( 'imagegals' ) ) {
-		include_once( IMAGEGALS_PKG_PATH.'imagegal_lib.php' );
-		$edit = $imagegallib->capture_images( $edit );
-	}
 
 	if( $gContent->mPageId )
 	{	if( isset( $_REQUEST['isminor'] ) && $_REQUEST['isminor']=='on' ) {

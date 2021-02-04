@@ -239,7 +239,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 
 			if( isset( $mailEvents ) ) {
 				global $notificationlib, $gBitUser, $gBitSystem, $gBitSmarty;
-				include_once( KERNEL_PKG_PATH.'notification_lib.php' );
+				include_once( KERNEL_PKG_INCLUDE_PATH.'notification_lib.php' );
 				$notificationlib->post_content_event($this->mContentId, $this->mInfo['content_type_guid'], 'wiki', $this->mInfo['title'], $this->mInfo['modifier_user'], $this->mInfo['edit_comment'], $this->mInfo['data']);
 
 				if( $gBitSystem->isFeatureActive( 'users_watches') ) {

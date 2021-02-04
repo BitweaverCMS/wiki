@@ -160,10 +160,4 @@ $pageInfo['title'] = $gContent->getTitle();
 // Display the Index Template
 $gBitSmarty->assignByRef( 'pageInfo', $pageInfo );
 
-// S5 slideshows
-if( isset( $_REQUEST['s5'] )) {
-	include_once( WIKI_PKG_PATH.'s5.php');
-}
-
 $gBitSystem->display( 'bitpackage:wiki/show_page.tpl', $pageInfo['title'], array( 'display_mode' => 'display' ));
-?>
