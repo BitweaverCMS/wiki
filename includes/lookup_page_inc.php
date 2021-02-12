@@ -75,16 +75,23 @@ if( $gContent->isValid() && empty( $gStructure ) ) {
 	} else {
 		$structure='';
 	}
-	$structs = $gContent->getStructures();
-	if (count($structs)==1) {
-		$gStructure = new LibertyStructure( $structs[0]['structure_id'] );
+	if( $structs = $gContent->getStructures() ) {
+		$structId = $structs[0]['structure_id'];
+		if( count( $structs ) > 0 ) {
+			$gBitSmarty->assign('showstructs', $structs);
+			foreach( $structs as $struct ) {
+				if( $struct['parent_id'] == 0 ) {
+					$structId = $struct['structure_id'];
+					break;
+				}
+			}
+		}
+		$gStructure = new LibertyStructure( $structId );
 		if( $gStructure->load() ) {
 			$gStructure->loadNavigation();
 			$gStructure->loadPath();
 			$gBitSmarty->assign( 'structureInfo', $gStructure->mInfo );
 		}
-	} else {
-		$gBitSmarty->assign('showstructs', $structs);
 	}
 }
 

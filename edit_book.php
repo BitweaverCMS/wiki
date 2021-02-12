@@ -140,7 +140,7 @@ if( isset($_REQUEST["createstructure"]) ) {
 
 	// set the correct display template
 	$mid = 'bitpackage:wiki/edit_book.tpl';
-	include_once( LIBERTY_PKG_INCLUDE_PATH.'edit_structure_inc.php');
+	include_once( LIBERTY_PKG_INCLUDE_PATH.'structure_edit_inc.php');
 	if( $gBitThemes->isAjaxRequest() ) {
 		$gBitSmarty->display( 'bitpackage:kernel/feedback_inc.tpl' );
 	}
