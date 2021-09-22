@@ -7,14 +7,14 @@
 /**
  * Initialization
  */
-require_once( "../kernel/setup_inc.php" );
+require_once( "../kernel/includes/setup_inc.php" );
 
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyPackage( 'rss' );
 $gBitSystem->verifyFeature( 'wiki_rss' );
 
-require_once( WIKI_PKG_PATH."BitPage.php" );
-require_once( RSS_PKG_PATH."rss_inc.php" );
+require_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
+require_once( RSS_PKG_INCLUDE_PATH.'rss_inc.php' );
 
 $rss->title = $gBitSystem->getConfig( 'wiki_rss_title', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'Wiki' ) );
 $rss->description = $gBitSystem->getConfig( 'wiki_rss_description', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'RSS Feed' ) );
@@ -43,7 +43,7 @@ if( !$gBitUser->hasPermission( 'p_wiki_view_page' ) ) {
 		$item = new FeedItem();
 		$item->title = $feed['title'];
 		$item->link = BIT_BASE_URI.$wiki->getDisplayUrl( $feed['title'] );
-		$item->description = $wiki->parseData( $feed );
+		$item->description = BitPage::parseDataHash( $feed );
 
 		$item->date = ( int )$feed['last_modified'];
 		$item->source = 'http://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL;

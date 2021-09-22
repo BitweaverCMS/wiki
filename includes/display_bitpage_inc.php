@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-include_once( WIKI_PKG_PATH.'BitBook.php');
+include_once( WIKI_PKG_CLASS_PATH.'BitBook.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
 
@@ -110,19 +110,19 @@ if( $gBitSystem->isFeatureActive( 'wiki_comments' )) {
 			$comments_return_url .= '&amp;comments_maxComments=1';
 		}
 	}
-	include_once( LIBERTY_PKG_PATH.'comments_inc.php' );
+	include_once( LIBERTY_PKG_INCLUDE_PATH.'comments_inc.php' );
 }
 
 // Footnotes
 if( $gBitSystem->isFeatureActive( 'wiki_footnotes' ) && $gBitUser->isValid() ) {
 	if( $footnote = $gContent->getFootnote( $gBitUser->mUserId ) ) {
-		$gBitSmarty->assign( 'footnote', $gContent->parseData( $footnote ) );
+		$gBitSmarty->assign( 'footnote', LibertyContent::parseDataHash( $footnote ) );
 	}
 }
 
 // Copyrights
 if( $gBitSystem->isFeatureActive( 'wiki_copyrights' ) ) {
-	require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
+	require_once( WIKI_PKG_INCLUDE_PATH.'copyrights_lib.php' );
 	$copyrights = $copyrightslib->list_copyrights( $gContent->mPageId );
 	$gBitSmarty->assign('pageCopyrights', $copyrights["data"]);
 }
@@ -147,7 +147,7 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 }
 
 if( $gContent->isValid() && $gBitSystem->isPackageActive( 'stickies' ) ) {
-	require_once( STICKIES_PKG_PATH.'BitSticky.php' );
+	require_once( STICKIES_PKG_CLASS_PATH.'BitSticky.php' );
 	global $gNote;
 	$gNote = new BitSticky( NULL, NULL, $gContent->mContentId );
 	$gNote->load();
@@ -160,10 +160,4 @@ $pageInfo['title'] = $gContent->getTitle();
 // Display the Index Template
 $gBitSmarty->assignByRef( 'pageInfo', $pageInfo );
 
-// S5 slideshows
-if( isset( $_REQUEST['s5'] )) {
-	include_once( WIKI_PKG_PATH.'s5.php');
-}
-
 $gBitSystem->display( 'bitpackage:wiki/show_page.tpl', $pageInfo['title'], array( 'display_mode' => 'display' ));
-?>

@@ -13,9 +13,9 @@
 /**
  * required setup
  */
-require_once( '../kernel/setup_inc.php' );
+require_once( '../kernel/includes/setup_inc.php' );
 
-include_once( WIKI_PKG_PATH.'BitBook.php');
+include_once( WIKI_PKG_CLASS_PATH.'BitBook.php');
 
 function copys($source,$dest)
 {

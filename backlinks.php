@@ -12,8 +12,8 @@
 /**
  * required setup
  */
-require_once( '../kernel/setup_inc.php' );
-include_once( WIKI_PKG_PATH.'lookup_page_inc.php');
+require_once( '../kernel/includes/setup_inc.php' );
+include_once( WIKI_PKG_INCLUDE_PATH.'lookup_page_inc.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyFeature( 'wiki_backlinks' );

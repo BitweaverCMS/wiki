@@ -13,7 +13,7 @@
 /**
  * Required files
  */
-require_once( WIKI_PKG_PATH.'BitPage.php' );
+require_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
 $wp = new BitPage();
 
 if( $gBitUser->hasPermission( 'p_wiki_view_page' ) ) {

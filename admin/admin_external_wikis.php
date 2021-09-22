@@ -3,8 +3,8 @@
 // All Rights Reserved. See below for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details.
 // Initialization
-require_once( '../../kernel/setup_inc.php' );
-include_once( KERNEL_PKG_PATH.'admin_lib.php' );
+require_once( '../../kernel/includes/setup_inc.php' );
+include_once( KERNEL_PKG_INCLUDE_PATH.'admin_lib.php' );
 if (!$gBitUser->isAdmin()) {
 	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
 	$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'admin' ));

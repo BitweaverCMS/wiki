@@ -13,8 +13,8 @@
 /**
  * required setup
  */
-require_once( '../kernel/setup_inc.php' );
-include_once( WIKI_PKG_PATH.'BitBook.php');
+require_once( '../kernel/includes/setup_inc.php' );
+include_once( WIKI_PKG_CLASS_PATH.'BitBook.php');
 
 // verify stuff
 $gBitSystem->verifyPackage( 'wiki' );

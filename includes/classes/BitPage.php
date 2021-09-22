@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-require_once( LIBERTY_PKG_PATH.'LibertyMime.php' );
+require_once( LIBERTY_PKG_CLASS_PATH.'LibertyMime.php' );
 
 /**
  * @package wiki
@@ -194,7 +194,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 				}
 
 				if ( $parse ) {
-					$this->mInfo['parsed_data'] = $this->parseData();
+					$this->getParsedData();
 				}
 			} else {
 				$this->mPageId = NULL;
@@ -239,7 +239,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 
 			if( isset( $mailEvents ) ) {
 				global $notificationlib, $gBitUser, $gBitSystem, $gBitSmarty;
-				include_once( KERNEL_PKG_PATH.'notification_lib.php' );
+				include_once( KERNEL_PKG_INCLUDE_PATH.'notification_lib.php' );
 				$notificationlib->post_content_event($this->mContentId, $this->mInfo['content_type_guid'], 'wiki', $this->mInfo['title'], $this->mInfo['modifier_user'], $this->mInfo['edit_comment'], $this->mInfo['data']);
 
 				if( $gBitSystem->isFeatureActive( 'users_watches') ) {
@@ -484,7 +484,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 	* @return the fully specified path to file to be included
 	*/
 	function getRenderFile() {
-		return WIKI_PKG_PATH."display_bitpage_inc.php";
+		return WIKI_PKG_INCLUDE_PATH."display_bitpage_inc.php";
 	}
 
 

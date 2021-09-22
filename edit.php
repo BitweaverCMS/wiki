@@ -13,8 +13,8 @@
 /**
  * required setup
  */
-require_once( '../kernel/setup_inc.php' );
-include_once( WIKI_PKG_PATH.'BitBook.php' );
+require_once( '../kernel/includes/setup_inc.php' );
+include_once( WIKI_PKG_CLASS_PATH.'BitBook.php' );
 
 $gBitSystem->verifyPackage( 'wiki' );
 
@@ -22,7 +22,7 @@ $gBitSystem->verifyPackage( 'wiki' );
 unset($_REQUEST['content_id']);
 // Disable parsing data if not asking to preview page
 $_REQUEST["parse"] = false;
-include( WIKI_PKG_PATH.'lookup_page_inc.php' );
+include( WIKI_PKG_INCLUDE_PATH.'lookup_page_inc.php' );
 
 if( $gContent->isValid() ) {
 	$gContent->verifyUpdatePermission();
@@ -32,7 +32,7 @@ if( $gContent->isValid() ) {
 
 //make comment count for this page available for templates
 if( $gBitSystem->isFeatureActive( 'wiki_comments' ) && !empty( $_REQUEST['page_id'] ) ) {
-	require_once( LIBERTY_PKG_PATH.'LibertyComment.php' );
+	require_once( LIBERTY_PKG_CLASS_PATH.'LibertyComment.php' );
 	$gComment = new LibertyComment();
 	$numComments = $gComment->getNumComments($gContent->mContentId);
 	$gBitSmarty->assign('comments_count', $numComments);
@@ -73,10 +73,10 @@ if( $gBitSystem->isFeatureActive( 'wiki_footnotes' ) ) {
 		$gBitSmarty->assign( 'footnote', $footnote );
 		if( $footnote )
 			$gBitSmarty->assign( 'has_footnote', 'y' );
-		$gBitSmarty->assign( 'parsed_footnote', $gContent->parseData( $footnote ) );
+		$gBitSmarty->assign( 'parsed_footnote', LibertyContent::parseDataHash( $footnote ) );
 		if( isset( $_REQUEST['footnote'] ) ) {
 
-			$gBitSmarty->assign( 'parsed_footnote', $gContent->parseData( $_REQUEST['footnote'] ) );
+			$gBitSmarty->assign( 'parsed_footnote', LibertyContent::parseDataHash( $_REQUEST['footnote'] ) );
 			$gBitSmarty->assign( 'footnote', $_REQUEST['footnote'] );
 			$gBitSmarty->assign( 'has_footnote', 'y' );
 			if( empty( $_REQUEST['footnote'] ) ) {
@@ -142,16 +142,11 @@ if( isset( $_REQUEST["fCancel"] ) ) {
 		&& !empty( $_REQUEST['copyrightYear'] )
 		&& !empty( $_REQUEST['copyrightTitle'] )
 	) {
-		require_once( WIKI_PKG_PATH.'copyrights_lib.php' );
+		require_once( WIKI_PKG_INCLUDE_PATH.'copyrights_lib.php' );
 		$copyrightYear = $_REQUEST['copyrightYear'];
 		$copyrightTitle = $_REQUEST['copyrightTitle'];
 		$copyrightAuthors = $_REQUEST['copyrightAuthors'];
 		$copyrightslib->add_copyright( $gContent->mPageId, $copyrightTitle, $copyrightYear, $copyrightAuthors, $gBitUser->mUserId );
-	}
-	// Parse $edit and eliminate image references to external URIs( make them internal )
-	if( $gBitSystem->isPackageActive( 'imagegals' ) ) {
-		include_once( IMAGEGALS_PKG_PATH.'imagegal_lib.php' );
-		$edit = $imagegallib->capture_images( $edit );
 	}
 
 	if( $gContent->mPageId )
@@ -210,16 +205,12 @@ if( isset( $_REQUEST["preview"] ) ) {
 		$formInfo['edit_section'] = 1;
 	}
 
-	$data_to_parse = $formInfo['edit'];
+	$data_to_parse['data'] = $formInfo['edit'];
 	if( !empty( $formInfo['section'] ) && !empty( $gContent->mInfo['data'] )) {
 		$full_page_data = $gContent->mInfo['data'];
 	}
 
-
-	$formInfo['parsed_data'] = $gContent->parseData(
-		$data_to_parse,
-		( !empty( $_REQUEST['format_guid'] ) ? $_REQUEST['format_guid'] : ( isset( $gContent->mInfo['format_guid'] ) ? $gContent->mInfo['format_guid'] : 'tikiwiki' ))
-	);
+	$formInfo['parsed_data'] = LibertyContent::parseDataHash( $data_to_parse );
 	$gContent->invokeServices( 'content_preview_function' );
 }
 
@@ -417,7 +408,7 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 		$gBitSystem->fatalError( tra( "Importing remote URLs is disabled" ));
 	}
 	// Suck another page and append to the end of current
-	require_once( UTIL_PKG_INC.'htmlparser/html_parser_inc.php' );
+	require_once( UTIL_PKG_INCLUDE_PATH.'htmlparser/html_parser_inc.php' );
 	$suck_url = isset( $_REQUEST["suck_url"] ) ? $_REQUEST["suck_url"] : '';
 	$parsehtml = isset( $_REQUEST["parsehtml"] ) ? ( $_REQUEST["parsehtml"] == 'on' ? 'y' : 'n' ): 'n';
 	if( isset( $_REQUEST['do_suck'] ) && strlen( $suck_url ) > 0 ) {
@@ -447,7 +438,7 @@ if( isset( $_REQUEST["suck_url"] ) ) {
 		// Need to parse HTML?
 		if( $parsehtml == 'y' ) {
 			// Read compiled( serialized ) grammar
-			$grammarfile = UTIL_PKG_INC.'htmlparser/htmlgrammar.cmp';
+			$grammarfile = UTIL_PKG_INCLUDE_PATH.'htmlparser/htmlgrammar.cmp';
 			if( !$fp = @fopen( $grammarfile,'r' ) ) {
 				$gBitSystem->fatalError( tra( "Can't parse remote HTML page" ));
 			}

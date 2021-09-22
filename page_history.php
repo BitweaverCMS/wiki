@@ -13,14 +13,14 @@
 /**
  * required setup
  */
-require_once( '../kernel/setup_inc.php' );
-require_once( WIKI_PKG_PATH.'BitPage.php');
+require_once( '../kernel/includes/setup_inc.php' );
+require_once( WIKI_PKG_CLASS_PATH.'BitPage.php');
 
 $gBitSystem->verifyPackage( 'wiki' );
 $gBitSystem->verifyFeature( 'wiki_history' );
 
 // Get the page from the request var or default it to HomePage
-include( WIKI_PKG_PATH.'lookup_page_inc.php' );
+include( WIKI_PKG_INCLUDE_PATH.'lookup_page_inc.php' );
 
 //vd($gContent->mPageId);vd($gContent->mInfo);
 if( !$gContent->isValid() || empty( $gContent->mInfo ) ) {
@@ -39,7 +39,7 @@ if (!empty( $_REQUEST['rollback_preview'] )) {
 // set up stuff to get history working
 $smartyContentRef = 'pageInfo';
 $rollbackPerm     = 'p_wiki_rollback';
-include_once( LIBERTY_PKG_PATH.'content_history_inc.php' );
+include_once( LIBERTY_PKG_INCLUDE_PATH.'content_history_inc.php' );
 
 // pagination stuff
 $gBitSmarty->assign( 'page', $page = !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : 1 );
