@@ -86,6 +86,14 @@
 							</div>
 						{/if}
 
+							<div class="form-group">
+								{formlabel label="Meta Tags" for="metatags"}
+								{forminput}
+									<textarea class="form-control" name="metatags" id="metatags" rows="5">{$pageInfo.metatags|escape:html}</textarea>
+									{formhelp note="Meta data to be inserted on page display. Useful for Opengraph tags."}
+								{/forminput}
+							</div>
+
 						{if $pageInfo.edit_section == 1}
 							<input type="hidden" name="section" value="{$pageInfo.section}" />
 						{/if}

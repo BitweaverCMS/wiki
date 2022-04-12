@@ -166,12 +166,13 @@ class BitPage extends LibertyMime implements BitCacheable {
 			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 			$query = "
-				SELECT wp.*, lc.*, lcds.`data` AS `summary`,
+				SELECT wp.*, lc.*, lcds.`data` AS `summary`, lcdm.`data` as `metatags`,
 				uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
 				uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name $selectSql
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) $joinSql
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcdm ON (lc.`content_id` = lcdm.`content_id` AND lcdm.`data_type`='metatags')
 					LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = lc.`modifier_user_id`)
 					LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
 				WHERE wp.`$lookupColumn`=? $whereSql";
