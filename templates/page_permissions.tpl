@@ -28,7 +28,7 @@
 			<h2>{tr}Existing requests for email notification{/tr}</h2>
 			<ul>
 				{section name=ix loop=$emails}
-					<li>{$emails[ix]} <a href="{$smarty.const.WIKI_PKG_URL}page_permissions.php?page_id={$gContent->mInfo.page_id}&amp;removeemail={$emails[ix]}&amp;tab=email">{booticon iname="icon-trash" ipackage="icons" iexplain="delete"}</a></li>
+					<li>{$emails[ix]} <a href="{$smarty.const.WIKI_PKG_URL}page_permissions.php?page_id={$gContent->mInfo.page_id}&amp;removeemail={$emails[ix]}&amp;tab=email">{booticon iname="fa-trash" iexplain="delete"}</a></li>
 				{/section}
 			</ul>
 		{/if}

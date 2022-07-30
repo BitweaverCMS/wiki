@@ -35,10 +35,10 @@
 					<input type="hidden" name="page_id" value="{$pageInfo.page_id}" />
 					<input type="hidden" name="copyright_id" value="{$copyrights[i].copyright_id|escape}" />
 					<input type="submit" class="btn btn-default" name="editcopyright" value="{tr}edit{/tr}" />
-					<a href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=up&amp;copyright_id={$copyrights[i].copyright_id}">{booticon iname="icon-cloud-upload" ipackage="icons" iexplain="move up"}</a>
-					<a href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=down&amp;copyright_id={$copyrights[i].copyright_id}">{booticon iname="icon-cloud-download"  ipackage="icons"  iexplain="move down"}</a>
+					<a href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=up&amp;copyright_id={$copyrights[i].copyright_id}">{booticon iname="fa-cloud-arrow-up" iexplain="move up"}</a>
+					<a href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=down&amp;copyright_id={$copyrights[i].copyright_id}">{booticon iname="fa-cloud-down-arrow" iexplain="move down"}</a>
 					<a title="{tr}Delete this copyright{/tr}" href="{$smarty.const.WIKI_PKG_URL}copyrights.php?page_id={$pageInfo.page_id}&amp;action=delete&amp;copyright_id={$copyrights[i].copyright_id}" 
-						onclick="return confirm('{tr}Are you sure you want to delete this copyright?{/tr}')">{booticon iname="icon-trash" ipackage="icons" iexplain="delete"}</a>
+						onclick="return confirm('{tr}Are you sure you want to delete this copyright?{/tr}')">{booticon iname="fa-trash" iexplain="delete"}</a>
 				</div>
 			{/form}
 		{/section}

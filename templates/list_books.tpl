@@ -24,15 +24,15 @@
 			</td>
 			<td class="actionicon">
 				{if ($channels[ix].creator_user_id == $gBitUser->mUserId) || $gBitUser->hasPermission( 'p_wiki_admin_book' )}
-					<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$channels[ix].structure_id}">{booticon iname="icon-cogs"  ipackage="icons"  iexplain="edit book"}</a>
+					<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$channels[ix].structure_id}">{booticon iname="fa-gears" iexplain="edit book"}</a>
 				{/if}
 				{if $gBitUser->isAdmin()}
 					{if $gBitSystem->isPackageActive( 'nexus' )}
-						<a href="{$smarty.const.NEXUS_PKG_URL}menus.php?structure_id={$channels[ix].structure_id}&amp;action=convert_structure">{booticon iname="icon-sitemap"  ipackage="icons"  iexplain="create menu from structure"}</a>
+						<a href="{$smarty.const.NEXUS_PKG_URL}menus.php?structure_id={$channels[ix].structure_id}&amp;action=convert_structure">{booticon iname="fa-sitemap" iexplain="create menu from structure"}</a>
 					{/if}
 				{/if}
 				{if ($channels[ix].creator_user_id == $gBitUser->mUserId) || $gBitUser->hasPermission( 'p_wiki_admin_book' )}
-					<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?action=remove&structure_id={$channels[ix].structure_id}&tk={$gBitUser->mTicket}">{booticon iname="icon-trash" ipackage="icons" iexplain="remove"}</a>
+					<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?action=remove&structure_id={$channels[ix].structure_id}&tk={$gBitUser->mTicket}">{booticon iname="fa-trash" iexplain="remove"}</a>
 				{/if}
 			</td>
 		</tr>
