@@ -17,7 +17,7 @@
 
 	{* Check to see if there is an editing conflict *}
 	{if $errors.edit_conflict}
-		<script type="text/javascript">/* <![CDATA[ */
+		<script>/* <![CDATA[ */
 			alert( "{$errors.edit_conflict|strip_tags}" );
 		/* ]]> */</script>
 		{formfeedback warning=$errors.edit_conflict}

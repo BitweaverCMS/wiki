@@ -213,7 +213,7 @@
 
 			{if $checkboxes_on eq 'y'}
 				<div style="text-align:right;">
-					<script type="text/javascript">/* <![CDATA[ check / uncheck all */
+					<script>/* <![CDATA[ check / uncheck all */
 						document.write("<label for=\"switcher\">{tr}Select All{/tr} <input name=\"switcher\" id=\"switcher\" type=\"checkbox\" onclick=\"BitBase.switchCheckboxes(this.form.id,'checked[]','switcher')\" /></label>");
 					/* ]]> */</script>
 					<br />
