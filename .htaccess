@@ -7,5 +7,5 @@
     RewriteRule ^(.*)$            - [L]
 
     RewriteRule ^view/(.*)$  index.php?page=$1  [L,QSA]
-    RewriteRule ^(.*)$       index.php?page=$1  [L,QSA]
+    RewriteRule ^(.*)$       index.php?page=$1  [L,QSA,B]
 </IfModule>
