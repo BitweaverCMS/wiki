@@ -683,7 +683,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 		}
 
 		// limit by user id
-		if( @BitBase::verifyId( $pListHash['user_id'] )) {
+		if( @BitBase::verifyIdParameter( $pListHash, 'user_id' )) {
 			$whereSql .= " AND lc.`user_id` = ? ";
 			$bindVars = array_merge( $bindVars, array( $pListHash['user_id'] ));
 		}
