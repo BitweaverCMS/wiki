@@ -306,7 +306,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 			$pParamHash['content_type_guid'] = $this->mContentTypeGuid;
 		}
 
-		if( @$this->verifyId( $pParamHash['content_id'] ) ) {
+		if( @$this->verifyIdParameter( $pParamHash, 'content_id' ) ) {
 			$pParamHash['page_store']['content_id'] = $pParamHash['content_id'];
 		}
 
@@ -517,7 +517,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 		$ret = $this->getField('title');
 		if( $this->isValid() ) {
 			$ret = static::getTitleFromHash( $this->mInfo );
-			$requestPage = strtoupper( self::getParameter( $_REQUEST, 'page' ) );
+			$requestPage = strtoupper( self::getParameter( $_REQUEST, 'page' ) ?? '' );
 			if( $requestPage && $requestPage != strtoupper( $this->mInfo['title'] ) ) {
 				$aliases = $this->getAliases( TRUE );
 				if( in_array( $requestPage, $aliases ) ) {
@@ -860,7 +860,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 
 	// ...page... functions
 	function countSubPages( $pData ) {
-		return(( preg_match_all( '/'.( defined( 'PAGE_SEP' ) ? preg_quote( PAGE_SEP ) : '\.\.\.page\.\.\.').'/', $pData, $matches ) + 1 ));
+		return(( preg_match_all( '/'.( defined( 'PAGE_SEP' ) ? preg_quote( PAGE_SEP ) : '\.\.\.page\.\.\.').'/', $pData ?? '', $matches ) + 1 ));
 	}
 
 	/**
@@ -995,7 +995,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */
-	function linkStructureGraph( $pLinkStructure = array(), $pParams = array(), &$pGraphViz ) {
+	function linkStructureGraph( $pLinkStructure = array(), $pParams = array(), $pGraphViz = null ) {
 		if( !empty( $pLinkStructure ) && !empty( $pGraphViz )) {
 			$pParams['graph']['URL'] = WIKI_PKG_URL.'index.php';
 			$pGraphViz->addAttributes( $pParams['graph'] );
