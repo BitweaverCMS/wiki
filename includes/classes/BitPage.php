@@ -166,12 +166,13 @@ class BitPage extends LibertyMime implements BitCacheable {
 			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 			$query = "
-				SELECT wp.*, lc.*, lcds.`data` AS `summary`,
+				SELECT wp.*, lc.*, lcds.`data` AS `summary`, lcdm.`data` as `metatags`,
 				uue.`login` AS modifier_user, uue.`real_name` AS modifier_real_name,
 				uuc.`login` AS creator_user, uuc.`real_name` AS creator_real_name $selectSql
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = wp.`content_id`) $joinSql
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcdm ON (lc.`content_id` = lcdm.`content_id` AND lcdm.`data_type`='metatags')
 					LEFT JOIN `".BIT_DB_PREFIX."users_users` uue ON (uue.`user_id` = lc.`modifier_user_id`)
 					LEFT JOIN `".BIT_DB_PREFIX."users_users` uuc ON (uuc.`user_id` = lc.`user_id`)
 				WHERE wp.`$lookupColumn`=? $whereSql";
@@ -305,7 +306,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 			$pParamHash['content_type_guid'] = $this->mContentTypeGuid;
 		}
 
-		if( @$this->verifyId( $pParamHash['content_id'] ) ) {
+		if( @$this->verifyIdParameter( $pParamHash, 'content_id' ) ) {
 			$pParamHash['page_store']['content_id'] = $pParamHash['content_id'];
 		}
 
@@ -516,7 +517,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 		$ret = $this->getField('title');
 		if( $this->isValid() ) {
 			$ret = static::getTitleFromHash( $this->mInfo );
-			$requestPage = strtoupper( self::getParameter( $_REQUEST, 'page' ) );
+			$requestPage = strtoupper( self::getParameter( $_REQUEST, 'page' ) ?? '' );
 			if( $requestPage && $requestPage != strtoupper( $this->mInfo['title'] ) ) {
 				$aliases = $this->getAliases( TRUE );
 				if( in_array( $requestPage, $aliases ) ) {
@@ -682,7 +683,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 		}
 
 		// limit by user id
-		if( @BitBase::verifyId( $pListHash['user_id'] )) {
+		if( @BitBase::verifyIdParameter( $pListHash, 'user_id' )) {
 			$whereSql .= " AND lc.`user_id` = ? ";
 			$bindVars = array_merge( $bindVars, array( $pListHash['user_id'] ));
 		}
@@ -859,7 +860,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 
 	// ...page... functions
 	function countSubPages( $pData ) {
-		return(( preg_match_all( '/'.( defined( 'PAGE_SEP' ) ? preg_quote( PAGE_SEP ) : '\.\.\.page\.\.\.').'/', $pData, $matches ) + 1 ));
+		return(( preg_match_all( '/'.( defined( 'PAGE_SEP' ) ? preg_quote( PAGE_SEP ) : '\.\.\.page\.\.\.').'/', $pData ?? '', $matches ) + 1 ));
 	}
 
 	/**
@@ -994,7 +995,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
 	 */
-	function linkStructureGraph( $pLinkStructure = array(), $pParams = array(), &$pGraphViz ) {
+	function linkStructureGraph( $pLinkStructure = array(), $pParams = array(), $pGraphViz = null ) {
 		if( !empty( $pLinkStructure ) && !empty( $pGraphViz )) {
 			$pParams['graph']['URL'] = WIKI_PKG_URL.'index.php';
 			$pGraphViz->addAttributes( $pParams['graph'] );

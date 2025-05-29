@@ -6,7 +6,7 @@
 		<div class="floaticon">
 		{form class="form-inline" }
 			<input type="hidden" name="sort_mode" value="{$sort_mode}" />
-			{booticon iname="icon-search"  ipackage="icons"  iexplain="Search"}  
+			{booticon iname="fa-magnifying-glass" iexplain="Search"}  
 			<label>{tr}Title{/tr}: <input class="input-small" type="text" name="find_title" value="{$find_title|default:$smarty.request.find_title|escape}" /></label>  <label>{tr}Author{/tr}: <input class="input-small" type="text" name="find_author" value="{$find_author|default:$smarty.request.find_author|escape}" /></label> <label>{tr}Last Editor{/tr}: <input class="input-small" type="text" name="find_last_editor" value="{$find_last_editor|default:$smarty.request.find_last_editor|escape}" /></label>  <input type="submit" class="btn btn-xs" name="search" value="{tr}Find{/tr}" /> 
 		{/form}
 		</div>
@@ -21,7 +21,7 @@
 
 		{form id="checkform"}
 			<ul class="list-inline navbar">
-				<li>{booticon iname="icon-circle-arrow-right"  ipackage="icons"  iexplain="sort by"}</li>
+				<li>{booticon iname="fa-circle-arrow-right" iexplain="sort by"}</li>
 				{if $gBitSystem->isFeatureActive( 'wiki_list_name' )}
 					<li>{smartlink ititle="Page Name" isort="title" icontrol=$listInfo}</li>
 				{/if}
@@ -168,9 +168,9 @@
 						{if $gBitSystem->isFeatureActive( 'wiki_list_status' )}
 							<td style="text-align:center;">
 								{if $listpages[changes].flag eq 'locked'}
-									{booticon iname="icon-lock" ipackage="icons" iexplain="locked"}
+									{booticon iname="fa-lock" iexplain="locked"}
 								{else}
-									{booticon ipackage="icons" iname="icon-asterisk" iexplain="unlocked"}
+									{booticon iname="fa-asterisk" iexplain="unlocked"}
 								{/if}
 							</td>
 						{/if}
@@ -199,7 +199,7 @@
 						{/if}
 						{if $gBitUser->hasPermission( 'p_wiki_update_page' )}
 							<td class="actionicon">
-								<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$listpages[changes].page_id}">{booticon iname="icon-edit" ipackage="icons" iexplain="edit"}</a>
+								<a href="{$smarty.const.WIKI_PKG_URL}edit.php?page_id={$listpages[changes].page_id}">{booticon iname="fa-pen-to-square" iexplain="edit"}</a>
 								{if $checkboxes_on eq 'y'} <input type="checkbox" name="checked[]" value="{$listpages[changes].page_id}" /> {/if}
 							</td>
 						{/if}
@@ -213,7 +213,7 @@
 
 			{if $checkboxes_on eq 'y'}
 				<div style="text-align:right;">
-					<script type="text/javascript">/* <![CDATA[ check / uncheck all */
+					<script>/* <![CDATA[ check / uncheck all */
 						document.write("<label for=\"switcher\">{tr}Select All{/tr} <input name=\"switcher\" id=\"switcher\" type=\"checkbox\" onclick=\"BitBase.switchCheckboxes(this.form.id,'checked[]','switcher')\" /></label>");
 					/* ]]> */</script>
 					<br />
