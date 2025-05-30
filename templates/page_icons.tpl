@@ -4,7 +4,7 @@
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$gContent->mInfo}
 
 		{if $gBitSystem->isFeatureActive( 'wiki_like_pages' )}
-			<a href="{$smarty.const.WIKI_PKG_URL}like_pages.php?page_id={$gContent->mInfo.page_id}">{booticon iname="fa-files" iexplain="Similar Pages"}</a>
+			<a href="{$smarty.const.WIKI_PKG_URL}like_pages.php?page_id={$gContent->mInfo.page_id}">{booticon iname="fa-layer-group" iexplain="Similar Pages"}</a>
 		{/if}
 
 		{if $gContent->isLocked()}
