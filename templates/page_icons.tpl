@@ -25,7 +25,7 @@
 			{/if}
 
 			{if $gBitSystem->isFeatureActive( 'wiki_undo' ) and $gContent->hasUserPermission('p_wiki_rollback')}
-				<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;undo=1">{booticon ipackage=icons iname=icon-undo iexplain="Undo last edit"}</a>
+				<a href="{$smarty.const.WIKI_PKG_URL}index.php?page_id={$gContent->mInfo.page_id}&amp;undo=1">{booticon ipackage=icons iname="fa-undo" iexplain="Undo last edit"}</a>
 			{/if}
 
 			{if $gBitSystem->isFeatureActive( 'wiki_history' ) and $gContent->hasUserPermission('p_wiki_view_history')}
@@ -74,7 +74,7 @@
 		{if $gBitSystem->isFeatureActive( 'wiki_backlinks' ) and $backlinks}
 			<div class="btn-group">
 				<button class="btn btn-xs dropdown-toggle" data-toggle="dropdown">
-				  <i class="icon-link"></i>
+				  {booticon iname="fa-link"}
 				  <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu pull-right">

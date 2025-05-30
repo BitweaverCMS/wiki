@@ -19,7 +19,7 @@ if( !$gBitSystem->isFeatureActive( 'wiki_multiprint' ) ) {
 	$gBitSystem->fatalError( tra("This feature is disabled").": wiki_multiprint" );
 }
 // Now check permissions if user can view wiki pages
-$gContent->verifyViewPermission();
+$gBitSystem->verifyPermission( 'p_wiki_view_page' );
 
 if (!isset($_REQUEST["printpages"])) {
 	$printpages = array();

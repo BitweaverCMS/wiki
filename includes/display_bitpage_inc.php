@@ -60,7 +60,7 @@ if( !empty( $_REQUEST["undo"] ) && !$gContent->isLocked() && ( $gContent->hasUpd
 
 // work out if this page has slides
 if( $gBitSystem->isFeatureActive( 'wiki_uses_slides' )) {
-	$slides = split( "-=[^=]+=-", $gContent->mInfo["data"] );
+	$slides = explode( "-=[^=]+=-", $gContent->mInfo["data"] );
 	if( count( $slides ) <= 1 ) {
 		$slides = explode( defined( 'PAGE_SEP' ) ? PAGE_SEP : "...page...", $gContent->mInfo["data"] );
 	}
