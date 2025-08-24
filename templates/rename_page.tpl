@@ -1,0 +1,19 @@
+<div class="admin wiki">
+	<div class="header">
+		<h1>Rename page: {$page}</h1>
+	</div>
+
+	<div class="body">
+		<form action="{$smarty.const.WIKI_PKG_URL}rename_page.php" method="post">
+			<input type="hidden" name="oldpage" value="{$page|escape}" />
+			<input type="hidden" name="page" value="{$page|escape}" />
+			<table class="panel">
+				<tr><td>
+						New name:</td><td>
+						<input type="text" name="newpage" value="{$page|escape}" size="35" />
+						<input type="submit" class="btn btn-default" name="rename" value="Rename" />
+				</td></tr>
+			</table>
+		</form>
+	</div><!-- end .body -->
+</div><!-- end .wiki -->

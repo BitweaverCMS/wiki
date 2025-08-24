@@ -1,0 +1,55 @@
+{strip}
+
+<div class="display structure">
+<div class="header">
+	<h1>Wiki Books</h1>
+</div>
+
+<div class="body">
+
+	<table class="panel">
+		<tr>
+			<th>WikiBook</th>
+			<th>Action</th>
+		</tr>
+
+		{cycle values="even,odd" print=false}
+		{section loop=$channels name=ix}
+
+		<tr class="{cycle}">
+			<td>
+				<a href="{$smarty.const.WIKI_PKG_URL}index.php?structure_id={$channels[ix].structure_id}">
+					{$channels[ix].title|escape}
+				</a>
+			</td>
+			<td class="actionicon">
+				{if ($channels[ix].creator_user_id == $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_wiki_admin_book' )}
+					<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?structure_id={$channels[ix].structure_id}">{booticon iname="icon-cogs"  ipackage="icons"  iexplain="edit book"}</a>
+				{/if}
+				{if $gBitUser->isAdmin()}
+					{if $gBitSystem->isPackageActive( 'nexus' )}
+						<a href="{$smarty.const.NEXUS_PKG_URL}menus.php?structure_id={$channels[ix].structure_id}&amp;action=convert_structure">{booticon iname="icon-sitemap"  ipackage="icons"  iexplain="create menu from structure"}</a>
+					{/if}
+				{/if}
+				{if ($channels[ix].creator_user_id == $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_wiki_admin_book' )}
+					<a href="{$smarty.const.WIKI_PKG_URL}edit_book.php?action=remove&structure_id={$channels[ix].structure_id}">{booticon iname="icon-trash" ipackage="icons" iexplain="remove"}</a>
+				{/if}
+			</td>
+		</tr>
+
+		{sectionelse}
+
+		<tr class="norecords">
+			<td colspan="2">No records found</td>
+		</tr>
+
+		{/section}
+	</table>
+
+</div><!-- end .body -->
+
+{pagination}
+
+</div><!-- end .structure -->
+
+{/strip}
