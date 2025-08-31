@@ -705,6 +705,10 @@ class BitPage extends LibertyMime implements BitCacheable {
 			$get_data = ', lc.`data`';
 		}
 
+		$sortSql = '';
+		if( $sortMode = $this->mDb->convertSortmode( $pListHash['sort_mode'] ) ) {
+			$sortSql = 'ORDER BY '.$sortMode;
+		}
 		if( empty( $pListHash['orphans_only'] )) {
 			$whereSql =  preg_replace('/^ AND */',' WHERE ', $whereSql);
 			$query = "SELECT
@@ -720,7 +724,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
 					$joinSql
 				$whereSql
-				ORDER BY ".$this->mDb->convertSortmode( $pListHash['sort_mode'] );
+				$sortSql";
 			$query_cant = "
 				SELECT COUNT(*)
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp
@@ -747,7 +751,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
 					$joinSql
 				$whereSql
-				ORDER BY ".$this->mDb->convertSortmode( $pListHash['sort_mode'] );
+				$sortSql";
 			$query_cant = "
 				SELECT COUNT(*)
 				FROM `".BIT_DB_PREFIX."wiki_pages` wp

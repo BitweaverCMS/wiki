@@ -14,6 +14,8 @@ include_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
 $gBitSystem->verifyPackage( 'wiki' );
 
 $gBitSystem->verifyFeature( 'wiki_list_orphans' );
+$gBitSystem->verifyPermission( 'p_wiki_list_pages' );
+
 $gContent = new BitPage();
 $gContent->verifyViewPermission();
 
