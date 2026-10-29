@@ -270,7 +270,7 @@ class BitPage extends LibertyMime implements BitCacheable {
 						$gBitSmarty->assign('mail_pagedata', $this->mInfo['data']);
 						$mail_data = $gBitSmarty->fetch('bitpackage:wiki/user_watch_wiki_page_changed.tpl');
 						$email_to = $not['email'];
-						@mail($email_to, tra('Wiki page'). ' ' . $this->mInfo['title'] . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getConfig( 'site_sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
+						@bit_mail($email_to, tra('Wiki page'). ' ' . $this->mInfo['title'] . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getConfig( 'site_sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
 					}
 				}
 			}
